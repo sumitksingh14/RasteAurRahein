@@ -204,7 +204,29 @@ function GeneratedTripCard({
 
         {/* Actions */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "1rem", paddingTop: "0.75rem", borderTop: "1px solid var(--border)" }}>
-          <ExportPDFButton trip={trip} variant="ghost" />
+          <div style={{ display: "flex", gap: "0.5rem" }}>
+            <Link
+              href={`/itineraries/${trip.id}`}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "4px",
+                fontSize: "0.75rem",
+                color: "var(--accent-gold)",
+                background: "rgba(224, 185, 118, 0.1)",
+                textDecoration: "none",
+                fontWeight: 500,
+                padding: "0.4rem 0.75rem",
+                borderRadius: "var(--radius-sm)",
+                transition: "all var(--transition)",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(224, 185, 118, 0.2)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(224, 185, 118, 0.1)"; }}
+            >
+              View Details
+            </Link>
+            <ExportPDFButton trip={trip} variant="ghost" />
+          </div>
           
           <button
             onClick={() => onDelete(trip.id)}
