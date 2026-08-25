@@ -11,6 +11,7 @@ interface GenerateRequest {
   month: string;
   highlights?: string;
   budget?: string;
+  model?: "gemini" | "nvidia";
 }
 
 interface GeneratedActivity {
@@ -179,10 +180,10 @@ export async function POST(req: NextRequest) {
     }
 
     const prompt = buildPrompt(body);
-    const useNvidia = Math.random() > 0.5;
+    const useNvidia = body.model === "nvidia";
     const modelUsed = useNvidia
       ? "NVIDIA Nemotron 3.5 Lightning"
-      : "Google Gemini 3.6 Flash";
+      : "Google Gemini Flash";
     const raw = useNvidia ? await callNvidia(prompt) : await callGemini(prompt);
 
     // Parse and validate

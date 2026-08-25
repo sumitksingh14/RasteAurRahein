@@ -20,6 +20,7 @@ interface TripParams {
   month: string;
   highlights: string;
   budget: string;
+  model: "gemini" | "nvidia";
 }
 
 type Step = "form" | "generating" | "preview" | "saved";
@@ -114,9 +115,11 @@ export default function AIItineraryModal({ onClose }: Props) {
     month: MONTHS[new Date().getMonth()],
     highlights: "",
     budget: "Mid-range (₹2,000–₹5,000/day)",
+    model: "gemini",
   });
   const [itinerary, setItinerary] = useState<GeneratedItinerary | null>(null);
   const [savedTrip, setSavedTrip] = useState<GeneratedTrip | null>(null);
+  const [modelUsed, setModelUsed] = useState("");
   const [error, setError] = useState("");
   const [stageIdx, setStageIdx] = useState(0);
   const [expandedDays, setExpandedDays] = useState<Set<number>>(new Set([1]));
@@ -161,6 +164,7 @@ export default function AIItineraryModal({ onClose }: Props) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Generation failed");
       setItinerary(data.itinerary);
+      setModelUsed(data.modelUsed || "");
       setExpandedDays(new Set([1]));
       setStep("preview");
     } catch (err) {
@@ -303,7 +307,7 @@ export default function AIItineraryModal({ onClose }: Props) {
                 AI Trip Planner
               </div>
               <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
-                Powered by Google Gemini
+                {params.model === "nvidia" ? "Powered by NVIDIA Nemotron" : "Powered by Google Gemini"}
               </div>
             </div>
             <button
@@ -443,7 +447,7 @@ export default function AIItineraryModal({ onClose }: Props) {
                   </div>
                 </div>
 
-                {/* Highlights */}
+                {/* Must-see Highlights */}
                 <div>
                   <label htmlFor="ai-highlights" style={labelStyle}>
                     Must-see highlights <span style={{ color: "var(--text-muted)", textTransform: "none", fontWeight: 400 }}>(optional)</span>
@@ -458,6 +462,118 @@ export default function AIItineraryModal({ onClose }: Props) {
                     onFocus={(e) => (e.target.style.borderColor = "var(--border-accent)")}
                     onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
                   />
+                </div>
+
+                {/* AI Model Selector */}
+                <div>
+                  <label style={labelStyle}>🤖 AI Model</label>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem" }}>
+                    {/* Gemini option */}
+                    <button
+                      id="model-select-gemini"
+                      onClick={() => setParams((p) => ({ ...p, model: "gemini" }))}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                        gap: "0.3rem",
+                        padding: "0.85rem 1rem",
+                        borderRadius: "var(--radius-sm)",
+                        border: `1.5px solid ${
+                          params.model === "gemini" ? "var(--accent-gold)" : "var(--border)"
+                        }`,
+                        background: params.model === "gemini" ? "var(--accent-gold-dim)" : "var(--bg-card)",
+                        cursor: "pointer",
+                        transition: "all var(--transition)",
+                        fontFamily: "var(--font-sans)",
+                        textAlign: "left",
+                      }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                        <span style={{ fontSize: "1.1rem" }}>✦</span>
+                        <span
+                          style={{
+                            fontSize: "0.85rem",
+                            fontWeight: 700,
+                            color: params.model === "gemini" ? "var(--accent-gold)" : "var(--text-primary)",
+                          }}
+                        >
+                          Google Gemini
+                        </span>
+                        {params.model === "gemini" && (
+                          <span
+                            style={{
+                              marginLeft: "auto",
+                              fontSize: "0.65rem",
+                              fontWeight: 700,
+                              padding: "2px 6px",
+                              borderRadius: "100px",
+                              background: "var(--accent-gold)",
+                              color: "#fff",
+                            }}
+                          >
+                            SELECTED
+                          </span>
+                        )}
+                      </div>
+                      <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
+                        Fast · Reliable · JSON-native
+                      </span>
+                    </button>
+
+                    {/* NVIDIA option */}
+                    <button
+                      id="model-select-nvidia"
+                      onClick={() => setParams((p) => ({ ...p, model: "nvidia" }))}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                        gap: "0.3rem",
+                        padding: "0.85rem 1rem",
+                        borderRadius: "var(--radius-sm)",
+                        border: `1.5px solid ${
+                          params.model === "nvidia" ? "#76b900" : "var(--border)"
+                        }`,
+                        background: params.model === "nvidia" ? "rgba(118,185,0,0.08)" : "var(--bg-card)",
+                        cursor: "pointer",
+                        transition: "all var(--transition)",
+                        fontFamily: "var(--font-sans)",
+                        textAlign: "left",
+                      }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: "6px", width: "100%" }}>
+                        <span style={{ fontSize: "1.1rem" }}>⚡</span>
+                        <span
+                          style={{
+                            fontSize: "0.85rem",
+                            fontWeight: 700,
+                            color: params.model === "nvidia" ? "#76b900" : "var(--text-primary)",
+                          }}
+                        >
+                          NVIDIA Nemotron
+                        </span>
+                        {params.model === "nvidia" && (
+                          <span
+                            style={{
+                              marginLeft: "auto",
+                              fontSize: "0.65rem",
+                              fontWeight: 700,
+                              padding: "2px 6px",
+                              borderRadius: "100px",
+                              background: "#76b900",
+                              color: "#fff",
+                            }}
+                          >
+                            SELECTED
+                          </span>
+                        )}
+                      </div>
+                      <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
+                        Reasoning · Deep planning
+                      </span>
+                    </button>
+                  </div>
                 </div>
 
                 {/* Error */}
@@ -642,6 +758,26 @@ export default function AIItineraryModal({ onClose }: Props) {
                   >
                     {itinerary.title}
                   </h2>
+                  {modelUsed && (
+                    <div style={{ marginBottom: "0.5rem" }}>
+                      <span
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "5px",
+                          padding: "0.25rem 0.65rem",
+                          borderRadius: "100px",
+                          fontSize: "0.7rem",
+                          fontWeight: 600,
+                          background: params.model === "nvidia" ? "rgba(118,185,0,0.1)" : "var(--accent-gold-dim)",
+                          border: `1px solid ${params.model === "nvidia" ? "rgba(118,185,0,0.3)" : "var(--border-accent)"}`,
+                          color: params.model === "nvidia" ? "#76b900" : "var(--accent-gold)",
+                        }}
+                      >
+                        {params.model === "nvidia" ? "⚡" : "✦"} Generated by {modelUsed}
+                      </span>
+                    </div>
+                  )}
                   {itinerary.overview && (
                     <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.7, marginBottom: "1rem" }}>
                       {itinerary.overview}
