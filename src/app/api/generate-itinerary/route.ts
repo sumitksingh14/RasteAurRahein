@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import OpenAI from "openai";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -76,6 +77,36 @@ async function callGemini(prompt: string): Promise<string> {
 }
 
 // ---------------------------------------------------------------------------
+// Nvidia call helper
+// ---------------------------------------------------------------------------
+async function callNvidia(prompt: string): Promise<string> {
+  const apiKey = process.env.NVIDIA_API_KEY;
+  if (!apiKey) {
+    throw new Error("NVIDIA_API_KEY is not configured. Add it to .env.local.");
+  }
+
+  const openai = new OpenAI({
+    apiKey,
+    baseURL: 'https://integrate.api.nvidia.com/v1',
+  });
+
+  const completion = await openai.chat.completions.create({
+    model: "nvidia/nemotron-3.5-lightning-30b-a3b",
+    messages: [{"role":"user","content":prompt}],
+    temperature: 1,
+    top_p: 0.95,
+    max_tokens: 16384,
+    reasoning_budget: 16384,
+    chat_template_kwargs: {"enable_thinking":true},
+    stream: false,
+  } as any);
+
+  const text = completion.choices[0]?.message?.content;
+  if (!text) throw new Error("Nvidia returned an empty response.");
+  return text;
+}
+
+// ---------------------------------------------------------------------------
 // Prompt builder
 // ---------------------------------------------------------------------------
 function buildPrompt(req: GenerateRequest): string {
@@ -148,7 +179,8 @@ export async function POST(req: NextRequest) {
     }
 
     const prompt = buildPrompt(body);
-    const raw = await callGemini(prompt);
+    const useNvidia = Math.random() > 0.5;
+    const raw = useNvidia ? await callNvidia(prompt) : await callGemini(prompt);
 
     // Parse and validate
     let itinerary: GeneratedItinerary;
@@ -176,7 +208,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error("[generate-itinerary]", err);
     const message = err instanceof Error ? err.message : "Unknown error";
-    const status = message.includes("GEMINI_API_KEY") ? 503 : 500;
+    const status = message.includes("API_KEY") ? 503 : 500;
     return NextResponse.json({ error: message }, { status });
   }
 }

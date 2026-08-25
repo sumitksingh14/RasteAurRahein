@@ -11,6 +11,7 @@ const navLinks = [
   { href: "/trips", label: "Trips/Itineraries" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
+  { href: "/itineraries", label: "My Travel Itineraries" },
 ];
 
 export default function Navbar() {

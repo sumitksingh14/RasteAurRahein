@@ -8,6 +8,7 @@ const quickLinks = [
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
   { href: "/import", label: "Import Itinerary" },
+  { href: "/itineraries", label: "My Travel Itineraries" },
 ];
 
 export default function Footer() {
