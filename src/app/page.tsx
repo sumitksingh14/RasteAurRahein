@@ -52,12 +52,13 @@ export default async function HomePage() {
         }}
       >
         {/* Background image */}
-        <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
+        <div style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden" }}>
           <Image
-            src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1920&q=85"
-            alt="Spiti Valley hero background"
+            src="https://images.unsplash.com/photo-1518098268026-4e89f1a2cd8e?w=1920&q=85"
+            alt="Snowy mountain landscape"
             fill
             style={{ objectFit: "cover" }}
+            className="animate-ken-burns"
             priority
             quality={85}
           />
@@ -67,7 +68,7 @@ export default async function HomePage() {
               position: "absolute",
               inset: 0,
               background:
-                "linear-gradient(135deg, rgba(10,10,15,0.92) 0%, rgba(10,10,15,0.6) 50%, rgba(10,10,15,0.4) 100%)",
+                "linear-gradient(135deg, rgba(3,15,20,0.9) 0%, rgba(6,22,29,0.6) 50%, rgba(10,30,40,0.3) 100%)",
             }}
           />
           <div
@@ -75,7 +76,7 @@ export default async function HomePage() {
               position: "absolute",
               inset: 0,
               background:
-                "radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.08) 0%, transparent 60%)",
+                "radial-gradient(ellipse at 20% 50%, rgba(137,180,250,0.15) 0%, transparent 60%)",
             }}
           />
         </div>
@@ -167,7 +168,7 @@ export default async function HomePage() {
             }}
           >
             {HERO_STATS.map((stat) => (
-              <div key={stat.label}>
+              <div key={stat.label} className="glass-card" style={{ padding: "1.5rem", minWidth: "160px" }}>
                 <div
                   style={{
                     fontFamily: "var(--font-serif)",
@@ -180,7 +181,7 @@ export default async function HomePage() {
                 >
                   {stat.value}
                 </div>
-                <div style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                <div style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.7)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                   {stat.label}
                 </div>
               </div>

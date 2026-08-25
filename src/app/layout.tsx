@@ -5,7 +5,9 @@ import { GeneratedTripsProvider } from "@/components/providers/GeneratedTripsPro
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import AIItineraryButton from "@/components/ai/AIItineraryButton";
-
+import SnowEffect from "@/components/ui/SnowEffect";
+import ButterflyFollower from "@/components/ui/ButterflyFollower";
+import AmbientBackground from "@/components/ui/AmbientBackground";
 export const metadata: Metadata = {
   title: {
     default: "Raste Aur Raahein — Travel Blog by Sumit Singh",
@@ -46,9 +48,17 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           <GeneratedTripsProvider>
-            <Navbar />
-            <main>{children}</main>
-            <Footer />
+            {/* Ambient cycling background — fixed, z-index 0 */}
+            <AmbientBackground />
+            {/* Global overlays — float above everything */}
+            <SnowEffect />
+            <ButterflyFollower />
+            {/* Page chrome — sits above ambient */}
+            <div style={{ position: "relative", zIndex: 1 }}>
+              <Navbar />
+              <main>{children}</main>
+              <Footer />
+            </div>
             <AIItineraryButton />
           </GeneratedTripsProvider>
         </ThemeProvider>

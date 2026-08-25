@@ -134,6 +134,7 @@ export default function AIItineraryModal({ onClose }: Props) {
   const [savedTrip, setSavedTrip] = useState<GeneratedTrip | null>(null);
   const [modelUsed, setModelUsed] = useState("");
   const [error, setError] = useState("");
+  const [failedModel, setFailedModel] = useState<"gemini" | "nvidia" | "groq" | null>(null);
   const [stageIdx, setStageIdx] = useState(0);
   const [expandedDays, setExpandedDays] = useState<Set<number>>(new Set([1]));
   const stageTimer = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -183,6 +184,7 @@ export default function AIItineraryModal({ onClose }: Props) {
     if (!params.destination.trim()) return;
     setStep("generating");
     setError("");
+    setFailedModel(null);
 
     try {
       const res = await fetch("/api/generate-itinerary", {
@@ -197,7 +199,21 @@ export default function AIItineraryModal({ onClose }: Props) {
       setExpandedDays(new Set([1]));
       setStep("preview");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unknown error");
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      // Classify the error for friendlier messaging
+      const isQuota = /quota|rate.?limit|429|too many/i.test(msg);
+      const isAuth = /api.?key|auth|403|401|invalid.?key/i.test(msg);
+      const isTimeout = /timeout|network|fetch|ECONNRESET/i.test(msg);
+      const isModel = /model|overload|503|unavailable|capacity/i.test(msg);
+
+      let friendly = msg;
+      if (isQuota) friendly = "This model has hit its usage limit or rate limit. Please try again in a moment or switch to another AI.";
+      else if (isAuth) friendly = "API authentication failed for this model. The key may be invalid or missing.";
+      else if (isTimeout) friendly = "The request timed out — the model may be experiencing high load.";
+      else if (isModel) friendly = "This model is currently overloaded or unavailable. Try a different AI LLM.";
+
+      setFailedModel(params.model);
+      setError(friendly);
       setStep("form");
     }
   };
@@ -228,19 +244,22 @@ export default function AIItineraryModal({ onClose }: Props) {
     });
 
   // ---------------------------------------------------------------------------
-  // Shared styles
+  // Shared styles — Liquid Glass
   // ---------------------------------------------------------------------------
   const inputStyle: React.CSSProperties = {
     width: "100%",
     padding: "0.8rem 1rem",
-    borderRadius: "var(--radius-sm)",
-    border: "1px solid var(--border)",
-    background: "var(--bg-card)",
+    borderRadius: "var(--radius-md)",
+    border: "1px solid rgba(255,255,255,0.15)",
+    background: "rgba(255,255,255,0.06)",
+    backdropFilter: "blur(12px)",
+    WebkitBackdropFilter: "blur(12px)",
     color: "var(--text-primary)",
     fontSize: "0.9rem",
     fontFamily: "var(--font-sans)",
     outline: "none",
-    transition: "border-color var(--transition)",
+    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 8px rgba(0,0,0,0.25)",
+    transition: "border-color var(--transition), box-shadow var(--transition)",
   };
 
   const labelStyle: React.CSSProperties = {
@@ -248,8 +267,8 @@ export default function AIItineraryModal({ onClose }: Props) {
     fontSize: "0.75rem",
     fontWeight: 600,
     textTransform: "uppercase",
-    letterSpacing: "0.05em",
-    color: "var(--text-muted)",
+    letterSpacing: "0.06em",
+    color: "rgba(255,255,255,0.5)",
     marginBottom: "0.5rem",
   };
 
@@ -258,21 +277,33 @@ export default function AIItineraryModal({ onClose }: Props) {
   // ---------------------------------------------------------------------------
   return (
     <>
-      {/* Backdrop */}
+      {/* Liquid Glass shimmer keyframe */}
+      <style>{`
+        @keyframes lg-shimmer {
+          0%   { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+        @keyframes lg-float-in {
+          from { opacity: 0; transform: translateY(32px) scale(0.97); }
+          to   { opacity: 1; transform: translateY(0)   scale(1); }
+        }
+      `}</style>
+
+      {/* Backdrop — deep frosted */}
       <div
         onClick={onClose}
         style={{
           position: "fixed",
           inset: 0,
           zIndex: 1100,
-          background: "rgba(0,0,0,0.7)",
-          backdropFilter: "blur(6px)",
-          WebkitBackdropFilter: "blur(6px)",
-          animation: "fadeIn 0.25s ease",
+          background: "rgba(3,15,20,0.55)",
+          backdropFilter: "blur(28px) saturate(180%)",
+          WebkitBackdropFilter: "blur(28px) saturate(180%)",
+          animation: "fadeIn 0.2s ease",
         }}
       />
 
-      {/* Modal */}
+      {/* Modal positioner */}
       <div
         role="dialog"
         aria-modal="true"
@@ -288,33 +319,46 @@ export default function AIItineraryModal({ onClose }: Props) {
           pointerEvents: "none",
         }}
       >
+        {/* Liquid Glass card */}
         <div
           style={{
             width: "100%",
             maxWidth: 680,
             maxHeight: "90vh",
             overflowY: "auto",
-            background: "var(--bg-secondary)",
-            border: "1px solid var(--border-accent)",
-            borderRadius: "var(--radius-lg)",
-            boxShadow: "var(--shadow-lg), 0 0 80px rgba(201,168,76,0.12)",
+            /* Liquid glass layers */
+            background: "linear-gradient(160deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.04) 50%, rgba(137,180,250,0.07) 100%)",
+            backdropFilter: "blur(40px) saturate(200%) brightness(1.15)",
+            WebkitBackdropFilter: "blur(40px) saturate(200%) brightness(1.15)",
+            borderTop: "1px solid rgba(255,255,255,0.38)",
+            borderRight: "1px solid rgba(255,255,255,0.22)",
+            borderBottom: "1px solid rgba(255,255,255,0.22)",
+            borderLeft: "1px solid rgba(255,255,255,0.28)",
+            borderRadius: "28px",
+            boxShadow: [
+              "0 32px 80px rgba(0,0,0,0.6)",
+              "0 0 0 1px rgba(255,255,255,0.06) inset",
+              "inset 0 1px 0 rgba(255,255,255,0.35)",
+              "inset 0 -1px 0 rgba(0,0,0,0.15)",
+              "0 0 60px rgba(137,180,250,0.12)",
+            ].join(", "),
             pointerEvents: "all",
-            animation: "fadeInUp 0.3s ease",
+            animation: "lg-float-in 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards",
             display: "flex",
             flexDirection: "column",
           }}
         >
-          {/* Header */}
+          {/* Liquid Glass Header */}
           <div
             style={{
               display: "flex",
               alignItems: "center",
               gap: "0.75rem",
-              padding: "1.5rem 1.75rem",
-              borderBottom: "1px solid var(--border)",
+              padding: "1.4rem 1.75rem",
+              borderBottom: "1px solid rgba(255,255,255,0.1)",
               flexShrink: 0,
-              background: "linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%)",
-              borderRadius: "var(--radius-lg) var(--radius-lg) 0 0",
+              background: "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)",
+              borderRadius: "28px 28px 0 0",
             }}
           >
             <div
@@ -322,7 +366,8 @@ export default function AIItineraryModal({ onClose }: Props) {
                 width: 38,
                 height: 38,
                 borderRadius: "50%",
-                background: "linear-gradient(135deg, var(--accent-gold), var(--accent-rose))",
+                background: "linear-gradient(135deg, rgba(137,180,250,0.9), rgba(148,226,213,0.7))",
+                boxShadow: "0 0 18px rgba(137,180,250,0.5), inset 0 1px 0 rgba(255,255,255,0.4)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -332,10 +377,10 @@ export default function AIItineraryModal({ onClose }: Props) {
               <Sparkles size={18} color="#fff" />
             </div>
             <div>
-              <div style={{ fontFamily: "var(--font-serif)", fontSize: "1.15rem", fontWeight: 600, color: "var(--text-primary)" }}>
+              <div style={{ fontFamily: "var(--font-serif)", fontSize: "1.15rem", fontWeight: 600, color: "#fff" }}>
                 AI Trip Planner
               </div>
-              <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
+              <div style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.5)" }}>
                 {params.model === "nvidia"
                   ? `NVIDIA · ${NVIDIA_MODEL_OPTIONS.find(m => m.id === params.nvidiaModel)?.label ?? "Nemotron"}`
                   : params.model === "groq"
@@ -351,18 +396,20 @@ export default function AIItineraryModal({ onClose }: Props) {
                 width: 34,
                 height: 34,
                 borderRadius: "50%",
-                border: "1px solid var(--border)",
-                background: "var(--bg-card)",
+                border: "1px solid rgba(255,255,255,0.2)",
+                background: "rgba(255,255,255,0.08)",
+                backdropFilter: "blur(8px)",
+                WebkitBackdropFilter: "blur(8px)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "var(--text-muted)",
+                color: "rgba(255,255,255,0.6)",
                 cursor: "pointer",
                 flexShrink: 0,
                 transition: "all var(--transition)",
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent-gold)"; e.currentTarget.style.color = "var(--accent-gold)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-muted)"; }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.18)"; e.currentTarget.style.color = "#fff"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; e.currentTarget.style.color = "rgba(255,255,255,0.6)"; }}
             >
               <X size={16} />
             </button>
@@ -723,24 +770,121 @@ export default function AIItineraryModal({ onClose }: Props) {
                   )}
                 </div>
 
-                {/* Error */}
+                {/* ── LLM Error Panel ── */}
                 {error && (
                   <div
                     style={{
-                      display: "flex",
-                      alignItems: "flex-start",
-                      gap: "8px",
-                      padding: "0.875rem 1rem",
-                      borderRadius: "var(--radius-sm)",
-                      background: "rgba(232,133,125,0.1)",
-                      border: "1px solid rgba(232,133,125,0.3)",
-                      color: "var(--accent-rose)",
-                      fontSize: "0.85rem",
-                      lineHeight: 1.5,
+                      borderRadius: "var(--radius-md)",
+                      border: "1px solid rgba(243,139,168,0.4)",
+                      background: "rgba(243,139,168,0.07)",
+                      overflow: "hidden",
                     }}
                   >
-                    <AlertCircle size={16} style={{ flexShrink: 0, marginTop: 2 }} />
-                    <span>{error}</span>
+                    {/* Error header */}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: "10px",
+                        padding: "0.9rem 1rem 0.75rem",
+                        borderBottom: error && failedModel ? "1px solid rgba(243,139,168,0.2)" : undefined,
+                      }}
+                    >
+                      <AlertCircle size={17} color="var(--accent-rose)" style={{ flexShrink: 0, marginTop: 2 }} />
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--accent-rose)", marginBottom: "3px", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+                          {failedModel
+                            ? `${failedModel === "gemini" ? "Google Gemini" : failedModel === "nvidia" ? "NVIDIA" : "Groq"} could not generate a result`
+                            : "Generation failed"}
+                        </div>
+                        <div style={{ fontSize: "0.84rem", color: "var(--text-secondary)", lineHeight: 1.55 }}>
+                          {error}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Switch model suggestion */}
+                    {failedModel && (
+                      <div style={{ padding: "0.85rem 1rem" }}>
+                        <div style={{ fontSize: "0.75rem", fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.6rem" }}>
+                          🔄 Try a different AI model
+                        </div>
+                        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+                          {failedModel !== "gemini" && (
+                            <button
+                              id="ai-switch-gemini-btn"
+                              onClick={() => { setParams(p => ({ ...p, model: "gemini" })); setError(""); setFailedModel(null); }}
+                              style={{
+                                padding: "0.4rem 0.9rem",
+                                borderRadius: "var(--radius-sm)",
+                                border: "1px solid var(--border-accent)",
+                                background: "var(--accent-gold-dim)",
+                                color: "var(--accent-gold)",
+                                fontSize: "0.8rem",
+                                fontWeight: 600,
+                                fontFamily: "var(--font-sans)",
+                                cursor: "pointer",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "5px",
+                                transition: "all var(--transition)",
+                              }}
+                            >
+                              <Sparkles size={12} /> Google Gemini
+                            </button>
+                          )}
+                          {failedModel !== "nvidia" && (
+                            <button
+                              id="ai-switch-nvidia-btn"
+                              onClick={() => { setParams(p => ({ ...p, model: "nvidia" })); setError(""); setFailedModel(null); }}
+                              style={{
+                                padding: "0.4rem 0.9rem",
+                                borderRadius: "var(--radius-sm)",
+                                border: "1px solid rgba(100,220,100,0.3)",
+                                background: "rgba(100,220,100,0.08)",
+                                color: "#6dda6d",
+                                fontSize: "0.8rem",
+                                fontWeight: 600,
+                                fontFamily: "var(--font-sans)",
+                                cursor: "pointer",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "5px",
+                                transition: "all var(--transition)",
+                              }}
+                            >
+                              <Sparkles size={12} /> NVIDIA
+                            </button>
+                          )}
+                          {failedModel !== "groq" && (
+                            <button
+                              id="ai-switch-groq-btn"
+                              onClick={() => { setParams(p => ({ ...p, model: "groq" })); setError(""); setFailedModel(null); }}
+                              style={{
+                                padding: "0.4rem 0.9rem",
+                                borderRadius: "var(--radius-sm)",
+                                border: "1px solid rgba(150,100,255,0.3)",
+                                background: "rgba(150,100,255,0.08)",
+                                color: "#b07fff",
+                                fontSize: "0.8rem",
+                                fontWeight: 600,
+                                fontFamily: "var(--font-sans)",
+                                cursor: "pointer",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "5px",
+                                transition: "all var(--transition)",
+                              }}
+                            >
+                              <Sparkles size={12} /> Groq
+                            </button>
+                          )}
+                        </div>
+                        <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginTop: "0.5rem" }}>
+                          Clicking a model above will switch your selection — then hit Generate again.
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -786,52 +930,114 @@ export default function AIItineraryModal({ onClose }: Props) {
                   alignItems: "center",
                   justifyContent: "center",
                   padding: "3rem 1rem",
-                  gap: "1.5rem",
-                  minHeight: 300,
+                  gap: "1.75rem",
+                  minHeight: 340,
                 }}
               >
-                {/* Animated orb */}
-                <div style={{ position: "relative", width: 80, height: 80 }}>
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      borderRadius: "50%",
-                      background: "linear-gradient(135deg, var(--accent-gold), var(--accent-rose))",
-                      animation: "ai-spin 1.8s linear infinite",
-                      opacity: 0.15,
-                    }}
-                  />
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 8,
-                      borderRadius: "50%",
-                      background: "linear-gradient(135deg, var(--accent-gold), var(--accent-teal))",
-                      animation: "ai-spin 1.2s linear infinite reverse",
-                    }}
-                  />
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      borderRadius: "50%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Sparkles size={28} color="#fff" />
-                  </div>
+                <style>{`
+                  .ai-loader-wrapper {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 180px;
+                    height: 180px;
+                    font-family: "Inter", sans-serif;
+                    font-size: 1.2em;
+                    font-weight: 300;
+                    color: white;
+                    border-radius: 50%;
+                    background-color: transparent;
+                    user-select: none;
+                  }
+
+                  .ai-loader {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    aspect-ratio: 1 / 1;
+                    border-radius: 50%;
+                    background-color: transparent;
+                    animation: ai-loader-rotate 2s linear infinite;
+                    z-index: 0;
+                  }
+
+                  @keyframes ai-loader-rotate {
+                    0% {
+                      transform: rotate(90deg);
+                      box-shadow:
+                        0 10px 20px 0 #fff inset,
+                        0 20px 30px 0 #ad5fff inset,
+                        0 60px 60px 0 #471eec inset;
+                    }
+                    50% {
+                      transform: rotate(270deg);
+                      box-shadow:
+                        0 10px 20px 0 #fff inset,
+                        0 20px 10px 0 #d60a47 inset,
+                        0 40px 60px 0 #311e80 inset;
+                    }
+                    100% {
+                      transform: rotate(450deg);
+                      box-shadow:
+                        0 10px 20px 0 #fff inset,
+                        0 20px 30px 0 #ad5fff inset,
+                        0 60px 60px 0 #471eec inset;
+                    }
+                  }
+
+                  .ai-loader-letter {
+                    display: inline-block;
+                    opacity: 0.4;
+                    transform: translateY(0);
+                    animation: ai-loader-letter-anim 2s infinite;
+                    z-index: 1;
+                    border-radius: 50ch;
+                    border: none;
+                  }
+
+                  .ai-loader-letter:nth-child(1)  { animation-delay: 0s; }
+                  .ai-loader-letter:nth-child(2)  { animation-delay: 0.1s; }
+                  .ai-loader-letter:nth-child(3)  { animation-delay: 0.2s; }
+                  .ai-loader-letter:nth-child(4)  { animation-delay: 0.3s; }
+                  .ai-loader-letter:nth-child(5)  { animation-delay: 0.4s; }
+                  .ai-loader-letter:nth-child(6)  { animation-delay: 0.5s; }
+                  .ai-loader-letter:nth-child(7)  { animation-delay: 0.6s; }
+                  .ai-loader-letter:nth-child(8)  { animation-delay: 0.7s; }
+                  .ai-loader-letter:nth-child(9)  { animation-delay: 0.8s; }
+                  .ai-loader-letter:nth-child(10) { animation-delay: 0.9s; }
+
+                  @keyframes ai-loader-letter-anim {
+                    0%,  100% { opacity: 0.4; transform: translateY(0); }
+                    20%       { opacity: 1;   transform: scale(1.15);   }
+                    40%       { opacity: 0.7; transform: translateY(0); }
+                  }
+                `}</style>
+
+                {/* The loader — 50% = 90px */}
+                <div className="ai-loader-wrapper" style={{ width: 90, height: 90, fontSize: "0.6em" }}>
+                  <span className="ai-loader-letter">G</span>
+                  <span className="ai-loader-letter">e</span>
+                  <span className="ai-loader-letter">n</span>
+                  <span className="ai-loader-letter">e</span>
+                  <span className="ai-loader-letter">r</span>
+                  <span className="ai-loader-letter">a</span>
+                  <span className="ai-loader-letter">t</span>
+                  <span className="ai-loader-letter">i</span>
+                  <span className="ai-loader-letter">n</span>
+                  <span className="ai-loader-letter">g</span>
+                  <div className="ai-loader" />
                 </div>
 
+                {/* Stage label */}
                 <div style={{ textAlign: "center" }}>
                   <div
                     style={{
                       fontFamily: "var(--font-serif)",
-                      fontSize: "1.25rem",
+                      fontSize: "1.1rem",
                       color: "var(--text-primary)",
-                      marginBottom: "0.5rem",
+                      marginBottom: "0.4rem",
                     }}
                   >
                     Crafting your {params.days}-day trip to{" "}
@@ -839,7 +1045,7 @@ export default function AIItineraryModal({ onClose }: Props) {
                   </div>
                   <div
                     style={{
-                      fontSize: "0.9rem",
+                      fontSize: "0.88rem",
                       color: "var(--text-muted)",
                       minHeight: 24,
                       animation: "fadeIn 0.4s ease",
@@ -850,32 +1056,12 @@ export default function AIItineraryModal({ onClose }: Props) {
                   </div>
                 </div>
 
-                {/* Progress bar */}
-                <div
-                  style={{
-                    width: "100%",
-                    maxWidth: 320,
-                    height: 4,
-                    borderRadius: 2,
-                    background: "var(--border)",
-                    overflow: "hidden",
-                  }}
-                >
-                  <div
-                    style={{
-                      height: "100%",
-                      background: "linear-gradient(90deg, var(--accent-gold), var(--accent-rose))",
-                      borderRadius: 2,
-                      animation: "ai-progress 8s linear forwards",
-                    }}
-                  />
-                </div>
-
-                <p style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
+                <p style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>
                   This usually takes 5–15 seconds…
                 </p>
               </div>
             )}
+
 
             {/* ====== STEP: PREVIEW ====== */}
             {step === "preview" && itinerary && (
