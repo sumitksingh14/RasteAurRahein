@@ -180,6 +180,9 @@ export async function POST(req: NextRequest) {
 
     const prompt = buildPrompt(body);
     const useNvidia = Math.random() > 0.5;
+    const modelUsed = useNvidia
+      ? "NVIDIA Nemotron 3.5 Lightning"
+      : "Google Gemini 3.6 Flash";
     const raw = useNvidia ? await callNvidia(prompt) : await callGemini(prompt);
 
     // Parse and validate
@@ -203,6 +206,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       success: true,
       itinerary,
+      modelUsed,
       generatedAt: new Date().toISOString(),
     });
   } catch (err) {

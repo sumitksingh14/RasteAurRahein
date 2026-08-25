@@ -23,6 +23,7 @@
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "react-leaflet": "^5.0.0",
+    "resend": "^6.22.1",
     "sanitize-html": "^2.17.7",
     "yet-another-react-lightbox": "^3.32.2"
   },
