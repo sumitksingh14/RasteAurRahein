@@ -88,23 +88,32 @@ async function callNvidia(prompt: string): Promise<string> {
 
   const openai = new OpenAI({
     apiKey,
-    baseURL: 'https://integrate.api.nvidia.com/v1',
+    baseURL: "https://integrate.api.nvidia.com/v1",
   });
 
   const completion = await openai.chat.completions.create({
     model: "nvidia/nemotron-3.5-lightning-30b-a3b",
-    messages: [{"role":"user","content":prompt}],
-    temperature: 1,
-    top_p: 0.95,
-    max_tokens: 16384,
-    reasoning_budget: 16384,
-    chat_template_kwargs: {"enable_thinking":true},
+    messages: [{ role: "user", content: prompt }],
+    temperature: 0.7,
+    top_p: 0.9,
+    max_tokens: 8192,
     stream: false,
   } as any);
 
-  const text = completion.choices[0]?.message?.content;
-  if (!text) throw new Error("Nvidia returned an empty response.");
-  return text;
+  const choice = completion.choices[0];
+  if (!choice) throw new Error("Nvidia returned no choices.");
+
+  // The model may return reasoning in `reasoning_content` and the actual
+  // answer in `content`. Strip any inline <think>…</think> blocks too.
+  const raw: string =
+    (choice.message as any).content ?? "";
+
+  if (!raw.trim()) throw new Error("Nvidia returned an empty response.");
+
+  // Strip <think>...</think> reasoning blocks that the model sometimes
+  // embeds inline before the JSON answer.
+  const cleaned = raw.replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
+  return cleaned || raw;
 }
 
 // ---------------------------------------------------------------------------
