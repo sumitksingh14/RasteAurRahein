@@ -8,6 +8,7 @@ import {
   Bus, Bed, Camera, Navigation, Trash2,
 } from "lucide-react";
 import { useGeneratedTrips, type GeneratedTrip } from "@/components/providers/GeneratedTripsProvider";
+import ExportPDFButton from "./ExportPDFButton";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -870,6 +871,24 @@ export default function AIItineraryModal({ onClose }: Props) {
                     <CheckCircle size={16} />
                     Save to My Itineraries
                   </button>
+                  
+                  <ExportPDFButton 
+                    trip={{
+                      id: "preview",
+                      title: itinerary.title,
+                      destination: itinerary.destination,
+                      overview: itinerary.overview,
+                      bestTimeToVisit: itinerary.bestTimeToVisit,
+                      totalBudgetEstimate: itinerary.totalBudgetEstimate,
+                      tags: itinerary.tags,
+                      days: itinerary.days,
+                      style: params.style,
+                      month: params.month,
+                      generatedAt: new Date().toISOString(),
+                    }} 
+                    variant="outline" 
+                  />
+
                   <button
                     onClick={() => { setStep("form"); setItinerary(null); }}
                     style={{

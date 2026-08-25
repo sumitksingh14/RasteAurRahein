@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Sparkles, MapPin, Calendar, Clock, Trash2, ChevronRight, Navigation } from "lucide-react";
 import { useGeneratedTrips, type GeneratedTrip } from "@/components/providers/GeneratedTripsProvider";
 import AIItineraryModal from "@/components/ai/AIItineraryModal";
+import ExportPDFButton from "@/components/ai/ExportPDFButton";
 
 // ---------------------------------------------------------------------------
 // Trip Card
@@ -201,8 +202,10 @@ function GeneratedTripCard({
           </div>
         )}
 
-        {/* Delete */}
-        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1rem", paddingTop: "0.75rem", borderTop: "1px solid var(--border)" }}>
+        {/* Actions */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "1rem", paddingTop: "0.75rem", borderTop: "1px solid var(--border)" }}>
+          <ExportPDFButton trip={trip} variant="ghost" />
+          
           <button
             onClick={() => onDelete(trip.id)}
             style={{
@@ -215,7 +218,7 @@ function GeneratedTripCard({
               border: "none",
               cursor: "pointer",
               fontFamily: "var(--font-sans)",
-              padding: "0.3rem 0.5rem",
+              padding: "0.4rem 0.6rem",
               borderRadius: "var(--radius-sm)",
               transition: "all var(--transition)",
             }}
