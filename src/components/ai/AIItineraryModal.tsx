@@ -20,8 +20,19 @@ interface TripParams {
   month: string;
   highlights: string;
   budget: string;
-  model: "gemini" | "nvidia";
+  model: "gemini" | "nvidia" | "groq";
+  nvidiaModel: string;
+  groqModel: string;
 }
+
+// NVIDIA models mirrored from the API route config
+const NVIDIA_MODEL_OPTIONS = [
+  { id: "nvidia/nemotron-3.5-lightning-30b-a3b", label: "Nemotron 3.5 Lightning (30B)" },
+  { id: "nvidia/nemotron-3-ultra-550b-a55b",     label: "Nemotron Ultra (550B)" },
+  { id: "deepseek-ai/deepseek-v4-flash-0731",    label: "DeepSeek v4 Flash" },
+  { id: "nvidia/nemotron-3-nano-30b-a3b",        label: "Nemotron Nano (30B)" },
+  { id: "nvidia/nemotron-3-super-120b-a12b",     label: "Nemotron Super (120B)" },
+];
 
 type Step = "form" | "generating" | "preview" | "saved";
 
@@ -116,6 +127,8 @@ export default function AIItineraryModal({ onClose }: Props) {
     highlights: "",
     budget: "Mid-range (₹2,000–₹5,000/day)",
     model: "gemini",
+    nvidiaModel: "nvidia/nemotron-3.5-lightning-30b-a3b",
+    groqModel: "openai/gpt-oss-20b",
   });
   const [itinerary, setItinerary] = useState<GeneratedItinerary | null>(null);
   const [savedTrip, setSavedTrip] = useState<GeneratedTrip | null>(null);
@@ -124,6 +137,22 @@ export default function AIItineraryModal({ onClose }: Props) {
   const [stageIdx, setStageIdx] = useState(0);
   const [expandedDays, setExpandedDays] = useState<Set<number>>(new Set([1]));
   const stageTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // GROQ model list (fetched once on mount)
+  const [groqModels, setGroqModels] = useState<{ id: string; ownedBy: string }[]>([]);
+  useEffect(() => {
+    fetch("/api/groq-models")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.models?.length) {
+          setGroqModels(d.models);
+          // Set a sensible default: prefer gpt-oss-20b, else first
+          const pref = d.models.find((m: any) => m.id === "openai/gpt-oss-20b");
+          setParams((p) => ({ ...p, groqModel: pref?.id ?? d.models[0].id }));
+        }
+      })
+      .catch(() => {/* non-fatal */});
+  }, []);
 
   // Advance generation stage label every 1.4 s
   useEffect(() => {
@@ -307,7 +336,11 @@ export default function AIItineraryModal({ onClose }: Props) {
                 AI Trip Planner
               </div>
               <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
-                {params.model === "nvidia" ? "Powered by NVIDIA Nemotron" : "Powered by Google Gemini"}
+                {params.model === "nvidia"
+                  ? `NVIDIA · ${NVIDIA_MODEL_OPTIONS.find(m => m.id === params.nvidiaModel)?.label ?? "Nemotron"}`
+                  : params.model === "groq"
+                  ? "Powered by Groq"
+                  : "Powered by Google Gemini"}
               </div>
             </div>
             <button
@@ -467,7 +500,8 @@ export default function AIItineraryModal({ onClose }: Props) {
                 {/* AI Model Selector */}
                 <div>
                   <label style={labelStyle}>🤖 AI Model</label>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.6rem" }}>
+
                     {/* Gemini option */}
                     <button
                       id="model-select-gemini"
@@ -489,35 +523,35 @@ export default function AIItineraryModal({ onClose }: Props) {
                         textAlign: "left",
                       }}
                     >
-                      <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "6px", width: "100%" }}>
                         <span style={{ fontSize: "1.1rem" }}>✦</span>
                         <span
                           style={{
-                            fontSize: "0.85rem",
+                            fontSize: "0.8rem",
                             fontWeight: 700,
                             color: params.model === "gemini" ? "var(--accent-gold)" : "var(--text-primary)",
                           }}
                         >
-                          Google Gemini
+                          Gemini
                         </span>
                         {params.model === "gemini" && (
                           <span
                             style={{
                               marginLeft: "auto",
-                              fontSize: "0.65rem",
+                              fontSize: "0.6rem",
                               fontWeight: 700,
-                              padding: "2px 6px",
+                              padding: "2px 5px",
                               borderRadius: "100px",
                               background: "var(--accent-gold)",
                               color: "#fff",
                             }}
                           >
-                            SELECTED
+                            ✓
                           </span>
                         )}
                       </div>
-                      <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
-                        Fast · Reliable · JSON-native
+                      <span style={{ fontSize: "0.68rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
+                        Fast · JSON-native
                       </span>
                     </button>
 
@@ -546,34 +580,147 @@ export default function AIItineraryModal({ onClose }: Props) {
                         <span style={{ fontSize: "1.1rem" }}>⚡</span>
                         <span
                           style={{
-                            fontSize: "0.85rem",
+                            fontSize: "0.8rem",
                             fontWeight: 700,
                             color: params.model === "nvidia" ? "#76b900" : "var(--text-primary)",
                           }}
                         >
-                          NVIDIA Nemotron
+                          NVIDIA
                         </span>
                         {params.model === "nvidia" && (
                           <span
                             style={{
                               marginLeft: "auto",
-                              fontSize: "0.65rem",
+                              fontSize: "0.6rem",
                               fontWeight: 700,
-                              padding: "2px 6px",
+                              padding: "2px 5px",
                               borderRadius: "100px",
                               background: "#76b900",
                               color: "#fff",
                             }}
                           >
-                            SELECTED
+                            ✓
                           </span>
                         )}
                       </div>
-                      <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
-                        Reasoning · Deep planning
+                      <span style={{ fontSize: "0.68rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
+                        Reasoning
+                      </span>
+                    </button>
+
+                    {/* GROQ option */}
+                    <button
+                      id="model-select-groq"
+                      onClick={() => setParams((p) => ({ ...p, model: "groq" }))}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                        gap: "0.3rem",
+                        padding: "0.85rem 1rem",
+                        borderRadius: "var(--radius-sm)",
+                        border: `1.5px solid ${
+                          params.model === "groq" ? "#f55036" : "var(--border)"
+                        }`,
+                        background: params.model === "groq" ? "rgba(245,80,54,0.07)" : "var(--bg-card)",
+                        cursor: "pointer",
+                        transition: "all var(--transition)",
+                        fontFamily: "var(--font-sans)",
+                        textAlign: "left",
+                      }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: "6px", width: "100%" }}>
+                        <span style={{ fontSize: "1.1rem" }}>🖤</span>
+                        <span
+                          style={{
+                            fontSize: "0.8rem",
+                            fontWeight: 700,
+                            color: params.model === "groq" ? "#f55036" : "var(--text-primary)",
+                          }}
+                        >
+                          Groq
+                        </span>
+                        {params.model === "groq" && (
+                          <span
+                            style={{
+                              marginLeft: "auto",
+                              fontSize: "0.6rem",
+                              fontWeight: 700,
+                              padding: "2px 5px",
+                              borderRadius: "100px",
+                              background: "#f55036",
+                              color: "#fff",
+                            }}
+                          >
+                            ✓
+                          </span>
+                        )}
+                      </div>
+                      <span style={{ fontSize: "0.68rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
+                        Ultra-fast
                       </span>
                     </button>
                   </div>
+
+                  {/* GROQ model sub-picker (shown only when groq is selected) */}
+                  {params.model === "groq" && groqModels.length > 0 && (
+                    <div style={{ marginTop: "0.6rem" }}>
+                      <label
+                        htmlFor="groq-model-select"
+                        style={{ ...labelStyle, marginBottom: "0.4rem", color: "#f55036", fontSize: "0.68rem" }}
+                      >
+                        🖤 Select Groq Model
+                      </label>
+                      <select
+                        id="groq-model-select"
+                        value={params.groqModel}
+                        onChange={(e) => setParams((p) => ({ ...p, groqModel: e.target.value }))}
+                        style={{
+                          ...inputStyle,
+                          cursor: "pointer",
+                          border: "1.5px solid #f55036",
+                          background: "rgba(245,80,54,0.04)",
+                          fontSize: "0.82rem",
+                        }}
+                      >
+                        {groqModels.map((m) => (
+                          <option key={m.id} value={m.id}>
+                            {m.id} ({m.ownedBy})
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
+                  {/* NVIDIA model sub-picker (shown only when nvidia is selected) */}
+                  {params.model === "nvidia" && (
+                    <div style={{ marginTop: "0.6rem" }}>
+                      <label
+                        htmlFor="nvidia-model-select"
+                        style={{ ...labelStyle, marginBottom: "0.4rem", color: "#76b900", fontSize: "0.68rem" }}
+                      >
+                        ⚡ Select NVIDIA Model
+                      </label>
+                      <select
+                        id="nvidia-model-select"
+                        value={params.nvidiaModel}
+                        onChange={(e) => setParams((p) => ({ ...p, nvidiaModel: e.target.value }))}
+                        style={{
+                          ...inputStyle,
+                          cursor: "pointer",
+                          border: "1.5px solid #76b900",
+                          background: "rgba(118,185,0,0.04)",
+                          fontSize: "0.82rem",
+                        }}
+                      >
+                        {NVIDIA_MODEL_OPTIONS.map((m) => (
+                          <option key={m.id} value={m.id}>
+                            {m.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
                 </div>
 
                 {/* Error */}
@@ -769,12 +916,28 @@ export default function AIItineraryModal({ onClose }: Props) {
                           borderRadius: "100px",
                           fontSize: "0.7rem",
                           fontWeight: 600,
-                          background: params.model === "nvidia" ? "rgba(118,185,0,0.1)" : "var(--accent-gold-dim)",
-                          border: `1px solid ${params.model === "nvidia" ? "rgba(118,185,0,0.3)" : "var(--border-accent)"}`,
-                          color: params.model === "nvidia" ? "#76b900" : "var(--accent-gold)",
+                          background:
+                            params.model === "nvidia"
+                              ? "rgba(118,185,0,0.1)"
+                              : params.model === "groq"
+                              ? "rgba(245,80,54,0.08)"
+                              : "var(--accent-gold-dim)",
+                          border: `1px solid ${
+                            params.model === "nvidia"
+                              ? "rgba(118,185,0,0.3)"
+                              : params.model === "groq"
+                              ? "rgba(245,80,54,0.3)"
+                              : "var(--border-accent)"
+                          }`,
+                          color:
+                            params.model === "nvidia"
+                              ? "#76b900"
+                              : params.model === "groq"
+                              ? "#f55036"
+                              : "var(--accent-gold)",
                         }}
                       >
-                        {params.model === "nvidia" ? "⚡" : "✦"} Generated by {modelUsed}
+                        {params.model === "nvidia" ? "⚡" : params.model === "groq" ? "🖤" : "✦"} Generated by {modelUsed}
                       </span>
                     </div>
                   )}
