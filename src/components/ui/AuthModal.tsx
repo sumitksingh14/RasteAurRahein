@@ -30,27 +30,38 @@ function useField(initial = "") {
 export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthModalProps) {
   const { refresh } = useAuth();
   const [tab, setTab] = useState<Tab>(defaultTab);
+  const [view, setView] = useState<"auth" | "forgot" | "forgotSent">("auth");
   const [submitting, setSubmitting] = useState(false);
   const [globalError, setGlobalError] = useState("");
   const [success, setSuccess] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const firstInputRef = useRef<HTMLInputElement>(null);
+  const forgotRef = useRef<HTMLInputElement>(null);
+  const forgotIdentifier = useField();
 
   // Form fields
   const username = useField();
   const email = useField();
+  const identifier = useField(); // login-only: username OR email
   const password = useField();
 
   // Reset on tab switch
   useEffect(() => {
     username.reset();
     email.reset();
+    identifier.reset();
     password.reset();
     setGlobalError("");
     setSuccess(false);
     setShowPass(false);
+    setView("auth");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tab]);
+
+  // Focus forgot input when switching to forgot view
+  useEffect(() => {
+    if (view === "forgot") setTimeout(() => forgotRef.current?.focus(), 80);
+  }, [view]);
 
   // Focus first input when modal opens
   useEffect(() => {
@@ -73,9 +84,12 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
     if (tab === "register") {
       if (username.value.length < 3) { username.setError("At least 3 characters"); ok = false; }
       else if (!/^[a-zA-Z0-9_.-]+$/.test(username.value)) { username.setError("Letters, numbers, _ . - only"); ok = false; }
-    }
-    if (!email.value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
-      email.setError("Enter a valid email"); ok = false;
+      if (!email.value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+        email.setError("Enter a valid email"); ok = false;
+      }
+    } else {
+      // login — just needs a non-empty identifier
+      if (!identifier.value.trim()) { identifier.setError("Enter your username or email"); ok = false; }
     }
     if (password.value.length < 8) { password.setError("At least 8 characters"); ok = false; }
     return ok;
@@ -90,7 +104,7 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
       const endpoint = tab === "register" ? "/api/auth/register" : "/api/auth/login";
       const body = tab === "register"
         ? { username: username.value, email: email.value, password: password.value }
-        : { email: email.value, password: password.value };
+        : { identifier: identifier.value.trim(), password: password.value };
 
       const res = await fetch(endpoint, {
         method: "POST",
@@ -188,38 +202,41 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
             </button>
           </div>
 
-          {/* Tab switcher */}
-          <div style={{
-            display: "flex",
-            background: "rgba(255,255,255,0.05)",
-            borderRadius: "10px",
-            padding: "4px",
-            marginBottom: "1.75rem",
-            position: "relative",
-          }}>
-            {(["login", "register"] as Tab[]).map((t) => (
-              <button
-                key={t}
-                onClick={() => setTab(t)}
-                style={{
-                  flex: 1,
-                  padding: "0.55rem",
-                  borderRadius: "7px",
-                  border: "none",
-                  cursor: "pointer",
-                  fontFamily: "var(--font-sans)",
-                  fontSize: "0.875rem",
-                  fontWeight: 600,
-                  transition: "all 0.22s",
-                  background: tab === t ? "rgba(201,168,76,0.18)" : "transparent",
-                  color: tab === t ? "var(--accent-gold)" : "var(--text-muted)",
-                  boxShadow: tab === t ? "0 1px 4px rgba(0,0,0,0.3)" : "none",
-                }}
-              >
-                {t === "login" ? "Sign In" : "Create Account"}
-              </button>
-            ))}
-          </div>
+          {/* ── AUTH VIEW ── */}
+          {view === "auth" && (
+            <>
+              {/* Tab switcher */}
+              <div style={{
+                display: "flex",
+                background: "rgba(255,255,255,0.05)",
+                borderRadius: "10px",
+                padding: "4px",
+                marginBottom: "1.75rem",
+                position: "relative",
+              }}>
+                {(["login", "register"] as Tab[]).map((t) => (
+                  <button
+                    key={t}
+                    onClick={() => setTab(t)}
+                    style={{
+                      flex: 1,
+                      padding: "0.55rem",
+                      borderRadius: "7px",
+                      border: "none",
+                      cursor: "pointer",
+                      fontFamily: "var(--font-sans)",
+                      fontSize: "0.875rem",
+                      fontWeight: 600,
+                      transition: "all 0.22s",
+                      background: tab === t ? "rgba(201,168,76,0.18)" : "transparent",
+                      color: tab === t ? "var(--accent-gold)" : "var(--text-muted)",
+                      boxShadow: tab === t ? "0 1px 4px rgba(0,0,0,0.3)" : "none",
+                    }}
+                  >
+                    {t === "login" ? "Sign In" : "Create Account"}
+                  </button>
+                ))}
+              </div>
 
           {/* Success state */}
           {success ? (
@@ -277,26 +294,48 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
                 </div>
               )}
 
-              {/* Email */}
-              <div>
-                <div style={{ position: "relative" }}>
-                  <Mail size={15} style={{ position: "absolute", left: "1rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)", pointerEvents: "none" }} />
-                  <input
-                    ref={tab === "login" ? firstInputRef : undefined}
-                    type="email"
-                    placeholder="Email address"
-                    value={email.value}
-                    onChange={(e) => email.set(e.target.value)}
-                    onBlur={email.touch}
-                    id="auth-email"
-                    autoComplete="email"
-                    style={inputStyle(email)}
-                  />
+              {/* Identifier field: username or email (login) / email only (register) */}
+              {tab === "login" ? (
+                <div>
+                  <div style={{ position: "relative" }}>
+                    <User size={15} style={{ position: "absolute", left: "1rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)", pointerEvents: "none" }} />
+                    <input
+                      ref={firstInputRef}
+                      type="text"
+                      placeholder="Username or email"
+                      value={identifier.value}
+                      onChange={(e) => identifier.set(e.target.value)}
+                      onBlur={identifier.touch}
+                      id="auth-identifier"
+                      autoComplete="username"
+                      style={inputStyle(identifier)}
+                    />
+                  </div>
+                  {identifier.touched && identifier.error && (
+                    <p style={{ color: "var(--accent-rose)", fontSize: "0.75rem", marginTop: "4px", marginLeft: "2px" }}>{identifier.error}</p>
+                  )}
                 </div>
-                {email.touched && email.error && (
-                  <p style={{ color: "var(--accent-rose)", fontSize: "0.75rem", marginTop: "4px", marginLeft: "2px" }}>{email.error}</p>
-                )}
-              </div>
+              ) : (
+                <div>
+                  <div style={{ position: "relative" }}>
+                    <Mail size={15} style={{ position: "absolute", left: "1rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)", pointerEvents: "none" }} />
+                    <input
+                      ref={undefined}
+                      type="email"
+                      placeholder="Email address"
+                      value={email.value}
+                      onChange={(e) => email.set(e.target.value)}
+                      onBlur={email.touch}
+                      id="auth-email"
+                      autoComplete="email"
+                      style={inputStyle(email)}
+                    />
+                  </div>
+                  {email.touched && email.error && (
+                    <p style={{ color: "var(--accent-rose)", fontSize: "0.75rem", marginTop: "4px", marginLeft: "2px" }}>{email.error}</p>
+                  )}
+                </div>
+              )}
 
               {/* Password */}
               <div>
@@ -322,6 +361,26 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
                 </div>
                 {password.touched && password.error && (
                   <p style={{ color: "var(--accent-rose)", fontSize: "0.75rem", marginTop: "4px", marginLeft: "2px" }}>{password.error}</p>
+                )}
+
+                {/* Forgot password link — login tab only */}
+                {tab === "login" && (
+                  <div style={{ textAlign: "right", marginTop: "2px" }}>
+                    <button
+                      type="button"
+                      onClick={() => { setGlobalError(""); setView("forgot"); }}
+                      style={{
+                        background: "none", border: "none", cursor: "pointer",
+                        color: "var(--text-muted)", fontSize: "0.78rem",
+                        fontFamily: "var(--font-sans)",
+                        transition: "color 0.2s",
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent-gold)")}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
+                    >
+                      Forgot password?
+                    </button>
+                  </div>
                 )}
               </div>
 
@@ -361,6 +420,136 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
                 </button>
               </p>
             </form>
+          )}
+          </>
+          )}
+
+          {/* ── FORGOT PASSWORD VIEW ── */}
+          {(view === "forgot" || view === "forgotSent") && (
+            <div style={{ animation: "rar-fadeIn 0.2s ease" }}>
+              {view === "forgot" ? (
+                <>
+                  <div style={{ marginBottom: "1.5rem" }}>
+                    <button
+                      onClick={() => { setView("auth"); forgotIdentifier.reset(); setGlobalError(""); }}
+                      style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-muted)", fontSize: "0.8rem", fontFamily: "var(--font-sans)", display: "flex", alignItems: "center", gap: "4px", padding: 0, marginBottom: "1.25rem" }}
+                    >
+                      ← Back to sign in
+                    </button>
+                    <h3 style={{ fontFamily: "var(--font-serif)", color: "var(--text-primary)", fontSize: "1.2rem", marginBottom: "0.5rem" }}>Reset your password</h3>
+                    <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", lineHeight: 1.65 }}>
+                      Enter your username or email and we'll send a reset link to your registered address.
+                    </p>
+                  </div>
+
+                  {globalError && (
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "0.7rem 1rem", background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: "10px", color: "#f87171", fontSize: "0.85rem", marginBottom: "1rem" }}>
+                      <AlertCircle size={14} style={{ flexShrink: 0 }} />
+                      {globalError}
+                    </div>
+                  )}
+
+                  <div style={{ marginBottom: "1rem" }}>
+                    <div style={{ position: "relative" }}>
+                      <User size={15} style={{ position: "absolute", left: "1rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)", pointerEvents: "none" }} />
+                      <input
+                        ref={forgotRef}
+                        type="text"
+                        placeholder="Username or email"
+                        value={forgotIdentifier.value}
+                        onChange={(e) => { forgotIdentifier.set(e.target.value); setGlobalError(""); }}
+                        id="forgot-identifier"
+                        autoComplete="username"
+                        style={{
+                          width: "100%",
+                          padding: "0.75rem 1rem 0.75rem 2.75rem",
+                          borderRadius: "10px",
+                          border: "1.5px solid var(--border)",
+                          background: "rgba(255,255,255,0.04)",
+                          color: "var(--text-primary)",
+                          fontSize: "0.95rem",
+                          fontFamily: "var(--font-sans)",
+                          outline: "none",
+                          boxSizing: "border-box",
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={async () => {
+                      if (!forgotIdentifier.value.trim()) {
+                        setGlobalError("Please enter your username or email");
+                        return;
+                      }
+                      setSubmitting(true);
+                      setGlobalError("");
+                      try {
+                        await fetch("/api/auth/forgot-password", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ identifier: forgotIdentifier.value.trim() }),
+                        });
+                        setView("forgotSent");
+                      } catch {
+                        setGlobalError("Network error — please try again");
+                      } finally {
+                        setSubmitting(false);
+                      }
+                    }}
+                    disabled={submitting}
+                    style={{
+                      width: "100%",
+                      padding: "0.85rem",
+                      borderRadius: "10px",
+                      border: "none",
+                      cursor: submitting ? "not-allowed" : "pointer",
+                      background: "linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-rose) 100%)",
+                      color: "#0a0a0f",
+                      fontFamily: "var(--font-sans)",
+                      fontWeight: 700,
+                      fontSize: "0.9rem",
+                      opacity: submitting ? 0.7 : 1,
+                      transition: "opacity 0.2s",
+                    }}
+                  >
+                    {submitting ? "Sending…" : "Send reset link"}
+                  </button>
+                </>
+              ) : (
+                /* forgotSent */
+                <div style={{ textAlign: "center", padding: "1.5rem 0" }}>
+                  <div style={{
+                    width: 60, height: 60, borderRadius: "50%",
+                    background: "rgba(201,168,76,0.12)", border: "1px solid rgba(201,168,76,0.3)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    margin: "0 auto 1.25rem",
+                    animation: "rar-scaleIn 0.3s cubic-bezier(0.34,1.56,0.64,1)",
+                  }}>
+                    <CheckCircle size={26} style={{ color: "var(--accent-gold)" }} />
+                  </div>
+                  <h3 style={{ fontFamily: "var(--font-serif)", color: "var(--text-primary)", marginBottom: "0.75rem" }}>
+                    Check your inbox
+                  </h3>
+                  <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", lineHeight: 1.7, marginBottom: "1.75rem" }}>
+                    If an account exists for <strong style={{ color: "var(--text-secondary)" }}>{forgotIdentifier.value}</strong>,
+                    you'll receive a reset link shortly. Check your spam folder if it doesn't arrive.
+                  </p>
+                  <button
+                    onClick={() => { setView("auth"); forgotIdentifier.reset(); }}
+                    style={{
+                      background: "none", border: "1px solid var(--border)",
+                      borderRadius: "100px", padding: "0.6rem 1.5rem",
+                      color: "var(--text-secondary)", cursor: "pointer",
+                      fontFamily: "var(--font-sans)", fontSize: "0.875rem",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Back to sign in
+                  </button>
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>

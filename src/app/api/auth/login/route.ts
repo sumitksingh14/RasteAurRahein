@@ -5,27 +5,46 @@ import { createSession } from "@/lib/session";
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, password } = await req.json();
+    const { identifier, password } = await req.json();
 
-    if (!email || !password) {
-      return NextResponse.json({ error: "Email and password are required" }, { status: 400 });
+    if (!identifier || !password) {
+      return NextResponse.json(
+        { error: "Username/email and password are required" },
+        { status: 400 }
+      );
     }
 
-    // Look up user by email
-    const userId = await redis.get(`user:email:${email.toLowerCase()}`);
+    const input = identifier.trim();
+
+    // Resolve userId — treat as email if it contains "@", otherwise as username
+    let userId: string | null = null;
+    if (input.includes("@")) {
+      userId = await redis.get(`user:email:${input.toLowerCase()}`);
+    } else {
+      userId = await redis.get(`user:username:${input.toLowerCase()}`);
+    }
+
     if (!userId) {
-      // Same error message for both cases to prevent user enumeration
-      return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
+      return NextResponse.json(
+        { error: "Invalid username/email or password" },
+        { status: 401 }
+      );
     }
 
     const userHash = await redis.hgetall(`user:${userId}`);
     if (!userHash) {
-      return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
+      return NextResponse.json(
+        { error: "Invalid username/email or password" },
+        { status: 401 }
+      );
     }
 
     const passwordMatch = await bcrypt.compare(password, userHash.passwordHash);
     if (!passwordMatch) {
-      return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
+      return NextResponse.json(
+        { error: "Invalid username/email or password" },
+        { status: 401 }
+      );
     }
 
     await createSession({
