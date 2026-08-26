@@ -10,6 +10,40 @@ const ALL_TAGS = [
   "Trekking", "Beach", "Mountains", "Heritage", "Family",
 ];
 
+const REGIONS: { label: string; tags: string[]; countries?: string[] }[] = [
+  { label: "Himalayas", tags: ["Himalayas", "Spiti Valley", "Ladakh", "Himachal", "Uttarakhand", "Adventure", "Trekking"] },
+  { label: "South India", tags: ["South India", "Kerala", "Karnataka", "Tamil Nadu", "Coastal"], countries: ["India"] },
+  { label: "Rajasthan / Desert", tags: ["Rajasthan", "Desert", "Heritage", "Culture"] },
+  { label: "Coastal", tags: ["Beach", "Goa", "Coastal", "Beaches"] },
+  { label: "Northeast India", tags: ["Northeast", "Meghalaya", "Arunachal", "Nagaland", "Assam"] },
+];
+
+const DURATION_OPTIONS: { label: string; min: number; max: number }[] = [
+  { label: "Any", min: 0, max: Infinity },
+  { label: "1–3 days", min: 1, max: 3 },
+  { label: "4–7 days", min: 4, max: 7 },
+  { label: "8–14 days", min: 8, max: 14 },
+  { label: "15+ days", min: 15, max: Infinity },
+];
+
+const BUDGET_OPTIONS: { label: string; min: number; max: number }[] = [
+  { label: "Any", min: 0, max: Infinity },
+  { label: "Under ₹20k", min: 0, max: 20000 },
+  { label: "₹20k–₹50k", min: 20000, max: 50000 },
+  { label: "₹50k–₹1L", min: 50000, max: 100000 },
+  { label: "₹1L+", min: 100000, max: Infinity },
+];
+
+function computeDuration(trip: Trip): number | null {
+  if (!trip.startDate || !trip.endDate) return null;
+  return (
+    Math.ceil(
+      (new Date(trip.endDate).getTime() - new Date(trip.startDate).getTime()) /
+        (1000 * 60 * 60 * 24)
+    ) + 1
+  );
+}
+
 interface TripsClientProps {
   trips: Trip[];
 }
@@ -19,6 +53,9 @@ export default function TripsClient({ trips }: TripsClientProps) {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<"date" | "views" | "title">("date");
   const [showFilters, setShowFilters] = useState(false);
+  const [durationIdx, setDurationIdx] = useState(0); // index into DURATION_OPTIONS
+  const [budgetIdx, setBudgetIdx] = useState(0);     // index into BUDGET_OPTIONS
+  const [regionLabel, setRegionLabel] = useState("Any");
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
@@ -30,12 +67,15 @@ export default function TripsClient({ trips }: TripsClientProps) {
     setQuery("");
     setSelectedTags([]);
     setSortBy("date");
+    setDurationIdx(0);
+    setBudgetIdx(0);
+    setRegionLabel("Any");
   };
 
   const filtered = useMemo(() => {
     let result = [...trips];
 
-    // Query filter
+    // Keyword filter
     if (query.trim()) {
       const q = query.toLowerCase();
       result = result.filter(
@@ -54,6 +94,39 @@ export default function TripsClient({ trips }: TripsClientProps) {
       );
     }
 
+    // Duration filter
+    const dur = DURATION_OPTIONS[durationIdx];
+    if (dur.min > 0 || dur.max < Infinity) {
+      result = result.filter((t) => {
+        const d = computeDuration(t);
+        if (d === null) return false;
+        return d >= dur.min && d <= dur.max;
+      });
+    }
+
+    // Budget filter
+    const bud = BUDGET_OPTIONS[budgetIdx];
+    if (bud.min > 0 || bud.max < Infinity) {
+      result = result.filter((t) => {
+        if (t.totalBudget === undefined || t.totalBudget === null) return false;
+        return t.totalBudget >= bud.min && t.totalBudget <= bud.max;
+      });
+    }
+
+    // Region filter
+    if (regionLabel !== "Any") {
+      const region = REGIONS.find((r) => r.label === regionLabel);
+      if (region) {
+        result = result.filter((t) =>
+          region.tags.some((rtag) =>
+            t.tags?.some((ttag) =>
+              ttag.toLowerCase().includes(rtag.toLowerCase())
+            )
+          )
+        );
+      }
+    }
+
     // Sort
     if (sortBy === "date") {
       result.sort(
@@ -67,18 +140,28 @@ export default function TripsClient({ trips }: TripsClientProps) {
     }
 
     return result;
-  }, [trips, query, selectedTags, sortBy]);
+  }, [trips, query, selectedTags, sortBy, durationIdx, budgetIdx, regionLabel]);
 
   const hasActiveFilters =
-    query || selectedTags.length > 0;
+    query ||
+    selectedTags.length > 0 ||
+    durationIdx > 0 ||
+    budgetIdx > 0 ||
+    regionLabel !== "Any";
 
   const mostPopular = [...trips]
     .sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0))
     .slice(0, 3);
 
+  const activeFilterCount =
+    selectedTags.length +
+    (durationIdx > 0 ? 1 : 0) +
+    (budgetIdx > 0 ? 1 : 0) +
+    (regionLabel !== "Any" ? 1 : 0);
+
   return (
     <div>
-      {/* Search + Filter Bar */}
+      {/* ── Search + Filter Bar ── */}
       <div
         style={{
           background: "var(--bg-secondary)",
@@ -162,7 +245,7 @@ export default function TripsClient({ trips }: TripsClientProps) {
             >
               <SlidersHorizontal size={15} />
               Filters
-              {selectedTags.length > 0 && (
+              {activeFilterCount > 0 && (
                 <span
                   style={{
                     background: "var(--accent-gold)",
@@ -175,7 +258,7 @@ export default function TripsClient({ trips }: TripsClientProps) {
                     textAlign: "center",
                   }}
                 >
-                  {selectedTags.length}
+                  {activeFilterCount}
                 </span>
               )}
             </button>
@@ -218,38 +301,26 @@ export default function TripsClient({ trips }: TripsClientProps) {
                 }}
               >
                 <X size={13} />
-                Clear
+                Clear all
               </button>
             )}
           </div>
 
-          {/* Expanded Filters */}
+          {/* ── Expanded Filter Panel ── */}
           {showFilters && (
             <div
               style={{
                 marginTop: "1rem",
-                paddingTop: "1rem",
+                paddingTop: "1.25rem",
                 borderTop: "1px solid var(--border)",
-                display: "flex",
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
                 gap: "1.5rem",
-                flexWrap: "wrap",
-                alignItems: "flex-start",
               }}
             >
               {/* Tags */}
               <div>
-                <div
-                  style={{
-                    fontSize: "0.7rem",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
-                    color: "var(--text-muted)",
-                    marginBottom: "0.5rem",
-                    fontWeight: 600,
-                  }}
-                >
-                  Tags
-                </div>
+                <div style={labelStyle}>Tags</div>
                 <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
                   {ALL_TAGS.map((tag) => {
                     const active = selectedTags.includes(tag);
@@ -257,27 +328,69 @@ export default function TripsClient({ trips }: TripsClientProps) {
                       <button
                         key={tag}
                         onClick={() => toggleTag(tag)}
-                        style={{
-                          padding: "0.3rem 0.75rem",
-                          borderRadius: "100px",
-                          border: "1px solid",
-                          borderColor: active
-                            ? "var(--border-accent)"
-                            : "var(--border)",
-                          background: active
-                            ? "var(--accent-gold-dim)"
-                            : "var(--bg-card)",
-                          color: active
-                            ? "var(--accent-gold)"
-                            : "var(--text-secondary)",
-                          fontSize: "0.8rem",
-                          cursor: "pointer",
-                          fontFamily: "var(--font-sans)",
-                          transition: "all var(--transition)",
-                          fontWeight: active ? 600 : 400,
-                        }}
+                        style={pillStyle(active)}
                       >
                         {tag}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Duration */}
+              <div>
+                <div style={labelStyle}>Duration</div>
+                <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+                  {DURATION_OPTIONS.map((opt, idx) => {
+                    const active = durationIdx === idx;
+                    return (
+                      <button
+                        key={opt.label}
+                        onClick={() => setDurationIdx(idx)}
+                        id={`duration-filter-${idx}`}
+                        style={pillStyle(active)}
+                      >
+                        {opt.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Budget */}
+              <div>
+                <div style={labelStyle}>Budget</div>
+                <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+                  {BUDGET_OPTIONS.map((opt, idx) => {
+                    const active = budgetIdx === idx;
+                    return (
+                      <button
+                        key={opt.label}
+                        onClick={() => setBudgetIdx(idx)}
+                        id={`budget-filter-${idx}`}
+                        style={pillStyle(active)}
+                      >
+                        {opt.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Region */}
+              <div>
+                <div style={labelStyle}>Region</div>
+                <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+                  {[{ label: "Any" }, ...REGIONS].map((r) => {
+                    const active = regionLabel === r.label;
+                    return (
+                      <button
+                        key={r.label}
+                        onClick={() => setRegionLabel(r.label)}
+                        id={`region-filter-${r.label.toLowerCase().replace(/\s/g, "-")}`}
+                        style={pillStyle(active)}
+                      >
+                        {r.label}
                       </button>
                     );
                   })}
@@ -394,7 +507,7 @@ export default function TripsClient({ trips }: TripsClientProps) {
               No trips found
             </h3>
             <p style={{ fontSize: "0.9rem", maxWidth: 360, margin: "0 auto 1.5rem" }}>
-              Try a different search term or clear your filters.
+              Try a different search term or adjust your filters.
             </p>
             <button onClick={clearFilters} className="btn btn-outline">
               Clear Filters
@@ -404,4 +517,31 @@ export default function TripsClient({ trips }: TripsClientProps) {
       </div>
     </div>
   );
+}
+
+// ── Shared micro-styles ──
+
+const labelStyle: React.CSSProperties = {
+  fontSize: "0.7rem",
+  textTransform: "uppercase",
+  letterSpacing: "0.1em",
+  color: "var(--text-muted)",
+  marginBottom: "0.5rem",
+  fontWeight: 600,
+};
+
+function pillStyle(active: boolean): React.CSSProperties {
+  return {
+    padding: "0.3rem 0.75rem",
+    borderRadius: "100px",
+    border: "1px solid",
+    borderColor: active ? "var(--border-accent)" : "var(--border)",
+    background: active ? "var(--accent-gold-dim)" : "var(--bg-card)",
+    color: active ? "var(--accent-gold)" : "var(--text-secondary)",
+    fontSize: "0.8rem",
+    cursor: "pointer",
+    fontFamily: "var(--font-sans)",
+    transition: "all var(--transition)",
+    fontWeight: active ? 600 : 400,
+  };
 }

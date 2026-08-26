@@ -3,10 +3,16 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Clock, Eye, MapPin, Tag, ArrowLeft } from "lucide-react";
-import { getTripBySlug, getAllTrips } from "@/lib/queries";
+import { getTripBySlug, getAllTrips, DEMO_AUTHOR } from "@/lib/queries";
 import TripTabs from "./TripTabs";
 import ShareButton from "./ShareButton";
 import TripCard from "@/components/ui/TripCard";
+import ViewCountTracker from "@/components/ui/ViewCountTracker";
+import ReadingProgress from "@/components/ui/ReadingProgress";
+import TableOfContents from "@/components/ui/TableOfContents";
+import PDFDownloadButton from "@/components/ui/PDFDownloadButton";
+import AuthorSchema from "@/components/ui/AuthorSchema";
+import FAQSchema, { buildTripFAQ } from "@/components/ui/FAQSchema";
 import { format } from "date-fns";
 
 // Fallback images by slug
@@ -58,6 +64,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         },
       ],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: trip.title,
+      description: trip.excerpt || "A journey documented on Raste Aur Raahein.",
+    },
   };
 }
 
@@ -96,6 +107,10 @@ export default async function TripDetailPage({ params }: Props) {
 
   return (
     <article>
+      <ViewCountTracker slug={trip.slug} />
+      <ReadingProgress />
+      {/* Author E-E-A-T schema — injected once per trip page */}
+      <AuthorSchema author={trip.author ?? DEMO_AUTHOR} />
       {/* ============================================================
           HERO
       ============================================================ */}
@@ -250,6 +265,19 @@ export default async function TripDetailPage({ params }: Props) {
               </p>
             )}
             <TripTabs trip={trip} />
+
+            {/* FAQ — auto-generated from trip structured data */}
+            <FAQSchema
+              items={buildTripFAQ({
+                title: trip.title,
+                bestSuggestedMonth: trip.bestSuggestedMonth,
+                totalBudget: trip.totalBudget,
+                startDate: trip.startDate,
+                endDate: trip.endDate,
+                country: trip.country,
+                tripType: trip.tripType,
+              })}
+            />
           </div>
 
           {/* Right — Sidebar */}
@@ -259,6 +287,10 @@ export default async function TripDetailPage({ params }: Props) {
               top: "calc(var(--nav-height) + 2rem)",
             }}
           >
+            {/* Table of Contents */}
+            {trip.itinerary && trip.itinerary.length > 0 && (
+              <TableOfContents days={trip.itinerary} />
+            )}
             {/* Trip overview card */}
             <div
               className="glass-card"
@@ -399,6 +431,11 @@ export default async function TripDetailPage({ params }: Props) {
                 </div>
               </div>
             )}
+
+            {/* PDF Download */}
+            {trip.itinerary && trip.itinerary.length > 0 && (
+              <PDFDownloadButton trip={trip} />
+            )}
           </aside>
         </div>
       </div>
@@ -456,22 +493,42 @@ export default async function TripDetailPage({ params }: Props) {
             Comments
           </h2>
           <div
+            className="glass-card"
             style={{
-              padding: "2rem",
-              border: "1px dashed var(--border)",
-              borderRadius: "var(--radius-md)",
+              padding: "2.5rem 2rem",
               textAlign: "center",
-              color: "var(--text-muted)",
-              fontSize: "0.9rem",
+              borderRadius: "var(--radius-md)",
             }}
           >
-            <p>
-              Comments powered by{" "}
-              <strong style={{ color: "var(--accent-gold)" }}>Giscus</strong>.
-            </p>
-            <p style={{ marginTop: "0.5rem", fontSize: "0.8rem" }}>
-              Configure your GitHub repository in{" "}
-              <code>src/components/ui/Comments.tsx</code> to enable.
+            <div
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: "50%",
+                background: "var(--accent-gold-dim)",
+                border: "1px solid var(--border-accent)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 1.25rem",
+                fontSize: "1.5rem",
+              }}
+            >
+              💬
+            </div>
+            <h3
+              style={{
+                fontFamily: "var(--font-serif)",
+                color: "var(--text-primary)",
+                fontSize: "1.15rem",
+                marginBottom: "0.5rem",
+              }}
+            >
+              Comments coming soon
+            </h3>
+            <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", maxWidth: 380, margin: "0 auto" }}>
+              We’re setting up a GitHub-powered comments section. In the meantime, reach out via the{" "}
+              <a href="/contact" style={{ color: "var(--accent-gold)" }}>contact page</a>.
             </p>
           </div>
         </div>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Compass, AtSign, Globe, Mail, Video } from "lucide-react";
+import { useState } from "react";
 
 const quickLinks = [
   { href: "/trips", label: "All Trips" },
@@ -12,6 +13,35 @@ const quickLinks = [
 ];
 
 export default function Footer() {
+  const [email, setEmail] = useState("");
+  const [newsletterState, setNewsletterState] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    setNewsletterState("loading");
+    setErrorMsg("");
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (res.ok) {
+        setNewsletterState("success");
+        setEmail("");
+      } else {
+        const data = await res.json();
+        setErrorMsg(data.error || "Something went wrong. Please try again.");
+        setNewsletterState("error");
+      }
+    } catch {
+      setErrorMsg("Network error. Please try again.");
+      setNewsletterState("error");
+    }
+  };
+
   return (
     <footer
       style={{
@@ -208,34 +238,65 @@ export default function Footer() {
             <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", marginBottom: "1rem" }}>
               New trip stories, itineraries, and travel tips — straight to your inbox.
             </p>
-            <form
-              onSubmit={(e) => e.preventDefault()}
-              style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
-            >
-              <input
-                type="email"
-                placeholder="your@email.com"
-                id="newsletter-email"
+            {newsletterState === "success" ? (
+              <div
                 style={{
-                  padding: "0.65rem 1rem",
+                  padding: "1rem",
                   borderRadius: "var(--radius-sm)",
-                  border: "1px solid var(--border)",
-                  background: "var(--bg-card)",
-                  color: "var(--text-primary)",
-                  fontSize: "0.875rem",
-                  fontFamily: "var(--font-sans)",
-                  outline: "none",
-                  width: "100%",
+                  background: "var(--accent-gold-dim)",
+                  border: "1px solid var(--border-accent)",
+                  textAlign: "center",
                 }}
-              />
-              <button
-                type="submit"
-                className="btn btn-primary"
-                style={{ width: "100%", justifyContent: "center", padding: "0.65rem" }}
               >
-                Subscribe
-              </button>
-            </form>
+                <div style={{ fontSize: "1.25rem", marginBottom: "0.5rem" }}>✓</div>
+                <p style={{ color: "var(--accent-gold)", fontSize: "0.875rem", fontWeight: 600 }}>
+                  You&apos;re subscribed!
+                </p>
+                <p style={{ color: "var(--text-muted)", fontSize: "0.8rem", marginTop: "4px" }}>
+                  Check your inbox for a welcome email.
+                </p>
+              </div>
+            ) : (
+              <form
+                onSubmit={handleNewsletterSubmit}
+                style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
+              >
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  id="newsletter-email"
+                  required
+                  disabled={newsletterState === "loading"}
+                  style={{
+                    padding: "0.65rem 1rem",
+                    borderRadius: "var(--radius-sm)",
+                    border: `1px solid ${newsletterState === "error" ? "var(--accent-rose)" : "var(--border)"}`,
+                    background: "var(--bg-card)",
+                    color: "var(--text-primary)",
+                    fontSize: "0.875rem",
+                    fontFamily: "var(--font-sans)",
+                    outline: "none",
+                    width: "100%",
+                    opacity: newsletterState === "loading" ? 0.6 : 1,
+                  }}
+                />
+                {newsletterState === "error" && errorMsg && (
+                  <p style={{ color: "var(--accent-rose)", fontSize: "0.75rem", margin: 0 }}>
+                    {errorMsg}
+                  </p>
+                )}
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={newsletterState === "loading"}
+                  style={{ width: "100%", justifyContent: "center", padding: "0.65rem", opacity: newsletterState === "loading" ? 0.7 : 1 }}
+                >
+                  {newsletterState === "loading" ? "Subscribing…" : "Subscribe"}
+                </button>
+              </form>
+            )}
           </div>
         </div>
 

@@ -8,6 +8,7 @@ import AIItineraryButton from "@/components/ai/AIItineraryButton";
 import SnowEffect from "@/components/ui/SnowEffect";
 import ButterflyFollower from "@/components/ui/ButterflyFollower";
 import AmbientBackground from "@/components/ui/AmbientBackground";
+import { WebSiteSchema } from "@/components/ui/AuthorSchema";
 export const metadata: Metadata = {
   title: {
     default: "Raste Aur Raahein — Travel Blog by Sumit Singh",
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Raste Aur Raahein",
+    title: "Raste Aur Raahein — Travel Blog by Sumit Singh",
     description: "Travel blog — high altitudes, ancient monasteries, and roads less taken.",
   },
   robots: {
@@ -45,6 +46,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
+      <head>
+        <WebSiteSchema />
+      </head>
       <body>
         <ThemeProvider>
           <GeneratedTripsProvider>

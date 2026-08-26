@@ -12,6 +12,7 @@
     "@react-pdf/renderer": "^4.8.1",
     "@sanity/client": "^8.2.0",
     "@sanity/image-url": "^2.1.1",
+    "@upstash/redis": "^1.38.2",
     "date-fns": "^4.4.0",
     "framer-motion": "^13.1.1",
     "groq-sdk": "^1.5.0",

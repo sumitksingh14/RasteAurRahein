@@ -15,7 +15,7 @@ const HERO_STATS = [
   { value: "12+", label: "Countries" },
   { value: "48+", label: "Trips" },
   { value: "60k+", label: "km Travelled" },
-  { value: "200k+", label: "Readers" },
+  { value: "200+", label: "Photos Published" },
 ];
 
 const TAGS = [

@@ -89,10 +89,7 @@ export default function Navbar() {
             >
               <Compass size={18} />
             </span>
-            <span className="gradient-text" style={{ display: "none" }}>
-              Raste
-            </span>
-            <span style={{ display: "block" }}>Raste Aur Raahein</span>
+            Raste Aur Raahein
           </Link>
 
           {/* Desktop Nav */}
