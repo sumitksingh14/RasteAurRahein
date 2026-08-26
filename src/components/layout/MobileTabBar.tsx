@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Home, Map, Compass, MoreHorizontal, BookOpen, Mail, Upload, X, User } from "lucide-react";
+import { Home, Map, Compass, MoreHorizontal, BookOpen, Mail, Upload, X, User, Sparkles } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
+import AIItineraryModal from "@/components/ai/AIItineraryModal";
 
 const PRIMARY_TABS = [
   { to: "/", icon: Home, label: "Home", exact: true },
@@ -24,6 +25,7 @@ export default function MobileTabBar() {
   const pathname = usePathname();
   const { user, openAuthModal, logout } = useAuth();
   const [moreOpen, setMoreOpen] = useState(false);
+  const [aiModalOpen, setAiModalOpen] = useState(false);
 
   // Close more drawer on route change
   useEffect(() => {
@@ -105,6 +107,40 @@ export default function MobileTabBar() {
             <X size={18} />
           </button>
         </div>
+
+        {/* AI Trip Planner button in More drawer */}
+        <button
+          className="tab-more-drawer-link"
+          onClick={() => {
+            setAiModalOpen(true);
+            setMoreOpen(false);
+          }}
+          style={{
+            width: "100%",
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            textAlign: "left",
+          }}
+        >
+          <span
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: "50%",
+              background: "var(--accent-gold-dim)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+              border: "1px solid var(--border)",
+              color: "var(--accent-gold)",
+            }}
+          >
+            <Sparkles size={16} />
+          </span>
+          <span style={{ color: "var(--accent-gold)", fontWeight: 600 }}>AI Trip Planner</span>
+        </button>
 
         {MORE_LINKS.map(({ href, icon: Icon, label }) => (
           <Link
@@ -272,6 +308,8 @@ export default function MobileTabBar() {
           </nav>
         );
       })()}
+
+      {aiModalOpen && <AIItineraryModal onClose={() => setAiModalOpen(false)} />}
     </>
   );
 }
