@@ -12,7 +12,8 @@ import ReadingProgress from "@/components/ui/ReadingProgress";
 import TableOfContents from "@/components/ui/TableOfContents";
 import PDFDownloadButton from "@/components/ui/PDFDownloadButton";
 import AuthorSchema from "@/components/ui/AuthorSchema";
-import FAQSchema, { buildTripFAQ } from "@/components/ui/FAQSchema";
+import FAQSchema from "@/components/ui/FAQSchema";
+import { buildTripFAQ } from "@/lib/faqBuilder";
 import { format } from "date-fns";
 
 // Fallback images by slug

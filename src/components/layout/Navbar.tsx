@@ -3,15 +3,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Menu, X, Compass, Sun, Moon, Search } from "lucide-react";
+import { Menu, X, Compass, Sun, Moon, Search, ChevronDown } from "lucide-react";
 import { useTheme } from "@/components/providers/ThemeProvider";
+import { REGIONS } from "@/lib/regions";
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/trips", label: "Trips/Itineraries" },
+  { href: "/trips", label: "Trips / Itineraries" },
+  { href: "/regions", label: "Regions" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
-  { href: "/itineraries", label: "My Travel Itineraries" },
 ];
 
 export default function Navbar() {
@@ -106,6 +107,71 @@ export default function Navbar() {
                 link.href === "/"
                   ? pathname === "/"
                   : pathname.startsWith(link.href);
+
+              // Regions gets a dropdown
+              if (link.href === "/regions") {
+                return (
+                  <div key={link.href} className="nav-regions-wrapper" style={{ position: "relative" }}>
+                    <Link
+                      href="/regions"
+                      style={{
+                        fontSize: "0.9rem",
+                        fontWeight: 500,
+                        color: isActive ? "var(--accent-gold)" : "var(--text-secondary)",
+                        transition: "color var(--transition)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4px",
+                      }}
+                    >
+                      {link.label}
+                      <ChevronDown size={13} style={{ opacity: 0.6 }} />
+                      {isActive && (
+                        <span
+                          style={{
+                            position: "absolute",
+                            bottom: -4,
+                            left: 0,
+                            right: 0,
+                            height: 2,
+                            background: "var(--accent-gold)",
+                            borderRadius: 1,
+                          }}
+                        />
+                      )}
+                    </Link>
+                    {/* Dropdown */}
+                    <div className="nav-regions-dropdown">
+                      {REGIONS.map((r) => (
+                        <Link
+                          key={r.slug}
+                          href={`/regions/${r.slug}`}
+                          style={{
+                            display: "block",
+                            padding: "0.6rem 1rem",
+                            fontSize: "0.85rem",
+                            color: "var(--text-secondary)",
+                            borderRadius: "var(--radius-sm)",
+                            transition: "all var(--transition)",
+                            whiteSpace: "nowrap",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.color = "var(--accent-gold)";
+                            e.currentTarget.style.background = "var(--accent-gold-dim)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.color = "var(--text-secondary)";
+                            e.currentTarget.style.background = "transparent";
+                          }}
+                        >
+                          {r.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+
               return (
                 <Link
                   key={link.href}
@@ -304,6 +370,37 @@ export default function Navbar() {
         @media (max-width: 767px) {
           .desktop-nav { display: none !important; }
           .mobile-only { display: flex !important; }
+        }
+        /* Regions dropdown */
+        .nav-regions-dropdown {
+          display: none;
+          position: absolute;
+          top: calc(100% + 12px);
+          left: 50%;
+          transform: translateX(-50%);
+          min-width: 180px;
+          background: var(--bg-card);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-md);
+          padding: 0.5rem;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+          z-index: 2000;
+        }
+        .nav-regions-wrapper:hover .nav-regions-dropdown {
+          display: block;
+        }
+        .nav-regions-dropdown::before {
+          content: '';
+          position: absolute;
+          top: -6px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 10px;
+          height: 10px;
+          background: var(--bg-card);
+          border-left: 1px solid var(--border);
+          border-top: 1px solid var(--border);
+          rotate: 45deg;
         }
       `}</style>
     </>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Compass, AtSign, Globe, Mail, Video } from "lucide-react";
 import { useState } from "react";
+import { REGIONS } from "@/lib/regions";
 
 const quickLinks = [
   { href: "/trips", label: "All Trips" },
@@ -181,6 +182,41 @@ export default function Footer() {
                     onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
                   >
                     {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Regions */}
+          <div>
+            <h4
+              style={{
+                fontSize: "0.75rem",
+                fontFamily: "var(--font-sans)",
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+                color: "var(--text-muted)",
+                marginBottom: "1rem",
+              }}
+            >
+              Regions
+            </h4>
+            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+              {REGIONS.map((r) => (
+                <li key={r.slug}>
+                  <Link
+                    href={`/regions/${r.slug}`}
+                    style={{
+                      color: "var(--text-secondary)",
+                      fontSize: "0.9rem",
+                      transition: "color var(--transition)",
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent-gold)")}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
+                  >
+                    {r.label}
                   </Link>
                 </li>
               ))}
