@@ -183,7 +183,7 @@ export default function TripsClient({ trips }: TripsClientProps) {
             }}
           >
             {/* Search input */}
-            <div style={{ position: "relative", flex: 1, minWidth: 220 }}>
+            <div className="trips-search-wrap">
               <Search
                 size={16}
                 style={{
@@ -421,13 +421,7 @@ export default function TripsClient({ trips }: TripsClientProps) {
               <TrendingUp size={15} />
               Most Popular
             </div>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-                gap: "1rem",
-              }}
-            >
+            <div className="trip-grid">
               {mostPopular.map((trip) => (
                 <TripCard key={trip._id} trip={trip} />
               ))}
@@ -480,13 +474,7 @@ export default function TripsClient({ trips }: TripsClientProps) {
 
         {/* Trip Grid */}
         {filtered.length > 0 ? (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-              gap: "1.5rem",
-            }}
-          >
+          <div className="trip-grid">
             {filtered.map((trip) => (
               <TripCard key={trip._id} trip={trip} />
             ))}

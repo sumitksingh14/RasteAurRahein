@@ -159,16 +159,9 @@ export default async function HomePage() {
           </div>
 
           {/* Stats */}
-          <div
-            style={{
-              display: "flex",
-              gap: "2.5rem",
-              marginTop: "4rem",
-              flexWrap: "wrap",
-            }}
-          >
+          <div className="hero-stats">
             {HERO_STATS.map((stat) => (
-              <div key={stat.label} className="glass-card" style={{ padding: "1.5rem", minWidth: "160px" }}>
+              <div key={stat.label} className="glass-card hero-stat-card">
                 <div
                   style={{
                     fontFamily: "var(--font-serif)",
@@ -267,13 +260,7 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-              gap: "1.5rem",
-            }}
-          >
+          <div className="trip-grid">
             {featuredTrips.map((trip) => (
               <TripCard key={trip._id} trip={trip} featured priority />
             ))}
@@ -286,23 +273,15 @@ export default async function HomePage() {
       ======================================================== */}
       <section className="section">
         <div className="container">
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: "4rem",
-              alignItems: "center",
-            }}
-          >
+          <div className="about-grid">
             {/* Author photo */}
-            <div style={{ position: "relative" }}>
+            <div className="about-photo-wrap">
               <div
                 style={{
                   position: "relative",
                   borderRadius: "var(--radius-xl)",
                   overflow: "hidden",
                   aspectRatio: "3/4",
-                  maxWidth: 380,
                 }}
               >
                 <Image
@@ -324,15 +303,7 @@ export default async function HomePage() {
               </div>
               {/* Floating stat card */}
               <div
-                className="glass-card"
-                style={{
-                  position: "absolute",
-                  bottom: "2rem",
-                  right: "-1rem",
-                  padding: "1rem 1.25rem",
-                  textAlign: "center",
-                  minWidth: 120,
-                }}
+                className="glass-card about-floating-stat"
               >
                 <div
                   style={{
@@ -477,13 +448,7 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-              gap: "1.5rem",
-            }}
-          >
+          <div className="trip-grid">
             {latestTrips.map((trip) => (
               <TripCard key={trip._id} trip={trip} />
             ))}

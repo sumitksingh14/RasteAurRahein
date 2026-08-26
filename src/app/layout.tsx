@@ -5,6 +5,7 @@ import { GeneratedTripsProvider } from "@/components/providers/GeneratedTripsPro
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import MobileTabBar from "@/components/layout/MobileTabBar";
 import AIItineraryButton from "@/components/ai/AIItineraryButton";
 import SnowEffect from "@/components/ui/SnowEffect";
 import ButterflyFollower from "@/components/ui/ButterflyFollower";
@@ -48,6 +49,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <WebSiteSchema />
       </head>
       <body>
@@ -64,6 +66,7 @@ export default function RootLayout({
                 <Navbar />
                 <main>{children}</main>
                 <Footer />
+                <MobileTabBar />
               </div>
               <AIItineraryButton />
             </AuthProvider>

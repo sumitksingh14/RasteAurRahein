@@ -351,7 +351,7 @@ export default function Navbar() {
               {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
             </button>
 
-            {/* Mobile menu toggle */}
+            {/* Mobile menu toggle — hidden since MobileTabBar handles mobile nav */}
             <button
               onClick={() => setMenuOpen((o) => !o)}
               aria-label="Toggle menu"
@@ -465,7 +465,8 @@ export default function Navbar() {
         }
         @media (max-width: 767px) {
           .desktop-nav { display: none !important; }
-          .mobile-only { display: flex !important; }
+          /* Hamburger hidden on mobile — MobileTabBar handles nav */
+          .mobile-only { display: none !important; }
         }
         /* Regions dropdown */
         .nav-regions-dropdown {

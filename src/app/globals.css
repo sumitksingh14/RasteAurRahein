@@ -41,6 +41,7 @@
   --font-mono: 'JetBrains Mono', monospace;
 
   --nav-height: 72px;
+  --tab-bar-height: 64px;
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -467,3 +468,260 @@ code {
 .imported-itinerary tr:nth-child(even) td {
   background: rgba(255, 255, 255, 0.02);
 }
+
+/* ============================================================
+   RESPONSIVE LAYOUT UTILITIES
+   ============================================================ */
+
+/* Trip card grid — 1-col mobile, auto-fill on sm+ */
+.trip-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 480px) {
+  .trip-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+/* Trip detail layout — stacked mobile, side-by-side md+ */
+.trip-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .trip-layout {
+    grid-template-columns: 1fr min(300px, 30%);
+    gap: 3rem;
+  }
+}
+
+/* About section — stacked mobile, auto-fit md+ */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+@media (min-width: 640px) {
+  .about-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 4rem;
+  }
+}
+
+/* Hero stats — allow tighter wrapping on mobile */
+.hero-stats {
+  display: flex;
+  gap: 1rem;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 480px) {
+  .hero-stats {
+    gap: 2.5rem;
+    margin-top: 4rem;
+  }
+}
+
+.hero-stat-card {
+  padding: 1.25rem;
+  min-width: min(140px, calc(50% - 0.5rem));
+  flex: 1;
+}
+
+@media (min-width: 480px) {
+  .hero-stat-card {
+    padding: 1.5rem;
+    min-width: 160px;
+    flex: unset;
+  }
+}
+
+/* About photo — constrain on mobile */
+.about-photo-wrap {
+  position: relative;
+  max-width: 100%;
+}
+
+@media (min-width: 640px) {
+  .about-photo-wrap {
+    max-width: 380px;
+  }
+}
+
+/* Floating stat card — reposition on very small screens */
+.about-floating-stat {
+  position: absolute;
+  bottom: 2rem;
+  right: -0.5rem;
+  padding: 1rem 1.25rem;
+  text-align: center;
+  min-width: 110px;
+}
+
+@media (min-width: 480px) {
+  .about-floating-stat {
+    right: -1rem;
+    min-width: 120px;
+  }
+}
+
+/* Trips filter bar — search input never forces overflow */
+.trips-search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Imported itinerary tables — horizontal scroll on mobile */
+.imported-itinerary table {
+  min-width: 480px;
+}
+
+.imported-itinerary-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ============================================================
+   MOBILE BOTTOM TAB BAR
+   ============================================================ */
+
+/* Main content spacer — ensures content isn't hidden behind tab bar */
+@media (max-width: 767px) {
+  main {
+    padding-bottom: calc(var(--tab-bar-height) + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* Tab bar base */
+.mobile-tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 500;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: var(--tab-bar-height);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Hide tab bar on md+ */
+@media (min-width: 768px) {
+  .mobile-tab-bar {
+    display: none;
+  }
+}
+
+/* Tab bar item */
+.tab-bar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.35rem 0.75rem;
+  flex: 1;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color var(--transition);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.tab-bar-item.active {
+  color: var(--accent-gold);
+}
+
+/* Active indicator dot */
+.tab-bar-item.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background: var(--accent-gold);
+  border-radius: 0 0 2px 2px;
+}
+
+/* More drawer */
+.tab-more-drawer {
+  position: fixed;
+  bottom: var(--tab-bar-height);
+  left: 0;
+  right: 0;
+  z-index: 499;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 1.5rem 1.5rem calc(0.5rem + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.35);
+  transform: translateY(0);
+  transition: transform var(--transition), opacity var(--transition);
+}
+
+.tab-more-drawer[aria-hidden="true"] {
+  transform: translateY(100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tab-more-drawer-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-family: var(--font-serif);
+  transition: all var(--transition);
+  text-decoration: none;
+}
+
+.tab-more-drawer-link:hover,
+.tab-more-drawer-link.active {
+  background: var(--accent-gold-dim);
+  color: var(--accent-gold);
+}
+
+/* Backdrop for more drawer */
+.tab-more-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 498;
+  background: rgba(0, 0, 0, 0.5);
+  transition: opacity var(--transition);
+}
+
+.tab-more-backdrop[aria-hidden="true"] {
+  opacity: 0;
+  pointer-events: none;
+}
+

@@ -241,13 +241,8 @@ export default async function TripDetailPage({ params }: Props) {
       ============================================================ */}
       <div className="container" style={{ paddingTop: "3rem", paddingBottom: "5rem" }}>
         <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr min(300px, 30%)",
-            gap: "3rem",
-            alignItems: "start",
-          }}
           className="trip-layout"
+          style={{ alignItems: "start" }}
         >
           {/* Left — Tabs */}
           <div>
