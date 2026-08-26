@@ -94,7 +94,7 @@ export const REGIONS: RegionConfig[] = [
       "Northeast India remains India's best-kept travel secret. Meghalaya's living root bridges and wettest place on earth; Arunachal Pradesh's Buddhist monasteries and snow peaks bordering Tibet; Nagaland's warrior heritage and hornbill festivals. These trips require more planning, more time, and reward both generously.",
     tags: [
       "Northeast", "Meghalaya", "Arunachal", "Nagaland", "Assam",
-      "Trekking",
+      "Sikkim", "Trekking",
     ],
     heroImage:
       "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1920&q=85",

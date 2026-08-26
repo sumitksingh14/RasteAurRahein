@@ -15,7 +15,7 @@ const REGIONS: { label: string; tags: string[]; countries?: string[] }[] = [
   { label: "South India", tags: ["South India", "Kerala", "Karnataka", "Tamil Nadu", "Mysore", "Ooty", "Coorg", "Wayanad"], countries: ["India"] },
   { label: "Rajasthan / Desert", tags: ["Rajasthan", "Desert", "Jaisalmer", "Udaipur", "Jodhpur", "Jaipur"] },
   { label: "Coastal", tags: ["Beach", "Goa", "Coastal", "Beaches", "Konkan", "Mangalore"] },
-  { label: "Northeast India", tags: ["Northeast", "Meghalaya", "Arunachal", "Nagaland", "Assam"] },
+  { label: "Northeast India", tags: ["Northeast", "Meghalaya", "Arunachal", "Nagaland", "Assam", "Sikkim"] },
 ];
 
 const DURATION_OPTIONS: { label: string; min: number; max: number }[] = [
