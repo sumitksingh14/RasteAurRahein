@@ -11,10 +11,10 @@ const ALL_TAGS = [
 ];
 
 const REGIONS: { label: string; tags: string[]; countries?: string[] }[] = [
-  { label: "Himalayas", tags: ["Himalayas", "Spiti Valley", "Ladakh", "Himachal", "Uttarakhand", "Adventure", "Trekking"] },
-  { label: "South India", tags: ["South India", "Kerala", "Karnataka", "Tamil Nadu", "Coastal"], countries: ["India"] },
-  { label: "Rajasthan / Desert", tags: ["Rajasthan", "Desert", "Heritage", "Culture"] },
-  { label: "Coastal", tags: ["Beach", "Goa", "Coastal", "Beaches"] },
+  { label: "Himalayas", tags: ["Himalayas", "Spiti Valley", "Ladakh", "Himachal", "Uttarakhand", "High Altitude"] },
+  { label: "South India", tags: ["South India", "Kerala", "Karnataka", "Tamil Nadu", "Mysore", "Ooty", "Coorg", "Wayanad"], countries: ["India"] },
+  { label: "Rajasthan / Desert", tags: ["Rajasthan", "Desert", "Jaisalmer", "Udaipur", "Jodhpur", "Jaipur"] },
+  { label: "Coastal", tags: ["Beach", "Goa", "Coastal", "Beaches", "Konkan", "Mangalore"] },
   { label: "Northeast India", tags: ["Northeast", "Meghalaya", "Arunachal", "Nagaland", "Assam"] },
 ];
 

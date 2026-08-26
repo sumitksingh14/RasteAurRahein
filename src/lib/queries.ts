@@ -201,7 +201,7 @@ export const DEMO_TRIPS: Trip[] = [
     slug: "mysore-coorg-wayanad-ooty",
     excerpt:
       "A scenic South India circuit from Pune through Mysore, Coorg, Wayanad, Ooty, and Coonoor—palaces, safaris, coffee country, caves, and the Nilgiris.",
-    tags: ["Road Trip", "India", "Mountains", "Culture", "Nature"],
+    tags: ["Road Trip", "India", "South India", "Karnataka", "Kerala", "Mysore", "Ooty", "Coorg", "Culture", "Food", "Mountains", "Nature"],
     country: "India",
     bestSuggestedMonth: "October – March",
     status: "published",
@@ -453,7 +453,7 @@ export const DEMO_TRIPS: Trip[] = [
     slug: "goa-beyond-beaches",
     excerpt:
       "Old Goa churches, hidden spice farms, Portuguese-era homes, and yes — a few perfect sunsets over the Arabian Sea.",
-    tags: ["Beach", "Food", "Culture", "Goa", "India"],
+    tags: ["Beach", "Food", "Coastal", "Goa", "India"],
     country: "India",
     startDate: "2023-01-05",
     endDate: "2023-01-11",

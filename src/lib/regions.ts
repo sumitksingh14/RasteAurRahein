@@ -25,8 +25,8 @@ export const REGIONS: RegionConfig[] = [
     intro:
       "From Spiti Valley's moonscapes to the prayer-flag-strung passes of Ladakh, the Himalayas offer some of the most dramatic and demanding road trips on the planet. Expect altitude, solitude, and roads that test both driver and machine — rewarded by landscapes that feel genuinely otherworldly.",
     tags: [
-      "Himalayas", "Spiti Valley", "Ladakh", "Trekking", "Adventure",
-      "Road Trip", "Himachal", "Uttarakhand", "High Altitude",
+      "Himalayas", "Spiti Valley", "Ladakh", "Trekking",
+      "Himachal", "Uttarakhand", "High Altitude",
     ],
     heroImage:
       "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1920&q=85",
@@ -43,7 +43,7 @@ export const REGIONS: RegionConfig[] = [
       "South India rewards slow travel. The roads weave through coffee estates in Coorg, climb into mist-wrapped Nilgiris, and drop to coastlines where the Arabian Sea and the Bay of Bengal collide at Kanyakumari. Filter coffee, Dravidian temples, and a pace of life that resists hurry.",
     tags: [
       "South India", "Kerala", "Karnataka", "Tamil Nadu", "Coorg",
-      "Ooty", "Mysore", "Culture", "Food", "Coastal",
+      "Ooty", "Mysore", "Wayanad", "Coastal",
     ],
     heroImage:
       "https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/d4676652506983.591f0235258b3.jpg",
@@ -59,8 +59,8 @@ export const REGIONS: RegionConfig[] = [
     intro:
       "Rajasthan is India at its most theatrical. Blue cities, golden deserts, and palaces so ornate they look like set design. The roads link a succession of royal capitals — Jaipur, Jodhpur, Jaisalmer, Udaipur — each different enough to justify the drive, each worth at least two nights.",
     tags: [
-      "Rajasthan", "Desert", "Heritage", "Culture", "Jaisalmer",
-      "Udaipur", "Jodhpur", "Jaipur", "Road Trip",
+      "Rajasthan", "Desert", "Jaisalmer",
+      "Udaipur", "Jodhpur", "Jaipur",
     ],
     heroImage:
       "https://images.unsplash.com/photo-1514222134-b57cbb8ce073?w=1920&q=85",
@@ -77,7 +77,7 @@ export const REGIONS: RegionConfig[] = [
       "India has over 7,500 km of coastline and almost none of it is boring. The Konkan coast switchbacks between cliffs and coves; Goa offers colonial-era churches and all-day beaches; Kerala unrolls into backwaters and lagoons. The best coastal drives are best done outside peak season — quieter roads, cooler air.",
     tags: [
       "Beach", "Goa", "Coastal", "Beaches", "Kerala",
-      "Konkan", "Mangalore", "Monsoon",
+      "Konkan", "Mangalore",
     ],
     heroImage:
       "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=1920&q=85",
@@ -94,7 +94,7 @@ export const REGIONS: RegionConfig[] = [
       "Northeast India remains India's best-kept travel secret. Meghalaya's living root bridges and wettest place on earth; Arunachal Pradesh's Buddhist monasteries and snow peaks bordering Tibet; Nagaland's warrior heritage and hornbill festivals. These trips require more planning, more time, and reward both generously.",
     tags: [
       "Northeast", "Meghalaya", "Arunachal", "Nagaland", "Assam",
-      "Adventure", "Trekking", "Culture",
+      "Trekking",
     ],
     heroImage:
       "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1920&q=85",
