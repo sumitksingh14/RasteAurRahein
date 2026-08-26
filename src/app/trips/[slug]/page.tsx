@@ -14,6 +14,7 @@ import PDFDownloadButton from "@/components/ui/PDFDownloadButton";
 import AuthorSchema from "@/components/ui/AuthorSchema";
 import FAQSchema from "@/components/ui/FAQSchema";
 import { buildTripFAQ } from "@/lib/faqBuilder";
+import LikeButton from "@/components/ui/LikeButton";
 import { format } from "date-fns";
 
 // Fallback images by slug
@@ -292,6 +293,23 @@ export default async function TripDetailPage({ params }: Props) {
             {trip.itinerary && trip.itinerary.length > 0 && (
               <TableOfContents days={trip.itinerary} />
             )}
+
+            {/* Like button */}
+            <div style={{ marginBottom: "1.5rem" }}>
+              <div
+                style={{
+                  fontSize: "0.7rem",
+                  fontWeight: 600,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.1em",
+                  color: "var(--text-muted)",
+                  marginBottom: "0.75rem",
+                }}
+              >
+                Did this help you plan?
+              </div>
+              <LikeButton type="trip" id={trip.slug} />
+            </div>
             {/* Trip overview card */}
             <div
               className="glass-card"

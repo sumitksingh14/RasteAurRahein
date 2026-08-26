@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { GeneratedTripsProvider } from "@/components/providers/GeneratedTripsProvider";
+import { AuthProvider } from "@/components/providers/AuthProvider";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import AIItineraryButton from "@/components/ai/AIItineraryButton";
@@ -52,21 +53,25 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           <GeneratedTripsProvider>
-            {/* Ambient cycling background — fixed, z-index 0 */}
-            <AmbientBackground />
-            {/* Global overlays — float above everything */}
-            <SnowEffect />
-            <ButterflyFollower />
-            {/* Page chrome — sits above ambient */}
-            <div style={{ position: "relative", zIndex: 1 }}>
-              <Navbar />
-              <main>{children}</main>
-              <Footer />
-            </div>
-            <AIItineraryButton />
+            <AuthProvider>
+              {/* Ambient cycling background — fixed, z-index 0 */}
+              <AmbientBackground />
+              {/* Global overlays — float above everything */}
+              <SnowEffect />
+              <ButterflyFollower />
+              {/* Page chrome — sits above ambient */}
+              <div style={{ position: "relative", zIndex: 1 }}>
+                <Navbar />
+                <main>{children}</main>
+                <Footer />
+              </div>
+              <AIItineraryButton />
+            </AuthProvider>
           </GeneratedTripsProvider>
         </ThemeProvider>
       </body>
     </html>
   );
 }
+
+

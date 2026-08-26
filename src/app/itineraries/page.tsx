@@ -6,6 +6,7 @@ import { Sparkles, MapPin, Calendar, Clock, Trash2, ChevronRight, Navigation } f
 import { useGeneratedTrips, type GeneratedTrip } from "@/components/providers/GeneratedTripsProvider";
 import AIItineraryModal from "@/components/ai/AIItineraryModal";
 import ExportPDFButton from "@/components/ai/ExportPDFButton";
+import LikeButton from "@/components/ui/LikeButton";
 
 // ---------------------------------------------------------------------------
 // Glassmorphism Trip Card
@@ -144,38 +145,42 @@ function GeneratedTripCard({
           )}
         </div>
 
-        {/* Expand/collapse toggle */}
-        <button
-          onClick={() => setExpanded((e) => !e)}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "6px",
-            fontSize: "0.78rem",
-            color: "rgba(137,180,250,0.85)",
-            fontWeight: 500,
-            background: "rgba(137,180,250,0.08)",
-            border: "1px solid rgba(137,180,250,0.2)",
-            backdropFilter: "blur(8px)",
-            cursor: "pointer",
-            fontFamily: "var(--font-sans)",
-            padding: "0.4rem 0.85rem",
-            borderRadius: "100px",
-            marginBottom: "0.25rem",
-            transition: "all 0.2s ease",
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(137,180,250,0.18)"; e.currentTarget.style.color = "#b4d0fd"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(137,180,250,0.08)"; e.currentTarget.style.color = "rgba(137,180,250,0.85)"; }}
-        >
-          <ChevronRight
-            size={13}
+        {/* Actions row: expand + like */}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap", marginBottom: "0.25rem" }}>
+          <button
+            onClick={() => setExpanded((e) => !e)}
             style={{
-              transform: expanded ? "rotate(90deg)" : "rotate(0deg)",
-              transition: "transform 0.25s ease",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              fontSize: "0.78rem",
+              color: "rgba(137,180,250,0.85)",
+              fontWeight: 500,
+              background: "rgba(137,180,250,0.08)",
+              border: "1px solid rgba(137,180,250,0.2)",
+              backdropFilter: "blur(8px)",
+              cursor: "pointer",
+              fontFamily: "var(--font-sans)",
+              padding: "0.4rem 0.85rem",
+              borderRadius: "100px",
+              transition: "all 0.2s ease",
             }}
-          />
-          {expanded ? "Hide" : "View"} {trip.days.length}-day itinerary
-        </button>
+            onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(137,180,250,0.18)"; e.currentTarget.style.color = "#b4d0fd"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(137,180,250,0.08)"; e.currentTarget.style.color = "rgba(137,180,250,0.85)"; }}
+          >
+            <ChevronRight
+              size={13}
+              style={{
+                transform: expanded ? "rotate(90deg)" : "rotate(0deg)",
+                transition: "transform 0.25s ease",
+              }}
+            />
+            {expanded ? "Hide" : "View"} {trip.days.length}-day itinerary
+          </button>
+
+          {/* Like button */}
+          <LikeButton type="itinerary" id={trip.id} />
+        </div>
 
         {expanded && (
           <div

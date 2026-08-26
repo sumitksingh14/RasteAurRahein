@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Menu, X, Compass, Sun, Moon, Search, ChevronDown } from "lucide-react";
+import { Menu, X, Compass, Sun, Moon, Search, ChevronDown, LogOut, User } from "lucide-react";
 import { useTheme } from "@/components/providers/ThemeProvider";
 import { REGIONS } from "@/lib/regions";
+import { useAuth } from "@/components/providers/AuthProvider";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -18,8 +19,10 @@ const navLinks = [
 export default function Navbar() {
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
+  const { user, logout, openAuthModal } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -231,6 +234,99 @@ export default function Navbar() {
             >
               <Search size={16} />
             </Link>
+
+            {/* Auth button */}
+            {user ? (
+              <div style={{ position: "relative" }}>
+                <button
+                  onClick={() => setAvatarMenuOpen((o) => !o)}
+                  title={user.username}
+                  style={{
+                    width: 38,
+                    height: 38,
+                    borderRadius: "50%",
+                    background: "linear-gradient(135deg, var(--accent-gold), var(--accent-rose))",
+                    border: "none",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#0a0a0f",
+                    fontFamily: "var(--font-sans)",
+                    fontWeight: 700,
+                    fontSize: "0.9rem",
+                    flexShrink: 0,
+                  }}
+                >
+                  {user.username.charAt(0).toUpperCase()}
+                </button>
+                {avatarMenuOpen && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "calc(100% + 10px)",
+                      right: 0,
+                      background: "var(--bg-card)",
+                      border: "1px solid var(--border)",
+                      borderRadius: "var(--radius-md)",
+                      padding: "0.5rem",
+                      minWidth: 160,
+                      boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
+                      zIndex: 2000,
+                    }}
+                  >
+                    <div style={{ padding: "0.6rem 1rem", borderBottom: "1px solid var(--border)", marginBottom: "0.25rem" }}>
+                      <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-primary)" }}>@{user.username}</div>
+                      <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>{user.email}</div>
+                    </div>
+                    <button
+                      onClick={async () => { await logout(); setAvatarMenuOpen(false); }}
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        padding: "0.6rem 1rem",
+                        borderRadius: "var(--radius-sm)",
+                        border: "none",
+                        background: "transparent",
+                        color: "var(--text-secondary)",
+                        cursor: "pointer",
+                        fontSize: "0.875rem",
+                        fontFamily: "var(--font-sans)",
+                      }}
+                    >
+                      <LogOut size={14} />
+                      Sign out
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button
+                onClick={openAuthModal}
+                id="nav-sign-in-btn"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  padding: "0.45rem 1rem",
+                  borderRadius: "100px",
+                  border: "1px solid var(--border-accent)",
+                  background: "var(--accent-gold-dim)",
+                  color: "var(--accent-gold)",
+                  fontFamily: "var(--font-sans)",
+                  fontSize: "0.8rem",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  transition: "all var(--transition)",
+                  flexShrink: 0,
+                }}
+              >
+                <User size={13} />
+                Sign In
+              </button>
+            )}
 
             <button
               onClick={toggleTheme}
