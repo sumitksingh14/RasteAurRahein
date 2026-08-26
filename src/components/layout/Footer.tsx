@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Compass, AtSign, Globe, Mail, Video } from "lucide-react";
 import { useState } from "react";
 import { REGIONS } from "@/lib/regions";
+import { useAuth } from "@/components/providers/AuthProvider";
 
 const quickLinks = [
   { href: "/trips", label: "All Trips" },
@@ -17,6 +18,7 @@ export default function Footer() {
   const [email, setEmail] = useState("");
   const [newsletterState, setNewsletterState] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const { user } = useAuth();
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -169,7 +171,9 @@ export default function Footer() {
               Navigate
             </h4>
             <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-              {quickLinks.map((link) => (
+              {quickLinks
+                .filter((link) => link.href !== "/itineraries" || user)
+                .map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}

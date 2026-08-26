@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, MapPin, Compass, BookOpen, TrendingUp } from "lucide-react";
+import { ArrowRight, MapPin, Compass, BookOpen, TrendingUp, Sparkles } from "lucide-react";
 import { getFeaturedTrips, getAllTrips, DEMO_AUTHOR } from "@/lib/queries";
 import TripCard from "@/components/ui/TripCard";
 
@@ -146,7 +146,7 @@ export default async function HomePage() {
           </p>
 
           {/* CTAs */}
-          <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "1.5rem" }}>
             <Link href="/trips" className="btn btn-primary" id="hero-explore-btn">
               Explore Trips
               <ArrowRight size={16} />
@@ -156,6 +156,25 @@ export default async function HomePage() {
             >
               About Me
             </Link>
+          </div>
+
+          {/* AI Helper Line */}
+          <div style={{ 
+            display: "flex", 
+            alignItems: "center", 
+            gap: "8px", 
+            color: "rgba(255,255,255,0.8)", 
+            fontSize: "0.95rem", 
+            marginBottom: "3rem",
+            background: "rgba(0,0,0,0.2)",
+            padding: "0.5rem 1rem",
+            borderRadius: "100px",
+            width: "fit-content",
+            border: "1px solid rgba(255,255,255,0.1)",
+            backdropFilter: "blur(8px)"
+          }}>
+            <Sparkles size={16} style={{ color: "var(--accent-gold)" }} />
+            <span>Sign in to use AI to generate and save personalized itineraries for any location!</span>
           </div>
 
           {/* Stats */}

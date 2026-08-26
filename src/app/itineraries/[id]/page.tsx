@@ -2,15 +2,25 @@
 
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, MapPin, Calendar, Clock, Navigation } from "lucide-react";
 import { useGeneratedTrips, type GeneratedTrip } from "@/components/providers/GeneratedTripsProvider";
 import ExportPDFButton from "@/components/ai/ExportPDFButton";
+import { useAuth } from "@/components/providers/AuthProvider";
 
 export default function ItineraryDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const unwrappedParams = use(params);
   const { trips } = useGeneratedTrips();
   const [trip, setTrip] = useState<GeneratedTrip | null>(null);
   const [mounted, setMounted] = useState(false);
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/");
+    }
+  }, [user, loading, router]);
 
   useEffect(() => {
     setMounted(true);
@@ -23,6 +33,7 @@ export default function ItineraryDetailPage({ params }: { params: Promise<{ id: 
     }
   }, [trips, unwrappedParams.id]);
 
+  if (loading || !user) return null;
   if (!mounted) return null;
 
   if (!trip) {

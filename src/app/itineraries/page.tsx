@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Sparkles, MapPin, Calendar, Clock, Trash2, ChevronRight, Navigation } from "lucide-react";
 import { useGeneratedTrips, type GeneratedTrip } from "@/components/providers/GeneratedTripsProvider";
 import AIItineraryModal from "@/components/ai/AIItineraryModal";
 import ExportPDFButton from "@/components/ai/ExportPDFButton";
 import LikeButton from "@/components/ui/LikeButton";
+import { useAuth } from "@/components/providers/AuthProvider";
 
 // ---------------------------------------------------------------------------
 // Glassmorphism Trip Card
@@ -311,6 +313,16 @@ function GeneratedTripCard({
 export default function ItinerariesPage() {
   const { trips, removeTrip } = useGeneratedTrips();
   const [modalOpen, setModalOpen] = useState(false);
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/");
+    }
+  }, [user, loading, router]);
+
+  if (loading || !user) return null;
 
   return (
     <div style={{ paddingTop: "var(--nav-height)", minHeight: "100vh", background: "var(--bg-primary)" }}>

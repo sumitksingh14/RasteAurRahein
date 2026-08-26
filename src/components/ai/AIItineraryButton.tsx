@@ -3,9 +3,13 @@
 import { useState } from "react";
 import { Sparkles } from "lucide-react";
 import AIItineraryModal from "./AIItineraryModal";
+import { useAuth } from "@/components/providers/AuthProvider";
 
 export default function AIItineraryButton() {
   const [open, setOpen] = useState(false);
+  const { user } = useAuth();
+
+  if (!user) return null;
 
   return (
     <>

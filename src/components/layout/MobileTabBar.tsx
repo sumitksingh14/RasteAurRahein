@@ -109,38 +109,40 @@ export default function MobileTabBar() {
         </div>
 
         {/* AI Trip Planner button in More drawer */}
-        <button
-          className="tab-more-drawer-link"
-          onClick={() => {
-            setAiModalOpen(true);
-            setMoreOpen(false);
-          }}
-          style={{
-            width: "100%",
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            textAlign: "left",
-          }}
-        >
-          <span
+        {user && (
+          <button
+            className="tab-more-drawer-link"
+            onClick={() => {
+              setAiModalOpen(true);
+              setMoreOpen(false);
+            }}
             style={{
-              width: 36,
-              height: 36,
-              borderRadius: "50%",
-              background: "var(--accent-gold-dim)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0,
-              border: "1px solid var(--border)",
-              color: "var(--accent-gold)",
+              width: "100%",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              textAlign: "left",
             }}
           >
-            <Sparkles size={16} />
-          </span>
-          <span style={{ color: "var(--accent-gold)", fontWeight: 600 }}>AI Trip Planner</span>
-        </button>
+            <span
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: "50%",
+                background: "var(--accent-gold-dim)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+                border: "1px solid var(--border)",
+                color: "var(--accent-gold)",
+              }}
+            >
+              <Sparkles size={16} />
+            </span>
+            <span style={{ color: "var(--accent-gold)", fontWeight: 600 }}>AI Trip Planner</span>
+          </button>
+        )}
 
         {MORE_LINKS.map(({ href, icon: Icon, label }) => (
           <Link
