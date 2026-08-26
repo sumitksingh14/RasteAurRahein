@@ -12,6 +12,8 @@ const PRIMARY_TABS = [
   { to: "/regions", icon: Compass, label: "Regions", exact: false },
 ];
 
+
+
 const MORE_LINKS = [
   { href: "/about", icon: BookOpen, label: "About" },
   { href: "/contact", icon: Mail, label: "Contact" },
@@ -219,39 +221,57 @@ export default function MobileTabBar() {
         </div>
       </div>
 
-      {/* Tab Bar */}
-      <nav className="mobile-tab-bar" aria-label="Mobile navigation">
-        {PRIMARY_TABS.map(({ to, icon: Icon, label, exact }) => {
-          const active = isActive(to, exact);
-          return (
-            <Link
-              key={to}
-              href={to}
-              className={`tab-bar-item${active ? " active" : ""}`}
-              aria-label={label}
-              aria-current={active ? "page" : undefined}
-            >
-              <Icon size={21} strokeWidth={active ? 2.2 : 1.8} />
-              <span>{label}</span>
-            </Link>
-          );
-        })}
+      {/* Tab Bar — floating-circle design */}
+      {(() => {
+        // Determine which tab index is active (0-based, 3 = More)
+        const activeIndex = PRIMARY_TABS.findIndex(({ to, exact }) => isActive(to, exact));
+        const resolvedIndex = activeIndex === -1 ? (moreIsActive || moreOpen ? 3 : -1) : activeIndex;
+        return (
+          <nav
+            className="mobile-tab-bar"
+            aria-label="Mobile navigation"
+            data-active={resolvedIndex}
+          >
+            {/* Sliding background bar with cutout bubble */}
+            <div className="tab-bar-back" aria-hidden="true" />
 
-        {/* More button */}
-        <button
-          className={`tab-bar-item${moreIsActive && !moreOpen ? " active" : moreOpen ? " active" : ""}`}
-          onClick={() => setMoreOpen((o) => !o)}
-          aria-label="More navigation"
-          aria-expanded={moreOpen}
-        >
-          {moreOpen ? (
-            <X size={21} strokeWidth={2.2} />
-          ) : (
-            <MoreHorizontal size={21} strokeWidth={1.8} />
-          )}
-          <span>More</span>
-        </button>
-      </nav>
+            {PRIMARY_TABS.map(({ to, icon: Icon, label, exact }, idx) => {
+              const active = isActive(to, exact);
+              return (
+                <Link
+                  key={to}
+                  href={to}
+                  className={`tab-bar-item${active ? " active" : ""}`}
+                  aria-label={label}
+                  aria-current={active ? "page" : undefined}
+                >
+                  <span className="tab-bar-circle">
+                    <Icon size={20} strokeWidth={active ? 2.2 : 1.8} />
+                  </span>
+                  <span className="tab-bar-label">{label}</span>
+                </Link>
+              );
+            })}
+
+            {/* More button */}
+            <button
+              className={`tab-bar-item${moreIsActive && !moreOpen ? " active" : moreOpen ? " active" : ""}`}
+              onClick={() => setMoreOpen((o) => !o)}
+              aria-label="More navigation"
+              aria-expanded={moreOpen}
+            >
+              <span className="tab-bar-circle">
+                {moreOpen ? (
+                  <X size={20} strokeWidth={2.2} />
+                ) : (
+                  <MoreHorizontal size={20} strokeWidth={1.8} />
+                )}
+              </span>
+              <span className="tab-bar-label">More</span>
+            </button>
+          </nav>
+        );
+      })()}
     </>
   );
 }

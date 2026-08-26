@@ -602,7 +602,7 @@ code {
   }
 }
 
-/* Tab bar base */
+/* ── Tab bar shell ── */
 .mobile-tab-bar {
   position: fixed;
   bottom: 0;
@@ -611,14 +611,11 @@ code {
   z-index: 500;
   display: flex;
   justify-content: space-around;
-  align-items: center;
-  height: var(--tab-bar-height);
+  align-items: flex-end;          /* items hang from bottom so lifted circle has room */
+  height: calc(var(--tab-bar-height) + env(safe-area-inset-bottom, 0px));
   padding-bottom: env(safe-area-inset-bottom, 0px);
-  background: var(--bg-secondary);
-  border-top: 1px solid var(--border);
-  box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  /* No background here — the back-div covers it */
+  overflow: visible;              /* allow circles to lift above the bar */
 }
 
 /* Hide tab bar on md+ */
@@ -628,49 +625,136 @@ code {
   }
 }
 
-/* Tab bar item */
+/* ── Flat white/dark background strip ── */
+.tab-bar-back {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--tab-bar-height);
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 0;
+}
+
+/* Sliding cutout bubble — moves to active tab via data-active */
+.tab-bar-back::after {
+  content: '';
+  display: block;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  /* Colour matches the page background to create the "hole/cutout" feel */
+  background: var(--bg-primary);
+  border: 2px solid var(--border);
+  position: absolute;
+  top: -18px;                     /* half above the bar */
+  left: 0;
+  /* Default: hidden off-screen left until an active tab is known */
+  transform: translateX(-200px);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  z-index: 1;
+}
+
+/*
+  4 tabs equally spaced → each slot is 25% wide.
+  Center of slot N = (N + 0.5) * 25% of bar width.
+  We use calc with vw since the bar is 100vw wide.
+  Offset by half the circle width (26px) so it centres.
+*/
+.mobile-tab-bar[data-active="0"] .tab-bar-back::after {
+  transform: translateX(calc(12.5vw - 26px));
+}
+.mobile-tab-bar[data-active="1"] .tab-bar-back::after {
+  transform: translateX(calc(37.5vw - 26px));
+}
+.mobile-tab-bar[data-active="2"] .tab-bar-back::after {
+  transform: translateX(calc(62.5vw - 26px));
+}
+.mobile-tab-bar[data-active="3"] .tab-bar-back::after {
+  transform: translateX(calc(87.5vw - 26px));
+}
+
+/* ── Each tab item ── */
 .tab-bar-item {
+  position: relative;
+  z-index: 2;
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 3px;
-  min-width: 44px;
-  min-height: 44px;
-  padding: 0.35rem 0.75rem;
-  flex: 1;
+  padding-bottom: 0.4rem;
+  height: var(--tab-bar-height);
   cursor: pointer;
   background: none;
   border: none;
   color: var(--text-muted);
   font-family: var(--font-sans);
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 500;
   text-decoration: none;
-  transition: color var(--transition);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  position: relative;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.tab-bar-item.active {
+/* ── Circular icon container ── */
+.tab-bar-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  color: var(--text-muted);
+  /* Start slightly pushed down into the bar */
+  transform: translateY(5px);
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+  will-change: transform;
+}
+
+/* ── Active state: lift the circle up ── */
+.tab-bar-item.active .tab-bar-circle {
+  transform: translateY(-10px);
+  background: var(--bg-secondary);
+  border-color: var(--accent-gold);
   color: var(--accent-gold);
+  box-shadow:
+    0 10px 28px -6px rgba(201, 168, 76, 0.45),
+    0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Active indicator dot */
-.tab-bar-item.active::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 20px;
-  height: 2px;
-  background: var(--accent-gold);
-  border-radius: 0 0 2px 2px;
+/* ── Label colour ── */
+.tab-bar-label {
+  line-height: 1;
+  transition: color 0.2s ease;
 }
 
-/* More drawer */
+.tab-bar-item.active .tab-bar-label {
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+
+/* Subtle hover lift for non-active items */
+.tab-bar-item:not(.active):hover .tab-bar-circle {
+  transform: translateY(0px);
+  color: var(--text-secondary);
+}
+
+/* ── More drawer ── */
 .tab-more-drawer {
   position: fixed;
   bottom: var(--tab-bar-height);
@@ -724,4 +808,3 @@ code {
   opacity: 0;
   pointer-events: none;
 }
-
