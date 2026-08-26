@@ -61,6 +61,11 @@ export default function AIItineraryButton() {
         #ai-generate-btn:hover {
           animation: none;
         }
+        @media (max-width: 767px) {
+          #ai-generate-btn {
+            bottom: calc(var(--tab-bar-height, 64px) + env(safe-area-inset-bottom, 0px) + 1rem);
+          }
+        }
       `}</style>
     </>
   );
