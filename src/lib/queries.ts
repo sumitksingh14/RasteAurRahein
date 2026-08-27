@@ -1263,6 +1263,77 @@ export const DEMO_TRIPS: Trip[] = [
       },
     ],
   },
+  {
+    _id: "trip-pune-konkan-raigad",
+    title: "Pune – Konkan Coast – Raigad",
+    slug: "pune-konkan-coast-raigad",
+    excerpt:
+      "A 4-Day / 5-Stop Coastal Loop — ~550–600 km from Pune down the Konkan coast and back via Raigad Fort.",
+    tags: ["Road Trip", "Coastal", "Konkan", "Maharashtra", "India"],
+    country: "India",
+    bestSuggestedMonth: "October – February",
+    status: "published",
+    viewCount: 0,
+    currency: "INR",
+    tripType: "Road Trip",
+    readingTime: 6,
+    _createdAt: "2026-08-27T00:00:00Z",
+    _updatedAt: "2026-08-27T00:00:00Z",
+    coverImage: undefined,
+    itinerary: [
+      {
+        _key: "pkr-day1",
+        dayNumber: 1,
+        title: "Pune to Anjarle",
+        date: undefined,
+        summary: "~180 km loop starting with misty ghats and ending at the cliffside temple of Anjarle.",
+        activities: [
+          { _key: "pkr1a", title: "Tamhini Ghat", description: "Waterfalls, misty ghats, and a great early-morning ride. Start here before the day heats up.", type: "transport" },
+          { _key: "pkr1b", title: "Mangaon → Ambet → Mandangad", description: "Winding ghat roads with small-town stops for chai and breakfast along the way.", type: "transport" },
+          { _key: "pkr1c", title: "Anjarle & Kadyavarcha Ganpati", description: "Kadyavarcha Ganpati temple perched on a cliff, plus Anjarle beach.", type: "sightseeing" },
+          { _key: "pkr1d", title: "Overnight at Anjarle", description: "Rest after the ride.", type: "accommodation" },
+        ],
+      },
+      {
+        _key: "pkr-day2",
+        dayNumber: 2,
+        title: "Anjarle to Ganpatipule",
+        date: undefined,
+        summary: "~90 km coastal cruise past black-sand beaches and historic temples.",
+        activities: [
+          { _key: "pkr2a", title: "Murud (Kokan) & Ladghar", description: "Quiet black-sand beach at Murud, and clean, less-crowded Ladghar beach for a swim break.", type: "sightseeing" },
+          { _key: "pkr2b", title: "Guhagar → Hedavi", description: "Hedavi's Ganpati temple and the Dashabhuja Ganesh idol.", type: "sightseeing" },
+          { _key: "pkr2c", title: "Ganpatipule", description: "The famous Swayambhu Ganpati temple right on the beach.", type: "sightseeing" },
+          { _key: "pkr2d", title: "Overnight at Ganpatipule", description: "Stay near the famous beachside temple.", type: "accommodation" },
+        ],
+      },
+      {
+        _key: "pkr-day3",
+        dayNumber: 3,
+        title: "Ganpatipule to Chiplun",
+        date: undefined,
+        summary: "~100 km ride exploring Ratnagiri, a cave shrine, and river confluence towns.",
+        activities: [
+          { _key: "pkr3a", title: "Ratnagiri", description: "Ratnagiri (Ratnadurg) Fort, Thibaw Palace, and Bhatye beach. Try local Alphonso mangoes if in season.", type: "sightseeing" },
+          { _key: "pkr3b", title: "Marleshwar", description: "Cave shrine plus a waterfall at the base of the Sahyadri hills — a short trek.", type: "sightseeing" },
+          { _key: "pkr3c", title: "Sangameshwar", description: "River confluence town with a temple stop.", type: "sightseeing" },
+          { _key: "pkr3d", title: "Overnight at Chiplun", description: "Riverside town on the Vashishti river.", type: "accommodation" },
+        ],
+      },
+      {
+        _key: "pkr-day4",
+        dayNumber: 4,
+        title: "Chiplun to Pune via Raigad",
+        date: undefined,
+        summary: "~200 km return journey featuring the historic Raigad Fort.",
+        activities: [
+          { _key: "pkr4a", title: "Mahad", description: "Base town for Raigad Fort.", type: "transport" },
+          { _key: "pkr4b", title: "Raigad Fort", description: "Shivaji Maharaj's capital — take the ropeway or the ~1,400-step trek to the top. Worth a half-day.", type: "sightseeing" },
+          { _key: "pkr4c", title: "Pune", description: "Ride back, arriving in the evening.", type: "transport" },
+        ],
+      },
+    ],
+  },
 ];
 
 
