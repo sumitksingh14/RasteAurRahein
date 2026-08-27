@@ -20,8 +20,8 @@ import type { MapPin } from "@/lib/types";
 import { MapPin as MapPinIcon } from "lucide-react";
 
 // Lazy-load the real map only in the browser
-const LeafletMapInner = dynamic(
-  () => import("@/components/ui/LeafletMapInner"),
+const OpenLayersMapInner = dynamic(
+  () => import("@/components/ui/OpenLayersMapInner"),
   {
     ssr: false,
     loading: () => (
@@ -93,7 +93,7 @@ export default function MapView({
     // CSS custom property lets the skeleton match the final height
     // before the JS bundle loads.
     <div style={{ "--map-height": `${height}px` } as React.CSSProperties}>
-      <LeafletMapInner pins={pins} center={center} zoom={zoom} height={height} />
+      <OpenLayersMapInner pins={pins} center={center} zoom={zoom} height={height} />
     </div>
   );
 }
