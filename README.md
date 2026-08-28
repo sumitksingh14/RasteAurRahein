@@ -322,6 +322,50 @@ npm run start   # runs on port 3000
 
 ## 📄 License
 
+## 🔵 Progressive Web App (PWA)
+
+The app is installable as a PWA on Android (Chrome) and iOS (Safari "Add to Home Screen").
+
+### What's included
+
+| Feature | Implementation |
+|---|---|
+| Web App Manifest | `src/app/manifest.ts` — native Next.js App Router |
+| Service Worker | `src/app/sw.ts` via **Serwist** (officially recommended by Next.js 16 docs) |
+| Install prompt | `src/components/pwa/InstallPrompt.tsx` — bottom banner with spring animation |
+| Icons | `public/icons/icon-192.png`, `icon-512.png`, `icon-maskable-512.png` |
+
+### Caching strategy
+
+| Route pattern | Strategy |
+|---|---|
+| `/api/auth/*` | `NetworkOnly` — never cached |
+| Other `/api/*` | `NetworkFirst` — fresh content, cache fallback |
+| Static assets (`.js`, `.css`, fonts, images) | `CacheFirst` — 30-day cache |
+| `cdn.sanity.io` images | `CacheFirst` — 7-day cache |
+
+### Testing PWA
+
+```bash
+# Build first — SW only active in production mode
+npm run build && npm start
+
+# Then open Chrome DevTools → Application → Service Workers
+```
+
+### Lighthouse PWA checklist
+
+- [x] Valid `manifest.json` (auto-generated from `manifest.ts`)
+- [x] Service worker registered and active
+- [x] HTTPS on Vercel (automatic)
+- [x] Icons at 192×192 and 512×512
+- [x] `start_url` responds with 200
+- [x] `theme_color` matches app brand
+
+---
+
+## 📋 License
+
 MIT © [Sumit Singh](https://github.com/sumitksingh14)
 
 ---

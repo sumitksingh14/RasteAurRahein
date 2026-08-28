@@ -1,6 +1,19 @@
 import type { NextConfig } from "next";
+import withSerwistInit from "@serwist/next";
+
+const withSerwist = withSerwistInit({
+  swSrc: "src/app/sw.ts",
+  swDest: "public/sw.js",
+  // Disable service worker in development to avoid caching interference
+  // with hot reload. Only active in production builds.
+  disable: process.env.NODE_ENV === "development",
+});
 
 const nextConfig: NextConfig = {
+  // Empty turbopack config tells Next.js 16 we are aware Turbopack is
+  // active. @serwist/next uses a webpack plugin that runs at build time
+  // (next build uses webpack by default), so this is not a conflict.
+  turbopack: {},
   images: {
     qualities: [75, 80, 85, 90],
     remotePatterns: [
@@ -24,4 +37,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withSerwist(nextConfig);

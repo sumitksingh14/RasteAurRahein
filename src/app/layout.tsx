@@ -11,6 +11,7 @@ import SnowEffect from "@/components/ui/SnowEffect";
 import ButterflyFollower from "@/components/ui/ButterflyFollower";
 import AmbientBackground from "@/components/ui/AmbientBackground";
 import { WebSiteSchema } from "@/components/ui/AuthorSchema";
+import InstallPrompt from "@/components/pwa/InstallPrompt";
 export const metadata: Metadata = {
   title: {
     default: "Raste Aur Raahein — Travel Blog by Sumit Singh",
@@ -69,6 +70,7 @@ export default function RootLayout({
                 <MobileTabBar />
               </div>
               <AIItineraryButton />
+              <InstallPrompt />
             </AuthProvider>
           </GeneratedTripsProvider>
         </ThemeProvider>
