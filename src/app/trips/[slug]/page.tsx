@@ -17,17 +17,38 @@ import { buildTripFAQ } from "@/lib/faqBuilder";
 import LikeButton from "@/components/ui/LikeButton";
 import { format } from "date-fns";
 
-// Fallback images by slug
+// Fallback hero images by slug — 1920px for full-bleed hero banner
 const FALLBACK_IMAGES: Record<string, string> = {
-  "spiti-valley":
-    "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1920&q=85",
+  // Spiti Valley — Ki Monastery with Spiti Valley and Himalayan peaks (user photo)
+  "spiti-valley": "/images/spiti-ki-monastery.jpg",
+  // Mysore · Coorg · Wayanad · Ooty — Mysore Palace (user photo)
+  "mysore-coorg-wayanad-ooty": "/images/mysore-palace.jpg",
+  // Rajasthan Desert Kingdom — camel dunes, Jaisalmer fort
   "rajasthan-desert-kingdom":
-    "https://images.unsplash.com/photo-1514222134-b57cbb8ce073?w=1920&q=85",
+    "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=1920&q=85",
+  // Goa Beyond Beaches — turquoise coastline
   "goa-beyond-beaches":
     "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=1920&q=85",
+  // Sikkim 7 Days — Gurudongmar Lake with Kanchenjunga peaks (user photo)
+  "sikkim-7-days": "/images/sikkim-gurudongmar.jpg",
+  // Meghalaya 5 Days — Dawki/Umngot River, crystal-clear turquoise water (user photo)
+  "meghalaya-5-days": "/images/meghalaya-dawki-river.jpg",
+  // Kerala 7 Days — backwaters, houseboat
+  "kerala-7-days":
+    "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1920&q=85",
+  // Munsiyari 6 Days — Khaliya Top meadows with Panchachuli peaks (user photo)
+  "munsiyari-6-days": "/images/munsiyari-panchachuli.jpg",
+  // Char Dham Yatra — Kedarnath temple with Himalayan peaks and pilgrims
+  "char-dham-yatra-uttarakhand":
+    "https://images.unsplash.com/photo-1712733900711-d0b929d0d7cc?w=1920&q=85",
+  // Panch Kedar Trek 10 Days — high-altitude Kedar shrine above the clouds (user photo)
+  "panch-kedar-trek-10-days": "/images/panch-kedar-temple.png",
+  // Pune Konkan Coast Raigad — user-provided aerial Konkan coastline photo
+  "pune-konkan-coast-raigad": "/images/konkan-coast.png",
 };
 const DEFAULT_IMAGE =
-  "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1920&q=85";
+  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920&q=85";
+
 
 interface Props {
   params: Promise<{ slug: string }>;
