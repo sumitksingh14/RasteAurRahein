@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
-import { Home, Map, Compass, MoreHorizontal, BookOpen, Mail, Upload, X, User, Sparkles } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Home, Map, Compass, MoreHorizontal, BookOpen, Mail, Upload, X, User, Sparkles, Download } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
 import AIItineraryModal from "@/components/ai/AIItineraryModal";
 
@@ -13,19 +13,56 @@ const PRIMARY_TABS = [
   { to: "/regions", icon: Compass, label: "Regions", exact: false },
 ];
 
-
-
 const MORE_LINKS = [
   { href: "/about", icon: BookOpen, label: "About" },
   { href: "/contact", icon: Mail, label: "Contact" },
   { href: "/import", icon: Upload, label: "Import Trip" },
 ];
 
+// Typed interface for the BeforeInstallPromptEvent (not in standard TS lib yet)
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
+}
+
 export default function MobileTabBar() {
   const pathname = usePathname();
   const { user, openAuthModal, logout } = useAuth();
   const [moreOpen, setMoreOpen] = useState(false);
   const [aiModalOpen, setAiModalOpen] = useState(false);
+
+  // PWA install prompt interception
+  const installPromptRef = useRef<BeforeInstallPromptEvent | null>(null);
+  const [canInstall, setCanInstall] = useState(false);
+  const [installOutcome, setInstallOutcome] = useState<"accepted" | "dismissed" | null>(null);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      // Prevent the browser's native mini-bar from appearing
+      e.preventDefault();
+      installPromptRef.current = e as BeforeInstallPromptEvent;
+      setCanInstall(true);
+    };
+
+    window.addEventListener("beforeinstallprompt", handler);
+    return () => window.removeEventListener("beforeinstallprompt", handler);
+  }, []);
+
+  // Hide the install button once the app is installed
+  useEffect(() => {
+    const handler = () => setCanInstall(false);
+    window.addEventListener("appinstalled", handler);
+    return () => window.removeEventListener("appinstalled", handler);
+  }, []);
+
+  const handleInstall = async () => {
+    if (!installPromptRef.current) return;
+    await installPromptRef.current.prompt();
+    const { outcome } = await installPromptRef.current.userChoice;
+    setInstallOutcome(outcome);
+    installPromptRef.current = null;
+    if (outcome === "accepted") setCanInstall(false);
+  };
 
   // Close more drawer on route change
   useEffect(() => {
@@ -169,6 +206,46 @@ export default function MobileTabBar() {
             {label}
           </Link>
         ))}
+
+        {/* PWA Install — surfaced here instead of as a blocking browser banner */}
+        {canInstall && installOutcome !== "dismissed" && (
+          <button
+            className="tab-more-drawer-link"
+            onClick={handleInstall}
+            style={{
+              width: "100%",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              textAlign: "left",
+            }}
+          >
+            <span
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: "50%",
+                background: "var(--bg-card)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+                border: "1px solid var(--border)",
+                color: "var(--text-secondary)",
+              }}
+            >
+              <Download size={16} />
+            </span>
+            <span>
+              <span style={{ display: "block", fontSize: "0.9rem", color: "var(--text-primary)", fontWeight: 500 }}>
+                Install App
+              </span>
+              <span style={{ display: "block", fontSize: "0.75rem", color: "var(--text-muted)" }}>
+                Add to Home Screen
+              </span>
+            </span>
+          </button>
+        )}
 
         {/* Auth row */}
         <div

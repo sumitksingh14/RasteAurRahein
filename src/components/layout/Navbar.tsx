@@ -212,6 +212,47 @@ export default function Navbar() {
                 </Link>
               );
             })}
+
+            {/* My Travel Itineraries — visible only when logged in */}
+            {user && (() => {
+              const isActive = pathname.startsWith("/itineraries");
+              return (
+                <Link
+                  href="/itineraries"
+                  style={{
+                    fontSize: "0.9rem",
+                    fontWeight: 500,
+                    color: isActive ? "var(--accent-gold)" : "var(--text-secondary)",
+                    transition: "color var(--transition)",
+                    position: "relative",
+                    whiteSpace: "nowrap",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.color = "var(--text-primary)")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.color = isActive
+                      ? "var(--accent-gold)"
+                      : "var(--text-secondary)")
+                  }
+                >
+                  My Itineraries
+                  {isActive && (
+                    <span
+                      style={{
+                        position: "absolute",
+                        bottom: -4,
+                        left: 0,
+                        right: 0,
+                        height: 2,
+                        background: "var(--accent-gold)",
+                        borderRadius: 1,
+                      }}
+                    />
+                  )}
+                </Link>
+              );
+            })()}
           </div>
 
           {/* Actions */}
