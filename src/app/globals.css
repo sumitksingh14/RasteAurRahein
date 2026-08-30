@@ -808,3 +808,25 @@ code {
   opacity: 0;
   pointer-events: none;
 }
+
+/* ── Floatable PWA Install Prompt ── */
+.pwa-install-dialog {
+  position: fixed;
+  bottom: calc(var(--tab-bar-height, 64px) + 1.5rem + env(safe-area-inset-bottom, 0px));
+  left: 1rem;
+  right: 1rem;
+  margin: 0 auto;
+  max-width: 420px;
+  width: calc(100vw - 2rem);
+}
+
+@media (min-width: 768px) {
+  .pwa-install-dialog {
+    bottom: 1.5rem;
+    left: auto;
+    right: 1.5rem;
+    margin: 0;
+    width: 380px;
+    max-width: 380px;
+  }
+}
