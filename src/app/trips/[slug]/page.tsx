@@ -15,6 +15,8 @@ import AuthorSchema from "@/components/ui/AuthorSchema";
 import FAQSchema from "@/components/ui/FAQSchema";
 import { buildTripFAQ } from "@/lib/faqBuilder";
 import LikeButton from "@/components/ui/LikeButton";
+import TripRating from "@/components/ui/TripRating";
+import CommentSection from "@/components/ui/CommentSection";
 import { format } from "date-fns";
 
 // Fallback hero images by slug — 1920px for full-bleed hero banner
@@ -252,7 +254,7 @@ export default async function TripDetailPage({ params }: Props) {
                 {trip.viewCount.toLocaleString()} views
               </span>
             )}
-            <ShareButton title={trip.title} />
+            <ShareButton title={trip.title} excerpt={trip.excerpt} />
           </div>
         </div>
       </div>
@@ -326,6 +328,9 @@ export default async function TripDetailPage({ params }: Props) {
               </div>
               <LikeButton type="trip" id={trip.slug} />
             </div>
+
+            {/* Trip Rating */}
+            <TripRating tripSlug={trip.slug} />
             {/* Trip overview card */}
             <div
               className="glass-card"
@@ -513,59 +518,11 @@ export default async function TripDetailPage({ params }: Props) {
       )}
 
       {/* ============================================================
-          COMMENTS — Giscus
+          COMMENTS
       ============================================================ */}
       <section style={{ padding: "4rem 0", borderTop: "1px solid var(--border)" }}>
-        <div className="container" style={{ maxWidth: 720 }}>
-          <h2
-            style={{
-              fontFamily: "var(--font-serif)",
-              color: "var(--text-primary)",
-              marginBottom: "1.5rem",
-              fontSize: "1.75rem",
-            }}
-          >
-            Comments
-          </h2>
-          <div
-            className="glass-card"
-            style={{
-              padding: "2.5rem 2rem",
-              textAlign: "center",
-              borderRadius: "var(--radius-md)",
-            }}
-          >
-            <div
-              style={{
-                width: 48,
-                height: 48,
-                borderRadius: "50%",
-                background: "var(--accent-gold-dim)",
-                border: "1px solid var(--border-accent)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "0 auto 1.25rem",
-                fontSize: "1.5rem",
-              }}
-            >
-              💬
-            </div>
-            <h3
-              style={{
-                fontFamily: "var(--font-serif)",
-                color: "var(--text-primary)",
-                fontSize: "1.15rem",
-                marginBottom: "0.5rem",
-              }}
-            >
-              Comments coming soon
-            </h3>
-            <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", maxWidth: 380, margin: "0 auto" }}>
-              We’re setting up a GitHub-powered comments section. In the meantime, reach out via the{" "}
-              <a href="/contact" style={{ color: "var(--accent-gold)" }}>contact page</a>.
-            </p>
-          </div>
+        <div className="container" style={{ maxWidth: 760 }}>
+          <CommentSection tripSlug={trip.slug} />
         </div>
       </section>
 

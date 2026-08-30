@@ -113,3 +113,48 @@ export type MapPin = {
   label: string;
   day?: number;
 };
+
+export interface HotelSuggestion {
+  id: string;
+  name: string;
+  type: "hotel" | "homestay" | "guesthouse" | "camp" | "resort";
+  stars?: number; // 1-5
+  avgPricePerNight: number; // INR
+  currency?: string;
+  town: string;
+  contact?: string;
+  bookingUrl?: string;
+  notes?: string;
+  amenities?: string[];
+}
+
+export interface FoodSpot {
+  id: string;
+  name: string;
+  type: "restaurant" | "dhaba" | "street-food" | "cafe" | "homestay-kitchen";
+  town: string;
+  mustTry: string[];
+  priceRange: "₹" | "₹₹" | "₹₹₹";
+  isVeg?: boolean;
+  notes?: string;
+}
+
+export interface FuelStop {
+  id: string;
+  name: string;
+  type: "fuel" | "rest" | "food" | "viewpoint" | "atm";
+  distanceFromPrev?: number; // km from last stop
+  town: string;
+  notes?: string;
+  altitude?: number; // meters
+}
+
+export interface TripComment {
+  id: string;
+  tripSlug: string;
+  authorName: string;
+  userId: string;
+  body: string;
+  createdAt: string;
+}
+

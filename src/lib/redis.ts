@@ -92,4 +92,43 @@ export const redis = {
   async scard(key: string): Promise<number> {
     return (await redisCmd("scard", key)) as number;
   },
+
+  /** RPUSH key value → list length */
+  async rpush(key: string, value: string): Promise<number> {
+    return (await redisCmd("rpush", key, value)) as number;
+  },
+
+  /** LRANGE key start stop → string[] */
+  async lrange(key: string, start: number, stop: number): Promise<string[]> {
+    const result = await redisCmd("lrange", key, start, stop);
+    return (result as string[]) || [];
+  },
+
+  /** LLEN key → number */
+  async llen(key: string): Promise<number> {
+    return (await redisCmd("llen", key)) as number;
+  },
+
+  /** HGET key field → string | null */
+  async hget(key: string, field: string): Promise<string | null> {
+    const result = await redisCmd("hget", key, field);
+    return result as string | null;
+  },
+
+  /** HDEL key field */
+  async hdel(key: string, field: string): Promise<void> {
+    await redisCmd("hdel", key, field);
+  },
+
+  /** HKEYS key → string[] */
+  async hkeys(key: string): Promise<string[]> {
+    const result = await redisCmd("hkeys", key);
+    return (result as string[]) || [];
+  },
+
+  /** HVALS key → string[] */
+  async hvals(key: string): Promise<string[]> {
+    const result = await redisCmd("hvals", key);
+    return (result as string[]) || [];
+  },
 };

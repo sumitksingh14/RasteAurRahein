@@ -1,10 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Map, Camera, List, DollarSign } from "lucide-react";
+import { Map, Camera, List, DollarSign, Hotel, Utensils, Gauge } from "lucide-react";
 import ItineraryAccordion from "@/components/ui/ItineraryAccordion";
 import PhotoGallery from "@/components/ui/PhotoGallery";
 import MapView from "@/components/ui/MapView";
+import StaySuggestions from "@/components/ui/StaySuggestions";
+import FoodRecommendations from "@/components/ui/FoodRecommendations";
+import FuelRestStops from "@/components/ui/FuelRestStops";
 import type { Trip, MapPin } from "@/lib/types";
 
 type GalleryImage = {
@@ -40,13 +43,16 @@ const TRIP_GALLERIES: Record<string, GalleryImage[]> = {
   ],
 };
 
-type TabId = "itinerary" | "photos" | "map" | "costs";
+type TabId = "itinerary" | "photos" | "map" | "costs" | "stay" | "food" | "route";
 
 const TABS: { id: TabId; label: string; Icon: React.ElementType }[] = [
   { id: "itinerary", label: "Itinerary", Icon: List },
   { id: "photos", label: "Photos", Icon: Camera },
   { id: "map", label: "Map", Icon: Map },
   { id: "costs", label: "Costs", Icon: DollarSign },
+  { id: "stay", label: "Stay", Icon: Hotel },
+  { id: "food", label: "Food", Icon: Utensils },
+  { id: "route", label: "Route", Icon: Gauge },
 ];
 
 interface TripTabsProps {
@@ -320,6 +326,17 @@ export default function TripTabs({ trip }: TripTabsProps) {
             </div>
           )}
         </div>
+      )}
+      {activeTab === "stay" && (
+        <StaySuggestions tripSlug={trip.slug} />
+      )}
+
+      {activeTab === "food" && (
+        <FoodRecommendations tripSlug={trip.slug} />
+      )}
+
+      {activeTab === "route" && (
+        <FuelRestStops tripSlug={trip.slug} />
       )}
     </div>
   );
