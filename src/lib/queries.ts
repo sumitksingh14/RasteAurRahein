@@ -1,4 +1,4 @@
-import { sanityClient } from "./sanity";
+// Mock queries module relying on DEMO_TRIPS
 import type { Trip, Author } from "./types";
 
 // --- Demo data fallback (used when Sanity is not yet configured) ---
@@ -1348,110 +1348,32 @@ export const DEMO_AUTHOR: Author = {
   ],
 };
 
-// --- Sanity GROQ Queries ---
-
-const tripFields = `
-  _id,
-  title,
-  "slug": slug.current,
-  coverImage,
-  excerpt,
-  tags,
-  country,
-  startDate,
-  endDate,
-  bestSuggestedMonth,
-  status,
-  viewCount,
-  totalBudget,
-  currency,
-  tripType,
-  readingTime,
-  _createdAt,
-  _updatedAt,
-  "author": author->{_id, name, "slug": slug.current, photo, bio}
-`;
-
-const itineraryFields = `
-  itinerary[]{
-    _key,
-    dayNumber,
-    title,
-    date,
-    summary,
-    coverImage,
-    activities[]{
-      _key,
-      time,
-      title,
-      description,
-      location,
-      photos,
-      cost,
-      currency,
-      notes,
-      type
-    }
-  }
-`;
-
 export async function getAllTrips(): Promise<Trip[]> {
-  try {
-    const query = `*[_type == "trip" && status == "published" && country == "India"] | order(_createdAt desc) { ${tripFields} }`;
-    const trips = await sanityClient.fetch(query);
-    return trips.length > 0 ? trips : DEMO_TRIPS;
-  } catch {
-    return DEMO_TRIPS;
-  }
+  return DEMO_TRIPS;
 }
 
 export async function getTripBySlug(slug: string): Promise<Trip | null> {
-  try {
-    const query = `*[_type == "trip" && slug.current == $slug && country == "India"][0] { ${tripFields}, ${itineraryFields}, gallery, body }`;
-    const trip = await sanityClient.fetch(query, { slug });
-    if (trip) return trip;
-    return DEMO_TRIPS.find((t) => t.slug === slug) || null;
-  } catch {
-    return DEMO_TRIPS.find((t) => t.slug === slug) || null;
-  }
+  const trip = DEMO_TRIPS.find((t) => t.slug === slug);
+  return trip || null;
+}
+
+export async function getTripsByRegion(regionSlug: string): Promise<Trip[]> {
+  return DEMO_TRIPS.filter((t) => t.tags?.map(t => t.toLowerCase()).includes(regionSlug.replace(/-/g, " ")));
 }
 
 export async function getFeaturedTrips(): Promise<Trip[]> {
-  try {
-    const query = `*[_type == "trip" && status == "published" && country == "India"] | order(viewCount desc)[0..2] { ${tripFields} }`;
-    const trips = await sanityClient.fetch(query);
-    return trips.length > 0 ? trips : DEMO_TRIPS.slice(0, 3);
-  } catch {
-    return DEMO_TRIPS.slice(0, 3);
-  }
+  return DEMO_TRIPS.slice(0, 3);
 }
 
 export async function searchTrips(queryText: string): Promise<Trip[]> {
-  try {
-    const query = `*[_type == "trip" && status == "published" && country == "India" && (title match $q || excerpt match $q || $q in tags)] | order(_createdAt desc) { ${tripFields} }`;
-    return await sanityClient.fetch(query, { q: `${queryText}*` });
-  } catch {
-    return DEMO_TRIPS.filter(
-      (t) =>
-        t.title.toLowerCase().includes(queryText.toLowerCase()) ||
-        t.tags?.some((tag) => tag.toLowerCase().includes(queryText.toLowerCase()))
-    );
-  }
+  const lower = queryText.toLowerCase();
+  return DEMO_TRIPS.filter((t) => 
+    t.title.toLowerCase().includes(lower) || 
+    (t.excerpt && t.excerpt.toLowerCase().includes(lower)) || 
+    (t.tags && t.tags.some(tag => tag.toLowerCase().includes(lower)))
+  );
 }
 
 export async function incrementViewCount(slug: string): Promise<void> {
-  try {
-    const trip = await sanityClient.fetch(
-      `*[_type == "trip" && slug.current == $slug][0]{_id, viewCount}`,
-      { slug }
-    );
-    if (trip) {
-      await sanityClient
-        .patch(trip._id)
-        .set({ viewCount: (trip.viewCount || 0) + 1 })
-        .commit();
-    }
-  } catch {
-    // Silently fail in demo mode
-  }
+  // Mock no-op since Sanity is removed
 }

@@ -27,19 +27,6 @@ const serwist = new Serwist({
         cacheName: "api-responses",
       }),
     },
-    // ── Sanity CDN images: cache-first ────────────────────────────────────
-    {
-      matcher: /^https:\/\/cdn\.sanity\.io\//,
-      handler: new CacheFirst({
-        cacheName: "sanity-images",
-        plugins: [
-          new ExpirationPlugin({
-            maxEntries: 100,
-            maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
-          }),
-        ],
-      }),
-    },
     // ── Static assets: cache-first ────────────────────────────────────────
     {
       matcher: /\.(?:js|css|woff2?|png|jpg|jpeg|svg|ico|webp)$/,

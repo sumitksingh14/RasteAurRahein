@@ -212,7 +212,7 @@ function GeneratedTripCard({
             borderTop: "1px solid var(--border)",
           }}
         >
-          <div style={{ display: "flex", gap: "0.75rem" }}>
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
             <Link
               href={`/itineraries/${trip.id}`}
               className="btn btn-outline"
@@ -329,17 +329,6 @@ export default function ItinerariesPage() {
               Generate New Itinerary
             </button>
 
-            {user?.email === "zsumitksingh@gmail.com" && trips.length > 0 && (
-              <button
-                onClick={() => alert("Migration initiated! Configure your Sanity project to sync these itineraries to All Trips.")}
-                className="btn btn-outline"
-                style={{ display: "inline-flex", gap: "8px", alignItems: "center", color: "var(--accent-teal)", borderColor: "var(--accent-teal)" }}
-              >
-                <Navigation size={16} />
-                Migrate to All Trips
-              </button>
-            )}
-
             {/* Trip count chip */}
             {trips.length > 0 && (
               <span
@@ -424,7 +413,11 @@ export default function ItinerariesPage() {
             }}
           >
             {trips.map((trip) => (
-              <GeneratedTripCard key={trip.id} trip={trip} onDelete={removeTrip} />
+              <GeneratedTripCard 
+                key={trip.id} 
+                trip={trip} 
+                onDelete={removeTrip} 
+              />
             ))}
           </div>
         )}
