@@ -3,22 +3,19 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Menu, X, Compass, Sun, Moon, Search, ChevronDown, LogOut, User } from "lucide-react";
-import { useTheme } from "@/components/providers/ThemeProvider";
+import { Search, User, Menu, X, ChevronDown, LogOut } from "lucide-react";
 import { REGIONS } from "@/lib/regions";
 import { useAuth } from "@/components/providers/AuthProvider";
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/trips", label: "Trips / Itineraries" },
+  { href: "/trips", label: "Find a Trip" },
   { href: "/regions", label: "Regions" },
-  { href: "/about", label: "About" },
+  { href: "/about", label: "Share Stories" },
   { href: "/contact", label: "Contact" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { theme, toggleTheme } = useTheme();
   const { user, logout, openAuthModal } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -30,13 +27,11 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close menu on route change
   useEffect(() => setMenuOpen(false), [pathname]);
 
   return (
     <>
       <nav
-        className={pathname === "/" && !scrolled ? "force-dark" : ""}
         style={{
           position: "fixed",
           top: 0,
@@ -46,13 +41,10 @@ export default function Navbar() {
           height: "var(--nav-height)",
           display: "flex",
           alignItems: "center",
-          transition: "all var(--transition)",
-          backgroundColor: scrolled
-            ? "var(--bg-glass)"
-            : "transparent",
-          backdropFilter: scrolled ? "blur(20px)" : "none",
-          WebkitBackdropFilter: scrolled ? "blur(20px)" : "none",
-          borderBottom: scrolled ? "1px solid var(--border)" : "none",
+          backgroundColor: "#FFFFFF",
+          borderBottom: scrolled ? "1px solid #E5E7EB" : "1px solid #F3F4F6",
+          boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0.06)" : "none",
+          transition: "box-shadow 0.25s ease, border-color 0.25s ease",
         }}
       >
         <div
@@ -70,30 +62,21 @@ export default function Navbar() {
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "10px",
-              fontFamily: "var(--font-serif)",
-              fontSize: "1.25rem",
-              fontWeight: 600,
-              color: "var(--text-primary)",
+              gap: "8px",
+              fontFamily: "var(--font-sans)",
+              fontSize: "1.4rem",
+              fontWeight: 800,
+              color: "#006CE4",
+              textDecoration: "none",
+              letterSpacing: "-0.02em",
             }}
           >
-            <span
-              style={{
-                width: 36,
-                height: 36,
-                borderRadius: "50%",
-                background:
-                  "linear-gradient(135deg, var(--accent-gold), var(--accent-rose))",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "var(--bg-primary)",
-                flexShrink: 0,
-              }}
-            >
-              <Compass size={18} />
-            </span>
-            Raste Aur Raahein
+            <img 
+              src="/logo.png" 
+              alt="Raste Aur Rahein Logo" 
+              style={{ height: "40px", width: "auto", objectFit: "contain" }} 
+            />
+            Raste Aur Rahein
           </Link>
 
           {/* Desktop Nav */}
@@ -111,7 +94,6 @@ export default function Navbar() {
                   ? pathname === "/"
                   : pathname.startsWith(link.href);
 
-              // Regions gets a dropdown
               if (link.href === "/regions") {
                 return (
                   <div key={link.href} className="nav-regions-wrapper" style={{ position: "relative" }}>
@@ -120,11 +102,14 @@ export default function Navbar() {
                       style={{
                         fontSize: "0.9rem",
                         fontWeight: 500,
-                        color: isActive ? "var(--accent-gold)" : "var(--text-secondary)",
-                        transition: "color var(--transition)",
+                        color: isActive ? "#006CE4" : "#374151",
+                        transition: "color 0.2s ease",
                         display: "flex",
                         alignItems: "center",
                         gap: "4px",
+                        textDecoration: "none",
+                        position: "relative",
+                        paddingBottom: "4px",
                       }}
                     >
                       {link.label}
@@ -133,11 +118,11 @@ export default function Navbar() {
                         <span
                           style={{
                             position: "absolute",
-                            bottom: -4,
+                            bottom: -2,
                             left: 0,
                             right: 0,
                             height: 2,
-                            background: "var(--accent-gold)",
+                            background: "#006CE4",
                             borderRadius: 1,
                           }}
                         />
@@ -153,17 +138,18 @@ export default function Navbar() {
                             display: "block",
                             padding: "0.6rem 1rem",
                             fontSize: "0.85rem",
-                            color: "var(--text-secondary)",
+                            color: "#374151",
                             borderRadius: "var(--radius-sm)",
                             transition: "all var(--transition)",
                             whiteSpace: "nowrap",
+                            textDecoration: "none",
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.color = "var(--accent-gold)";
-                            e.currentTarget.style.background = "var(--accent-gold-dim)";
+                            e.currentTarget.style.color = "#006CE4";
+                            e.currentTarget.style.background = "rgba(0,108,228,0.06)";
                           }}
                           onMouseLeave={(e) => {
-                            e.currentTarget.style.color = "var(--text-secondary)";
+                            e.currentTarget.style.color = "#374151";
                             e.currentTarget.style.background = "transparent";
                           }}
                         >
@@ -182,17 +168,19 @@ export default function Navbar() {
                   style={{
                     fontSize: "0.9rem",
                     fontWeight: 500,
-                    color: isActive ? "var(--accent-gold)" : "var(--text-secondary)",
-                    transition: "color var(--transition)",
+                    color: isActive ? "#006CE4" : "#374151",
+                    transition: "color 0.2s ease",
                     position: "relative",
+                    paddingBottom: "4px",
+                    textDecoration: "none",
                   }}
                   onMouseEnter={(e) =>
-                    (e.currentTarget.style.color = "var(--text-primary)")
+                    (e.currentTarget.style.color = "#006CE4")
                   }
                   onMouseLeave={(e) =>
                     (e.currentTarget.style.color = isActive
-                      ? "var(--accent-gold)"
-                      : "var(--text-secondary)")
+                      ? "#006CE4"
+                      : "#374151")
                   }
                 >
                   {link.label}
@@ -200,11 +188,11 @@ export default function Navbar() {
                     <span
                       style={{
                         position: "absolute",
-                        bottom: -4,
+                        bottom: -2,
                         left: 0,
                         right: 0,
                         height: 2,
-                        background: "var(--accent-gold)",
+                        background: "#006CE4",
                         borderRadius: 1,
                       }}
                     />
@@ -213,7 +201,7 @@ export default function Navbar() {
               );
             })}
 
-            {/* My Travel Itineraries — visible only when logged in */}
+            {/* My Itineraries — logged-in only */}
             {user && (() => {
               const isActive = pathname.startsWith("/itineraries");
               return (
@@ -222,18 +210,18 @@ export default function Navbar() {
                   style={{
                     fontSize: "0.9rem",
                     fontWeight: 500,
-                    color: isActive ? "var(--accent-gold)" : "var(--text-secondary)",
-                    transition: "color var(--transition)",
+                    color: isActive ? "#006CE4" : "#374151",
+                    transition: "color 0.2s ease",
                     position: "relative",
+                    paddingBottom: "4px",
+                    textDecoration: "none",
                     whiteSpace: "nowrap",
                   }}
                   onMouseEnter={(e) =>
-                    (e.currentTarget.style.color = "var(--text-primary)")
+                    (e.currentTarget.style.color = "#006CE4")
                   }
                   onMouseLeave={(e) =>
-                    (e.currentTarget.style.color = isActive
-                      ? "var(--accent-gold)"
-                      : "var(--text-secondary)")
+                    (e.currentTarget.style.color = isActive ? "#006CE4" : "#374151")
                   }
                 >
                   My Itineraries
@@ -241,11 +229,11 @@ export default function Navbar() {
                     <span
                       style={{
                         position: "absolute",
-                        bottom: -4,
+                        bottom: -2,
                         left: 0,
                         right: 0,
                         height: 2,
-                        background: "var(--accent-gold)",
+                        background: "#006CE4",
                         borderRadius: 1,
                       }}
                     />
@@ -255,8 +243,9 @@ export default function Navbar() {
             })()}
           </div>
 
-          {/* Actions */}
+          {/* Right Actions */}
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            {/* Search */}
             <Link
               href="/trips"
               aria-label="Search trips"
@@ -267,16 +256,27 @@ export default function Navbar() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "var(--text-secondary)",
+                color: "#374151",
                 transition: "all var(--transition)",
-                border: "1px solid var(--border)",
-                background: "var(--bg-card)",
+                border: "1px solid #E5E7EB",
+                background: "#F9FAFB",
+                textDecoration: "none",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = "#006CE4";
+                e.currentTarget.style.borderColor = "#006CE4";
+                e.currentTarget.style.background = "rgba(0,108,228,0.06)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = "#374151";
+                e.currentTarget.style.borderColor = "#E5E7EB";
+                e.currentTarget.style.background = "#F9FAFB";
               }}
             >
               <Search size={16} />
             </Link>
 
-            {/* Auth button */}
+            {/* Auth */}
             {user ? (
               <div style={{ position: "relative" }}>
                 <button
@@ -286,13 +286,13 @@ export default function Navbar() {
                     width: 38,
                     height: 38,
                     borderRadius: "50%",
-                    background: "linear-gradient(135deg, var(--accent-gold), var(--accent-rose))",
+                    background: "linear-gradient(135deg, #006CE4, #FEBB02)",
                     border: "none",
                     cursor: "pointer",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    color: "#0a0a0f",
+                    color: "#fff",
                     fontFamily: "var(--font-sans)",
                     fontWeight: 700,
                     fontSize: "0.9rem",
@@ -307,18 +307,18 @@ export default function Navbar() {
                       position: "absolute",
                       top: "calc(100% + 10px)",
                       right: 0,
-                      background: "var(--bg-card)",
-                      border: "1px solid var(--border)",
+                      background: "#FFFFFF",
+                      border: "1px solid #E5E7EB",
                       borderRadius: "var(--radius-md)",
                       padding: "0.5rem",
                       minWidth: 160,
-                      boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
+                      boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
                       zIndex: 2000,
                     }}
                   >
-                    <div style={{ padding: "0.6rem 1rem", borderBottom: "1px solid var(--border)", marginBottom: "0.25rem" }}>
-                      <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-primary)" }}>@{user.username}</div>
-                      <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>{user.email}</div>
+                    <div style={{ padding: "0.6rem 1rem", borderBottom: "1px solid #E5E7EB", marginBottom: "0.25rem" }}>
+                      <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "#262729" }}>@{user.username}</div>
+                      <div style={{ fontSize: "0.75rem", color: "#6B7280" }}>{user.email}</div>
                     </div>
                     <button
                       onClick={async () => { await logout(); setAvatarMenuOpen(false); }}
@@ -331,10 +331,18 @@ export default function Navbar() {
                         borderRadius: "var(--radius-sm)",
                         border: "none",
                         background: "transparent",
-                        color: "var(--text-secondary)",
+                        color: "#374151",
                         cursor: "pointer",
                         fontSize: "0.875rem",
                         fontFamily: "var(--font-sans)",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = "#F9FAFB";
+                        e.currentTarget.style.color = "#006CE4";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "transparent";
+                        e.currentTarget.style.color = "#374151";
                       }}
                     >
                       <LogOut size={14} />
@@ -351,48 +359,35 @@ export default function Navbar() {
                   display: "flex",
                   alignItems: "center",
                   gap: "6px",
-                  padding: "0.45rem 1rem",
+                  padding: "0.45rem 1.1rem",
                   borderRadius: "100px",
-                  border: "1px solid var(--border-accent)",
-                  background: "var(--accent-gold-dim)",
-                  color: "var(--accent-gold)",
+                  border: "1px solid #E5E7EB",
+                  background: "#F9FAFB",
+                  color: "#374151",
                   fontFamily: "var(--font-sans)",
-                  fontSize: "0.8rem",
+                  fontSize: "0.85rem",
                   fontWeight: 600,
                   cursor: "pointer",
                   transition: "all var(--transition)",
                   flexShrink: 0,
                 }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "#006CE4";
+                  e.currentTarget.style.color = "#fff";
+                  e.currentTarget.style.borderColor = "#006CE4";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "#F9FAFB";
+                  e.currentTarget.style.color = "#374151";
+                  e.currentTarget.style.borderColor = "#E5E7EB";
+                }}
               >
-                <User size={13} />
+                <User size={14} />
                 Sign In
               </button>
             )}
 
-            <button
-              onClick={toggleTheme}
-              aria-label={
-                theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
-              }
-              id="theme-toggle-btn"
-              style={{
-                width: 38,
-                height: 38,
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "var(--accent-gold)",
-                transition: "all var(--transition)",
-                border: "1px solid var(--border-accent)",
-                background: "var(--accent-gold-dim)",
-                cursor: "pointer",
-              }}
-            >
-              {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
-            </button>
-
-            {/* Mobile menu toggle — hidden since MobileTabBar handles mobile nav */}
+            {/* Mobile menu toggle */}
             <button
               onClick={() => setMenuOpen((o) => !o)}
               aria-label="Toggle menu"
@@ -404,9 +399,9 @@ export default function Navbar() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "var(--text-primary)",
-                border: "1px solid var(--border)",
-                background: "var(--bg-card)",
+                color: "#374151",
+                border: "1px solid #E5E7EB",
+                background: "#F9FAFB",
                 cursor: "pointer",
               }}
               className="mobile-only"
@@ -432,7 +427,7 @@ export default function Navbar() {
           style={{
             position: "absolute",
             inset: 0,
-            background: "rgba(0,0,0,0.6)",
+            background: "rgba(0,0,0,0.3)",
             opacity: menuOpen ? 1 : 0,
             transition: "opacity var(--transition)",
           }}
@@ -446,8 +441,8 @@ export default function Navbar() {
             right: 0,
             bottom: 0,
             width: "min(320px, 85vw)",
-            background: "var(--bg-secondary)",
-            borderLeft: "1px solid var(--border)",
+            background: "#FFFFFF",
+            borderLeft: "1px solid #E5E7EB",
             padding: "calc(var(--nav-height) + 2rem) 2rem 2rem",
             display: "flex",
             flexDirection: "column",
@@ -467,13 +462,15 @@ export default function Navbar() {
                 href={link.href}
                 style={{
                   display: "block",
-                  padding: "1rem",
+                  padding: "0.9rem 1rem",
                   borderRadius: "var(--radius-sm)",
-                  fontSize: "1.1rem",
-                  fontFamily: "var(--font-serif)",
-                  color: isActive ? "var(--accent-gold)" : "var(--text-primary)",
-                  background: isActive ? "var(--accent-gold-dim)" : "transparent",
+                  fontSize: "1rem",
+                  fontFamily: "var(--font-sans)",
+                  fontWeight: isActive ? 700 : 500,
+                  color: isActive ? "#006CE4" : "#262729",
+                  background: isActive ? "rgba(0,108,228,0.06)" : "transparent",
                   transition: "all var(--transition)",
+                  textDecoration: "none",
                 }}
               >
                 {link.label}
@@ -481,16 +478,17 @@ export default function Navbar() {
             );
           })}
 
-          <div style={{ marginTop: "auto", paddingTop: "2rem", borderTop: "1px solid var(--border)" }}>
+          <div style={{ marginTop: "auto", paddingTop: "2rem", borderTop: "1px solid #E5E7EB" }}>
             <Link
               href="/import"
               style={{
                 display: "flex",
                 alignItems: "center",
                 gap: "8px",
-                color: "var(--text-muted)",
+                color: "#6B7280",
                 fontSize: "0.875rem",
                 padding: "0.5rem 0",
+                textDecoration: "none",
               }}
             >
               Import Itinerary
@@ -506,7 +504,6 @@ export default function Navbar() {
         }
         @media (max-width: 767px) {
           .desktop-nav { display: none !important; }
-          /* Hamburger hidden on mobile — MobileTabBar handles nav */
           .mobile-only { display: none !important; }
         }
         /* Regions dropdown */
@@ -517,11 +514,11 @@ export default function Navbar() {
           left: 50%;
           transform: translateX(-50%);
           min-width: 180px;
-          background: var(--bg-card);
-          border: 1px solid var(--border);
+          background: #FFFFFF;
+          border: 1px solid #E5E7EB;
           border-radius: var(--radius-md);
           padding: 0.5rem;
-          box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+          box-shadow: 0 8px 32px rgba(0,0,0,0.10);
           z-index: 2000;
         }
         .nav-regions-wrapper:hover .nav-regions-dropdown {
@@ -535,9 +532,9 @@ export default function Navbar() {
           transform: translateX(-50%);
           width: 10px;
           height: 10px;
-          background: var(--bg-card);
-          border-left: 1px solid var(--border);
-          border-top: 1px solid var(--border);
+          background: #FFFFFF;
+          border-left: 1px solid #E5E7EB;
+          border-top: 1px solid #E5E7EB;
           rotate: 45deg;
         }
       `}</style>

@@ -1,224 +1,186 @@
 "use client";
 
 import Link from "next/link";
-import { Compass, AtSign, Globe, Mail, Video } from "lucide-react";
-import { useState } from "react";
+import { AtSign, Globe, Video, Phone, Mail, MapPin, Share2 } from "lucide-react";
+
 import { REGIONS } from "@/lib/regions";
 import { useAuth } from "@/components/providers/AuthProvider";
 
-const quickLinks = [
-  { href: "/trips", label: "All Trips" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+const companyLinks = [
+  { href: "/about", label: "About Us" },
+  { href: "/trips", label: "Find a Trip" },
+  { href: "/contact", label: "Contact Us" },
   { href: "/import", label: "Import Itinerary" },
-  { href: "/itineraries", label: "My Travel Itineraries" },
+];
+
+const helpLinks = [
+  { href: "/trips", label: "Find a Trip" },
+  { href: "/import", label: "How To Import?" },
+  { href: "/about", label: "Why Us?" },
+  { href: "/contact", label: "FAQs" },
+  { href: "/trips", label: "Travel Guides" },
+];
+
+const socialLinks = [
+  { Icon: AtSign, href: "https://instagram.com", label: "Instagram" },
+  { Icon: Globe, href: "https://twitter.com", label: "Twitter" },
+  { Icon: Video, href: "https://youtube.com", label: "YouTube" },
+  { Icon: Share2, href: "https://linkedin.com", label: "LinkedIn" },
 ];
 
 export default function Footer() {
-  const [email, setEmail] = useState("");
-  const [newsletterState, setNewsletterState] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [errorMsg, setErrorMsg] = useState("");
   const { user } = useAuth();
-
-  const handleNewsletterSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) return;
-    setNewsletterState("loading");
-    setErrorMsg("");
-    try {
-      const res = await fetch("/api/newsletter", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      if (res.ok) {
-        setNewsletterState("success");
-        setEmail("");
-      } else {
-        const data = await res.json();
-        setErrorMsg(data.error || "Something went wrong. Please try again.");
-        setNewsletterState("error");
-      }
-    } catch {
-      setErrorMsg("Network error. Please try again.");
-      setNewsletterState("error");
-    }
-  };
 
   return (
     <footer
       style={{
-        borderTop: "1px solid var(--border)",
-        background: "var(--bg-secondary)",
-        padding: "4rem 0 2rem",
-        marginTop: "4rem",
+        background: "#F7F7F7",
+        borderTop: "1px solid #E5E7EB",
+        marginTop: "0",
+        paddingTop: "3.5rem",
+        paddingBottom: "0",
       }}
     >
       <div className="container">
+        {/* Main grid */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(min(200px, 100%), 1fr))",
-            gap: "3rem",
+            gridTemplateColumns: "1.4fr 1fr 1fr 1.2fr",
+            gap: "2.5rem",
             marginBottom: "3rem",
           }}
+          className="footer-grid"
         >
-          {/* Brand */}
+          {/* Brand column */}
           <div>
             <Link
               href="/"
               style={{
-                display: "flex",
+                display: "inline-flex",
                 alignItems: "center",
-                gap: "10px",
-                fontFamily: "var(--font-serif)",
-                fontSize: "1.2rem",
-                fontWeight: 600,
+                gap: "8px",
+                fontFamily: "var(--font-sans)",
+                fontSize: "1.4rem",
+                fontWeight: 800,
+                color: "#006CE4",
+                textDecoration: "none",
+                letterSpacing: "-0.02em",
                 marginBottom: "1rem",
-                color: "var(--text-primary)",
               }}
             >
-              <span
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: "50%",
-                  background: "linear-gradient(135deg, var(--accent-gold), var(--accent-rose))",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "var(--bg-primary)",
-                  flexShrink: 0,
-                }}
-              >
-                <Compass size={16} />
-              </span>
-              Raste Aur Raahein
+              <img 
+                src="/logo.png" 
+                alt="Raste Aur Rahein Logo" 
+                style={{ height: "40px", width: "auto", objectFit: "contain" }} 
+              />
+              Raste Aur Rahein
             </Link>
             <p
               style={{
-                color: "var(--text-muted)",
+                color: "#FEBB02",
                 fontSize: "0.875rem",
                 lineHeight: 1.7,
-                maxWidth: 240,
+                maxWidth: 260,
+                fontWeight: 500,
               }}
             >
               Documenting high-altitude deserts, ancient monasteries, and roads less taken — one trip at a time.
             </p>
 
-            {/* Social Icons */}
+            {/* Social icons */}
             <div
               style={{
                 display: "flex",
-                gap: "0.75rem",
+                gap: "0.6rem",
                 marginTop: "1.5rem",
               }}
             >
-              {[
-                { Icon: AtSign, href: "https://instagram.com", label: "Instagram" },
-                { Icon: Globe, href: "https://twitter.com", label: "Twitter" },
-                { Icon: Video, href: "https://youtube.com", label: "YouTube" },
-                { Icon: Mail, href: "/contact", label: "Email" },
-              ].map(({ Icon, href, label }) => (
+              {socialLinks.map(({ Icon, href, label }) => (
                 <Link
                   key={label}
                   href={href}
                   aria-label={label}
-                  target={href.startsWith("http") ? "_blank" : undefined}
-                  rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: "50%",
+                    width: 38,
+                    height: 38,
+                    borderRadius: "8px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    color: "var(--text-muted)",
-                    border: "1px solid var(--border)",
-                    background: "var(--bg-card)",
+                    color: "#262729",
+                    background: "#FFFFFF",
+                    border: "1px solid #E5E7EB",
                     transition: "all var(--transition)",
+                    textDecoration: "none",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = "var(--accent-gold)";
-                    e.currentTarget.style.borderColor = "var(--border-accent)";
-                    e.currentTarget.style.background = "var(--accent-gold-dim)";
+                    e.currentTarget.style.background = "#006CE4";
+                    e.currentTarget.style.color = "#FFFFFF";
+                    e.currentTarget.style.borderColor = "#006CE4";
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.color = "var(--text-muted)";
-                    e.currentTarget.style.borderColor = "var(--border)";
-                    e.currentTarget.style.background = "var(--bg-card)";
+                    e.currentTarget.style.background = "#FFFFFF";
+                    e.currentTarget.style.color = "#262729";
+                    e.currentTarget.style.borderColor = "#E5E7EB";
                   }}
                 >
-                  <Icon size={15} />
+                  <Icon size={17} />
                 </Link>
               ))}
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Company column */}
           <div>
             <h4
               style={{
-                fontSize: "0.75rem",
+                fontSize: "0.875rem",
                 fontFamily: "var(--font-sans)",
-                fontWeight: 600,
+                fontWeight: 800,
+                color: "#262729",
+                marginBottom: "1.25rem",
                 textTransform: "uppercase",
-                letterSpacing: "0.1em",
-                color: "var(--text-muted)",
-                marginBottom: "1rem",
+                letterSpacing: "0.08em",
               }}
             >
-              Navigate
+              Company
             </h4>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-              {quickLinks
+            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              {companyLinks
                 .filter((link) => link.href !== "/itineraries" || user)
                 .map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
                     style={{
-                      color: "var(--text-secondary)",
+                      color: "#4B5563",
                       fontSize: "0.9rem",
                       transition: "color var(--transition)",
+                      textDecoration: "none",
+                      fontWeight: 400,
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent-gold)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = "#006CE4")}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = "#4B5563")}
                   >
                     {link.label}
                   </Link>
                 </li>
               ))}
-            </ul>
-          </div>
-
-          {/* Regions */}
-          <div>
-            <h4
-              style={{
-                fontSize: "0.75rem",
-                fontFamily: "var(--font-sans)",
-                fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: "0.1em",
-                color: "var(--text-muted)",
-                marginBottom: "1rem",
-              }}
-            >
-              Regions
-            </h4>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-              {REGIONS.map((r) => (
+              {REGIONS.slice(0, 3).map((r) => (
                 <li key={r.slug}>
                   <Link
                     href={`/regions/${r.slug}`}
                     style={{
-                      color: "var(--text-secondary)",
+                      color: "#4B5563",
                       fontSize: "0.9rem",
                       transition: "color var(--transition)",
+                      textDecoration: "none",
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent-gold)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = "#006CE4")}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = "#4B5563")}
                   >
                     {r.label}
                   </Link>
@@ -227,124 +189,118 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* India trips */}
+          {/* Help Center column */}
           <div>
             <h4
               style={{
-                fontSize: "0.75rem",
+                fontSize: "0.875rem",
                 fontFamily: "var(--font-sans)",
-                fontWeight: 600,
+                fontWeight: 800,
+                color: "#262729",
+                marginBottom: "1.25rem",
                 textTransform: "uppercase",
-                letterSpacing: "0.1em",
-                color: "var(--text-muted)",
-                marginBottom: "1rem",
+                letterSpacing: "0.08em",
               }}
             >
-              India Trips
+              Help Center
             </h4>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-              <li>
-                <Link
-                    href="/trips"
+            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              {helpLinks.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
                     style={{
-                      color: "var(--text-secondary)",
+                      color: "#4B5563",
                       fontSize: "0.9rem",
                       transition: "color var(--transition)",
+                      textDecoration: "none",
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent-gold)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = "#006CE4")}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = "#4B5563")}
                   >
-                    Explore all India trips
+                    {link.label}
                   </Link>
                 </li>
+              ))}
             </ul>
           </div>
 
-          {/* Newsletter */}
+          {/* Contact Info column */}
           <div>
             <h4
               style={{
-                fontSize: "0.75rem",
+                fontSize: "0.875rem",
                 fontFamily: "var(--font-sans)",
-                fontWeight: 600,
+                fontWeight: 800,
+                color: "#262729",
+                marginBottom: "1.25rem",
                 textTransform: "uppercase",
-                letterSpacing: "0.1em",
-                color: "var(--text-muted)",
-                marginBottom: "1rem",
+                letterSpacing: "0.08em",
               }}
             >
-              Stay Updated
+              Contact Info
             </h4>
-            <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", marginBottom: "1rem" }}>
-              New trip stories, itineraries, and travel tips — straight to your inbox.
-            </p>
-            {newsletterState === "success" ? (
-              <div
-                style={{
-                  padding: "1rem",
-                  borderRadius: "var(--radius-sm)",
-                  background: "var(--accent-gold-dim)",
-                  border: "1px solid var(--border-accent)",
-                  textAlign: "center",
-                }}
-              >
-                <div style={{ fontSize: "1.25rem", marginBottom: "0.5rem" }}>✓</div>
-                <p style={{ color: "var(--accent-gold)", fontSize: "0.875rem", fontWeight: 600 }}>
-                  You&apos;re subscribed!
-                </p>
-                <p style={{ color: "var(--text-muted)", fontSize: "0.8rem", marginTop: "4px" }}>
-                  Check your inbox for a welcome email.
-                </p>
-              </div>
-            ) : (
-              <form
-                onSubmit={handleNewsletterSubmit}
-                style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
-              >
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="your@email.com"
-                  id="newsletter-email"
-                  required
-                  disabled={newsletterState === "loading"}
+            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              <li>
+                <a
+                  href="tel:+919876543210"
                   style={{
-                    padding: "0.65rem 1rem",
-                    borderRadius: "var(--radius-sm)",
-                    border: `1px solid ${newsletterState === "error" ? "var(--accent-rose)" : "var(--border)"}`,
-                    background: "var(--bg-card)",
-                    color: "var(--text-primary)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    color: "#4B5563",
                     fontSize: "0.875rem",
-                    fontFamily: "var(--font-sans)",
-                    outline: "none",
-                    width: "100%",
-                    opacity: newsletterState === "loading" ? 0.6 : 1,
+                    textDecoration: "none",
+                    transition: "color var(--transition)",
                   }}
-                />
-                {newsletterState === "error" && errorMsg && (
-                  <p style={{ color: "var(--accent-rose)", fontSize: "0.75rem", margin: 0 }}>
-                    {errorMsg}
-                  </p>
-                )}
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={newsletterState === "loading"}
-                  style={{ width: "100%", justifyContent: "center", padding: "0.65rem", opacity: newsletterState === "loading" ? 0.7 : 1 }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#006CE4")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "#4B5563")}
                 >
-                  {newsletterState === "loading" ? "Subscribing…" : "Subscribe"}
-                </button>
-              </form>
-            )}
+                  <Phone size={15} color="#6B7280" /> Phone: +91 98765 43210
+                </a>
+              </li>
+              <li>
+                <a
+                  href="mailto:hello@rasteauraahein.com"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    color: "#4B5563",
+                    fontSize: "0.875rem",
+                    textDecoration: "none",
+                    transition: "color var(--transition)",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#006CE4")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "#4B5563")}
+                >
+                  <Mail size={15} color="#6B7280" /> Email: hello@rasteauraahein.com
+                </a>
+              </li>
+              <li>
+                <span
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "8px",
+                    color: "#4B5563",
+                    fontSize: "0.875rem",
+                  }}
+                >
+                  <MapPin size={15} color="#6B7280" style={{ flexShrink: 0, marginTop: "2px" }} />
+                  New Delhi, India
+                </span>
+              </li>
+            </ul>
           </div>
         </div>
 
         {/* Bottom bar */}
         <div
           style={{
-            borderTop: "1px solid var(--border)",
-            paddingTop: "1.5rem",
+            borderTop: "1px solid #E5E7EB",
+            paddingTop: "1.25rem",
+            paddingBottom: "1.25rem",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
@@ -352,14 +308,35 @@ export default function Footer() {
             gap: "1rem",
           }}
         >
-          <p style={{ color: "var(--text-muted)", fontSize: "0.8rem" }}>
-            © {new Date().getFullYear()} Sumit Singh · Raste Aur Raahein
+          <p style={{ color: "#6B7280", fontSize: "0.8rem" }}>
+            © {new Date().getFullYear()} Raste Aur Raahein · All rights reserved
           </p>
-          <p style={{ color: "var(--text-muted)", fontSize: "0.8rem" }}>
-            Built with ♥ using Next.js & Sanity
+          <p style={{ color: "#6B7280", fontSize: "0.8rem" }}>
+            Built with ♥ by{" "}
+            <a
+              href="https://github.com/sumitksingh14"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "#006CE4", fontWeight: 600, textDecoration: "none" }}
+            >
+              @Sumit Singh
+            </a>
           </p>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 900px) {
+          .footer-grid {
+            grid-template-columns: 1fr 1fr !important;
+          }
+        }
+        @media (max-width: 540px) {
+          .footer-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
     </footer>
   );
 }

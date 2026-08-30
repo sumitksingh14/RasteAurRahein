@@ -47,19 +47,12 @@ export default function ItineraryDetailPage({ params }: { params: Promise<{ id: 
         </p>
         <Link 
           href="/itineraries" 
+          className="btn btn-outline"
           style={{ 
             display: "inline-flex",
             alignItems: "center",
             gap: "0.5rem",
-            color: "var(--accent-gold)", 
-            fontWeight: 500,
-            padding: "0.75rem 1.5rem",
-            border: "1px solid var(--accent-gold)",
-            borderRadius: "var(--radius-md)",
-            transition: "all var(--transition)"
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = "var(--accent-gold-dim)"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = "none"; }}
         >
           <ArrowLeft size={16} /> Back to Itineraries
         </Link>
@@ -86,7 +79,7 @@ export default function ItineraryDetailPage({ params }: { params: Promise<{ id: 
             fontSize: "0.9rem",
             transition: "color var(--transition)",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent-gold)")}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "#006CE4")}
           onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
         >
           <ArrowLeft size={16} /> Back to My Itineraries
@@ -126,7 +119,7 @@ export default function ItineraryDetailPage({ params }: { params: Promise<{ id: 
             <span style={{ display: "flex", alignItems: "center", gap: 6 }}><Calendar size={16} /> {trip.days.length} days · {trip.month}</span>
             <span style={{ display: "flex", alignItems: "center", gap: 6 }}><Clock size={16} /> Generated {dateLabel}</span>
             {trip.totalBudgetEstimate && (
-              <span style={{ display: "flex", alignItems: "center", gap: 6, color: "var(--accent-gold)", fontWeight: 600 }}>
+              <span style={{ display: "flex", alignItems: "center", gap: 6, color: "#006CE4", fontWeight: 600 }}>
                 {trip.totalBudgetEstimate}
               </span>
             )}
@@ -138,7 +131,7 @@ export default function ItineraryDetailPage({ params }: { params: Promise<{ id: 
         {/* Days Section */}
         <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
           <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "1.8rem", color: "var(--text-primary)", borderBottom: "1px solid var(--border)", paddingBottom: "1rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
-            <Navigation size={24} style={{ color: "var(--accent-gold)" }} /> Full Itinerary
+            <Navigation size={24} style={{ color: "#006CE4" }} /> Full Itinerary
           </h2>
 
           {trip.days.map((day) => (
@@ -148,8 +141,8 @@ export default function ItineraryDetailPage({ params }: { params: Promise<{ id: 
                   width: 48, 
                   height: 48, 
                   borderRadius: "50%", 
-                  background: "var(--accent-gold-dim)", 
-                  color: "var(--accent-gold)", 
+                  background: "rgba(0,108,228,0.1)", 
+                  color: "#006CE4", 
                   display: "flex", 
                   alignItems: "center", 
                   justifyContent: "center", 
