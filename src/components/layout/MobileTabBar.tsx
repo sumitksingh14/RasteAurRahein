@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
-import { Home, Map, Compass, MoreHorizontal, BookOpen, Mail, Upload, X, User, Sparkles, Download } from "lucide-react";
+import { Home, Map, Compass, MoreHorizontal, BookOpen, Mail, Upload, X, User, Sparkles, Download, Bookmark } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
 import AIItineraryModal from "@/components/ai/AIItineraryModal";
 
@@ -179,6 +179,31 @@ export default function MobileTabBar() {
             </span>
             <span style={{ color: "var(--accent-gold)", fontWeight: 600 }}>AI Trip Planner</span>
           </button>
+        )}
+
+        {user && (
+          <Link
+            href="/itineraries"
+            className={`tab-more-drawer-link${pathname.startsWith("/itineraries") ? " active" : ""}`}
+            onClick={() => setMoreOpen(false)}
+          >
+            <span
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: "50%",
+                background: pathname.startsWith("/itineraries") ? "var(--accent-gold-dim)" : "var(--bg-card)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+                border: "1px solid var(--border)",
+              }}
+            >
+              <Bookmark size={16} />
+            </span>
+            My Itineraries
+          </Link>
         )}
 
         {MORE_LINKS.map(({ href, icon: Icon, label }) => (

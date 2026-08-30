@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Search, MapPin, Smartphone, ArrowRight } from "lucide-react";
 import { getFeaturedTrips, getAllTrips, DEMO_AUTHOR } from "@/lib/queries";
 import TripCard from "@/components/ui/TripCard";
+import HeroSearch from "@/components/ui/HeroSearch";
 
 export const metadata: Metadata = {
   title: "Raste Aur Raahein — Travel Blog by Sumit Singh",
@@ -105,146 +106,7 @@ export default async function HomePage() {
             </div>
 
             {/* Search Bar Card — sits on bottom of hero card */}
-            <div
-              style={{
-                position: "absolute",
-                bottom: "2rem",
-                left: "2rem",
-                right: "2rem",
-                zIndex: 3,
-              }}
-            >
-              {/* Type tabs */}
-              <div
-                style={{
-                  display: "flex",
-                  gap: "0.5rem",
-                  marginBottom: "0.75rem",
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "var(--font-sans)",
-                    fontWeight: 800,
-                    fontSize: "1.1rem",
-                    color: "rgba(255,255,255,0.9)",
-                    marginRight: "0.5rem",
-                  }}
-                >
-                  FIND
-                </span>
-                {TRIP_TYPES.map((type, i) => (
-                  <button
-                    key={type}
-                    style={{
-                      border: "none",
-                      background: "transparent",
-                      color: i === 0 ? "#FFFFFF" : "rgba(255,255,255,0.65)",
-                      fontFamily: "var(--font-sans)",
-                      fontSize: "0.875rem",
-                      fontWeight: i === 0 ? 600 : 400,
-                      cursor: "pointer",
-                      borderBottom: i === 0 ? "2px solid #FEBB02" : "2px solid transparent",
-                      borderRadius: "0",
-                      padding: "0.3rem 0.75rem",
-                    }}
-                  >
-                    {type}
-                  </button>
-                ))}
-              </div>
-
-              {/* Search inputs row */}
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "stretch",
-                  background: "#FFFFFF",
-                  borderRadius: "100px",
-                  overflow: "hidden",
-                  boxShadow: "0 4px 24px rgba(0,0,0,0.18)",
-                  maxWidth: "680px",
-                }}
-              >
-                {/* Location */}
-                <div
-                  style={{
-                    flex: 2,
-                    padding: "0 1.5rem",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    minHeight: "56px",
-                    borderRight: "1px solid #E5E7EB",
-                  }}
-                >
-                  <div style={{ fontSize: "0.7rem", fontWeight: 600, color: "#374151", letterSpacing: "0.04em", textTransform: "uppercase" }}>Location</div>
-                  <input
-                    type="text"
-                    placeholder="Which state do you prefer?"
-                    style={{
-                      border: "none",
-                      outline: "none",
-                      fontSize: "0.82rem",
-                      color: "#006CE4",
-                      background: "transparent",
-                      fontFamily: "var(--font-sans)",
-                      fontWeight: 500,
-                      padding: 0,
-                    }}
-                  />
-                </div>
-
-                {/* Season */}
-                <div
-                  style={{
-                    flex: 1,
-                    padding: "0 1.25rem",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    minHeight: "56px",
-                    borderRight: "1px solid #E5E7EB",
-                  }}
-                >
-                  <div style={{ fontSize: "0.7rem", fontWeight: 600, color: "#374151", letterSpacing: "0.04em", textTransform: "uppercase" }}>Season</div>
-                  <div style={{ fontSize: "0.82rem", color: "#9CA3AF", fontFamily: "var(--font-sans)" }}>Any season</div>
-                </div>
-
-                {/* Duration */}
-                <div
-                  style={{
-                    flex: 1,
-                    padding: "0 1.25rem",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    minHeight: "56px",
-                  }}
-                >
-                  <div style={{ fontSize: "0.7rem", fontWeight: 600, color: "#374151", letterSpacing: "0.04em", textTransform: "uppercase" }}>Duration</div>
-                  <div style={{ fontSize: "0.82rem", color: "#9CA3AF", fontFamily: "var(--font-sans)" }}>Any length</div>
-                </div>
-
-                {/* Search button */}
-                <Link
-                  href="/trips"
-                  className="hero-search-btn"
-                  style={{
-                    width: 56,
-                    height: 56,
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                    textDecoration: "none",
-                  }}
-                >
-                  <Search size={20} color="#262729" />
-                </Link>
-              </div>
-            </div>
+            <HeroSearch />
           </div>
         </div>
       </section>

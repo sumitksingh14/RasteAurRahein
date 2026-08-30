@@ -46,14 +46,17 @@ function computeDuration(trip: Trip): number | null {
 
 interface TripsClientProps {
   trips: Trip[];
+  initialQuery?: string;
+  initialTag?: string;
+  initialDurationIdx?: number;
 }
 
-export default function TripsClient({ trips }: TripsClientProps) {
-  const [query, setQuery] = useState("");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+export default function TripsClient({ trips, initialQuery = "", initialTag = "", initialDurationIdx = 0 }: TripsClientProps) {
+  const [query, setQuery] = useState(initialQuery);
+  const [selectedTags, setSelectedTags] = useState<string[]>(initialTag ? [initialTag] : []);
   const [sortBy, setSortBy] = useState<"date" | "views" | "title">("date");
   const [showFilters, setShowFilters] = useState(false);
-  const [durationIdx, setDurationIdx] = useState(0); // index into DURATION_OPTIONS
+  const [durationIdx, setDurationIdx] = useState(initialDurationIdx); // index into DURATION_OPTIONS
   const [budgetIdx, setBudgetIdx] = useState(0);     // index into BUDGET_OPTIONS
   const [regionLabel, setRegionLabel] = useState("Any");
 

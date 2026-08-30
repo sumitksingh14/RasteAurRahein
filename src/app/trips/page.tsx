@@ -8,8 +8,17 @@ export const metadata: Metadata = {
     "Browse travel itineraries across India — from Himalayan treks to desert drives.",
 };
 
-export default async function TripsPage() {
+type PageProps = {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export default async function TripsPage(props: PageProps) {
+  const sp = await props.searchParams;
   const trips = await getAllTrips();
+  
+  const initialQuery = typeof sp.query === 'string' ? sp.query : "";
+  const initialTag = typeof sp.tag === 'string' ? sp.tag : "";
+  const initialDurationIdx = typeof sp.durationIdx === 'string' ? parseInt(sp.durationIdx, 10) : 0;
 
   return (
     <div style={{ paddingTop: "var(--nav-height)", minHeight: "100vh" }}>
@@ -51,7 +60,12 @@ export default async function TripsPage() {
         </div>
       </div>
 
-      <TripsClient trips={trips} />
+      <TripsClient 
+        trips={trips} 
+        initialQuery={initialQuery}
+        initialTag={initialTag}
+        initialDurationIdx={initialDurationIdx}
+      />
     </div>
   );
 }
