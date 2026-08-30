@@ -326,37 +326,8 @@ code {
   animation: fadeIn 0.4s ease forwards;
 }
 
-@keyframes snow-fall {
-  0% { transform: translateY(-10vh); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { transform: translateY(110vh); opacity: 0; }
-}
 
-@keyframes snow-sway {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(20px); }
-}
 
-.snow-flake {
-  position: absolute;
-  top: -10vh;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 50%;
-  pointer-events: none;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
-}
-
-@keyframes ken-burns {
-  0% { transform: scale(1) translate(0, 0); }
-  50% { transform: scale(1.05) translate(-1%, -1%); }
-  100% { transform: scale(1) translate(0, 0); }
-}
-
-.animate-ken-burns {
-  animation: ken-burns 30s ease-in-out infinite;
-  transform-origin: center center;
-}
 
 /* Skeleton loading */
 .skeleton {
