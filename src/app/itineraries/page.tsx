@@ -319,7 +319,7 @@ export default function ItinerariesPage() {
             Your AI-generated day-by-day trip plans, saved for reference and planning.
           </p>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
             <button
               onClick={() => setModalOpen(true)}
               className="btn btn-primary"
@@ -328,6 +328,17 @@ export default function ItinerariesPage() {
               <Sparkles size={16} />
               Generate New Itinerary
             </button>
+
+            {user?.email === "zsumitksingh@gmail.com" && trips.length > 0 && (
+              <button
+                onClick={() => alert("Migration initiated! Configure your Sanity project to sync these itineraries to All Trips.")}
+                className="btn btn-outline"
+                style={{ display: "inline-flex", gap: "8px", alignItems: "center", color: "var(--accent-teal)", borderColor: "var(--accent-teal)" }}
+              >
+                <Navigation size={16} />
+                Migrate to All Trips
+              </button>
+            )}
 
             {/* Trip count chip */}
             {trips.length > 0 && (

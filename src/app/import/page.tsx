@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Upload,
   FileText,
@@ -11,65 +11,42 @@ import {
   Clock,
   Eye,
   Loader2,
+  Sparkles,
+  Plane,
+  Bed,
+  Map,
+  Car,
+  Train,
+  Ship,
+  X
 } from "lucide-react";
-import type { ParsedItinerary } from "@/lib/types";
+import { parseItineraryAction, confirmImportAction, getSuggestionsAction } from "./actions";
+import type { ImportSegment } from "@/lib/services/ImportService";
+import type { Suggestion } from "@/lib/services/SuggestionService";
 
-type Step = "input" | "parsing" | "preview" | "error";
-
-const SAMPLE_HTML = `<h1>7 Days in Coorg — The Scotland of India</h1>
-
-<h2>Day 1: Arrival & Abbey Falls</h2>
-<ul>
-  <li>9:00 AM – Land at Mysore Airport, pick up rental car</li>
-  <li>11:30 AM – Arrive Madikeri, check in at Pepper Trail Homestay</li>
-  <li>2:00 PM – Abbey Falls (20 min walk through cardamom estates)</li>
-  <li>5:00 PM – Raja's Seat sunset viewpoint</li>
-  <li>7:30 PM – Dinner at Coorg Cuisine restaurant</li>
-</ul>
-
-<h2>Day 2: Coffee Estates</h2>
-<ul>
-  <li>7:00 AM – Morning coffee plantation walk (included with homestay)</li>
-  <li>10:00 AM – Tata Coffee Estate guided tour</li>
-  <li>1:00 PM – Lunch at local toddy shop — pandi curry, akki roti</li>
-  <li>3:00 PM – Nagarhole National Park drive</li>
-</ul>
-
-<h2>Day 3: Talacauvery Trek</h2>
-<ul>
-  <li>6:00 AM – Depart for Brahmagiri Peak trailhead</li>
-  <li>8:00 AM – Summit attempt (1608m, 3.5 km each way)</li>
-  <li>12:00 PM – Talacauvery temple, origin of River Cauvery</li>
-  <li>4:00 PM – Return, hot shower, local spiced toddy</li>
-</ul>`;
+type Step = "input" | "parsing" | "preview" | "suggestions" | "error";
 
 export default function ImportPage() {
   const [step, setStep] = useState<Step>("input");
   const [html, setHtml] = useState("");
-  const [parsed, setParsed] = useState<ParsedItinerary | null>(null);
+  const [segments, setSegments] = useState<ImportSegment[]>([]);
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [warnings, setWarnings] = useState<string[]>([]);
   const [errorMsg, setErrorMsg] = useState("");
-  const [sanitizedHtml, setSanitizedHtml] = useState("");
+  const [isConfirming, setIsConfirming] = useState(false);
+  const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(false);
 
   const handleParse = async () => {
     if (!html.trim()) return;
     setStep("parsing");
     setErrorMsg("");
+    setWarnings([]);
+    setSegments([]);
 
     try {
-      const res = await fetch("/api/import-itinerary", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ html }),
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || "Parse failed");
-      }
-
-      const data = await res.json();
-      setParsed(data.parsed);
-      setSanitizedHtml(data.sanitizedHtml);
+      const res = await parseItineraryAction("paste_text", html);
+      setSegments(res.segments || []);
+      setWarnings(res.warnings || []);
       setStep("preview");
     } catch (err) {
       setErrorMsg(err instanceof Error ? err.message : "Unknown error");
@@ -77,22 +54,41 @@ export default function ImportPage() {
     }
   };
 
-  const useSample = () => {
-    setHtml(SAMPLE_HTML);
-    setStep("input");
+  const handleConfirm = async () => {
+    setIsConfirming(true);
+    try {
+      // Mock trip ID for demo purposes
+      await confirmImportAction("demo-trip-id", segments);
+      setStep("suggestions");
+      
+      // Fetch suggestions asynchronously
+      setIsLoadingSuggestions(true);
+      const { suggestions } = await getSuggestionsAction("demo-trip-id", segments);
+      setSuggestions(suggestions || []);
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : "Failed to confirm");
+    } finally {
+      setIsConfirming(false);
+    }
   };
 
   const reset = () => {
     setStep("input");
-    setParsed(null);
+    setSegments([]);
+    setSuggestions([]);
     setErrorMsg("");
   };
 
-  const sectionStyle = {
-    border: "1px solid var(--border)",
-    borderRadius: "var(--radius-md)",
-    overflow: "hidden" as const,
-    marginBottom: "1rem",
+  const getIconForType = (type: string) => {
+    switch (type) {
+      case "flight": return <Plane size={16} />;
+      case "lodging": return <Bed size={16} />;
+      case "car_rental": return <Car size={16} />;
+      case "activity": return <Map size={16} />;
+      case "train": return <Train size={16} />;
+      case "cruise": return <Ship size={16} />;
+      default: return <MapPin size={16} />;
+    }
   };
 
   return (
@@ -101,8 +97,7 @@ export default function ImportPage() {
       <section
         style={{
           padding: "4rem 0 3rem",
-          background:
-            "linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%)",
+          background: "linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%)",
           borderBottom: "1px solid var(--border)",
         }}
       >
@@ -120,12 +115,12 @@ export default function ImportPage() {
               fontWeight: 600,
               color: "var(--accent-gold)",
               marginBottom: "1.25rem",
-              textTransform: "uppercase" as const,
+              textTransform: "uppercase",
               letterSpacing: "0.05em",
             }}
           >
             <Upload size={12} />
-            Admin Tool
+            Smart Import
           </div>
           <h1
             style={{
@@ -138,108 +133,33 @@ export default function ImportPage() {
             Import Itinerary
           </h1>
           <p style={{ color: "var(--text-muted)", lineHeight: 1.7, maxWidth: 560 }}>
-            Paste raw HTML from Google Docs, TripIt, or any planner. We&apos;ll
-            sanitize it, parse the structure into day-by-day activities, and
-            preview it before publishing.
+            Paste raw text from confirmation emails, booking sites, or planners. Our AI will automatically extract flights, hotels, and activities into structured segments.
           </p>
         </div>
       </section>
 
-      <div
-        className="container"
-        style={{ paddingTop: "2.5rem", paddingBottom: "5rem", maxWidth: 900 }}
-      >
-        {/* Progress steps */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            marginBottom: "2.5rem",
-            fontSize: "0.8rem",
-          }}
-        >
-          {(["input", "preview"] as const).map((s, i) => {
-            const done =
-              (s === "input" && (step === "preview")) ||
-              (s === "preview" && false);
-            const active = step === s || (step === "parsing" && s === "input");
-            return (
-              <span key={s} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                <span
-                  style={{
-                    width: 24,
-                    height: 24,
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    background: done
-                      ? "var(--accent-gold)"
-                      : active
-                      ? "var(--accent-gold-dim)"
-                      : "var(--bg-card)",
-                    border: `1px solid ${active || done ? "var(--accent-gold)" : "var(--border)"}`,
-                    color: done ? "var(--bg-primary)" : active ? "var(--accent-gold)" : "var(--text-muted)",
-                    fontSize: "0.7rem",
-                    fontWeight: 700,
-                  }}
-                >
-                  {i + 1}
-                </span>
-                <span style={{ color: active ? "var(--text-primary)" : "var(--text-muted)", fontWeight: active ? 600 : 400 }}>
-                  {s === "input" ? "Paste HTML" : "Preview & Publish"}
-                </span>
-                {i === 0 && <ChevronRight size={14} style={{ color: "var(--text-muted)" }} />}
-              </span>
-            );
-          })}
-        </div>
-
+      <div className="container" style={{ paddingTop: "2.5rem", paddingBottom: "5rem", maxWidth: 900 }}>
         {/* ── STEP 1: INPUT ── */}
         {(step === "input" || step === "error") && (
           <div>
             <div style={{ marginBottom: "1rem" }}>
-              <div
+              <label
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  display: "block",
+                  fontSize: "0.8rem",
+                  fontWeight: 600,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                  color: "var(--text-muted)",
                   marginBottom: "0.625rem",
                 }}
               >
-                <label
-                  htmlFor="html-input"
-                  style={{
-                    fontSize: "0.8rem",
-                    fontWeight: 600,
-                    textTransform: "uppercase" as const,
-                    letterSpacing: "0.05em",
-                    color: "var(--text-muted)",
-                  }}
-                >
-                  Paste your HTML itinerary
-                </label>
-                <button
-                  onClick={useSample}
-                  style={{
-                    fontSize: "0.8rem",
-                    color: "var(--accent-gold)",
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    fontFamily: "var(--font-sans)",
-                    padding: 0,
-                  }}
-                >
-                  Use sample →
-                </button>
-              </div>
+                Paste your confirmation text
+              </label>
               <textarea
-                id="html-input"
                 value={html}
                 onChange={(e) => setHtml(e.target.value)}
-                placeholder="<h1>My Trip to Coorg</h1>&#10;<h2>Day 1: Arrival</h2>&#10;<ul>&#10;  <li>9:00 AM – Drive from Bangalore</li>&#10;  ...&#10;</ul>"
+                placeholder="Flight Confirmation: AC123 to Lisbon..."
                 rows={18}
                 style={{
                   width: "100%",
@@ -255,25 +175,7 @@ export default function ImportPage() {
                   resize: "vertical",
                   transition: "border-color var(--transition)",
                 }}
-                onFocus={(e) =>
-                  (e.target.style.borderColor = "var(--border-accent)")
-                }
-                onBlur={(e) =>
-                  (e.target.style.borderColor = "var(--border)")
-                }
               />
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginTop: "0.4rem",
-                  fontSize: "0.75rem",
-                  color: "var(--text-muted)",
-                }}
-              >
-                <span>{html.length.toLocaleString()} characters</span>
-                <span>Max 500 KB</span>
-              </div>
             </div>
 
             {step === "error" && (
@@ -301,75 +203,11 @@ export default function ImportPage() {
                 onClick={handleParse}
                 disabled={!html.trim()}
                 className="btn btn-primary"
-                id="parse-itinerary-btn"
-                style={{
-                  opacity: !html.trim() ? 0.5 : 1,
-                  cursor: !html.trim() ? "not-allowed" : "pointer",
-                }}
+                style={{ opacity: !html.trim() ? 0.5 : 1, cursor: !html.trim() ? "not-allowed" : "pointer" }}
               >
                 <FileText size={16} />
-                Parse Itinerary
+                Extract Details
               </button>
-              {html && (
-                <button onClick={reset} className="btn btn-outline">
-                  Clear
-                </button>
-              )}
-            </div>
-
-            {/* Format hints */}
-            <div
-              style={{
-                marginTop: "2.5rem",
-                padding: "1.25rem",
-                borderRadius: "var(--radius-md)",
-                background: "var(--bg-secondary)",
-                border: "1px solid var(--border)",
-              }}
-            >
-              <h4
-                style={{
-                  fontFamily: "var(--font-sans)",
-                  fontSize: "0.85rem",
-                  fontWeight: 600,
-                  color: "var(--text-primary)",
-                  marginBottom: "1rem",
-                }}
-              >
-                What the parser understands
-              </h4>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-                  gap: "0.75rem",
-                }}
-              >
-                {[
-                  { tag: "<h1>", maps: "Trip title" },
-                  { tag: "<h2> / <h3>", maps: "Day headings (\"Day 1: …\")" },
-                  { tag: "<li>", maps: "Activities (with time extraction)" },
-                  { tag: "<table>", maps: "Schedule / cost breakdowns" },
-                  { tag: "<blockquote>", maps: "Tips & notes" },
-                  { tag: "Time patterns", maps: "\"9:00 AM\", \"14:30\" → timestamps" },
-                ].map(({ tag, maps }) => (
-                  <div key={tag}>
-                    <code
-                      style={{
-                        fontSize: "0.75rem",
-                        color: "var(--accent-gold)",
-                        display: "block",
-                        marginBottom: "2px",
-                      }}
-                    >
-                      {tag}
-                    </code>
-                    <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                      → {maps}
-                    </span>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         )}
@@ -387,22 +225,15 @@ export default function ImportPage() {
               color: "var(--text-muted)",
             }}
           >
-            <Loader2
-              size={36}
-              style={{
-                color: "var(--accent-gold)",
-                animation: "spin 1s linear infinite",
-              }}
-            />
-            <p style={{ fontSize: "0.9rem" }}>Parsing and sanitizing your HTML…</p>
+            <Loader2 size={36} style={{ color: "var(--accent-gold)", animation: "spin 1s linear infinite" }} />
+            <p style={{ fontSize: "0.9rem" }}>Analyzing text and extracting segments…</p>
             <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
           </div>
         )}
 
         {/* ── STEP 2: PREVIEW ── */}
-        {step === "preview" && parsed && (
+        {step === "preview" && (
           <div>
-            {/* Success banner */}
             <div
               style={{
                 display: "flex",
@@ -418,190 +249,147 @@ export default function ImportPage() {
             >
               <CheckCircle size={18} />
               <span style={{ fontWeight: 600, fontSize: "0.9rem" }}>
-                Parsed successfully —
-              </span>
-              <span style={{ fontSize: "0.875rem" }}>
-                {parsed.days.length} day{parsed.days.length !== 1 ? "s" : ""},{" "}
-                {parsed.days.reduce((s, d) => s + d.activities.length, 0)} activities
+                Extraction Complete — found {segments.length} segment{segments.length !== 1 ? "s" : ""}
               </span>
             </div>
-
-            {/* Parsed title */}
-            {parsed.title && (
-              <h2
-                style={{
-                  fontFamily: "var(--font-serif)",
-                  color: "var(--text-primary)",
-                  marginBottom: "2rem",
-                  fontSize: "2rem",
-                }}
-              >
-                {parsed.title}
-              </h2>
+            
+            {warnings.length > 0 && (
+              <div style={{ marginBottom: "2rem", padding: "1rem", background: "rgba(232, 133, 125, 0.1)", borderRadius: "var(--radius-sm)", color: "var(--accent-rose)" }}>
+                <strong>Warnings:</strong>
+                <ul style={{ marginTop: "0.5rem", paddingLeft: "1.5rem" }}>
+                  {warnings.map((w, i) => <li key={i}>{w}</li>)}
+                </ul>
+              </div>
             )}
 
-            {/* Day-by-day preview */}
-            {parsed.days.map((day) => (
-              <div key={day.dayNumber} style={sectionStyle}>
-                <div
-                  style={{
-                    padding: "1rem 1.25rem",
-                    background: "var(--bg-card)",
-                    borderBottom: "1px solid var(--border)",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.75rem",
-                  }}
-                >
-                  <span
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              {segments.map((seg) => {
+                const isLowConfidence = seg.confidence < 0.8;
+                return (
+                  <div
+                    key={seg.id}
                     style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: "var(--radius-sm)",
-                      background: "var(--accent-gold)",
-                      color: "var(--bg-primary)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "0.75rem",
-                      fontWeight: 700,
-                      flexShrink: 0,
+                      border: `1px solid ${isLowConfidence ? "var(--accent-gold)" : "var(--border)"}`,
+                      borderRadius: "var(--radius-md)",
+                      padding: "1.25rem",
+                      background: isLowConfidence ? "rgba(254, 187, 2, 0.03)" : "var(--bg-card)",
                     }}
                   >
-                    {day.dayNumber}
-                  </span>
-                  <h3
-                    style={{
-                      fontFamily: "var(--font-sans)",
-                      fontSize: "0.95rem",
-                      fontWeight: 600,
-                      color: "var(--text-primary)",
-                    }}
-                  >
-                    {day.title}
-                  </h3>
-                  <span
-                    style={{
-                      marginLeft: "auto",
-                      fontSize: "0.75rem",
-                      color: "var(--text-muted)",
-                    }}
-                  >
-                    {day.activities.length} stops
-                  </span>
-                </div>
-                <div style={{ padding: "0.75rem 1.25rem" }}>
-                  {day.activities.map((a, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        display: "flex",
-                        alignItems: "flex-start",
-                        gap: "0.75rem",
-                        padding: "0.5rem 0",
-                        borderBottom:
-                          i < day.activities.length - 1
-                            ? "1px solid var(--border)"
-                            : "none",
-                      }}
-                    >
-                      {a.time && (
-                        <span
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "3px",
-                            fontSize: "0.75rem",
-                            color: "var(--accent-gold)",
-                            fontWeight: 500,
-                            whiteSpace: "nowrap",
-                            minWidth: 70,
-                            paddingTop: 2,
-                          }}
-                        >
-                          <Clock size={11} />
-                          {a.time}
-                        </span>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--accent-blue)", fontWeight: 600, textTransform: "capitalize" }}>
+                        {getIconForType(seg.type)}
+                        {seg.type.replace("_", " ")}
+                      </div>
+                      {isLowConfidence && (
+                        <div style={{ fontSize: "0.75rem", color: "var(--accent-gold)", display: "flex", alignItems: "center", gap: "4px" }}>
+                          <AlertCircle size={12} /> Please Review
+                        </div>
+                      )}
+                    </div>
+                    <div style={{ marginTop: "1rem", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                      <div>
+                        <label style={{ display: "block", fontSize: "0.75rem", color: "var(--text-muted)" }}>Provider</label>
+                        <div style={{ fontWeight: 500 }}>{seg.provider}</div>
+                      </div>
+                      <div>
+                        <label style={{ display: "block", fontSize: "0.75rem", color: "var(--text-muted)" }}>Confirmation #</label>
+                        <div style={{ fontWeight: 500 }}>{seg.confirmationNumber || "—"}</div>
+                      </div>
+                      <div>
+                        <label style={{ display: "block", fontSize: "0.75rem", color: "var(--text-muted)" }}>Start</label>
+                        <div>{seg.startDateTime}</div>
+                      </div>
+                      {seg.endDateTime && (
+                        <div>
+                          <label style={{ display: "block", fontSize: "0.75rem", color: "var(--text-muted)" }}>End</label>
+                          <div>{seg.endDateTime}</div>
+                        </div>
                       )}
                       <div>
-                        <div
-                          style={{
-                            fontSize: "0.875rem",
-                            color: "var(--text-primary)",
-                            fontWeight: 500,
-                          }}
-                        >
-                          {a.title}
-                        </div>
-                        {a.notes && (
-                          <div
-                            style={{
-                              fontSize: "0.8rem",
-                              color: "var(--text-muted)",
-                              marginTop: "2px",
-                              fontStyle: "italic",
-                            }}
-                          >
-                            💡 {a.notes}
-                          </div>
-                        )}
+                        <label style={{ display: "block", fontSize: "0.75rem", color: "var(--text-muted)" }}>Location</label>
+                        <div>{seg.location.name}</div>
                       </div>
+                      {seg.destinationLocation && (
+                        <div>
+                          <label style={{ display: "block", fontSize: "0.75rem", color: "var(--text-muted)" }}>Destination</label>
+                          <div>{seg.destinationLocation.name}</div>
+                        </div>
+                      )}
                     </div>
-                  ))}
-                </div>
-              </div>
-            ))}
+                  </div>
+                );
+              })}
+            </div>
 
-            {/* Sanitized HTML preview */}
-            <details
-              style={{
-                marginTop: "1.5rem",
-                border: "1px solid var(--border)",
-                borderRadius: "var(--radius-md)",
-                overflow: "hidden",
-              }}
-            >
-              <summary
-                style={{
-                  padding: "0.875rem 1.25rem",
-                  background: "var(--bg-secondary)",
-                  cursor: "pointer",
-                  fontSize: "0.85rem",
-                  color: "var(--text-secondary)",
-                  fontWeight: 500,
-                  userSelect: "none",
-                }}
+            <div style={{ display: "flex", gap: "1rem", marginTop: "2rem" }}>
+              <button
+                className="btn btn-primary"
+                onClick={handleConfirm}
+                disabled={isConfirming}
               >
-                <Eye size={14} style={{ display: "inline", marginRight: "6px" }} />
-                View sanitized HTML
-              </summary>
-              <div
-                className="imported-itinerary"
-                style={{ padding: "1.25rem", maxHeight: 400, overflowY: "auto" }}
-                dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
-              />
-            </details>
+                {isConfirming ? <Loader2 size={16} className="spin" /> : <CheckCircle size={16} />}
+                Confirm & Save
+              </button>
+              <button onClick={reset} className="btn btn-outline" disabled={isConfirming}>
+                Discard
+              </button>
+            </div>
+          </div>
+        )}
 
-            {/* Action buttons */}
+        {/* ── STEP 3: SUGGESTIONS ── */}
+        {step === "suggestions" && (
+          <div>
             <div
               style={{
                 display: "flex",
-                gap: "1rem",
-                marginTop: "2rem",
-                flexWrap: "wrap",
+                alignItems: "center",
+                gap: "0.75rem",
+                padding: "1rem 1.25rem",
+                borderRadius: "var(--radius-md)",
+                background: "rgba(78, 205, 196, 0.08)",
+                border: "1px solid rgba(78, 205, 196, 0.25)",
+                color: "var(--accent-teal)",
+                marginBottom: "2rem",
               }}
             >
-              <button
-                className="btn btn-primary"
-                id="publish-trip-btn"
-                onClick={() => alert("Configure your Sanity project to enable publishing. See src/app/api/publish-trip/route.ts")}
-              >
-                <MapPin size={15} />
-                Publish to Sanity
-              </button>
-              <button onClick={reset} className="btn btn-outline">
-                ← Parse Another
-              </button>
+              <CheckCircle size={18} />
+              <span style={{ fontWeight: 600, fontSize: "0.9rem" }}>
+                Successfully Saved!
+              </span>
+            </div>
+
+            <h3 style={{ fontSize: "1.25rem", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <Sparkles size={18} color="var(--accent-gold)" />
+              Itinerary Enhancements
+            </h3>
+            
+            {isLoadingSuggestions ? (
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-muted)" }}>
+                <Loader2 size={16} className="spin" /> Checking past trips for recommendations...
+              </div>
+            ) : suggestions.length > 0 ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                {suggestions.map((s) => (
+                  <div key={s.id} style={{ padding: "1rem", background: "var(--bg-secondary)", borderRadius: "var(--radius-md)", border: "1px solid var(--border)" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
+                      <span style={{ fontWeight: 600, color: "var(--accent-blue)", fontSize: "0.9rem" }}>{s.segment.provider}</span>
+                      <span style={{ fontSize: "0.75rem", background: "var(--bg-card)", padding: "2px 6px", borderRadius: "4px", border: "1px solid var(--border)" }}>{s.sourceType}</span>
+                    </div>
+                    <p style={{ fontSize: "0.85rem", color: "var(--text-primary)", marginBottom: "1rem" }}>{s.rationale}</p>
+                    <div style={{ display: "flex", gap: "0.5rem" }}>
+                      <button className="btn btn-primary" style={{ padding: "0.4rem 0.8rem", fontSize: "0.8rem" }}>Add to Itinerary</button>
+                      <button className="btn btn-outline" style={{ padding: "0.4rem 0.8rem", fontSize: "0.8rem" }}>Dismiss</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p style={{ color: "var(--text-muted)" }}>No additional suggestions at this time.</p>
+            )}
+
+            <div style={{ marginTop: "2rem" }}>
+              <button className="btn btn-outline" onClick={reset}>Import Another</button>
             </div>
           </div>
         )}

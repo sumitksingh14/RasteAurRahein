@@ -69,10 +69,10 @@ export default function Footer() {
                 marginBottom: "1rem",
               }}
             >
-              <img 
-                src="/logo.png" 
-                alt="Raste Aur Rahein Logo" 
-                style={{ height: "40px", width: "auto", objectFit: "contain" }} 
+              <img
+                src="/logo.png"
+                alt="Raste Aur Rahein Logo"
+                style={{ height: "40px", width: "auto", objectFit: "contain" }}
               />
               Raste Aur Rahein
             </Link>
@@ -152,23 +152,23 @@ export default function Footer() {
               {companyLinks
                 .filter((link) => link.href !== "/itineraries" || user)
                 .map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    style={{
-                      color: "#4B5563",
-                      fontSize: "0.9rem",
-                      transition: "color var(--transition)",
-                      textDecoration: "none",
-                      fontWeight: 400,
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = "#006CE4")}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = "#4B5563")}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      style={{
+                        color: "#4B5563",
+                        fontSize: "0.9rem",
+                        transition: "color var(--transition)",
+                        textDecoration: "none",
+                        fontWeight: 400,
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = "#006CE4")}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = "#4B5563")}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
               {REGIONS.slice(0, 3).map((r) => (
                 <li key={r.slug}>
                   <Link
@@ -243,7 +243,7 @@ export default function Footer() {
             <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               <li>
                 <a
-                  href="tel:+919876543210"
+                  href="tel:+919196191109"
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -256,12 +256,12 @@ export default function Footer() {
                   onMouseEnter={(e) => (e.currentTarget.style.color = "#006CE4")}
                   onMouseLeave={(e) => (e.currentTarget.style.color = "#4B5563")}
                 >
-                  <Phone size={15} color="#6B7280" /> Phone: +91 98765 43210
+                  <Phone size={15} color="#6B7280" /> Phone: +91 91961 91109
                 </a>
               </li>
               <li>
                 <a
-                  href="mailto:hello@rasteauraahein.com"
+                  href="mailto:zsumitksingh@gmail.com"
                   style={{
                     display: "flex",
                     alignItems: "center",
