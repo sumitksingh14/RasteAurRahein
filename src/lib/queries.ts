@@ -4,6 +4,241 @@ import type { Trip, Author } from "./types";
 // --- Demo data fallback (used when Sanity is not yet configured) ---
 export const DEMO_TRIPS: Trip[] = [
   {
+    _id: "trip-jyotirlinga-pilgrimage",
+    title: "Maharashtra & Madhya Pradesh Jyotirlinga Pilgrimage",
+    slug: "jyotirlinga-pilgrimage-road-trip",
+    excerpt: "Explore the sacred Jyotirlingas of Bhimashankar, Trimbakeshwar, Grishneshwar, Mahakaleshwar and Omkareshwar on a culturally immersive road journey. Experience local cuisine, heritage sites and serene river vistas across two states.",
+    tags: ["Pilgrimage", "Road Trip", "India", "Maharashtra", "Madhya Pradesh", "Jyotirlinga"],
+    country: "India",
+    bestSuggestedMonth: "September",
+    status: "published",
+    viewCount: 154,
+    totalBudget: 25000,
+    currency: "INR",
+    tripType: "Pilgrimage",
+    readingTime: 5,
+    _createdAt: "2026-08-31T00:00:00Z",
+    _updatedAt: "2026-08-31T00:00:00Z",
+    coverImage: undefined,
+    itinerary: [
+      {
+        _key: "day1",
+        dayNumber: 1,
+        title: "Bhimashankar Blessings",
+        summary: "Reach Bhimashankar, worship the Jyotirlinga and enjoy the forest backdrop.",
+        activities: [
+          {
+            _key: "1a",
+            title: "07:00 AM Depart Mumbai",
+            description: "Leave Mumbai in a private vehicle heading north to Bhimashankar (~150 km).",
+            notes: "Start early to avoid traffic; carry water bottles.",
+            type: "transport"
+          },
+          {
+            _key: "1b",
+            title: "09:30 AM Bhimashankar Jyotirlinga Darshan",
+            description: "Visit the ancient Bhimashankar Shiva temple perched in the Western Ghats.",
+            notes: "Dress modestly; remove shoes before entering the sanctum.",
+            type: "sightseeing"
+          },
+          {
+            _key: "1c",
+            title: "12:30 PM Lunch – Maharashtrian Thali",
+            description: "Enjoy a wholesome thali with bhakri, varan, sabzi and solkadhi at Madhurima Dhaba.",
+            notes: "Try the local solkadhi for digestion after the temple visit.",
+            type: "food"
+          },
+          {
+            _key: "1d",
+            title: "02:00 PM Forest Viewpoint Trek",
+            description: "A short guided trek to a viewpoint offering panoramic views of the Bhimashankar forest.",
+            notes: "Wear comfortable shoes; carry a light raincoat in September.",
+            type: "activity"
+          },
+          {
+            _key: "1e",
+            title: "08:00 PM Check in at Bhimashankar Eco Resort",
+            description: "Relax in a eco friendly resort near the temple premises.",
+            notes: "Reserve beforehand during pilgrimage season.",
+            type: "accommodation"
+          }
+        ]
+      },
+      {
+        _key: "day2",
+        dayNumber: 2,
+        title: "Trimbakeshwar Trails",
+        summary: "Drive to Trimbakeshwar, worship the Jyotirlinga and explore the source of the Godavari.",
+        activities: [
+          {
+            _key: "2a",
+            title: "07:30 AM Drive to Trimbakeshwar",
+            description: "Travel from Bhimashankar to Trimbakeshwar (~120 km) via NH-48.",
+            notes: "Expect a scenic ride through hills; keep an eye on fuel.",
+            type: "transport"
+          },
+          {
+            _key: "2b",
+            title: "10:30 AM Trimbakeshwar Jyotirlinga Darshan",
+            description: "Visit the revered Trimbakeshwar Shiva temple, one of the twelve Jyotirlingas.",
+            notes: "Offer a heartfelt puja; the temple opens at 6:00 AM.",
+            type: "sightseeing"
+          },
+          {
+            _key: "2c",
+            title: "01:00 PM Lunch – Pithla Bhakri",
+            description: "Savor traditional pithla (gram flour curry) with fresh bhakri at Madhav's Kitchen.",
+            notes: "Spicy; pair with a glass of buttermilk to cool the palate.",
+            type: "food"
+          },
+          {
+            _key: "2d",
+            title: "02:30 PM Brahmagiri Hill Visit",
+            description: "Drive up to Brahmagiri Hill, the origin point of the Godavari River.",
+            notes: "Great photo spot; stay hydrated at the hilltop.",
+            type: "activity"
+          },
+          {
+            _key: "2e",
+            title: "07:30 PM Stay at Trimbakeshwar Heritage Resort",
+            description: "Evening rest in a heritage styled resort with garden views.",
+            notes: "Early check in may be available upon request.",
+            type: "accommodation"
+          }
+        ]
+      },
+      {
+        _key: "day3",
+        dayNumber: 3,
+        title: "Grishneshwar & Ellora Exploration",
+        summary: "Witness Grishneshwar Jyotirlinga and the magnificent Ellora Caves.",
+        activities: [
+          {
+            _key: "3a",
+            title: "07:00 AM Depart for Grishneshwar",
+            description: "Leave Trimbakeshwar for Grishneshwar (~100 km).",
+            notes: "Road passes through scenic valleys; keep a snack handy.",
+            type: "transport"
+          },
+          {
+            _key: "3b",
+            title: "09:30 AM Grishneshwar Jyotirlinga Darshan",
+            description: "Pay homage at the Grishneshwar temple, the last Jyotirlinga in Maharashtra.",
+            notes: "It's less crowded in the morning; take a moment for personal prayer.",
+            type: "sightseeing"
+          },
+          {
+            _key: "3c",
+            title: "12:00 PM Lunch – Zunka Ambadi",
+            description: "Enjoy rustic Zunka (spiced gram flour) with ambadi (millet flatbread) at Maharaj Dhaba.",
+            notes: "A protein rich meal ideal for the travel day ahead.",
+            type: "food"
+          },
+          {
+            _key: "3d",
+            title: "01:30 PM Ellora Caves Guided Tour",
+            description: "Explore the UNESCO listed rock cut caves of Ellora, a short drive from the temple.",
+            notes: "Hire a knowledgeable guide to appreciate the sculptures.",
+            type: "activity"
+          },
+          {
+            _key: "3e",
+            title: "08:00 PM Overnight at Aurangabad Heritage Hotel",
+            description: "Rest in a heritage hotel blending Mughal Maratha architecture.",
+            notes: "Book a room with a view of the city skyline.",
+            type: "accommodation"
+          }
+        ]
+      },
+      {
+        _key: "day4",
+        dayNumber: 4,
+        title: "Ujjain – Mahakaleshwar Majesty",
+        summary: "Long drive to Ujjain, worship Mahakaleshwar and attend the evening Aarti.",
+        activities: [
+          {
+            _key: "4a",
+            title: "05:00 AM Depart Aurangabad for Ujjain",
+            description: "Early start for a 9 hour drive to Ujjain (~620 km) via NH-52.",
+            notes: "Carry light breakfast; plan rest stops in Indore.",
+            type: "transport"
+          },
+          {
+            _key: "4b",
+            title: "02:00 PM Mahakaleshwar Jyotirlinga Darshan",
+            description: "Enter the sacred Mahakaleshwar temple in Ujjain, a pinnacle of Shaivism.",
+            notes: "Dress code: no shorts or sleeveless tops; carry a small offering.",
+            type: "sightseeing"
+          },
+          {
+            _key: "4c",
+            title: "02:30 PM Lunch – Ujjaini Poha",
+            description: "Taste the iconic fluffy poha with sev at Madhurima Veg restaurant.",
+            notes: "A light, energizing meal after the darshan.",
+            type: "food"
+          },
+          {
+            _key: "4d",
+            title: "04:30 PM Sandhya Aarti at Mahakaleshwar",
+            description: "Participate in the soulful evening aarti with chants and incense.",
+            notes: "Arrive early to secure a good spot; keep cameras off during the ritual.",
+            type: "activity"
+          },
+          {
+            _key: "4e",
+            title: "07:30 PM Check in at Ujjain Riverside Hotel",
+            description: "Relax at a riverside hotel overlooking the Shipra River.",
+            notes: "Enjoy a night walk along the ghats after dinner.",
+            type: "accommodation"
+          }
+        ]
+      },
+      {
+        _key: "day5",
+        dayNumber: 5,
+        title: "Omkareshwar River Reverence",
+        summary: "Cross the Narmada to Omkareshwar, worship the Jyotirlinga and enjoy a boat ride.",
+        activities: [
+          {
+            _key: "5a",
+            title: "08:00 AM Drive to Omkareshwar",
+            description: "Leave Ujjain for Omkareshwar (~120 km) via the Narmada bridge.",
+            notes: "Scenic route; keep your camera ready for river views.",
+            type: "transport"
+          },
+          {
+            _key: "5b",
+            title: "12:30 PM Omkareshwar Jyotirlinga Darshan",
+            description: "Visit the twin temples on Mandhata Island dedicated to Lord Shiva.",
+            notes: "Both the east and west shrines are considered Jyotirlingas; offer prayers at both.",
+            type: "sightseeing"
+          },
+          {
+            _key: "5c",
+            title: "01:30 PM Lunch – Dal Bati",
+            description: "Delight in hearty Dal Bati with ghee and a side of cucumber raita at Omkareshwar Rasoi.",
+            notes: "A fulfilling meal before the boat excursion.",
+            type: "food"
+          },
+          {
+            _key: "5d",
+            title: "03:00 PM Narmada River Boat Ride",
+            description: "Take a guided boat cruise around the island to view the temples from the water.",
+            notes: "Wear a life vest; the river is gentle in September.",
+            type: "activity"
+          },
+          {
+            _key: "5e",
+            title: "07:00 PM Stay at Narmada View Resort",
+            description: "End the pilgrimage with a comfortable stay overlooking the Narmada.",
+            notes: "Early check in possible; enjoy a nightcap of fresh coconut water.",
+            type: "accommodation"
+          }
+        ]
+      }
+    ]
+  },
+  {
     _id: "trip-spiti-valley",
     title: "Spiti Valley — The Cold Desert Odyssey",
     slug: "spiti-valley",
