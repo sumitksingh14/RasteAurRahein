@@ -133,13 +133,13 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
     padding: "0.75rem 1rem 0.75rem 2.75rem",
     borderRadius: "10px",
     border: `1.5px solid ${field.touched && field.error ? "var(--accent-rose)" : field.touched && !field.error ? "var(--accent-gold)" : "var(--border)"}`,
-    background: "rgba(255,255,255,0.04)",
+    background: "var(--bg-card)",
     color: "var(--text-primary)",
     fontSize: "0.95rem",
     fontFamily: "var(--font-sans)",
     outline: "none",
     transition: "border-color 0.2s, box-shadow 0.2s",
-    boxShadow: field.touched && !field.error ? "0 0 0 3px rgba(201,168,76,0.12)" : "none",
+    boxShadow: field.touched && !field.error ? "0 0 0 3px var(--accent-gold-dim)" : "none",
   });
 
   return (
@@ -151,8 +151,8 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
           position: "fixed",
           inset: 0,
           zIndex: 9000,
-          background: "rgba(5,5,10,0.75)",
-          backdropFilter: "blur(10px)",
+          background: "rgba(0,0,0,0.4)",
+          backdropFilter: "blur(4px)",
           animation: "rar-fadeIn 0.2s ease",
         }}
       />
@@ -172,15 +172,14 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
           animation: "rar-slideUp 0.28s cubic-bezier(0.34,1.56,0.64,1)",
         }}
       >
-        {/* Glass card */}
+        {/* Card */}
         <div
           style={{
-            background: "linear-gradient(145deg, rgba(20,20,30,0.96) 0%, rgba(12,12,20,0.98) 100%)",
-            border: "1px solid rgba(255,255,255,0.12)",
-            borderTop: "1px solid rgba(255,255,255,0.22)",
-            borderRadius: "20px",
+            background: "var(--bg-card)",
+            border: "1px solid var(--border)",
+            borderRadius: "24px",
             padding: "2.5rem",
-            boxShadow: "0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,168,76,0.08)",
+            boxShadow: "var(--shadow-lg)",
           }}
         >
           {/* Header row */}
@@ -188,10 +187,10 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <div style={{
                 width: 36, height: 36, borderRadius: "50%",
-                background: "linear-gradient(135deg, var(--accent-gold), var(--accent-rose))",
+                background: "var(--accent-gold)",
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}>
-                <Compass size={18} style={{ color: "#0a0a0f" }} />
+                <Compass size={18} style={{ color: "#fff" }} />
               </div>
               <span style={{ fontFamily: "var(--font-serif)", fontWeight: 700, color: "var(--text-primary)", fontSize: "1.15rem" }}>
                 Raste Aur Raahein
@@ -208,7 +207,7 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
               {/* Tab switcher */}
               <div style={{
                 display: "flex",
-                background: "rgba(255,255,255,0.05)",
+                background: "var(--bg-secondary)",
                 borderRadius: "10px",
                 padding: "4px",
                 marginBottom: "1.75rem",
@@ -228,9 +227,9 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
                       fontSize: "0.875rem",
                       fontWeight: 600,
                       transition: "all 0.22s",
-                      background: tab === t ? "rgba(201,168,76,0.18)" : "transparent",
-                      color: tab === t ? "var(--accent-gold)" : "var(--text-muted)",
-                      boxShadow: tab === t ? "0 1px 4px rgba(0,0,0,0.3)" : "none",
+                      background: tab === t ? "var(--bg-card)" : "transparent",
+                      color: tab === t ? "var(--text-primary)" : "var(--text-muted)",
+                      boxShadow: tab === t ? "var(--shadow-sm)" : "none",
                     }}
                   >
                     {t === "login" ? "Sign In" : "Create Account"}
@@ -394,15 +393,15 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
                   borderRadius: "10px",
                   border: "none",
                   cursor: submitting ? "not-allowed" : "pointer",
-                  background: "linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-rose) 100%)",
-                  color: "#0a0a0f",
+                  background: "var(--accent-gold)",
+                  color: "#fff",
                   fontFamily: "var(--font-sans)",
                   fontWeight: 700,
                   fontSize: "0.95rem",
                   opacity: submitting ? 0.7 : 1,
                   transition: "opacity 0.2s, transform 0.15s",
                   transform: submitting ? "scale(0.98)" : "scale(1)",
-                  boxShadow: "0 4px 20px rgba(201,168,76,0.3)",
+                  boxShadow: "var(--shadow-sm)",
                 }}
               >
                 {submitting ? "Please wait…" : tab === "login" ? "Sign In" : "Create Account"}
@@ -465,7 +464,7 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
                           padding: "0.75rem 1rem 0.75rem 2.75rem",
                           borderRadius: "10px",
                           border: "1.5px solid var(--border)",
-                          background: "rgba(255,255,255,0.04)",
+                          background: "var(--bg-card)",
                           color: "var(--text-primary)",
                           fontSize: "0.95rem",
                           fontFamily: "var(--font-sans)",
@@ -504,8 +503,8 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
                       borderRadius: "10px",
                       border: "none",
                       cursor: submitting ? "not-allowed" : "pointer",
-                      background: "linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-rose) 100%)",
-                      color: "#0a0a0f",
+                      background: "var(--accent-gold)",
+                      color: "#fff",
                       fontFamily: "var(--font-sans)",
                       fontWeight: 700,
                       fontSize: "0.9rem",
@@ -521,7 +520,7 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
                 <div style={{ textAlign: "center", padding: "1.5rem 0" }}>
                   <div style={{
                     width: 60, height: 60, borderRadius: "50%",
-                    background: "rgba(201,168,76,0.12)", border: "1px solid rgba(201,168,76,0.3)",
+                    background: "var(--accent-gold-dim)", border: "1px solid var(--accent-gold)",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     margin: "0 auto 1.25rem",
                     animation: "rar-scaleIn 0.3s cubic-bezier(0.34,1.56,0.64,1)",

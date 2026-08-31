@@ -244,21 +244,19 @@ export default function AIItineraryModal({ onClose }: Props) {
     });
 
   // ---------------------------------------------------------------------------
-  // Shared styles — Liquid Glass
+  // Shared styles — Home Page Theme
   // ---------------------------------------------------------------------------
   const inputStyle: React.CSSProperties = {
     width: "100%",
     padding: "0.8rem 1rem",
     borderRadius: "var(--radius-md)",
-    border: "1px solid rgba(255,255,255,0.15)",
-    background: "rgba(255,255,255,0.06)",
-    backdropFilter: "blur(12px)",
-    WebkitBackdropFilter: "blur(12px)",
+    border: "1px solid var(--border)",
+    background: "var(--bg-card)",
     color: "var(--text-primary)",
     fontSize: "0.9rem",
     fontFamily: "var(--font-sans)",
     outline: "none",
-    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 8px rgba(0,0,0,0.25)",
+    boxShadow: "var(--shadow-sm)",
     transition: "border-color var(--transition), box-shadow var(--transition)",
   };
 
@@ -268,7 +266,7 @@ export default function AIItineraryModal({ onClose }: Props) {
     fontWeight: 600,
     textTransform: "uppercase",
     letterSpacing: "0.06em",
-    color: "rgba(255,255,255,0.5)",
+    color: "var(--text-muted)",
     marginBottom: "0.5rem",
   };
 
@@ -289,16 +287,16 @@ export default function AIItineraryModal({ onClose }: Props) {
         }
       `}</style>
 
-      {/* Backdrop — deep frosted */}
+      {/* Backdrop */}
       <div
         onClick={onClose}
         style={{
           position: "fixed",
           inset: 0,
           zIndex: 1100,
-          background: "rgba(3,15,20,0.55)",
-          backdropFilter: "blur(28px) saturate(180%)",
-          WebkitBackdropFilter: "blur(28px) saturate(180%)",
+          background: "rgba(0,0,0,0.4)",
+          backdropFilter: "blur(4px)",
+          WebkitBackdropFilter: "blur(4px)",
           animation: "fadeIn 0.2s ease",
         }}
       />
@@ -319,46 +317,34 @@ export default function AIItineraryModal({ onClose }: Props) {
           pointerEvents: "none",
         }}
       >
-        {/* Liquid Glass card */}
+        {/* Card */}
         <div
           style={{
             width: "100%",
             maxWidth: 680,
             maxHeight: "90vh",
             overflowY: "auto",
-            /* Liquid glass layers */
-            background: "linear-gradient(160deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.04) 50%, rgba(137,180,250,0.07) 100%)",
-            backdropFilter: "blur(40px) saturate(200%) brightness(1.15)",
-            WebkitBackdropFilter: "blur(40px) saturate(200%) brightness(1.15)",
-            borderTop: "1px solid rgba(255,255,255,0.38)",
-            borderRight: "1px solid rgba(255,255,255,0.22)",
-            borderBottom: "1px solid rgba(255,255,255,0.22)",
-            borderLeft: "1px solid rgba(255,255,255,0.28)",
-            borderRadius: "28px",
-            boxShadow: [
-              "0 32px 80px rgba(0,0,0,0.6)",
-              "0 0 0 1px rgba(255,255,255,0.06) inset",
-              "inset 0 1px 0 rgba(255,255,255,0.35)",
-              "inset 0 -1px 0 rgba(0,0,0,0.15)",
-              "0 0 60px rgba(137,180,250,0.12)",
-            ].join(", "),
+            background: "var(--bg-card)",
+            border: "1px solid var(--border)",
+            borderRadius: "24px",
+            boxShadow: "var(--shadow-lg)",
             pointerEvents: "all",
             animation: "lg-float-in 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards",
             display: "flex",
             flexDirection: "column",
           }}
         >
-          {/* Liquid Glass Header */}
+          {/* Header */}
           <div
             style={{
               display: "flex",
               alignItems: "center",
               gap: "0.75rem",
               padding: "1.4rem 1.75rem",
-              borderBottom: "1px solid rgba(255,255,255,0.1)",
+              borderBottom: "1px solid var(--border)",
               flexShrink: 0,
-              background: "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)",
-              borderRadius: "28px 28px 0 0",
+              background: "var(--bg-secondary)",
+              borderRadius: "24px 24px 0 0",
             }}
           >
             <div
@@ -366,8 +352,7 @@ export default function AIItineraryModal({ onClose }: Props) {
                 width: 38,
                 height: 38,
                 borderRadius: "50%",
-                background: "linear-gradient(135deg, rgba(137,180,250,0.9), rgba(148,226,213,0.7))",
-                boxShadow: "0 0 18px rgba(137,180,250,0.5), inset 0 1px 0 rgba(255,255,255,0.4)",
+                background: "var(--accent-gold)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -377,10 +362,10 @@ export default function AIItineraryModal({ onClose }: Props) {
               <Sparkles size={18} color="#fff" />
             </div>
             <div>
-              <div style={{ fontFamily: "var(--font-serif)", fontSize: "1.15rem", fontWeight: 600, color: "#fff" }}>
+              <div style={{ fontFamily: "var(--font-serif)", fontSize: "1.15rem", fontWeight: 700, color: "var(--text-primary)" }}>
                 AI Trip Planner
               </div>
-              <div style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.5)" }}>
+              <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>
                 {params.model === "nvidia"
                   ? `NVIDIA · ${NVIDIA_MODEL_OPTIONS.find(m => m.id === params.nvidiaModel)?.label ?? "Nemotron"}`
                   : params.model === "groq"
@@ -396,20 +381,18 @@ export default function AIItineraryModal({ onClose }: Props) {
                 width: 34,
                 height: 34,
                 borderRadius: "50%",
-                border: "1px solid rgba(255,255,255,0.2)",
-                background: "rgba(255,255,255,0.08)",
-                backdropFilter: "blur(8px)",
-                WebkitBackdropFilter: "blur(8px)",
+                border: "1px solid var(--border)",
+                background: "var(--bg-card)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "rgba(255,255,255,0.6)",
+                color: "var(--text-muted)",
                 cursor: "pointer",
                 flexShrink: 0,
                 transition: "all var(--transition)",
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.18)"; e.currentTarget.style.color = "#fff"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; e.currentTarget.style.color = "rgba(255,255,255,0.6)"; }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "var(--bg-card-hover)"; e.currentTarget.style.color = "var(--text-primary)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = "var(--bg-card)"; e.currentTarget.style.color = "var(--text-muted)"; }}
             >
               <X size={16} />
             </button>
@@ -902,7 +885,7 @@ export default function AIItineraryModal({ onClose }: Props) {
                     padding: "0.9rem",
                     borderRadius: "var(--radius-sm)",
                     background: params.destination.trim()
-                      ? "linear-gradient(135deg, var(--accent-gold), var(--accent-rose))"
+                      ? "var(--accent-gold)"
                       : "var(--bg-card)",
                     color: params.destination.trim() ? "#fff" : "var(--text-muted)",
                     border: "none",
@@ -945,7 +928,7 @@ export default function AIItineraryModal({ onClose }: Props) {
                     font-family: "Inter", sans-serif;
                     font-size: 1.2em;
                     font-weight: 300;
-                    color: white;
+                    color: var(--text-primary);
                     border-radius: 50%;
                     background-color: transparent;
                     user-select: none;
