@@ -3,13 +3,9 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { GeneratedTripsProvider } from "@/components/providers/GeneratedTripsProvider";
 import { AuthProvider } from "@/components/providers/AuthProvider";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import MobileTabBar from "@/components/layout/MobileTabBar";
-import AIItineraryButton from "@/components/ai/AIItineraryButton";
-import StaticBackground from "@/components/ui/StaticBackground";
 import { WebSiteSchema } from "@/components/ui/AuthorSchema";
 import InstallPrompt from "@/components/pwa/InstallPrompt";
+
 export const metadata: Metadata = {
   title: {
     default: "Raste Aur Raahein — Travel Blog by Sumit Singh",
@@ -55,16 +51,7 @@ export default function RootLayout({
         <ThemeProvider>
           <GeneratedTripsProvider>
             <AuthProvider>
-              {/* Static fixed background — single image for all pages */}
-              <StaticBackground />
-              {/* Page chrome — sits above background */}
-              <div style={{ position: "relative", zIndex: 1 }}>
-                <Navbar />
-                <main>{children}</main>
-                <Footer />
-                <MobileTabBar />
-              </div>
-              <AIItineraryButton />
+              {children}
               <InstallPrompt />
             </AuthProvider>
           </GeneratedTripsProvider>

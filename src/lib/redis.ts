@@ -131,4 +131,10 @@ export const redis = {
     const result = await redisCmd("hvals", key);
     return (result as string[]) || [];
   },
+
+  /** SMEMBERS key → string[] */
+  async smembers(key: string): Promise<string[]> {
+    const result = await redisCmd("smembers", key);
+    return (result as string[]) || [];
+  },
 };

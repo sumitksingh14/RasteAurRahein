@@ -1,5 +1,6 @@
-// Mock queries module relying on DEMO_TRIPS
+// Mock queries module relying on DEMO_TRIPS + Redis-persisted admin trips
 import type { Trip, Author } from "./types";
+import { redis } from "./redis";
 
 // --- Demo data fallback (used when Sanity is not yet configured) ---
 export const DEMO_TRIPS: Trip[] = [
@@ -1583,32 +1584,104 @@ export const DEMO_AUTHOR: Author = {
   ],
 };
 
+// ──────────────────────────────────────────────────
+// Redis trip storage helpers (admin CRUD)
+// Keys:
+//   trips:index   → Redis Set of slugs for admin-managed trips
+//   trip:<slug>   → JSON string of the full Trip object
+// ──────────────────────────────────────────────────
+
+const TRIPS_INDEX_KEY = "trips:index";
+
+/** Fetch all admin-managed trips from Redis */
+async function getRedisTrips(): Promise<Trip[]> {
+  try {
+    const slugs = await redis.smembers(TRIPS_INDEX_KEY);
+    if (!slugs || slugs.length === 0) return [];
+    const trips = await Promise.all(
+      slugs.map(async (slug) => {
+        const raw = await redis.get(`trip:${slug}`);
+        if (!raw) return null;
+        try { return JSON.parse(raw) as Trip; } catch { return null; }
+      })
+    );
+    return trips.filter(Boolean) as Trip[];
+  } catch {
+    return [];
+  }
+}
+
 export async function getAllTrips(): Promise<Trip[]> {
-  return DEMO_TRIPS;
+  const redisTrips = await getRedisTrips();
+  // Redis trips take precedence over DEMO_TRIPS (override by slug)
+  const redisSlugs = new Set(redisTrips.map((t) => t.slug));
+  const filteredDemo = DEMO_TRIPS.filter((t) => !redisSlugs.has(t.slug));
+  return [...redisTrips, ...filteredDemo].sort(
+    (a, b) => new Date(b._createdAt).getTime() - new Date(a._createdAt).getTime()
+  );
 }
 
 export async function getTripBySlug(slug: string): Promise<Trip | null> {
+  // Check Redis first
+  try {
+    const raw = await redis.get(`trip:${slug}`);
+    if (raw) return JSON.parse(raw) as Trip;
+  } catch {
+    // fall through to DEMO_TRIPS
+  }
   const trip = DEMO_TRIPS.find((t) => t.slug === slug);
   return trip || null;
 }
 
 export async function getTripsByRegion(regionSlug: string): Promise<Trip[]> {
-  return DEMO_TRIPS.filter((t) => t.tags?.map(t => t.toLowerCase()).includes(regionSlug.replace(/-/g, " ")));
+  const all = await getAllTrips();
+  return all.filter((t) => t.tags?.map((tag) => tag.toLowerCase()).includes(regionSlug.replace(/-/g, " ")));
 }
 
 export async function getFeaturedTrips(): Promise<Trip[]> {
-  return DEMO_TRIPS.slice(0, 3);
+  const all = await getAllTrips();
+  return all.filter((t) => t.status === "published").slice(0, 3);
 }
 
 export async function searchTrips(queryText: string): Promise<Trip[]> {
   const lower = queryText.toLowerCase();
-  return DEMO_TRIPS.filter((t) => 
-    t.title.toLowerCase().includes(lower) || 
-    (t.excerpt && t.excerpt.toLowerCase().includes(lower)) || 
-    (t.tags && t.tags.some(tag => tag.toLowerCase().includes(lower)))
+  const all = await getAllTrips();
+  return all.filter(
+    (t) =>
+      t.title.toLowerCase().includes(lower) ||
+      (t.excerpt && t.excerpt.toLowerCase().includes(lower)) ||
+      (t.tags && t.tags.some((tag) => tag.toLowerCase().includes(lower)))
   );
 }
 
 export async function incrementViewCount(slug: string): Promise<void> {
   // Mock no-op since Sanity is removed
+}
+
+// ──────────────────────────────────────────────────
+// Admin CRUD
+// ──────────────────────────────────────────────────
+
+export async function createTrip(trip: Trip): Promise<void> {
+  await redis.set(`trip:${trip.slug}`, JSON.stringify(trip));
+  await redis.sadd(TRIPS_INDEX_KEY, trip.slug);
+}
+
+export async function updateTrip(slug: string, updates: Partial<Trip>): Promise<Trip | null> {
+  const existing = await getTripBySlug(slug);
+  if (!existing) return null;
+  const updated: Trip = {
+    ...existing,
+    ...updates,
+    slug, // slug is immutable
+    _updatedAt: new Date().toISOString(),
+  };
+  await redis.set(`trip:${slug}`, JSON.stringify(updated));
+  await redis.sadd(TRIPS_INDEX_KEY, slug); // ensure indexed
+  return updated;
+}
+
+export async function deleteTrip(slug: string): Promise<void> {
+  await redis.del(`trip:${slug}`);
+  await redis.srem(TRIPS_INDEX_KEY, slug);
 }

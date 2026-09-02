@@ -48,6 +48,8 @@ export async function POST(req: NextRequest) {
     });
     await redis.set(`user:email:${email.toLowerCase()}`, userId);
     await redis.set(`user:username:${username.toLowerCase()}`, userId);
+    // Maintain an index set for admin user listing
+    await redis.sadd("users:index", userId);
 
     // --- Issue session ---
     await createSession({ userId, username, email: email.toLowerCase() });

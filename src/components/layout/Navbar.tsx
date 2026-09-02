@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Search, User, Menu, X, ChevronDown, LogOut } from "lucide-react";
+import { Search, User, Menu, X, ChevronDown, LogOut, Shield } from "lucide-react";
 import { REGIONS } from "@/lib/regions";
 import { useAuth } from "@/components/providers/AuthProvider";
 
@@ -320,6 +320,37 @@ export default function Navbar() {
                       <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "#262729" }}>@{user.username}</div>
                       <div style={{ fontSize: "0.75rem", color: "#6B7280" }}>{user.email}</div>
                     </div>
+                    {/* Admin Panel link — only for admin user */}
+                    {user.isAdmin && (
+                      <Link
+                        href="/admin"
+                        onClick={() => setAvatarMenuOpen(false)}
+                        style={{
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                          padding: "0.6rem 1rem",
+                          borderRadius: "var(--radius-sm)",
+                          color: "#006CE4",
+                          fontSize: "0.875rem",
+                          fontWeight: 600,
+                          fontFamily: "var(--font-sans)",
+                          textDecoration: "none",
+                          background: "rgba(0,108,228,0.05)",
+                          marginBottom: "0.25rem",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = "rgba(0,108,228,0.1)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "rgba(0,108,228,0.05)";
+                        }}
+                      >
+                        <Shield size={14} />
+                        Admin Panel
+                      </Link>
+                    )}
                     <button
                       onClick={async () => { await logout(); setAvatarMenuOpen(false); }}
                       style={{
