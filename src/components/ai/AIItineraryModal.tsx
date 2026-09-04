@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useGeneratedTrips, type GeneratedTrip } from "@/components/providers/GeneratedTripsProvider";
 import ExportPDFButton from "./ExportPDFButton";
+import "../ui/AnimatedLoader.css";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -1229,101 +1230,84 @@ export default function AIItineraryModal({ onClose }: Props) {
                   minHeight: 340,
                 }}
               >
-                <style>{`
-                  .ai-loader-wrapper {
-                    position: relative;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 180px;
-                    height: 180px;
-                    font-family: "Inter", sans-serif;
-                    font-size: 1.2em;
-                    font-weight: 300;
-                    color: var(--text-primary);
-                    border-radius: 50%;
-                    background-color: transparent;
-                    user-select: none;
-                  }
+                {/* AnimatedLoader SVG (from AnimatedLoader.html / AnimatedLoader.css) */}
+                <svg className="pl" viewBox="0 0 160 160" width="160px" height="160px" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="pl-grad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#000" />
+                      <stop offset="100%" stopColor="#fff" />
+                    </linearGradient>
+                    <mask id="pl-mask1">
+                      <rect x="0" y="0" width="160" height="160" fill="url(#pl-grad)" />
+                    </mask>
+                    <mask id="pl-mask2">
+                      <rect x="28" y="28" width="104" height="104" fill="url(#pl-grad)" />
+                    </mask>
+                  </defs>
 
-                  .ai-loader {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    aspect-ratio: 1 / 1;
-                    border-radius: 50%;
-                    background-color: transparent;
-                    animation: ai-loader-rotate 2s linear infinite;
-                    z-index: 0;
-                  }
+                  <g>
+                    <g className="pl__ring-rotate">
+                      <circle className="pl__ring-stroke" cx="80" cy="80" r="72" fill="none" stroke="hsl(223,90%,55%)"
+                        strokeWidth="16" strokeDasharray="452.39 452.39" strokeDashoffset="452" strokeLinecap="round"
+                        transform="rotate(-45,80,80)" />
+                    </g>
+                  </g>
+                  <g mask="url(#pl-mask1)">
+                    <g className="pl__ring-rotate">
+                      <circle className="pl__ring-stroke" cx="80" cy="80" r="72" fill="none" stroke="hsl(193,90%,55%)"
+                        strokeWidth="16" strokeDasharray="452.39 452.39" strokeDashoffset="452" strokeLinecap="round"
+                        transform="rotate(-45,80,80)" />
+                    </g>
+                  </g>
 
-                  @keyframes ai-loader-rotate {
-                    0% {
-                      transform: rotate(90deg);
-                      box-shadow:
-                        0 10px 20px 0 #fff inset,
-                        0 20px 30px 0 #ad5fff inset,
-                        0 60px 60px 0 #471eec inset;
-                    }
-                    50% {
-                      transform: rotate(270deg);
-                      box-shadow:
-                        0 10px 20px 0 #fff inset,
-                        0 20px 10px 0 #d60a47 inset,
-                        0 40px 60px 0 #311e80 inset;
-                    }
-                    100% {
-                      transform: rotate(450deg);
-                      box-shadow:
-                        0 10px 20px 0 #fff inset,
-                        0 20px 30px 0 #ad5fff inset,
-                        0 60px 60px 0 #471eec inset;
-                    }
-                  }
+                  <g>
+                    <g strokeWidth="4" strokeDasharray="12 12" strokeDashoffset="12" strokeLinecap="round"
+                      transform="translate(80,80)">
+                      <polyline className="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(-135,0,0) translate(0,40)" />
+                      <polyline className="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(-90,0,0) translate(0,40)" />
+                      <polyline className="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(-45,0,0) translate(0,40)" />
+                      <polyline className="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(0,0,0) translate(0,40)" />
+                      <polyline className="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(45,0,0) translate(0,40)" />
+                      <polyline className="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(90,0,0) translate(0,40)" />
+                      <polyline className="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(135,0,0) translate(0,40)" />
+                      <polyline className="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(180,0,0) translate(0,40)" />
+                    </g>
+                  </g>
+                  <g mask="url(#pl-mask1)">
+                    <g strokeWidth="4" strokeDasharray="12 12" strokeDashoffset="12" strokeLinecap="round"
+                      transform="translate(80,80)">
+                      <polyline className="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(-135,0,0) translate(0,40)" />
+                      <polyline className="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(-90,0,0) translate(0,40)" />
+                      <polyline className="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(-45,0,0) translate(0,40)" />
+                      <polyline className="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(0,0,0) translate(0,40)" />
+                      <polyline className="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(45,0,0) translate(0,40)" />
+                      <polyline className="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(90,0,0) translate(0,40)" />
+                      <polyline className="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(135,0,0) translate(0,40)" />
+                      <polyline className="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(180,0,0) translate(0,40)" />
+                    </g>
+                  </g>
 
-                  .ai-loader-letter {
-                    display: inline-block;
-                    opacity: 0.4;
-                    transform: translateY(0);
-                    animation: ai-loader-letter-anim 2s infinite;
-                    z-index: 1;
-                    border-radius: 50ch;
-                    border: none;
-                  }
-
-                  .ai-loader-letter:nth-child(1)  { animation-delay: 0s; }
-                  .ai-loader-letter:nth-child(2)  { animation-delay: 0.1s; }
-                  .ai-loader-letter:nth-child(3)  { animation-delay: 0.2s; }
-                  .ai-loader-letter:nth-child(4)  { animation-delay: 0.3s; }
-                  .ai-loader-letter:nth-child(5)  { animation-delay: 0.4s; }
-                  .ai-loader-letter:nth-child(6)  { animation-delay: 0.5s; }
-                  .ai-loader-letter:nth-child(7)  { animation-delay: 0.6s; }
-                  .ai-loader-letter:nth-child(8)  { animation-delay: 0.7s; }
-                  .ai-loader-letter:nth-child(9)  { animation-delay: 0.8s; }
-                  .ai-loader-letter:nth-child(10) { animation-delay: 0.9s; }
-
-                  @keyframes ai-loader-letter-anim {
-                    0%,  100% { opacity: 0.4; transform: translateY(0); }
-                    20%       { opacity: 1;   transform: scale(1.15);   }
-                    40%       { opacity: 0.7; transform: translateY(0); }
-                  }
-                `}</style>
-
-                {/* The loader — 50% = 90px */}
-                <div className="ai-loader-wrapper" style={{ width: 90, height: 90, fontSize: "0.6em" }}>
-                  <span className="ai-loader-letter">G</span>
-                  <span className="ai-loader-letter">e</span>
-                  <span className="ai-loader-letter">n</span>
-                  <span className="ai-loader-letter">e</span>
-                  <span className="ai-loader-letter">r</span>
-                  <span className="ai-loader-letter">a</span>
-                  <span className="ai-loader-letter">t</span>
-                  <span className="ai-loader-letter">i</span>
-                  <span className="ai-loader-letter">n</span>
-                  <span className="ai-loader-letter">g</span>
-                  <div className="ai-loader" />
-                </div>
+                  <g>
+                    <g transform="translate(64,28)">
+                      <g className="pl__arrows" transform="rotate(45,16,52)">
+                        <path fill="hsl(3,90%,55%)"
+                          d="M17.998,1.506l13.892,43.594c.455,1.426-.56,2.899-1.998,2.899H2.108c-1.437,0-2.452-1.473-1.998-2.899L14.002,1.506c.64-2.008,3.356-2.008,3.996,0Z" />
+                        <path fill="hsl(223,10%,90%)"
+                          d="M14.009,102.499L.109,58.889c-.453-1.421,.559-2.889,1.991-2.889H29.899c1.433,0,2.444,1.468,1.991,2.889l-13.899,43.61c-.638,2.001-3.345,2.001-3.983,0Z" />
+                      </g>
+                    </g>
+                  </g>
+                  <g mask="url(#pl-mask2)">
+                    <g transform="translate(64,28)">
+                      <g className="pl__arrows" transform="rotate(45,16,52)">
+                        <path fill="hsl(333,90%,55%)"
+                          d="M17.998,1.506l13.892,43.594c.455,1.426-.56,2.899-1.998,2.899H2.108c-1.437,0-2.452-1.473-1.998-2.899L14.002,1.506c.64-2.008,3.356-2.008,3.996,0Z" />
+                        <path fill="hsl(223,90%,80%)"
+                          d="M14.009,102.499L.109,58.889c-.453-1.421,.559-2.889,1.991-2.889H29.899c1.433,0,2.444,1.468,1.991,2.889l-13.899,43.61c-.638,2.001-3.345,2.001-3.983,0Z" />
+                      </g>
+                    </g>
+                  </g>
+                </svg>
 
                 {/* Stage label */}
                 <div style={{ textAlign: "center" }}>
