@@ -19,11 +19,13 @@ interface GenerateRequest {
   dietary?: "no-preference" | "vegetarian" | "vegan" | "jain" | "non-vegetarian";
   /** Free-text places/things to avoid */
   avoid?: string;
-  model?: "gemini" | "nvidia" | "groq";
+  model?: "gemini" | "nvidia" | "groq" | "openai";
   /** The specific NVIDIA model ID when model === "nvidia" */
   nvidiaModel?: string;
   /** The specific GROQ model ID when model === "groq" */
   groqModel?: string;
+  /** The specific OpenAI model ID when model === "openai" */
+  openaiModel?: string;
   /** If true, respond with NDJSON streamed progressively instead of a single JSON payload */
   stream?: boolean;
 }
@@ -243,9 +245,10 @@ export async function POST(req: NextRequest) {
   try {
     const requestedModel = body.model || "gemini";
     const providersToTry = [requestedModel];
-    if (requestedModel === "nvidia") providersToTry.push("gemini", "groq");
-    else if (requestedModel === "groq") providersToTry.push("gemini", "nvidia");
-    else providersToTry.push("groq", "nvidia");
+    if (requestedModel === "nvidia") providersToTry.push("gemini", "groq", "openai");
+    else if (requestedModel === "groq") providersToTry.push("gemini", "nvidia", "openai");
+    else if (requestedModel === "openai") providersToTry.push("gemini", "groq", "nvidia");
+    else providersToTry.push("groq", "nvidia", "openai");
 
     let itinerary: GeneratedItinerary | null = null;
     let modelUsed = "";
@@ -265,6 +268,10 @@ export async function POST(req: NextRequest) {
           const groqModelId = body.groqModel ?? "llama3-70b-8192";
           rawResponse = await LLMService.generateContent(prompt, { model: "groq", specificModelId: groqModelId, jsonMode: true });
           currentModelLabel = `Groq · ${groqModelId}`;
+        } else if (provider === "openai") {
+          const openaiModelId = body.openaiModel ?? "gpt-4o";
+          rawResponse = await LLMService.generateContent(prompt, { model: "openai", specificModelId: openaiModelId, jsonMode: true });
+          currentModelLabel = `OpenAI · ${openaiModelId}`;
         } else {
           rawResponse = await LLMService.generateContent(prompt, { model: "gemini", jsonMode: true });
           currentModelLabel = "Google Gemini Flash";
@@ -326,9 +333,10 @@ export async function POST(req: NextRequest) {
 function handleStreamingGenerate(body: GenerateRequest): Response {
   const requestedModel = body.model || "gemini";
   const providersToTry = [requestedModel];
-  if (requestedModel === "nvidia") providersToTry.push("gemini", "groq");
-  else if (requestedModel === "groq") providersToTry.push("gemini", "nvidia");
-  else providersToTry.push("groq", "nvidia");
+  if (requestedModel === "nvidia") providersToTry.push("gemini", "groq", "openai");
+  else if (requestedModel === "groq") providersToTry.push("gemini", "nvidia", "openai");
+  else if (requestedModel === "openai") providersToTry.push("gemini", "groq", "nvidia");
+  else providersToTry.push("groq", "nvidia", "openai");
 
   const encoder = new TextEncoder();
 
@@ -351,6 +359,10 @@ function handleStreamingGenerate(body: GenerateRequest): Response {
             const groqModelId = body.groqModel ?? "llama3-70b-8192";
             generator = LLMService.generateContentStream(prompt, { model: "groq", specificModelId: groqModelId });
             modelLabel = `Groq · ${groqModelId}`;
+          } else if (provider === "openai") {
+            const openaiModelId = body.openaiModel ?? "gpt-4o";
+            generator = LLMService.generateContentStream(prompt, { model: "openai", specificModelId: openaiModelId });
+            modelLabel = `OpenAI · ${openaiModelId}`;
           } else {
             generator = LLMService.generateContentStream(prompt, { model: "gemini" });
             modelLabel = "Google Gemini Flash";

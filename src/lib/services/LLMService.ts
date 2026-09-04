@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 
-export type LLMModelProvider = "gemini" | "nvidia" | "groq";
+export type LLMModelProvider = "gemini" | "nvidia" | "groq" | "openai";
 
 interface NvidiaModelConfig {
   id: string;
@@ -49,9 +49,23 @@ export const NVIDIA_MODELS: NvidiaModelConfig[] = [
 
 export const DEFAULT_NVIDIA_MODEL_ID = NVIDIA_MODELS[0].id;
 
+interface OpenAIModelConfig {
+  id: string;
+  label: string;
+  maxTokens: number;
+}
+
+export const OPENAI_MODELS: OpenAIModelConfig[] = [
+  { id: "gpt-4o",       label: "GPT-4o",       maxTokens: 8192 },
+  { id: "gpt-4o-mini",  label: "GPT-4o Mini",  maxTokens: 8192 },
+  { id: "o3-mini",      label: "o3 Mini",      maxTokens: 8192 },
+];
+
+export const DEFAULT_OPENAI_MODEL_ID = OPENAI_MODELS[0].id;
+
 export interface GenerateOptions {
   model: LLMModelProvider;
-  specificModelId?: string; // used for nvidia or groq specific models
+  specificModelId?: string; // used for nvidia, groq, or openai specific models
   jsonMode?: boolean; // if true, forces the output to be JSON
 }
 
@@ -64,6 +78,8 @@ export class LLMService {
         return this.callNvidia(prompt, options.specificModelId || DEFAULT_NVIDIA_MODEL_ID, options.jsonMode);
       case "groq":
         return this.callGroq(prompt, options.specificModelId || "openai/gpt-oss-20b", options.jsonMode);
+      case "openai":
+        return this.callOpenAI(prompt, options.specificModelId || DEFAULT_OPENAI_MODEL_ID, options.jsonMode);
       default:
         throw new Error(`Unsupported LLM provider: ${options.model}`);
     }
@@ -205,6 +221,36 @@ export class LLMService {
   }
 
   // ---------------------------------------------------------------------------
+  // OpenAI call helper
+  // ---------------------------------------------------------------------------
+  private static async callOpenAI(prompt: string, modelId: string, jsonMode = false): Promise<string> {
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      throw new Error("OPENAI_API_KEY is not configured. Add it to .env.local.");
+    }
+
+    const config = OPENAI_MODELS.find((m) => m.id === modelId) ?? OPENAI_MODELS[0];
+
+    const openai = new OpenAI({ apiKey });
+
+    const params: any = {
+      model: config.id,
+      messages: [{ role: "user" as const, content: prompt }],
+      max_tokens: config.maxTokens,
+      stream: false,
+    };
+
+    if (jsonMode) {
+      params.response_format = { type: "json_object" };
+    }
+
+    const completion = await openai.chat.completions.create(params);
+    const text = completion.choices[0]?.message?.content;
+    if (!text?.trim()) throw new Error("OpenAI returned an empty response.");
+    return text;
+  }
+
+  // ---------------------------------------------------------------------------
   // Streaming variants — yield raw text chunks as they arrive from the provider.
   // Callers are responsible for stripping <think> blocks / parsing partial output.
   // ---------------------------------------------------------------------------
@@ -216,6 +262,8 @@ export class LLMService {
         return this.streamNvidia(prompt, options.specificModelId || DEFAULT_NVIDIA_MODEL_ID);
       case "groq":
         return this.streamGroq(prompt, options.specificModelId || "openai/gpt-oss-20b");
+      case "openai":
+        return this.streamOpenAI(prompt, options.specificModelId || DEFAULT_OPENAI_MODEL_ID);
       default:
         throw new Error(`Unsupported LLM provider: ${options.model}`);
     }
@@ -310,6 +358,28 @@ export class LLMService {
       messages: [{ role: "user", content: prompt }],
       temperature: 0.7,
       max_tokens: 4096,
+      stream: true,
+    });
+
+    for await (const chunk of stream) {
+      const piece = chunk.choices[0]?.delta?.content ?? "";
+      if (piece) yield piece;
+    }
+  }
+
+  private static async *streamOpenAI(prompt: string, modelId: string): AsyncGenerator<string> {
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      throw new Error("OPENAI_API_KEY is not configured. Add it to .env.local.");
+    }
+
+    const config = OPENAI_MODELS.find((m) => m.id === modelId) ?? OPENAI_MODELS[0];
+    const openai = new OpenAI({ apiKey });
+
+    const stream = await openai.chat.completions.create({
+      model: config.id,
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: config.maxTokens,
       stream: true,
     });
 

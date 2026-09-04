@@ -25,9 +25,10 @@ interface TripParams {
   transportMode: "self-drive" | "public-transport" | "flights" | "mixed";
   dietary: "no-preference" | "vegetarian" | "vegan" | "jain" | "non-vegetarian";
   avoid: string;
-  model: "gemini" | "nvidia" | "groq";
+  model: "gemini" | "nvidia" | "groq" | "openai";
   nvidiaModel: string;
   groqModel: string;
+  openaiModel: string;
 }
 
 // NVIDIA models mirrored from the API route config
@@ -168,12 +169,13 @@ export default function AIItineraryModal({ onClose }: Props) {
     model: "gemini",
     nvidiaModel: "nvidia/nemotron-3.5-lightning-30b-a3b",
     groqModel: "openai/gpt-oss-20b",
+    openaiModel: "gpt-4o",
   });
   const [itinerary, setItinerary] = useState<GeneratedItinerary | null>(null);
   const [savedTrip, setSavedTrip] = useState<GeneratedTrip | null>(null);
   const [modelUsed, setModelUsed] = useState("");
   const [error, setError] = useState("");
-  const [failedModel, setFailedModel] = useState<"gemini" | "nvidia" | "groq" | null>(null);
+  const [failedModel, setFailedModel] = useState<"gemini" | "nvidia" | "groq" | "openai" | null>(null);
   const [stageIdx, setStageIdx] = useState(0);
   const [expandedDays, setExpandedDays] = useState<Set<number>>(new Set([1]));
   const [isStreaming, setIsStreaming] = useState(false);
@@ -488,6 +490,8 @@ export default function AIItineraryModal({ onClose }: Props) {
                   ? `NVIDIA · ${NVIDIA_MODEL_OPTIONS.find(m => m.id === params.nvidiaModel)?.label ?? "Nemotron"}`
                   : params.model === "groq"
                   ? "Powered by Groq"
+                  : params.model === "openai"
+                  ? "Powered by OpenAI"
                   : "Powered by Google Gemini"}
               </div>
             </div>
@@ -734,7 +738,7 @@ export default function AIItineraryModal({ onClose }: Props) {
                 {/* AI Model Selector */}
                 <div>
                   <label style={labelStyle}>🤖 AI Model</label>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.6rem" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "0.6rem" }}>
 
                     {/* Gemini option */}
                     <button
@@ -894,6 +898,59 @@ export default function AIItineraryModal({ onClose }: Props) {
                         Ultra-fast
                       </span>
                     </button>
+
+                    {/* OpenAI option */}
+                    <button
+                      id="model-select-openai"
+                      onClick={() => setParams((p) => ({ ...p, model: "openai" }))}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                        gap: "0.3rem",
+                        padding: "0.85rem 1rem",
+                        borderRadius: "var(--radius-sm)",
+                        border: `1.5px solid ${
+                          params.model === "openai" ? "#10a37f" : "var(--border)"
+                        }`,
+                        background: params.model === "openai" ? "rgba(16,163,127,0.08)" : "var(--bg-card)",
+                        cursor: "pointer",
+                        transition: "all var(--transition)",
+                        fontFamily: "var(--font-sans)",
+                        textAlign: "left",
+                      }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: "6px", width: "100%" }}>
+                        <span style={{ fontSize: "1.1rem" }}>🟢</span>
+                        <span
+                          style={{
+                            fontSize: "0.8rem",
+                            fontWeight: 700,
+                            color: params.model === "openai" ? "#10a37f" : "var(--text-primary)",
+                          }}
+                        >
+                          OpenAI
+                        </span>
+                        {params.model === "openai" && (
+                          <span
+                            style={{
+                              marginLeft: "auto",
+                              fontSize: "0.6rem",
+                              fontWeight: 700,
+                              padding: "2px 5px",
+                              borderRadius: "100px",
+                              background: "#10a37f",
+                              color: "#fff",
+                            }}
+                          >
+                            ✓
+                          </span>
+                        )}
+                      </div>
+                      <span style={{ fontSize: "0.68rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
+                        GPT-4o · o3
+                      </span>
+                    </button>
                   </div>
 
                   {/* GROQ model sub-picker (shown only when groq is selected) */}
@@ -922,6 +979,34 @@ export default function AIItineraryModal({ onClose }: Props) {
                             {m.id} ({m.ownedBy})
                           </option>
                         ))}
+                      </select>
+                    </div>
+                  )}
+
+                  {/* OpenAI model sub-picker (shown only when openai is selected) */}
+                  {params.model === "openai" && (
+                    <div style={{ marginTop: "0.6rem" }}>
+                      <label
+                        htmlFor="openai-model-select"
+                        style={{ ...labelStyle, marginBottom: "0.4rem", color: "#10a37f", fontSize: "0.68rem" }}
+                      >
+                        🟢 Select OpenAI Model
+                      </label>
+                      <select
+                        id="openai-model-select"
+                        value={params.openaiModel}
+                        onChange={(e) => setParams((p) => ({ ...p, openaiModel: e.target.value }))}
+                        style={{
+                          ...inputStyle,
+                          cursor: "pointer",
+                          border: "1.5px solid #10a37f",
+                          background: "rgba(16,163,127,0.04)",
+                          fontSize: "0.82rem",
+                        }}
+                      >
+                        <option value="gpt-4o">GPT-4o</option>
+                        <option value="gpt-4o-mini">GPT-4o Mini</option>
+                        <option value="o3-mini">o3 Mini</option>
                       </select>
                     </div>
                   )}
@@ -981,7 +1066,7 @@ export default function AIItineraryModal({ onClose }: Props) {
                       <div style={{ flex: 1 }}>
                         <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--accent-rose)", marginBottom: "3px", textTransform: "uppercase", letterSpacing: "0.04em" }}>
                           {failedModel
-                            ? `${failedModel === "gemini" ? "Google Gemini" : failedModel === "nvidia" ? "NVIDIA" : "Groq"} could not generate a result`
+                            ? `${failedModel === "gemini" ? "Google Gemini" : failedModel === "nvidia" ? "NVIDIA" : failedModel === "openai" ? "OpenAI" : "Groq"} could not generate a result`
                             : "Generation failed"}
                         </div>
                         <div style={{ fontSize: "0.84rem", color: "var(--text-secondary)", lineHeight: 1.55 }}>
@@ -1064,6 +1149,29 @@ export default function AIItineraryModal({ onClose }: Props) {
                               }}
                             >
                               <Sparkles size={12} /> Groq
+                            </button>
+                          )}
+                          {failedModel !== "openai" && (
+                            <button
+                              id="ai-switch-openai-btn"
+                              onClick={() => { setParams(p => ({ ...p, model: "openai" })); setError(""); setFailedModel(null); }}
+                              style={{
+                                padding: "0.4rem 0.9rem",
+                                borderRadius: "var(--radius-sm)",
+                                border: "1px solid rgba(16,163,127,0.3)",
+                                background: "rgba(16,163,127,0.08)",
+                                color: "#10a37f",
+                                fontSize: "0.8rem",
+                                fontWeight: 600,
+                                fontFamily: "var(--font-sans)",
+                                cursor: "pointer",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "5px",
+                                transition: "all var(--transition)",
+                              }}
+                            >
+                              <Sparkles size={12} /> OpenAI
                             </button>
                           )}
                         </div>
