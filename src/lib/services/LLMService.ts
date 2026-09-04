@@ -203,4 +203,119 @@ export class LLMService {
     // Strip any accidental <think>...</think> blocks
     return text.replace(/<think>[\s\S]*?<\/think>/gi, "").trim() || text;
   }
+
+  // ---------------------------------------------------------------------------
+  // Streaming variants — yield raw text chunks as they arrive from the provider.
+  // Callers are responsible for stripping <think> blocks / parsing partial output.
+  // ---------------------------------------------------------------------------
+  static generateContentStream(prompt: string, options: GenerateOptions): AsyncGenerator<string> {
+    switch (options.model) {
+      case "gemini":
+        return this.streamGemini(prompt);
+      case "nvidia":
+        return this.streamNvidia(prompt, options.specificModelId || DEFAULT_NVIDIA_MODEL_ID);
+      case "groq":
+        return this.streamGroq(prompt, options.specificModelId || "openai/gpt-oss-20b");
+      default:
+        throw new Error(`Unsupported LLM provider: ${options.model}`);
+    }
+  }
+
+  private static async *streamGemini(prompt: string): AsyncGenerator<string> {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      throw new Error("GEMINI_API_KEY is not configured. Add it to .env.local.");
+    }
+
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:streamGenerateContent?alt=sse&key=${apiKey}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.8, topK: 40, topP: 0.9, maxOutputTokens: 8192 },
+        }),
+      }
+    );
+
+    if (!res.ok || !res.body) {
+      const errText = res.body ? await res.text() : `HTTP ${res.status}`;
+      throw new Error(`Gemini stream error ${res.status}: ${errText}`);
+    }
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buf = "";
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      const lines = buf.split("\n");
+      buf = lines.pop() ?? "";
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed.startsWith("data:")) continue;
+        const jsonStr = trimmed.slice(5).trim();
+        if (!jsonStr || jsonStr === "[DONE]") continue;
+        try {
+          const obj = JSON.parse(jsonStr);
+          const text = obj?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (text) yield text;
+        } catch {
+          // ignore partial SSE frame
+        }
+      }
+    }
+  }
+
+  private static async *streamNvidia(prompt: string, modelId: string): AsyncGenerator<string> {
+    const apiKey = process.env.NVIDIA_API_KEY;
+    if (!apiKey) {
+      throw new Error("NVIDIA_API_KEY is not configured. Add it to .env.local.");
+    }
+
+    const config = NVIDIA_MODELS.find((m) => m.id === modelId) ?? NVIDIA_MODELS[0];
+    const openai = new OpenAI({ apiKey, baseURL: "https://integrate.api.nvidia.com/v1" });
+
+    const params: Record<string, unknown> = {
+      model: config.id,
+      messages: [{ role: "user" as const, content: prompt }],
+      temperature: 0.7,
+      top_p: 0.95,
+      max_tokens: config.maxTokens,
+      stream: true,
+      ...(config.extraParams ?? {}),
+    };
+
+    const stream = await openai.chat.completions.create(
+      params as unknown as Parameters<typeof openai.chat.completions.create>[0]
+    );
+
+    for await (const chunk of stream as unknown as AsyncIterable<{ choices?: { delta?: { content?: string } }[] }>) {
+      const piece: string = chunk.choices?.[0]?.delta?.content ?? "";
+      if (piece) yield piece;
+    }
+  }
+
+  private static async *streamGroq(prompt: string, modelId: string): AsyncGenerator<string> {
+    const apiKey = process.env.GROQ_API_KEY;
+    if (!apiKey) {
+      throw new Error("GROQ_API_KEY is not configured. Add it to .env.local.");
+    }
+
+    const openai = new OpenAI({ apiKey, baseURL: "https://api.groq.com/openai/v1" });
+    const stream = await openai.chat.completions.create({
+      model: modelId,
+      messages: [{ role: "user", content: prompt }],
+      temperature: 0.7,
+      max_tokens: 4096,
+      stream: true,
+    });
+
+    for await (const chunk of stream) {
+      const piece = chunk.choices[0]?.delta?.content ?? "";
+      if (piece) yield piece;
+    }
+  }
 }

@@ -20,6 +20,11 @@ interface TripParams {
   month: string;
   highlights: string;
   budget: string;
+  travelers: number;
+  pace: "relaxed" | "moderate" | "packed";
+  transportMode: "self-drive" | "public-transport" | "flights" | "mixed";
+  dietary: "no-preference" | "vegetarian" | "vegan" | "jain" | "non-vegetarian";
+  avoid: string;
   model: "gemini" | "nvidia" | "groq";
   nvidiaModel: string;
   groqModel: string;
@@ -57,6 +62,14 @@ interface GeneratedItinerary {
   }[];
 }
 
+// NDJSON events emitted by the streaming /api/generate-itinerary endpoint
+type StreamEvent =
+  | { type: "model"; label: string }
+  | ({ type: "meta" } & Omit<GeneratedItinerary, "days">)
+  | ({ type: "day" } & GeneratedItinerary["days"][number])
+  | { type: "error"; message: string }
+  | { type: "done" };
+
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
@@ -81,6 +94,27 @@ const BUDGET_OPTIONS = [
   { value: "Mid-range (₹2,000–₹5,000/day)", label: "Mid-range" },
   { value: "Premium (₹5,000–₹10,000/day)", label: "Premium" },
   { value: "Luxury (₹10,000+/day)", label: "Luxury" },
+];
+
+const PACE_OPTIONS: { value: TripParams["pace"]; label: string }[] = [
+  { value: "relaxed", label: "Relaxed" },
+  { value: "moderate", label: "Moderate" },
+  { value: "packed", label: "Packed" },
+];
+
+const TRANSPORT_OPTIONS: { value: TripParams["transportMode"]; label: string }[] = [
+  { value: "self-drive", label: "Self-drive" },
+  { value: "public-transport", label: "Public Transport" },
+  { value: "flights", label: "Flights" },
+  { value: "mixed", label: "Mixed" },
+];
+
+const DIETARY_OPTIONS: { value: TripParams["dietary"]; label: string }[] = [
+  { value: "no-preference", label: "No preference" },
+  { value: "vegetarian", label: "Vegetarian" },
+  { value: "vegan", label: "Vegan" },
+  { value: "jain", label: "Jain" },
+  { value: "non-vegetarian", label: "Non-vegetarian" },
 ];
 
 const GENERATING_STAGES = [
@@ -126,6 +160,11 @@ export default function AIItineraryModal({ onClose }: Props) {
     month: MONTHS[new Date().getMonth()],
     highlights: "",
     budget: "Mid-range (₹2,000–₹5,000/day)",
+    travelers: 2,
+    pace: "moderate",
+    transportMode: "mixed",
+    dietary: "no-preference",
+    avoid: "",
     model: "gemini",
     nvidiaModel: "nvidia/nemotron-3.5-lightning-30b-a3b",
     groqModel: "openai/gpt-oss-20b",
@@ -137,7 +176,9 @@ export default function AIItineraryModal({ onClose }: Props) {
   const [failedModel, setFailedModel] = useState<"gemini" | "nvidia" | "groq" | null>(null);
   const [stageIdx, setStageIdx] = useState(0);
   const [expandedDays, setExpandedDays] = useState<Set<number>>(new Set([1]));
+  const [isStreaming, setIsStreaming] = useState(false);
   const stageTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+  const streamAbortRef = useRef<AbortController | null>(null);
 
   // GROQ model list (fetched once on mount)
   const [groqModels, setGroqModels] = useState<{ id: string; ownedBy: string }[]>([]);
@@ -179,30 +220,103 @@ export default function AIItineraryModal({ onClose }: Props) {
     };
   }, [onClose]);
 
+  // Abort any in-flight generation stream when the modal unmounts
+  useEffect(() => () => streamAbortRef.current?.abort(), []);
+
   // ---------------------------------------------------------------------------
   const handleGenerate = async () => {
     if (!params.destination.trim()) return;
     setStep("generating");
     setError("");
     setFailedModel(null);
+    setItinerary(null);
+    setModelUsed("");
+    setIsStreaming(true);
+    setExpandedDays(new Set([1]));
+
+    streamAbortRef.current?.abort();
+    const controller = new AbortController();
+    streamAbortRef.current = controller;
+
+    let gotAnyContent = false;
 
     try {
       const res = await fetch("/api/generate-itinerary", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(params),
+        body: JSON.stringify({ ...params, stream: true }),
+        signal: controller.signal,
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Generation failed");
-      setItinerary(data.itinerary);
-      setModelUsed(data.modelUsed || "");
-      setExpandedDays(new Set([1]));
-      setStep("preview");
+
+      if (!res.ok || !res.body) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || `Generation failed (${res.status})`);
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        const lines = buf.split("\n");
+        buf = lines.pop() ?? "";
+
+        for (const rawLine of lines) {
+          const line = rawLine.trim();
+          if (!line) continue;
+          let evt: StreamEvent;
+          try {
+            evt = JSON.parse(line) as StreamEvent;
+          } catch {
+            continue; // skip malformed line
+          }
+
+          if (evt.type === "model") {
+            setModelUsed(evt.label || "");
+          } else if (evt.type === "meta") {
+            gotAnyContent = true;
+            setItinerary({
+              title: evt.title,
+              destination: evt.destination,
+              overview: evt.overview,
+              bestTimeToVisit: evt.bestTimeToVisit,
+              totalBudgetEstimate: evt.totalBudgetEstimate,
+              tags: evt.tags,
+              days: [],
+            });
+            setStep("preview");
+          } else if (evt.type === "day") {
+            gotAnyContent = true;
+            setItinerary((prev) => {
+              const base: GeneratedItinerary = prev ?? {
+                title: params.destination,
+                destination: params.destination,
+                days: [],
+              };
+              const days = [
+                ...base.days.filter((d) => d.dayNumber !== evt.dayNumber),
+                { dayNumber: evt.dayNumber, title: evt.title, summary: evt.summary, activities: evt.activities || [] },
+              ].sort((a, b) => a.dayNumber - b.dayNumber);
+              return { ...base, days };
+            });
+            setStep("preview");
+          } else if (evt.type === "error") {
+            throw new Error(evt.message || "Generation failed.");
+          }
+        }
+      }
+
+      if (!gotAnyContent) throw new Error("The AI returned no itinerary content.");
     } catch (err) {
+      if (err instanceof DOMException && err.name === "AbortError") return;
+
       const msg = err instanceof Error ? err.message : "Unknown error";
       // Classify the error for friendlier messaging
       const isQuota = /quota|rate.?limit|429|too many/i.test(msg);
-      const isAuth = /api.?key|auth|403|401|invalid.?key/i.test(msg);
+      const isAuth = /api.?key|auth|403|401|invalid.?key|signed in/i.test(msg);
       const isTimeout = /timeout|network|fetch|ECONNRESET/i.test(msg);
       const isModel = /model|overload|503|unavailable|capacity/i.test(msg);
 
@@ -214,7 +328,11 @@ export default function AIItineraryModal({ onClose }: Props) {
 
       setFailedModel(params.model);
       setError(friendly);
-      setStep("form");
+      // If nothing streamed in yet, bounce back to the form; otherwise keep
+      // showing whatever days already arrived alongside the error.
+      if (!gotAnyContent) setStep("form");
+    } finally {
+      setIsStreaming(false);
     }
   };
 
@@ -457,6 +575,49 @@ export default function AIItineraryModal({ onClose }: Props) {
                   </div>
                 </div>
 
+                {/* Travelers + Pace row */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                  <div>
+                    <label htmlFor="ai-travelers" style={labelStyle}>Travelers</label>
+                    <input
+                      id="ai-travelers"
+                      type="number"
+                      min={1}
+                      max={20}
+                      value={params.travelers}
+                      onChange={(e) => setParams((p) => ({ ...p, travelers: Math.min(20, Math.max(1, Number(e.target.value) || 1)) }))}
+                      style={inputStyle}
+                      onFocus={(e) => (e.target.style.borderColor = "var(--border-accent)")}
+                      onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
+                    />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Pace</label>
+                    <div style={{ display: "flex", gap: "0.4rem" }}>
+                      {PACE_OPTIONS.map((opt) => (
+                        <button
+                          key={opt.value}
+                          onClick={() => setParams((p) => ({ ...p, pace: opt.value }))}
+                          style={{
+                            flex: 1,
+                            padding: "0.55rem 0.4rem",
+                            borderRadius: "var(--radius-sm)",
+                            border: `1px solid ${params.pace === opt.value ? "var(--accent-gold)" : "var(--border)"}`,
+                            background: params.pace === opt.value ? "var(--accent-gold-dim)" : "var(--bg-card)",
+                            color: params.pace === opt.value ? "var(--accent-gold)" : "var(--text-secondary)",
+                            fontSize: "0.78rem",
+                            fontWeight: params.pace === opt.value ? 600 : 400,
+                            cursor: "pointer",
+                            fontFamily: "var(--font-sans)",
+                          }}
+                        >
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
                 {/* Travel Style */}
                 <div>
                   <label style={labelStyle}>Travel Style</label>
@@ -510,6 +671,32 @@ export default function AIItineraryModal({ onClose }: Props) {
                   </div>
                 </div>
 
+                {/* Transport Mode + Dietary row */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                  <div>
+                    <label htmlFor="ai-transport" style={labelStyle}>Transport Mode</label>
+                    <select
+                      id="ai-transport"
+                      value={params.transportMode}
+                      onChange={(e) => setParams((p) => ({ ...p, transportMode: e.target.value as TripParams["transportMode"] }))}
+                      style={{ ...inputStyle, cursor: "pointer" }}
+                    >
+                      {TRANSPORT_OPTIONS.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label htmlFor="ai-dietary" style={labelStyle}>Dietary</label>
+                    <select
+                      id="ai-dietary"
+                      value={params.dietary}
+                      onChange={(e) => setParams((p) => ({ ...p, dietary: e.target.value as TripParams["dietary"] }))}
+                      style={{ ...inputStyle, cursor: "pointer" }}
+                    >
+                      {DIETARY_OPTIONS.map((d) => <option key={d.value} value={d.value}>{d.label}</option>)}
+                    </select>
+                  </div>
+                </div>
+
                 {/* Must-see Highlights */}
                 <div>
                   <label htmlFor="ai-highlights" style={labelStyle}>
@@ -521,6 +708,23 @@ export default function AIItineraryModal({ onClose }: Props) {
                     onChange={(e) => setParams((p) => ({ ...p, highlights: e.target.value }))}
                     placeholder="e.g. Chandratal Lake, monasteries, try local food, no taxis…"
                     rows={3}
+                    style={{ ...inputStyle, resize: "vertical" }}
+                    onFocus={(e) => (e.target.style.borderColor = "var(--border-accent)")}
+                    onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
+                  />
+                </div>
+
+                {/* Things to avoid */}
+                <div>
+                  <label htmlFor="ai-avoid" style={labelStyle}>
+                    Avoid <span style={{ color: "var(--text-muted)", textTransform: "none", fontWeight: 400 }}>(optional)</span>
+                  </label>
+                  <textarea
+                    id="ai-avoid"
+                    value={params.avoid}
+                    onChange={(e) => setParams((p) => ({ ...p, avoid: e.target.value }))}
+                    placeholder="e.g. Long overnight drives, crowded tourist traps, spicy food…"
+                    rows={2}
                     style={{ ...inputStyle, resize: "vertical" }}
                     onFocus={(e) => (e.target.style.borderColor = "var(--border-accent)")}
                     onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
@@ -1049,6 +1253,28 @@ export default function AIItineraryModal({ onClose }: Props) {
             {/* ====== STEP: PREVIEW ====== */}
             {step === "preview" && itinerary && (
               <div>
+                {/* Live streaming banner — shown while days are still arriving */}
+                {isStreaming && (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      padding: "0.6rem 0.9rem",
+                      borderRadius: "var(--radius-sm)",
+                      background: "var(--accent-gold-dim)",
+                      border: "1px solid var(--border-accent)",
+                      marginBottom: "1rem",
+                      fontSize: "0.8rem",
+                      color: "var(--accent-gold)",
+                      fontWeight: 600,
+                    }}
+                  >
+                    <Loader2 size={14} style={{ animation: "ai-spin 1s linear infinite" }} />
+                    Generating day {Math.min(itinerary.days.length + 1, params.days)} of {params.days}…
+                  </div>
+                )}
+
                 {/* Trip header */}
                 <div style={{ marginBottom: "1.5rem" }}>
                   <div
@@ -1312,12 +1538,48 @@ export default function AIItineraryModal({ onClose }: Props) {
                       )}
                     </div>
                   ))}
+
+                  {/* Skeleton placeholders for days not yet streamed in */}
+                  {isStreaming && Array.from({ length: Math.max(0, params.days - itinerary.days.length) }).map((_, i) => (
+                    <div
+                      key={`skeleton-${i}`}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.75rem",
+                        padding: "0.875rem 1.25rem",
+                        border: "1px dashed var(--border)",
+                        borderRadius: "var(--radius-md)",
+                      }}
+                    >
+                      <span
+                        style={{
+                          width: 32,
+                          height: 32,
+                          borderRadius: "var(--radius-sm)",
+                          background: "var(--bg-card)",
+                          border: "1px solid var(--border)",
+                          flexShrink: 0,
+                        }}
+                      />
+                      <div
+                        style={{
+                          flex: 1,
+                          height: 10,
+                          borderRadius: 4,
+                          background: "var(--bg-card)",
+                          animation: "ai-skel-pulse 1.4s ease-in-out infinite",
+                        }}
+                      />
+                    </div>
+                  ))}
                 </div>
 
                 {/* Action buttons */}
                 <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
                   <button
                     onClick={handleSave}
+                    disabled={isStreaming}
                     id="ai-save-trip-btn"
                     style={{
                       flex: 1,
@@ -1327,38 +1589,40 @@ export default function AIItineraryModal({ onClose }: Props) {
                       gap: "8px",
                       padding: "0.8rem 1.5rem",
                       borderRadius: "var(--radius-sm)",
-                      background: "linear-gradient(135deg, var(--accent-gold), var(--accent-rose))",
-                      color: "#fff",
+                      background: isStreaming ? "var(--bg-card)" : "linear-gradient(135deg, var(--accent-gold), var(--accent-rose))",
+                      color: isStreaming ? "var(--text-muted)" : "#fff",
                       border: "none",
                       fontSize: "0.9rem",
                       fontWeight: 600,
                       fontFamily: "var(--font-sans)",
-                      cursor: "pointer",
+                      cursor: isStreaming ? "not-allowed" : "pointer",
                     }}
                   >
                     <CheckCircle size={16} />
-                    Save to My Itineraries
+                    {isStreaming ? "Generating…" : "Save to My Itineraries"}
                   </button>
                   
-                  <ExportPDFButton 
-                    trip={{
-                      id: "preview",
-                      title: itinerary.title,
-                      destination: itinerary.destination,
-                      overview: itinerary.overview,
-                      bestTimeToVisit: itinerary.bestTimeToVisit,
-                      totalBudgetEstimate: itinerary.totalBudgetEstimate,
-                      tags: itinerary.tags,
-                      days: itinerary.days,
-                      style: params.style,
-                      month: params.month,
-                      generatedAt: new Date().toISOString(),
-                    }} 
-                    variant="outline" 
-                  />
+                  {!isStreaming && (
+                    <ExportPDFButton 
+                      trip={{
+                        id: "preview",
+                        title: itinerary.title,
+                        destination: itinerary.destination,
+                        overview: itinerary.overview,
+                        bestTimeToVisit: itinerary.bestTimeToVisit,
+                        totalBudgetEstimate: itinerary.totalBudgetEstimate,
+                        tags: itinerary.tags,
+                        days: itinerary.days,
+                        style: params.style,
+                        month: params.month,
+                        generatedAt: new Date().toISOString(),
+                      }} 
+                      variant="outline" 
+                    />
+                  )}
 
                   <button
-                    onClick={() => { setStep("form"); setItinerary(null); }}
+                    onClick={() => { streamAbortRef.current?.abort(); setStep("form"); setItinerary(null); }}
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -1374,7 +1638,7 @@ export default function AIItineraryModal({ onClose }: Props) {
                       cursor: "pointer",
                     }}
                   >
-                    Regenerate
+                    {isStreaming ? "Cancel" : "Regenerate"}
                   </button>
                 </div>
               </div>
@@ -1476,6 +1740,10 @@ export default function AIItineraryModal({ onClose }: Props) {
         @keyframes ai-progress {
           from { width: 0%; }
           to   { width: 95%; }
+        }
+        @keyframes ai-skel-pulse {
+          0%, 100% { opacity: 0.35; }
+          50%      { opacity: 0.7; }
         }
       `}</style>
     </>

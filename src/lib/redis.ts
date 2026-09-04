@@ -137,4 +137,19 @@ export const redis = {
     const result = await redisCmd("smembers", key);
     return (result as string[]) || [];
   },
+
+  /** INCR key → new value */
+  async incr(key: string): Promise<number> {
+    return (await redisCmd("incr", key)) as number;
+  },
+
+  /** EXPIRE key seconds */
+  async expire(key: string, seconds: number): Promise<void> {
+    await redisCmd("expire", key, seconds);
+  },
+
+  /** TTL key → seconds remaining (-1 no expiry, -2 missing) */
+  async ttl(key: string): Promise<number> {
+    return (await redisCmd("ttl", key)) as number;
+  },
 };
