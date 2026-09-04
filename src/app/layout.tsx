@@ -7,6 +7,9 @@ import { WebSiteSchema } from "@/components/ui/AuthorSchema";
 import InstallPrompt from "@/components/pwa/InstallPrompt";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://rasteaurrahein.com"
+  ),
   title: {
     default: "Raste Aur Raahein — Travel Blog by Sumit Singh",
     template: "%s | Raste Aur Raahein",

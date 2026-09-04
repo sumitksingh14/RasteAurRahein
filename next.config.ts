@@ -4,9 +4,11 @@ import withSerwistInit from "@serwist/next";
 const withSerwist = withSerwistInit({
   swSrc: "src/app/sw.ts",
   swDest: "public/sw.js",
-  // Disable service worker in development to avoid caching interference
-  // with hot reload. Only active in production builds.
-  disable: process.env.NODE_ENV === "development",
+  // Only enable the service worker in production builds.
+  // Using !== "production" (rather than === "development") suppresses the
+  // @serwist/next Turbopack warning and also disables the SW in test/staging
+  // environments where it would interfere with hot-reload.
+  disable: process.env.NODE_ENV !== "production",
 });
 
 const nextConfig: NextConfig = {
