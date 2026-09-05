@@ -1,6 +1,6 @@
 "use client";
 
-import { Fuel, Coffee, Eye, Utensils, Banknote, Gauge } from "lucide-react";
+import { Fuel, Coffee, Eye, Utensils, Banknote, Gauge, ExternalLink, MapPin, Navigation, Search, Sparkles } from "lucide-react";
 import type { FuelStop } from "@/lib/types";
 
 // ── Per-trip fuel & rest stop data ───────────────────────────────────────────
@@ -52,7 +52,7 @@ const FUEL_DATA: Record<string, FuelStop[]> = {
   "kerala-7-days": [
     { id: "kl1", name: "HP Pump, Cochin airport road", type: "fuel", town: "Kochi", distanceFromPrev: 0 },
     { id: "kl2", name: "Alleppey Boat Jetty", type: "rest", town: "Alleppey", distanceFromPrev: 55, notes: "Houseboat boarding point — arrive 30 min early." },
-    { id: "kl3", name: "BPCL, Kottyam", type: "fuel", town: "Kottayam", distanceFromPrev: 45 },
+    { id: "kl3", name: "BPCL, Kottayam", type: "fuel", town: "Kottayam", distanceFromPrev: 45 },
     { id: "kl4", name: "Munnar Tea Garden Overlook", type: "viewpoint", town: "Top Station, Munnar", distanceFromPrev: 95, altitude: 1700, notes: "Best sunrise viewpoint in Munnar; arrive before 7 AM." },
     { id: "kl5", name: "Thekkady (Periyar) Entry", type: "rest", town: "Thekkady", distanceFromPrev: 85, notes: "Boat safari booking counter is right at the gate." },
   ],
@@ -91,11 +91,8 @@ const DEFAULT_STOPS: FuelStop[] = [
 ];
 
 const STOP_ICONS: Record<FuelStop["type"], React.ReactNode> = {
-  fuel: <Fuel size={16} />,
-  rest: <Coffee size={16} />,
-  food: <Utensils size={16} />,
-  viewpoint: <Eye size={16} />,
-  atm: <Banknote size={16} />,
+  fuel: <Fuel size={16} />, rest: <Coffee size={16} />, food: <Utensils size={16} />,
+  viewpoint: <Eye size={16} />, atm: <Banknote size={16} />,
 };
 
 const STOP_COLORS: Record<FuelStop["type"], { bg: string; border: string; color: string }> = {
@@ -107,23 +104,32 @@ const STOP_COLORS: Record<FuelStop["type"], { bg: string; border: string; color:
 };
 
 const STOP_LABELS: Record<FuelStop["type"], string> = {
-  fuel: "Fuel Station",
-  rest: "Rest Stop",
-  food: "Food Stop",
-  viewpoint: "Viewpoint",
-  atm: "ATM",
+  fuel: "Fuel Station", rest: "Rest Stop", food: "Food Stop",
+  viewpoint: "Viewpoint", atm: "ATM",
 };
 
 interface FuelRestStopsProps {
   tripSlug: string;
+  tripTitle?: string;
 }
 
-export default function FuelRestStops({ tripSlug }: FuelRestStopsProps) {
+export default function FuelRestStops({ tripSlug, tripTitle }: FuelRestStopsProps) {
   const stops = FUEL_DATA[tripSlug] || DEFAULT_STOPS;
   const totalDistance = stops.reduce((sum, s) => sum + (s.distanceFromPrev || 0), 0);
+  const destination = tripTitle || tripSlug.replace(/-/g, " ");
+
+  // Build a Google Maps multi-stop directions URL from all towns
+  const waypoints = stops.map((s) => encodeURIComponent(s.town)).join("|");
+  const mapsRouteUrl = stops.length >= 2
+    ? `https://www.google.com/maps/dir/${encodeURIComponent(stops[0].town)}/${encodeURIComponent(stops[stops.length - 1].town)}/?waypoints=${waypoints}`
+    : `https://www.google.com/maps/search/${encodeURIComponent(destination)}`;
+
+  const fuelSearchUrl = `https://www.google.com/maps/search/petrol+pump+near+${encodeURIComponent(destination)}`;
+  const tollSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(destination + " toll charges highway route")}`;
 
   return (
     <div className="fuel-stops">
+      {/* Header */}
       <div className="fuel-stops-header">
         <div>
           <p className="fuel-intro">
@@ -133,6 +139,49 @@ export default function FuelRestStops({ tripSlug }: FuelRestStopsProps) {
         <div className="fuel-total-badge">
           <Gauge size={14} />
           {totalDistance > 0 ? `~${totalDistance.toLocaleString()} km total` : "Route overview"}
+        </div>
+      </div>
+
+      {/* AI + Quick links bar */}
+      <div style={{
+        display: "flex", flexWrap: "wrap", alignItems: "center", gap: "0.6rem",
+        marginBottom: "1.25rem", padding: "0.7rem 0.9rem",
+        borderRadius: "var(--radius-md)",
+        background: "rgba(139,92,246,0.07)", border: "1px solid rgba(139,92,246,0.2)",
+      }}>
+        <Sparkles size={13} style={{ color: "#a78bfa", flexShrink: 0 }} />
+        <span style={{ fontSize: "0.72rem", color: "#a78bfa", fontWeight: 600 }}>AI-curated route</span>
+        <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", flex: 1 }}>
+          · Live fuel prices & road conditions may vary.
+        </span>
+        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+          <a href={mapsRouteUrl} target="_blank" rel="noopener noreferrer"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "0.3rem",
+              padding: "0.3rem 0.7rem", borderRadius: 20,
+              border: "1px solid rgba(74,222,128,0.3)", background: "rgba(74,222,128,0.08)",
+              color: "#4ade80", fontSize: "0.72rem", fontWeight: 600, textDecoration: "none",
+            }}>
+            <Navigation size={11} /> Full Route
+          </a>
+          <a href={fuelSearchUrl} target="_blank" rel="noopener noreferrer"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "0.3rem",
+              padding: "0.3rem 0.7rem", borderRadius: 20,
+              border: "1px solid rgba(251,191,36,0.3)", background: "rgba(251,191,36,0.08)",
+              color: "#fbbf24", fontSize: "0.72rem", fontWeight: 600, textDecoration: "none",
+            }}>
+            <Fuel size={11} /> Find Fuel
+          </a>
+          <a href={tollSearchUrl} target="_blank" rel="noopener noreferrer"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "0.3rem",
+              padding: "0.3rem 0.7rem", borderRadius: 20,
+              border: "1px solid var(--border)", background: "var(--bg-card)",
+              color: "var(--text-secondary)", fontSize: "0.72rem", fontWeight: 600, textDecoration: "none",
+            }}>
+            <Search size={11} /> Toll Info
+          </a>
         </div>
       </div>
 
@@ -151,6 +200,9 @@ export default function FuelRestStops({ tripSlug }: FuelRestStopsProps) {
         {stops.map((stop, idx) => {
           const { bg, border, color } = STOP_COLORS[stop.type];
           const isLast = idx === stops.length - 1;
+          const stopMapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(stop.name + " " + stop.town)}`;
+          const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(stop.town)}&travelmode=driving`;
+
           return (
             <div key={stop.id} className="fuel-stop-item">
               {/* Timeline connector */}
@@ -186,10 +238,64 @@ export default function FuelRestStops({ tripSlug }: FuelRestStopsProps) {
                 {stop.notes && (
                   <p className="fuel-stop-notes">💡 {stop.notes}</p>
                 )}
+                {/* Per-stop action links */}
+                <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.6rem", flexWrap: "wrap" }}>
+                  <a href={stopMapsUrl} target="_blank" rel="noopener noreferrer"
+                    style={{
+                      display: "inline-flex", alignItems: "center", gap: "0.3rem",
+                      padding: "0.25rem 0.6rem", borderRadius: 20,
+                      border: `1px solid ${border}`, background: bg,
+                      color, fontSize: "0.7rem", fontWeight: 600, textDecoration: "none",
+                    }}>
+                    <MapPin size={10} /> View on Maps
+                  </a>
+                  <a href={navUrl} target="_blank" rel="noopener noreferrer"
+                    style={{
+                      display: "inline-flex", alignItems: "center", gap: "0.3rem",
+                      padding: "0.25rem 0.6rem", borderRadius: 20,
+                      border: "1px solid rgba(74,222,128,0.3)", background: "rgba(74,222,128,0.07)",
+                      color: "#4ade80", fontSize: "0.7rem", fontWeight: 600, textDecoration: "none",
+                    }}>
+                    <Navigation size={10} /> Navigate
+                  </a>
+                </div>
               </div>
             </div>
           );
         })}
+      </div>
+
+      {/* Bottom strip */}
+      <div style={{
+        marginTop: "1.5rem", padding: "0.85rem 1rem",
+        borderRadius: "var(--radius-md)", border: "1px dashed var(--border)",
+        display: "flex", flexWrap: "wrap", gap: "0.6rem", alignItems: "center",
+      }}>
+        <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>
+          🗺️ More tools:
+        </span>
+        {[
+          { label: "Google Maps Route", url: mapsRouteUrl },
+          { label: "Petrol Prices India", url: "https://www.goodreturns.in/petrol-price.html" },
+          { label: "NHAI Toll Calculator", url: "https://www.nhaihelp.com" },
+          { label: "Weather en route", url: `https://www.google.com/search?q=${encodeURIComponent("weather " + destination)}` },
+        ].map(({ label, url }) => (
+          <a
+            key={label}
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "0.3rem",
+              padding: "0.3rem 0.7rem", borderRadius: 20,
+              border: "1px solid var(--border)", background: "var(--bg-card)",
+              color: "var(--text-secondary)", fontSize: "0.75rem", fontWeight: 500,
+              textDecoration: "none",
+            }}
+          >
+            <ExternalLink size={10} /> {label}
+          </a>
+        ))}
       </div>
     </div>
   );

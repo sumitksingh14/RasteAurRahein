@@ -364,6 +364,7 @@ export default function AIPlanner() {
   const [numberOfDays, setNumberOfDays] = useState(5);
   const [origin, setOrigin] = useState("");
 
+
   // Generation state
   const [generating, setGenerating] = useState(false);
   const [itinerary, setItinerary] = useState<GeneratedItinerary | null>(null);
@@ -418,7 +419,7 @@ export default function AIPlanner() {
       dietary: "no-preference" as const,
       highlights: prompt,
       avoid: "",
-      model: "gemini" as const,
+      model: "openai" as const,
       nvidiaModel: "nvidia/nemotron-3.5-lightning-30b-a3b",
       groqModel: "openai/gpt-oss-20b",
       openaiModel: "gpt-4o",
@@ -642,7 +643,7 @@ export default function AIPlanner() {
             textShadow: "0 2px 12px rgba(0,0,0,0.3)",
           }}
         >
-          AI Itinerary Planner
+          Your AI Trip Planner Buddy
         </h1>
 
         {/* Two-panel grid */}
@@ -921,6 +922,8 @@ export default function AIPlanner() {
                 <span style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.5)" }}>Luxury</span>
               </div>
             </div>
+
+
 
             {/* Error */}
             {error && (

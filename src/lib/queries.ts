@@ -40,6 +40,7 @@ export const DEMO_TRIPS: Trip[] = [
             title: "09:30 AM Bhimashankar Jyotirlinga Darshan",
             description: "Visit the ancient Bhimashankar Shiva temple perched in the Western Ghats.",
             notes: "Dress modestly; remove shoes before entering the sanctum.",
+            location: { name: "Bhimashankar Jyotirlinga, Maharashtra", lat: 19.0728, lng: 73.5370 },
             type: "sightseeing"
           },
           {
@@ -47,6 +48,7 @@ export const DEMO_TRIPS: Trip[] = [
             title: "12:30 PM Lunch – Maharashtrian Thali",
             description: "Enjoy a wholesome thali with bhakri, varan, sabzi and solkadhi at Madhurima Dhaba.",
             notes: "Try the local solkadhi for digestion after the temple visit.",
+            location: { name: "Madhurima Dhaba, Bhimashankar", lat: 19.0740, lng: 73.5360 },
             type: "food"
           },
           {
@@ -83,6 +85,7 @@ export const DEMO_TRIPS: Trip[] = [
             title: "10:30 AM Trimbakeshwar Jyotirlinga Darshan",
             description: "Visit the revered Trimbakeshwar Shiva temple, one of the twelve Jyotirlingas.",
             notes: "Offer a heartfelt puja; the temple opens at 6:00 AM.",
+            location: { name: "Trimbakeshwar Jyotirlinga, Nashik", lat: 19.9342, lng: 73.5306 },
             type: "sightseeing"
           },
           {
@@ -97,6 +100,7 @@ export const DEMO_TRIPS: Trip[] = [
             title: "02:30 PM Brahmagiri Hill Visit",
             description: "Drive up to Brahmagiri Hill, the origin point of the Godavari River.",
             notes: "Great photo spot; stay hydrated at the hilltop.",
+            location: { name: "Brahmagiri Hill, Trimbakeshwar", lat: 19.9200, lng: 73.5100 },
             type: "activity"
           },
           {
@@ -126,6 +130,7 @@ export const DEMO_TRIPS: Trip[] = [
             title: "09:30 AM Grishneshwar Jyotirlinga Darshan",
             description: "Pay homage at the Grishneshwar temple, the last Jyotirlinga in Maharashtra.",
             notes: "It's less crowded in the morning; take a moment for personal prayer.",
+            location: { name: "Grishneshwar Jyotirlinga, Ellora", lat: 20.0269, lng: 75.1772 },
             type: "sightseeing"
           },
           {
@@ -140,6 +145,7 @@ export const DEMO_TRIPS: Trip[] = [
             title: "01:30 PM Ellora Caves Guided Tour",
             description: "Explore the UNESCO listed rock cut caves of Ellora, a short drive from the temple.",
             notes: "Hire a knowledgeable guide to appreciate the sculptures.",
+            location: { name: "Ellora Caves, Aurangabad", lat: 20.0268, lng: 75.1777 },
             type: "activity"
           },
           {
@@ -147,6 +153,7 @@ export const DEMO_TRIPS: Trip[] = [
             title: "08:00 PM Overnight at Aurangabad Heritage Hotel",
             description: "Rest in a heritage hotel blending Mughal Maratha architecture.",
             notes: "Book a room with a view of the city skyline.",
+            location: { name: "Aurangabad", lat: 19.8762, lng: 75.3433 },
             type: "accommodation"
           }
         ]
@@ -169,6 +176,7 @@ export const DEMO_TRIPS: Trip[] = [
             title: "02:00 PM Mahakaleshwar Jyotirlinga Darshan",
             description: "Enter the sacred Mahakaleshwar temple in Ujjain, a pinnacle of Shaivism.",
             notes: "Dress code: no shorts or sleeveless tops; carry a small offering.",
+            location: { name: "Mahakaleshwar Jyotirlinga, Ujjain", lat: 23.1828, lng: 75.7682 },
             type: "sightseeing"
           },
           {
@@ -183,6 +191,7 @@ export const DEMO_TRIPS: Trip[] = [
             title: "04:30 PM Sandhya Aarti at Mahakaleshwar",
             description: "Participate in the soulful evening aarti with chants and incense.",
             notes: "Arrive early to secure a good spot; keep cameras off during the ritual.",
+            location: { name: "Mahakaleshwar Temple Aarti, Ujjain", lat: 23.1828, lng: 75.7682 },
             type: "activity"
           },
           {
@@ -190,6 +199,7 @@ export const DEMO_TRIPS: Trip[] = [
             title: "07:30 PM Check in at Ujjain Riverside Hotel",
             description: "Relax at a riverside hotel overlooking the Shipra River.",
             notes: "Enjoy a night walk along the ghats after dinner.",
+            location: { name: "Ujjain, Madhya Pradesh", lat: 23.1765, lng: 75.7885 },
             type: "accommodation"
           }
         ]
@@ -212,6 +222,7 @@ export const DEMO_TRIPS: Trip[] = [
             title: "12:30 PM Omkareshwar Jyotirlinga Darshan",
             description: "Visit the twin temples on Mandhata Island dedicated to Lord Shiva.",
             notes: "Both the east and west shrines are considered Jyotirlingas; offer prayers at both.",
+            location: { name: "Omkareshwar Jyotirlinga, Mandhata Island", lat: 22.2380, lng: 76.1484 },
             type: "sightseeing"
           },
           {
@@ -226,6 +237,7 @@ export const DEMO_TRIPS: Trip[] = [
             title: "03:00 PM Narmada River Boat Ride",
             description: "Take a guided boat cruise around the island to view the temples from the water.",
             notes: "Wear a life vest; the river is gentle in September.",
+            location: { name: "Narmada River, Omkareshwar", lat: 22.2350, lng: 76.1500 },
             type: "activity"
           },
           {
@@ -233,6 +245,7 @@ export const DEMO_TRIPS: Trip[] = [
             title: "07:00 PM Stay at Narmada View Resort",
             description: "End the pilgrimage with a comfortable stay overlooking the Narmada.",
             notes: "Early check in possible; enjoy a nightcap of fresh coconut water.",
+            location: { name: "Narmada View Resort, Omkareshwar", lat: 22.2380, lng: 76.1470 },
             type: "accommodation"
           }
         ]

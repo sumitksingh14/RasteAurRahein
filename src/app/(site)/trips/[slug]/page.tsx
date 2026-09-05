@@ -472,10 +472,8 @@ export default async function TripDetailPage({ params }: Props) {
               </div>
             )}
 
-            {/* PDF Download */}
-            {trip.itinerary && trip.itinerary.length > 0 && (
-              <PDFDownloadButton trip={trip} />
-            )}
+            {/* PDF Download — always visible; auth gate handled inside component */}
+            <PDFDownloadButton trip={trip} />
           </aside>
         </div>
       </div>

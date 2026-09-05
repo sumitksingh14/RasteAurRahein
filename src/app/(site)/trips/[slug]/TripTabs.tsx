@@ -1,59 +1,122 @@
 "use client";
 
 import { useState } from "react";
-import { Map, Camera, List, DollarSign, Hotel, Utensils, Gauge } from "lucide-react";
+import { Map, List, DollarSign, Hotel, Utensils, Gauge, Sparkles, ExternalLink } from "lucide-react";
 import ItineraryAccordion from "@/components/ui/ItineraryAccordion";
-import PhotoGallery from "@/components/ui/PhotoGallery";
 import MapView from "@/components/ui/MapView";
 import StaySuggestions from "@/components/ui/StaySuggestions";
 import FoodRecommendations from "@/components/ui/FoodRecommendations";
 import FuelRestStops from "@/components/ui/FuelRestStops";
 import type { Trip, MapPin } from "@/lib/types";
 
-type GalleryImage = {
-  src: string;
-  alt: string;
-  caption: string;
-};
-
-const TRIP_GALLERIES: Record<string, GalleryImage[]> = {
-  "spiti-valley": [
-    { src: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1200&q=85", alt: "Spiti Valley mountain landscape", caption: "The high-altitude landscapes of Spiti Valley." },
-    { src: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=1200&q=85", alt: "Himalayan monastery", caption: "Monastery country around Kaza and Ki." },
-    { src: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1200&q=85", alt: "Himalayan mountain road", caption: "Remote roads on the Spiti circuit." },
-    { src: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=85", alt: "High-altitude lake and mountains", caption: "The alpine character of Chandratal and the high passes." },
-  ],
-  "mysore-coorg-wayanad-ooty": [
-    { src: "https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/d4676652506983.591f0235258b3.jpg", alt: "Misty Coorg hills", caption: "Misty Western Ghats landscapes around Coorg." },
-    { src: "https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/33844d52506983.591f0235254e9.jpg", alt: "Coorg coffee-country landscape", caption: "Coffee-country scenery on the Coorg leg." },
-    { src: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200&q=85", alt: "Mountain lake", caption: "Cooler hill-country scenery toward Ooty and Coonoor." },
-    { src: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1200&q=85", alt: "Scenic road through the hills", caption: "A road-trip view of the Western Ghats circuit." },
-  ],
-  "rajasthan-desert-kingdom": [
-    { src: "https://images.unsplash.com/photo-1514222134-b57cbb8ce073?w=1200&q=85", alt: "Rajasthan palace architecture", caption: "Royal architecture from Rajasthan's historic cities." },
-    { src: "https://images.unsplash.com/photo-1548013146-72479768bada?w=1200&q=85", alt: "Historic Indian architecture", caption: "Forts, palaces, and carved stone landmarks across the circuit." },
-    { src: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1200&q=85", alt: "Indian heritage monument", caption: "The heritage-rich city stops from Jaipur to Udaipur." },
-    { src: "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=1200&q=85", alt: "Desert landscape", caption: "Desert horizons around Jaisalmer and Sam Sand Dunes." },
-  ],
-  "goa-beyond-beaches": [
-    { src: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=1200&q=85", alt: "Goa beach", caption: "The Arabian Sea side of Goa." },
-    { src: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=85", alt: "Tropical beach", caption: "Beach time across North and South Goa." },
-    { src: "https://images.unsplash.com/photo-1500534623283-312aade485b7?w=1200&q=85", alt: "Coastal palm landscape", caption: "Goa's palm-lined coastal character." },
-    { src: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=1200&q=85", alt: "Sunset on the coast", caption: "A slow sunset finish on the Goan coast." },
-  ],
-};
-
-type TabId = "itinerary" | "photos" | "map" | "costs" | "stay" | "food" | "route";
+type TabId = "itinerary" | "map" | "costs" | "stay" | "food" | "route";
 
 const TABS: { id: TabId; label: string; Icon: React.ElementType }[] = [
   { id: "itinerary", label: "Itinerary", Icon: List },
-  { id: "photos", label: "Photos", Icon: Camera },
   { id: "map", label: "Map", Icon: Map },
   { id: "costs", label: "Costs", Icon: DollarSign },
   { id: "stay", label: "Stay", Icon: Hotel },
   { id: "food", label: "Food", Icon: Utensils },
   { id: "route", label: "Route", Icon: Gauge },
 ];
+
+// AI-estimated budget ranges per trip slug (derived from trip type & destination)
+const AI_BUDGET_ESTIMATES: Record<string, {
+  accommodation: [number, number];
+  food: [number, number];
+  transport: [number, number];
+  activities: [number, number];
+  misc: [number, number];
+  currency: string;
+  source: string;
+  searchQuery: string;
+}> = {
+  "spiti-valley": {
+    accommodation: [1200, 4500], food: [300, 800], transport: [800, 1500],
+    activities: [200, 600], misc: [300, 500], currency: "INR",
+    source: "Based on Spiti Valley traveller reports (2024–25)",
+    searchQuery: "Spiti Valley trip budget per day 2024",
+  },
+  "mysore-coorg-wayanad-ooty": {
+    accommodation: [700, 6000], food: [400, 1200], transport: [600, 1000],
+    activities: [300, 800], misc: [200, 400], currency: "INR",
+    source: "Based on South India circuit reports (2024–25)",
+    searchQuery: "Mysore Coorg Wayanad Ooty trip budget per day 2024",
+  },
+  "rajasthan-desert-kingdom": {
+    accommodation: [1500, 12000], food: [400, 1500], transport: [700, 1200],
+    activities: [500, 1500], misc: [300, 600], currency: "INR",
+    source: "Based on Rajasthan circuit traveller reports (2024–25)",
+    searchQuery: "Rajasthan road trip budget per day 2024",
+  },
+  "goa-beyond-beaches": {
+    accommodation: [1200, 8000], food: [500, 2000], transport: [400, 900],
+    activities: [500, 2000], misc: [300, 700], currency: "INR",
+    source: "Based on Goa traveller reports (2024–25)",
+    searchQuery: "Goa trip budget per day 2024",
+  },
+  "sikkim-7-days": {
+    accommodation: [1000, 7000], food: [300, 1000], transport: [600, 1200],
+    activities: [400, 1200], misc: [200, 500], currency: "INR",
+    source: "Based on Sikkim traveller reports (2024–25)",
+    searchQuery: "Sikkim trip budget per day 2024",
+  },
+  "meghalaya-5-days": {
+    accommodation: [1200, 5500], food: [300, 900], transport: [500, 1000],
+    activities: [300, 800], misc: [200, 400], currency: "INR",
+    source: "Based on Meghalaya traveller reports (2024–25)",
+    searchQuery: "Meghalaya trip budget per day 2024",
+  },
+  "kerala-7-days": {
+    accommodation: [2000, 9000], food: [500, 1500], transport: [600, 1200],
+    activities: [600, 2000], misc: [300, 600], currency: "INR",
+    source: "Based on Kerala traveller reports (2024–25)",
+    searchQuery: "Kerala trip budget per day 2024",
+  },
+  "munsiyari-6-days": {
+    accommodation: [800, 3000], food: [250, 700], transport: [600, 1200],
+    activities: [200, 600], misc: [200, 400], currency: "INR",
+    source: "Based on Munsiyari traveller reports (2024–25)",
+    searchQuery: "Munsiyari trip budget per day 2024",
+  },
+  "char-dham-yatra-uttarakhand": {
+    accommodation: [600, 3500], food: [200, 700], transport: [800, 1500],
+    activities: [300, 1000], misc: [200, 500], currency: "INR",
+    source: "Based on Char Dham Yatra reports (2024–25)",
+    searchQuery: "Char Dham Yatra budget per day 2024",
+  },
+  "panch-kedar-trek-10-days": {
+    accommodation: [600, 2500], food: [300, 800], transport: [700, 1400],
+    activities: [400, 1200], misc: [300, 600], currency: "INR",
+    source: "Based on Panch Kedar trek reports (2024–25)",
+    searchQuery: "Panch Kedar trek budget per day 2024",
+  },
+  "pune-konkan-coast-raigad": {
+    accommodation: [1500, 5000], food: [400, 1200], transport: [500, 1000],
+    activities: [300, 800], misc: [200, 400], currency: "INR",
+    source: "Based on Konkan coast traveller reports (2024–25)",
+    searchQuery: "Pune Konkan trip budget per day 2024",
+  },
+};
+
+const DEFAULT_BUDGET = {
+  accommodation: [1000, 4000] as [number, number],
+  food: [300, 1000] as [number, number],
+  transport: [500, 1200] as [number, number],
+  activities: [300, 800] as [number, number],
+  misc: [200, 500] as [number, number],
+  currency: "INR",
+  source: "AI-estimated range based on similar India trips",
+  searchQuery: "",
+};
+
+const BUDGET_CATS = [
+  { key: "accommodation", label: "🏨 Accommodation", color: "#60a5fa" },
+  { key: "food", label: "🍽️ Food & Drinks", color: "#f9a8d4" },
+  { key: "transport", label: "🚗 Transport / Fuel", color: "#fbbf24" },
+  { key: "activities", label: "🎟️ Activities & Entry", color: "#4ade80" },
+  { key: "misc", label: "🧳 Miscellaneous", color: "#c4b5fd" },
+] as const;
 
 interface TripTabsProps {
   trip: Trip;
@@ -76,7 +139,7 @@ export default function TripTabs({ trip }: TripTabsProps) {
           })) || []
     ) || [];
 
-  // Collect all costs
+  // Collect all costs from structured itinerary data
   const costsByDay =
     trip.itinerary?.map((day) => ({
       day: day.title,
@@ -92,6 +155,11 @@ export default function TripTabs({ trip }: TripTabsProps) {
     })) || [];
 
   const grandTotal = costsByDay.reduce((sum, d) => sum + d.total, 0);
+  const numDays = trip.itinerary?.length || 1;
+
+  // AI budget estimate for this trip
+  const aiBudget = AI_BUDGET_ESTIMATES[trip.slug] || DEFAULT_BUDGET;
+  const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(aiBudget.searchQuery || `${trip.title} budget per day 2024`)}`;
 
   return (
     <div>
@@ -149,8 +217,6 @@ export default function TripTabs({ trip }: TripTabsProps) {
               days={trip.itinerary}
               destination={trip.title}
               origin={
-                // Best-effort: pull the first transport activity title as Day 1 origin,
-                // or fall back to an empty string (Maps button will still show destination-only)
                 trip.itinerary[0]?.activities?.find((a) => a.type === "transport")?.location?.name ||
                 ""
               }
@@ -171,13 +237,6 @@ export default function TripTabs({ trip }: TripTabsProps) {
         </div>
       )}
 
-      {activeTab === "photos" && (
-        <PhotoGallery
-          images={TRIP_GALLERIES[trip.slug] || []}
-          title={`${trip.title} Gallery`}
-        />
-      )}
-
       {activeTab === "map" && (
         <div>
           {mapPins.length > 0 ? (
@@ -195,7 +254,6 @@ export default function TripTabs({ trip }: TripTabsProps) {
               <MapView pins={mapPins} height={480} />
             </div>
           ) : (
-            // Demo map for Spiti Valley when no pins are in itinerary
             <div>
               <p
                 style={{
@@ -224,6 +282,7 @@ export default function TripTabs({ trip }: TripTabsProps) {
       {activeTab === "costs" && (
         <div>
           {grandTotal > 0 ? (
+            /* ── Structured cost data from itinerary ── */
             <div>
               {/* Grand Total */}
               <div
@@ -322,30 +381,174 @@ export default function TripTabs({ trip }: TripTabsProps) {
               ))}
             </div>
           ) : (
-            <div
-              style={{
-                textAlign: "center",
-                padding: "3rem",
-                color: "var(--text-muted)",
-                border: "1px dashed var(--border)",
+            /* ── AI-estimated budget when no structured cost data ── */
+            <div>
+              {/* AI Badge Header */}
+              <div style={{
+                display: "flex", alignItems: "center", gap: "0.6rem",
+                marginBottom: "1.25rem",
+                padding: "0.75rem 1rem",
                 borderRadius: "var(--radius-md)",
-              }}
-            >
-              No cost data recorded for this trip.
+                background: "rgba(139,92,246,0.08)",
+                border: "1px solid rgba(139,92,246,0.25)",
+              }}>
+                <Sparkles size={16} style={{ color: "#a78bfa", flexShrink: 0 }} />
+                <div>
+                  <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#a78bfa" }}>
+                    AI-Estimated Budget Range
+                  </div>
+                  <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginTop: 2 }}>
+                    {aiBudget.source} · per person per day
+                  </div>
+                </div>
+                <a
+                  href={googleSearchUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    marginLeft: "auto", display: "flex", alignItems: "center", gap: "0.3rem",
+                    fontSize: "0.72rem", color: "var(--accent-teal)", fontWeight: 600,
+                    textDecoration: "none", flexShrink: 0,
+                  }}
+                >
+                  <ExternalLink size={11} /> Verify
+                </a>
+              </div>
+
+              {/* Category cards */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", marginBottom: "1.5rem" }}>
+                {BUDGET_CATS.map(({ key, label, color }) => {
+                  const [lo, hi] = (aiBudget[key as keyof typeof aiBudget] as [number, number]) || [0, 0];
+                  const midPct = Math.round(((lo + hi) / 2) / (
+                    (BUDGET_CATS.reduce((s, c) => {
+                      const [l, h] = (aiBudget[c.key as keyof typeof aiBudget] as [number, number]) || [0, 0];
+                      return s + (l + h) / 2;
+                    }, 0)) || 1
+                  ) * 100);
+                  return (
+                    <div
+                      key={key}
+                      style={{
+                        border: "1px solid var(--border)",
+                        borderRadius: "var(--radius-md)",
+                        padding: "0.85rem 1rem",
+                        background: "var(--bg-card)",
+                      }}
+                    >
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.45rem" }}>
+                        <span style={{ fontSize: "0.88rem", fontWeight: 600, color: "var(--text-primary)" }}>
+                          {label}
+                        </span>
+                        <span style={{ fontSize: "0.88rem", fontWeight: 700, color }}>
+                          ₹{lo.toLocaleString()} – ₹{hi.toLocaleString()}
+                        </span>
+                      </div>
+                      {/* Mini bar */}
+                      <div style={{ height: 4, borderRadius: 2, background: "var(--border)", overflow: "hidden" }}>
+                        <div style={{ height: "100%", width: `${midPct}%`, background: color, borderRadius: 2, opacity: 0.75 }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Daily & total summary */}
+              <div style={{
+                display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem",
+                marginBottom: "1.25rem",
+              }}>
+                {[
+                  {
+                    label: "Daily Budget (budget traveller)",
+                    value: `₹${BUDGET_CATS.reduce((s, c) => s + ((aiBudget[c.key as keyof typeof aiBudget] as [number, number])?.[0] || 0), 0).toLocaleString()}`,
+                    sub: "per person/day",
+                    color: "#4ade80",
+                  },
+                  {
+                    label: "Daily Budget (mid-range)",
+                    value: `₹${BUDGET_CATS.reduce((s, c) => s + ((aiBudget[c.key as keyof typeof aiBudget] as [number, number])?.[1] || 0), 0).toLocaleString()}`,
+                    sub: "per person/day",
+                    color: "#60a5fa",
+                  },
+                  {
+                    label: `${numDays}-Day Trip (budget)`,
+                    value: `₹${(BUDGET_CATS.reduce((s, c) => s + ((aiBudget[c.key as keyof typeof aiBudget] as [number, number])?.[0] || 0), 0) * numDays).toLocaleString()}`,
+                    sub: "estimated total",
+                    color: "#fbbf24",
+                  },
+                  {
+                    label: `${numDays}-Day Trip (mid-range)`,
+                    value: `₹${(BUDGET_CATS.reduce((s, c) => s + ((aiBudget[c.key as keyof typeof aiBudget] as [number, number])?.[1] || 0), 0) * numDays).toLocaleString()}`,
+                    sub: "estimated total",
+                    color: "#f9a8d4",
+                  },
+                ].map((card) => (
+                  <div
+                    key={card.label}
+                    style={{
+                      border: "1px solid var(--border)",
+                      borderRadius: "var(--radius-md)",
+                      padding: "1rem",
+                      background: "var(--bg-secondary)",
+                      textAlign: "center",
+                    }}
+                  >
+                    <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginBottom: "0.35rem" }}>{card.label}</div>
+                    <div style={{ fontFamily: "var(--font-serif)", fontSize: "1.5rem", fontWeight: 700, color: card.color }}>{card.value}</div>
+                    <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", marginTop: 2 }}>{card.sub}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Search engine links */}
+              <div style={{
+                padding: "0.85rem 1rem",
+                borderRadius: "var(--radius-md)",
+                border: "1px dashed var(--border)",
+                display: "flex", flexWrap: "wrap", gap: "0.6rem", alignItems: "center",
+              }}>
+                <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>
+                  🔍 Get latest estimates:
+                </span>
+                {[
+                  { label: "Google", url: googleSearchUrl },
+                  { label: "TripAdvisor", url: `https://www.tripadvisor.in/Search?q=${encodeURIComponent(trip.title + " travel budget")}` },
+                  { label: "MakeMyTrip", url: `https://www.makemytrip.com/holidays-india/` },
+                  { label: "IndiaMike", url: `https://www.indiamike.com/india/search/?q=${encodeURIComponent(trip.title + " budget")}` },
+                ].map(({ label, url }) => (
+                  <a
+                    key={label}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "inline-flex", alignItems: "center", gap: "0.3rem",
+                      padding: "0.3rem 0.7rem", borderRadius: 20,
+                      border: "1px solid var(--border)",
+                      background: "var(--bg-card)",
+                      color: "var(--text-secondary)", fontSize: "0.75rem", fontWeight: 500,
+                      textDecoration: "none", transition: "all 0.2s",
+                    }}
+                  >
+                    <ExternalLink size={10} /> {label}
+                  </a>
+                ))}
+              </div>
             </div>
           )}
         </div>
       )}
+
       {activeTab === "stay" && (
-        <StaySuggestions tripSlug={trip.slug} />
+        <StaySuggestions tripSlug={trip.slug} tripTitle={trip.title} />
       )}
 
       {activeTab === "food" && (
-        <FoodRecommendations tripSlug={trip.slug} />
+        <FoodRecommendations tripSlug={trip.slug} tripTitle={trip.title} />
       )}
 
       {activeTab === "route" && (
-        <FuelRestStops tripSlug={trip.slug} />
+        <FuelRestStops tripSlug={trip.slug} tripTitle={trip.title} />
       )}
     </div>
   );

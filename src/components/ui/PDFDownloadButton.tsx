@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Download } from "lucide-react";
+import { Download, Lock } from "lucide-react";
 import type { Trip } from "@/lib/types";
+import { useAuth } from "@/components/providers/AuthProvider";
 
 interface PDFDownloadButtonProps {
   trip: Trip;
@@ -14,8 +15,14 @@ interface PDFDownloadButtonProps {
  */
 export default function PDFDownloadButton({ trip }: PDFDownloadButtonProps) {
   const [loading, setLoading] = useState(false);
+  const { user, openAuthModal } = useAuth();
 
   const handleDownload = async () => {
+    // If not logged in, open auth modal instead
+    if (!user) {
+      openAuthModal();
+      return;
+    }
     if (loading) return;
     setLoading(true);
     try {
@@ -379,6 +386,7 @@ export default function PDFDownloadButton({ trip }: PDFDownloadButtonProps) {
       disabled={loading}
       id="pdf-download-btn"
       className="btn btn-outline"
+      title={!user ? "Sign in to download the itinerary PDF" : undefined}
       style={{
         width: "100%",
         justifyContent: "center",
@@ -386,10 +394,11 @@ export default function PDFDownloadButton({ trip }: PDFDownloadButtonProps) {
         opacity: loading ? 0.7 : 1,
         fontSize: "0.875rem",
         marginTop: "0.75rem",
+        position: "relative",
       }}
     >
-      <Download size={15} />
-      {loading ? "Generating PDF…" : "Download Itinerary PDF"}
+      {!user ? <Lock size={14} style={{ opacity: 0.7 }} /> : <Download size={15} />}
+      {loading ? "Generating PDF…" : !user ? "Sign in to Export PDF" : "Download Itinerary PDF"}
     </button>
   );
 }
