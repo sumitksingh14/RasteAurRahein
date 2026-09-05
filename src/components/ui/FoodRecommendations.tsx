@@ -5,6 +5,44 @@ import type { FoodSpot } from "@/lib/types";
 
 // ── Per-trip food data ────────────────────────────────────────────────────────
 const FOOD_DATA: Record<string, FoodSpot[]> = {
+  "jyotirlinga-pilgrimage-road-trip": [
+    {
+      id: "jy_f1", name: "Madhurima Dhaba, Bhimashankar", type: "dhaba", town: "Bhimashankar",
+      mustTry: ["Maharashtrian Thali", "Sol Kadhi", "Jowar Bhakri"],
+      priceRange: "₹", isVeg: true,
+      notes: "Simple post-darshan thali spot near the temple; best reached by 1 PM.",
+    },
+    {
+      id: "jy_f2", name: "Madhav's Kitchen, Trimbakeshwar", type: "restaurant", town: "Trimbakeshwar, Nashik",
+      mustTry: ["Pithla Bhakri", "Buttermilk", "Varan Bhat"],
+      priceRange: "₹", isVeg: true,
+      notes: "Vegetarian only; a warm family kitchen steps from the Godavari ghat.",
+    },
+    {
+      id: "jy_f3", name: "Maharaj Dhaba, Ellora", type: "dhaba", town: "Ellora, Aurangabad",
+      mustTry: ["Zunka Bhakar", "Ambadi Sabzi", "Fresh Lassi"],
+      priceRange: "₹", isVeg: true,
+      notes: "Rustic dhaba with protein-rich Vidarbha cuisine; perfect fuel before the cave tour.",
+    },
+    {
+      id: "jy_f4", name: "Madhurima Veg Restaurant, Ujjain", type: "restaurant", town: "Ujjain",
+      mustTry: ["Ujjaini Poha", "Bhutte ki Kees", "Malpua"],
+      priceRange: "₹", isVeg: true,
+      notes: "Ujjain's iconic breakfast; arrive at dawn after the Bhasma Aarti.",
+    },
+    {
+      id: "jy_f5", name: "Omkareshwar Rasoi", type: "homestay-kitchen", town: "Omkareshwar",
+      mustTry: ["Dal Bati Churma", "Malwa Thali", "Coconut Water"],
+      priceRange: "₹", isVeg: true,
+      notes: "Traditional Malwa thali served riverside; deeply satisfying after the boat puja.",
+    },
+    {
+      id: "jy_f6", name: "Shipra Ghat Tea Stalls", type: "street-food", town: "Ujjain Ghats",
+      mustTry: ["Kesar Masala Chai", "Bun Maska", "Tikki Chaat"],
+      priceRange: "₹", isVeg: true,
+      notes: "Evening chai ritual at the Shipra ghat after the Sandhya Aarti — unmissable.",
+    },
+  ],
   "spiti-valley": [
     {
       id: "f1", name: "Sichuan Kitchen, Kaza", type: "restaurant", town: "Kaza",

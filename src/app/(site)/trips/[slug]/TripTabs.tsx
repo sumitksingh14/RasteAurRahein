@@ -31,6 +31,12 @@ const AI_BUDGET_ESTIMATES: Record<string, {
   source: string;
   searchQuery: string;
 }> = {
+  "jyotirlinga-pilgrimage-road-trip": {
+    accommodation: [1200, 5500], food: [200, 600], transport: [800, 1500],
+    activities: [200, 500], misc: [300, 600], currency: "INR",
+    source: "Based on Jyotirlinga pilgrimage traveller reports (2024–25)",
+    searchQuery: "Jyotirlinga pilgrimage Maharashtra Madhya Pradesh budget per day 2024",
+  },
   "spiti-valley": {
     accommodation: [1200, 4500], food: [300, 800], transport: [800, 1500],
     activities: [200, 600], misc: [300, 500], currency: "INR",

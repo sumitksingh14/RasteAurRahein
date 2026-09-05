@@ -1,10 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import {
-  Eye, EyeOff, Mail, Lock, User, CheckCircle, AlertCircle,
-  ArrowLeft, FileDown, Heart, MessageCircle, Star, Map, Sparkles, X
-} from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
 
 interface AuthModalProps {
@@ -14,6 +10,7 @@ interface AuthModalProps {
 }
 
 type Tab = "login" | "register";
+type View = "auth" | "forgot" | "forgotSent";
 
 interface FieldState {
   value: string;
@@ -30,25 +27,37 @@ function useField(initial = "") {
   return { ...state, set, touch, setError, reset };
 }
 
-// Features available after login
-const MEMBER_FEATURES = [
-  { icon: <FileDown size={15} />, label: "Export itineraries as PDF", color: "#c9a84c" },
-  { icon: <Heart size={15} />, label: "Like & save favourite trips", color: "#f9a8d4" },
-  { icon: <Star size={15} />, label: "Rate trips & share your experience", color: "#fbbf24" },
-  { icon: <MessageCircle size={15} />, label: "Comment and connect with travellers", color: "#5eead4" },
-  { icon: <Map size={15} />, label: "Access exclusive route maps", color: "#60a5fa" },
-  { icon: <Sparkles size={15} />, label: "AI Trip Planner — generate itineraries", color: "#a78bfa" },
+// Member feature benefits shown on the left panel
+const FEATURES = [
+  { icon: "picture_as_pdf", label: "Export itineraries as PDF" },
+  { icon: "favorite", label: "Like & save favourite trips" },
+  { icon: "star", label: "Rate trips & share your experience" },
+  { icon: "chat_bubble", label: "Comment and connect with travellers" },
+  { icon: "map", label: "Access exclusive route maps" },
+  { icon: "auto_awesome", label: "AI Trip Planner — generate itineraries" },
 ];
+
+// Brand SVG logo — matching code.html exactly
+function BrandLogo({ size = 24, color = "currentColor" }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z"
+        fill={color}
+      />
+    </svg>
+  );
+}
 
 export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthModalProps) {
   const { refresh } = useAuth();
   const [tab, setTab] = useState<Tab>(defaultTab);
-  const [view, setView] = useState<"auth" | "forgot" | "forgotSent">("auth");
+  const [view, setView] = useState<View>("auth");
   const [submitting, setSubmitting] = useState(false);
   const [globalError, setGlobalError] = useState("");
   const [success, setSuccess] = useState(false);
   const [showPass, setShowPass] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const firstInputRef = useRef<HTMLInputElement>(null);
   const forgotRef = useRef<HTMLInputElement>(null);
   const forgotIdentifier = useField();
@@ -69,19 +78,19 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
   }, [view]);
 
   useEffect(() => {
-    if (open) setTimeout(() => firstInputRef.current?.focus(), 120);
+    if (open) {
+      setTimeout(() => firstInputRef.current?.focus(), 150);
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
   }, [open]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
-    if (open) {
-      document.addEventListener("keydown", handler);
-      document.body.style.overflow = "hidden";
-    }
-    return () => {
-      document.removeEventListener("keydown", handler);
-      document.body.style.overflow = "";
-    };
+    if (open) document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
   }, [open, onClose]);
 
   if (!open) return null;
@@ -89,13 +98,12 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
   const validate = (): boolean => {
     let ok = true;
     if (tab === "register") {
-      if (username.value.length < 3) { username.setError("At least 3 characters"); ok = false; }
-      else if (!/^[a-zA-Z0-9_.-]+$/.test(username.value)) { username.setError("Letters, numbers, _ . - only"); ok = false; }
+      if (username.value.trim().length < 2) { username.setError("Please enter your full name"); ok = false; }
       if (!email.value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) { email.setError("Enter a valid email"); ok = false; }
     } else {
       if (!identifier.value.trim()) { identifier.setError("Enter your email address"); ok = false; }
     }
-    if (password.value.length < 8) { password.setError("At least 8 characters"); ok = false; }
+    if (password.value.length < 8) { password.setError("At least 8 characters required"); ok = false; }
     return ok;
   };
 
@@ -107,7 +115,7 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
     try {
       const endpoint = tab === "register" ? "/api/auth/register" : "/api/auth/login";
       const body = tab === "register"
-        ? { username: username.value, email: email.value, password: password.value }
+        ? { username: username.value.trim(), email: email.value, password: password.value }
         : { identifier: identifier.value.trim(), password: password.value };
       const res = await fetch(endpoint, {
         method: "POST", headers: { "Content-Type": "application/json" },
@@ -115,268 +123,282 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
       });
       const data = await res.json();
       if (!res.ok) {
-        setGlobalError(data.error || "Something went wrong");
+        setGlobalError(data.error || "Something went wrong. Please try again.");
       } else {
         setSuccess(true);
         await refresh();
-        setTimeout(onClose, 900);
+        setTimeout(onClose, 950);
       }
     } catch {
-      setGlobalError("Network error — please try again");
+      setGlobalError("Network error — please check your connection and try again.");
     } finally {
       setSubmitting(false);
     }
   };
 
-  const inputBase: React.CSSProperties = {
-    width: "100%",
-    padding: "0.8rem 2.75rem 0.8rem 1rem",
-    borderRadius: "10px",
-    border: "1.5px solid #e2e2e2",
-    background: "#fff",
-    color: "#1a1a1a",
-    fontSize: "0.9rem",
-    fontFamily: "var(--font-sans)",
-    outline: "none",
-    transition: "border-color 0.2s, box-shadow 0.2s",
-    boxSizing: "border-box",
+  const handleForgot = async () => {
+    if (!forgotIdentifier.value.trim()) { setGlobalError("Please enter your username or email"); return; }
+    setSubmitting(true); setGlobalError("");
+    try {
+      await fetch("/api/auth/forgot-password", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ identifier: forgotIdentifier.value.trim() }),
+      });
+      setView("forgotSent");
+    } catch { setGlobalError("Network error — please try again."); }
+    finally { setSubmitting(false); }
   };
-
-  const inputStyle = (field: FieldState): React.CSSProperties => ({
-    ...inputBase,
-    borderColor: field.touched && field.error ? "#ef4444" : field.touched && !field.error ? "#c9a84c" : "#e2e2e2",
-    boxShadow: field.touched && !field.error ? "0 0 0 3px rgba(201,168,76,0.12)" : "none",
-  });
 
   return (
     <>
-      {/* Full-screen overlay */}
+      {/* Overlay backdrop */}
       <div
+        onClick={onClose}
         style={{
           position: "fixed", inset: 0, zIndex: 9000,
-          background: "rgba(0,0,0,0.55)",
-          backdropFilter: "blur(6px)",
-          animation: "am-fadeIn 0.2s ease",
+          background: "rgba(34,23,16,0.55)",
+          backdropFilter: "blur(8px)",
+          animation: "rar2-fade 0.22s ease",
         }}
-        onClick={onClose}
       />
 
-      {/* Split panel container */}
+      {/* Full-page modal container */}
       <div
         role="dialog"
         aria-modal="true"
-        aria-label={tab === "login" ? "Sign in" : "Create account"}
+        aria-label={tab === "login" ? "Sign in to Raste Aur Raahein" : "Create your account"}
         style={{
           position: "fixed", inset: 0, zIndex: 9001,
           display: "flex", alignItems: "center", justifyContent: "center",
-          padding: "1rem",
+          padding: "0.75rem",
           pointerEvents: "none",
         }}
       >
+        {/* Split-screen card */}
         <div
-          style={{
-            width: "min(1000px, 100%)",
-            height: "min(640px, 95vh)",
-            display: "flex",
-            borderRadius: "20px",
-            overflow: "hidden",
-            boxShadow: "0 40px 120px rgba(0,0,0,0.5)",
-            animation: "am-slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1)",
-            pointerEvents: "auto",
-          }}
           onClick={(e) => e.stopPropagation()}
+          style={{
+            pointerEvents: "auto",
+            width: "min(1100px, 100%)",
+            height: "min(680px, 96vh)",
+            display: "flex",
+            borderRadius: "1.25rem",
+            overflow: "hidden",
+            boxShadow: "0 48px 120px rgba(34,23,16,0.55), 0 0 0 1px rgba(255,255,255,0.06)",
+            animation: "rar2-up 0.3s cubic-bezier(0.34,1.56,0.64,1)",
+            background: "#fff",
+          }}
         >
-          {/* ── LEFT PANEL — Forest photo + quote ── */}
+          {/* ══════════════════════════════════════
+              LEFT PANEL — forest image + quote
+          ══════════════════════════════════════ */}
           <div
+            className="rar2-left-panel"
             style={{
-              flex: "0 0 45%",
+              flex: "0 0 55%",
               position: "relative",
-              overflow: "hidden",
               display: "flex",
               flexDirection: "column",
-              justifyContent: "flex-end",
-              backgroundImage: "url(https://images.unsplash.com/photo-1448375240586-882707db888b?w=900&q=80)",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
+              justifyContent: "space-between",
+              padding: "2.5rem 3rem",
+              overflow: "hidden",
+              background: "#221710",
             }}
           >
-            {/* Dark gradient overlay */}
+            {/* Background image */}
             <div style={{
               position: "absolute", inset: 0,
-              background: "linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0.75) 100%)",
+              backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuAIIc4VPVm7kXNFgdG-eEDHVs7a7GVPe6j3h78HFH28EyIRyOw3KXDRU75eubVO5fDXsf5DQQ2fN2T-xS2Fkgi6Ob7-GaODMXHCaaCXO_JWmIse4qYP6U9VtWkilfHXejDdkTbtxeMwq_WN8fShiXB03m7d8iVnfHG2Wp6zGDle7xxAauctWoZAjWepNN4zugqMJwW0_1lS0-1zE9I2EbdRRY-EjbelP-EVLded9VNXDMyqAwY1piyEAw')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              transition: "transform 1s ease-out",
+            }} />
+            {/* Gradient overlay */}
+            <div style={{
+              position: "absolute", inset: 0,
+              background: "linear-gradient(to top, rgba(34,23,16,0.92) 0%, rgba(34,23,16,0.35) 45%, rgba(34,23,16,0.42) 100%)",
             }} />
 
-            {/* Back to journal link */}
-            <a
-              href="/"
-              style={{
-                position: "absolute", top: "1.5rem", left: "1.5rem",
-                display: "inline-flex", alignItems: "center", gap: "6px",
-                color: "rgba(255,255,255,0.85)", fontSize: "0.78rem", fontWeight: 500,
-                textDecoration: "none", zIndex: 2,
-                transition: "color 0.2s",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.85)")}
-            >
-              <ArrowLeft size={13} /> Back to Journal
-            </a>
+            {/* Top: back link */}
+            <div style={{ position: "relative", zIndex: 2 }}>
+              <a
+                href="/"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: "8px",
+                  color: "rgba(255,255,255,0.8)",
+                  fontSize: "0.8rem", fontWeight: 500, letterSpacing: "0.04em",
+                  textDecoration: "none",
+                  background: "rgba(34,23,16,0.4)",
+                  backdropFilter: "blur(12px)",
+                  padding: "0.45rem 1rem",
+                  borderRadius: "9999px",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  transition: "color 0.2s",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.8)")}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: "1rem" }}>arrow_back</span>
+                Back to Journal
+              </a>
+            </div>
 
-            {/* Bottom quote content */}
-            <div style={{ position: "relative", zIndex: 2, padding: "2rem" }}>
-              {/* Tag pill */}
+            {/* Bottom: quote + features */}
+            <div style={{ position: "relative", zIndex: 2 }}>
+              {/* Curated Footprints pill */}
               <div style={{
-                display: "inline-flex", alignItems: "center", gap: "6px",
-                background: "rgba(201,168,76,0.25)", border: "1px solid rgba(201,168,76,0.5)",
-                borderRadius: "100px", padding: "0.3rem 0.75rem",
-                marginBottom: "1rem",
+                display: "inline-flex", alignItems: "center", gap: "8px",
+                padding: "0.3rem 0.85rem", borderRadius: "9999px",
+                background: "rgba(212,95,17,0.2)", border: "1px solid rgba(212,95,17,0.35)",
+                backdropFilter: "blur(8px)", marginBottom: "1rem",
               }}>
-                <div style={{
-                  width: 7, height: 7, borderRadius: "50%", background: "#c9a84c",
+                <span style={{
+                  width: 8, height: 8, borderRadius: "50%",
+                  background: "#d45f11",
+                  animation: "rar2-pulse 2s infinite",
                 }} />
-                <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "#c9a84c", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                <span style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#fff" }}>
                   Curated Footprints
                 </span>
               </div>
 
               {/* Quote */}
-              <p style={{
-                fontFamily: "Georgia, 'Times New Roman', serif",
-                fontSize: "1.35rem",
+              <h1 style={{
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontSize: "1.55rem",
                 fontWeight: 700,
                 color: "#fff",
-                lineHeight: 1.4,
-                marginBottom: "1.25rem",
+                lineHeight: 1.38,
+                letterSpacing: "-0.01em",
+                marginBottom: "1rem",
               }}>
                 "The road isn't merely path or gravel, but the stillness found between footsteps."
-              </p>
+              </h1>
 
               {/* Author */}
-              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                <div style={{ width: 28, height: 2, background: "#c9a84c" }} />
-                <span style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.7)", fontWeight: 500 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.5rem" }}>
+                <div style={{ width: 32, height: 2, background: "#d45f11", borderRadius: 1 }} />
+                <p style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.7)", fontWeight: 500, letterSpacing: "0.04em" }}>
                   Sumit Singh — Raste Aur Raahein
-                </span>
+                </p>
               </div>
 
-              {/* Member features list (only when in login/register view) */}
-              {view === "auth" && (
-                <div style={{ marginTop: "1.5rem" }}>
-                  <p style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700, marginBottom: "0.6rem" }}>
-                    Member benefits
-                  </p>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem" }}>
-                    {MEMBER_FEATURES.map((f, i) => (
-                      <div key={i} style={{ display: "flex", alignItems: "center", gap: "0.55rem" }}>
-                        <span style={{ color: f.color, flexShrink: 0 }}>{f.icon}</span>
-                        <span style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.8)", fontWeight: 500 }}>{f.label}</span>
-                      </div>
-                    ))}
-                  </div>
+              {/* Member features */}
+              <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "1.1rem" }}>
+                <p style={{ fontSize: "0.62rem", color: "rgba(255,255,255,0.45)", textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700, marginBottom: "0.65rem" }}>
+                  Member Benefits
+                </p>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem 1rem" }}>
+                  {FEATURES.map((f) => (
+                    <div key={f.icon} style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}>
+                      <span className="material-symbols-outlined" style={{ fontSize: "0.9rem", color: "#d45f11", flexShrink: 0 }}>
+                        {f.icon}
+                      </span>
+                      <span style={{ fontSize: "0.73rem", color: "rgba(255,255,255,0.78)", fontWeight: 500 }}>{f.label}</span>
+                    </div>
+                  ))}
                 </div>
-              )}
+              </div>
             </div>
           </div>
 
-          {/* ── RIGHT PANEL — Form ── */}
-          <div
-            style={{
-              flex: 1,
-              background: "#fff",
-              display: "flex",
-              flexDirection: "column",
-              overflow: "auto",
-            }}
-          >
-            {/* Top bar */}
-            <div style={{
-              display: "flex", alignItems: "center", justifyContent: "space-between",
-              padding: "1.5rem 2rem 0",
-            }}>
-              {/* Logo */}
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <div style={{
-                  width: 28, height: 28, borderRadius: "7px",
-                  background: "#c9a84c",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                }}>
-                  <span style={{ fontSize: "0.7rem", fontWeight: 900, color: "#fff" }}>RR</span>
+          {/* ══════════════════════════════════════
+              RIGHT PANEL — form
+          ══════════════════════════════════════ */}
+          <div style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            padding: "2rem 2.75rem 1.5rem",
+            overflowY: "auto",
+            background: "#f8f7f6",
+          }}>
+            {/* Brand header */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingBottom: "1.5rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                <div style={{ color: "#d45f11", width: 22, height: 22, flexShrink: 0 }}>
+                  <BrandLogo size={22} color="#d45f11" />
                 </div>
-                <span style={{ fontFamily: "Georgia, serif", fontWeight: 700, color: "#1a1a1a", fontSize: "0.95rem" }}>
+                <span style={{
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontSize: "1.05rem", fontWeight: 700,
+                  color: "#221710", letterSpacing: "-0.01em",
+                }}>
                   Raste Aur Raahein
                 </span>
               </div>
-
-              {/* Close */}
-              <button
-                onClick={onClose}
+              {/* Mobile back */}
+              <a
+                href="/"
+                className="rar2-mobile-back"
                 style={{
-                  background: "#f4f4f4", border: "none", borderRadius: "50%",
-                  width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center",
-                  cursor: "pointer", color: "#888",
-                  transition: "background 0.2s",
+                  display: "none", alignItems: "center", gap: "4px",
+                  fontSize: "0.75rem", fontWeight: 700,
+                  color: "rgba(34,23,16,0.6)", textDecoration: "none",
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "#e8e8e8")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "#f4f4f4")}
-                aria-label="Close"
               >
-                <X size={15} />
-              </button>
+                <span className="material-symbols-outlined" style={{ fontSize: "0.9rem" }}>arrow_back</span>
+                Back
+              </a>
             </div>
 
-            {/* Main form area */}
-            <div style={{ flex: 1, padding: "2rem 2rem 1.5rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            {/* ── MAIN CONTENT ── */}
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", maxWidth: 420, width: "100%", margin: "0 auto", gap: "1.25rem" }}>
 
-              {/* ── SUCCESS STATE ── */}
               {success ? (
-                <div style={{ textAlign: "center", padding: "2rem 0" }}>
+                /* Success state */
+                <div style={{ textAlign: "center", padding: "2.5rem 0" }}>
                   <div style={{
                     width: 64, height: 64, borderRadius: "50%",
-                    background: "rgba(201,168,76,0.12)", border: "2px solid #c9a84c",
+                    background: "rgba(212,95,17,0.1)", border: "2px solid #d45f11",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     margin: "0 auto 1.25rem",
-                    animation: "am-scaleIn 0.3s cubic-bezier(0.34,1.56,0.64,1)",
+                    animation: "rar2-scale 0.35s cubic-bezier(0.34,1.56,0.64,1)",
                   }}>
-                    <CheckCircle size={30} style={{ color: "#c9a84c" }} />
+                    <span className="material-symbols-outlined" style={{ fontSize: "2rem", color: "#d45f11" }}>check_circle</span>
                   </div>
-                  <h2 style={{ fontFamily: "Georgia, serif", fontSize: "1.4rem", color: "#1a1a1a", marginBottom: "0.5rem" }}>
+                  <h2 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "1.5rem", fontWeight: 700, color: "#221710", marginBottom: "0.5rem" }}>
                     {tab === "login" ? "Welcome back!" : "Account created!"}
                   </h2>
-                  <p style={{ color: "#888", fontSize: "0.875rem" }}>Signing you in…</p>
+                  <p style={{ color: "rgba(34,23,16,0.6)", fontSize: "0.875rem" }}>Signing you in…</p>
                 </div>
 
               ) : view === "auth" ? (
                 <>
                   {/* Heading */}
-                  <div style={{ marginBottom: "1.75rem" }}>
-                    <h1 style={{ fontFamily: "Georgia, serif", fontSize: "1.75rem", fontWeight: 700, color: "#1a1a1a", marginBottom: "0.35rem" }}>
+                  <div>
+                    <h2 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "1.75rem", fontWeight: 700, color: "#221710", letterSpacing: "-0.02em", marginBottom: "0.35rem" }}>
                       {tab === "login" ? "Welcome Back" : "Create Account"}
-                    </h1>
-                    <p style={{ color: "#888", fontSize: "0.84rem", lineHeight: 1.5 }}>
+                    </h2>
+                    <p style={{ fontSize: "0.84rem", color: "rgba(34,23,16,0.6)", lineHeight: 1.55 }}>
                       {tab === "login"
                         ? "Sign in to access your travel journals, high-res galleries, and saved mountain trails."
-                        : "Join the community of explorers. Start your journey today."}
+                        : "Join the community of explorers — plan, save, and share your journeys."}
                     </p>
                   </div>
 
-                  {/* Tab switcher */}
+                  {/* Segmented tab switcher — matching code.html */}
                   <div style={{
-                    display: "flex", borderRadius: "100px",
-                    background: "#f3f3f3", padding: "3px",
-                    marginBottom: "1.5rem", width: "100%",
+                    display: "flex", height: 44, width: "100%",
+                    alignItems: "center", borderRadius: "0.75rem",
+                    background: "#fff", border: "1px solid rgba(34,23,16,0.08)",
+                    padding: "4px", gap: "4px",
                   }}>
                     {(["login", "register"] as Tab[]).map((t) => (
                       <button
                         key={t}
                         onClick={() => setTab(t)}
                         style={{
-                          flex: 1, padding: "0.55rem 1rem",
-                          borderRadius: "100px", border: "none", cursor: "pointer",
-                          fontFamily: "var(--font-sans)", fontSize: "0.85rem", fontWeight: 600,
-                          transition: "all 0.22s",
+                          flex: 1, height: "100%",
+                          borderRadius: "0.625rem", border: "none",
+                          cursor: "pointer",
+                          fontFamily: "'Plus Jakarta Sans', sans-serif",
+                          fontSize: "0.84rem", fontWeight: 600,
+                          transition: "all 0.2s",
                           background: tab === t ? "#fff" : "transparent",
-                          color: tab === t ? "#1a1a1a" : "#888",
-                          boxShadow: tab === t ? "0 1px 6px rgba(0,0,0,0.1)" : "none",
+                          color: tab === t ? "#221710" : "rgba(34,23,16,0.5)",
+                          boxShadow: tab === t ? "0 1px 4px rgba(34,23,16,0.12)" : "none",
                         }}
                       >
                         {t === "login" ? "Sign In" : "Create Account"}
@@ -387,88 +409,84 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
                   {/* Global error */}
                   {globalError && (
                     <div style={{
-                      display: "flex", alignItems: "center", gap: "8px",
-                      padding: "0.7rem 1rem", marginBottom: "1rem",
-                      background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)",
-                      borderRadius: "10px", color: "#ef4444", fontSize: "0.84rem",
-                      animation: "am-fadeIn 0.2s ease",
+                      display: "flex", alignItems: "flex-start", gap: "8px",
+                      padding: "0.75rem 1rem",
+                      background: "rgba(239,68,68,0.07)", border: "1px solid rgba(239,68,68,0.2)",
+                      borderRadius: "0.75rem", color: "#dc2626", fontSize: "0.83rem",
+                      animation: "rar2-fade 0.2s ease",
                     }}>
-                      <AlertCircle size={14} style={{ flexShrink: 0 }} />
+                      <span className="material-symbols-outlined" style={{ fontSize: "1rem", flexShrink: 0, marginTop: 1 }}>error</span>
                       {globalError}
                     </div>
                   )}
 
                   <form onSubmit={handleSubmit} noValidate style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
 
-                    {/* Username (register only) */}
+                    {/* Full name (register only) */}
                     {tab === "register" && (
-                      <div>
-                        <label style={labelStyle}>USERNAME</label>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
+                        <label htmlFor="auth-username" style={labelCss}>Full Name</label>
                         <div style={{ position: "relative" }}>
                           <input
                             ref={firstInputRef}
+                            id="auth-username"
                             type="text"
-                            placeholder="explorer_sumit"
+                            placeholder="Sumit Singh"
                             value={username.value}
                             onChange={(e) => username.set(e.target.value)}
                             onBlur={username.touch}
-                            id="auth-username"
-                            autoComplete="username"
-                            style={inputStyle(username)}
+                            autoComplete="name"
+                            style={inputCss(username)}
                           />
-                          <User size={14} style={iconStyle} />
+                          <span className="material-symbols-outlined" style={iconCss}>person</span>
                         </div>
-                        {username.touched && username.error && <p style={errStyle}>{username.error}</p>}
+                        {username.touched && username.error && <p style={errCss}>{username.error}</p>}
                       </div>
                     )}
 
-                    {/* Email / Identifier */}
-                    <div>
-                      <label style={labelStyle}>EMAIL ADDRESS</label>
+                    {/* Email */}
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
+                      <label htmlFor="auth-email" style={labelCss}>Email Address</label>
                       <div style={{ position: "relative" }}>
                         {tab === "login" ? (
                           <input
                             ref={firstInputRef}
+                            id="auth-email"
                             type="text"
                             placeholder="sumit@example.com"
                             value={identifier.value}
                             onChange={(e) => identifier.set(e.target.value)}
                             onBlur={identifier.touch}
-                            id="auth-identifier"
                             autoComplete="username"
-                            style={inputStyle(identifier)}
+                            style={inputCss(identifier)}
                           />
                         ) : (
                           <input
+                            id="auth-email"
                             type="email"
-                            placeholder="you@example.com"
+                            placeholder="sumit@example.com"
                             value={email.value}
                             onChange={(e) => email.set(e.target.value)}
                             onBlur={email.touch}
-                            id="auth-email"
                             autoComplete="email"
-                            style={inputStyle(email)}
+                            style={inputCss(email)}
                           />
                         )}
-                        <Mail size={14} style={iconStyle} />
+                        <span className="material-symbols-outlined" style={iconCss}>mail</span>
                       </div>
-                      {tab === "login" && identifier.touched && identifier.error && <p style={errStyle}>{identifier.error}</p>}
-                      {tab === "register" && email.touched && email.error && <p style={errStyle}>{email.error}</p>}
+                      {tab === "login" && identifier.touched && identifier.error && <p style={errCss}>{identifier.error}</p>}
+                      {tab === "register" && email.touched && email.error && <p style={errCss}>{email.error}</p>}
                     </div>
 
                     {/* Password */}
-                    <div>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.35rem" }}>
-                        <label style={{ ...labelStyle, margin: 0 }}>PASSWORD</label>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <label htmlFor="auth-password" style={labelCss}>Password</label>
                         {tab === "login" && (
                           <button
                             type="button"
                             onClick={() => { setGlobalError(""); setView("forgot"); }}
-                            style={{
-                              background: "none", border: "none", cursor: "pointer",
-                              color: "#c9a84c", fontSize: "0.75rem", fontWeight: 600,
-                              fontFamily: "var(--font-sans)", padding: 0,
-                            }}
+                            style={{ background: "none", border: "none", cursor: "pointer", color: "#d45f11", fontSize: "0.75rem", fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif", padding: 0 }}
                           >
                             Forgot Password?
                           </button>
@@ -476,193 +494,194 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
                       </div>
                       <div style={{ position: "relative" }}>
                         <input
+                          id="auth-password"
                           type={showPass ? "text" : "password"}
-                          placeholder={tab === "login" ? "••••••••••••" : "Min. 8 characters"}
+                          placeholder="••••••••••••"
                           value={password.value}
                           onChange={(e) => password.set(e.target.value)}
                           onBlur={password.touch}
-                          id="auth-password"
                           autoComplete={tab === "login" ? "current-password" : "new-password"}
-                          style={{ ...inputStyle(password), paddingRight: "3rem" }}
+                          style={{ ...inputCss(password), paddingRight: "3rem" }}
                         />
-                        <Lock size={14} style={iconStyle} />
                         <button
                           type="button"
                           onClick={() => setShowPass((s) => !s)}
+                          aria-label="Toggle password visibility"
                           style={{
-                            position: "absolute", right: "0.9rem", top: "50%",
-                            transform: "translateY(-50%)", background: "none", border: "none",
-                            cursor: "pointer", color: "#aaa", display: "flex", padding: 0,
+                            position: "absolute", right: "0.85rem", top: "50%", transform: "translateY(-50%)",
+                            background: "none", border: "none", cursor: "pointer",
+                            color: "rgba(34,23,16,0.4)", display: "flex", padding: 0,
+                            transition: "color 0.2s",
                           }}
+                          onMouseEnter={(e) => (e.currentTarget.style.color = "#221710")}
+                          onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(34,23,16,0.4)")}
                         >
-                          {showPass ? <EyeOff size={14} /> : <Eye size={14} />}
+                          <span className="material-symbols-outlined" style={{ fontSize: "1.15rem" }}>
+                            {showPass ? "visibility_off" : "visibility"}
+                          </span>
                         </button>
                       </div>
-                      {password.touched && password.error && <p style={errStyle}>{password.error}</p>}
+                      {password.touched && password.error && <p style={errCss}>{password.error}</p>}
                     </div>
 
-                    {/* Remember me (login only) */}
-                    {tab === "login" && (
-                      <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
-                        <div
-                          onClick={() => setRememberMe((r) => !r)}
+                    {/* Remember me */}
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "0.1rem" }}>
+                      <label style={{ display: "flex", alignItems: "center", gap: "0.55rem", cursor: "pointer", userSelect: "none" }}>
+                        <input
+                          type="checkbox"
+                          checked={rememberMe}
+                          onChange={(e) => setRememberMe(e.target.checked)}
                           style={{
-                            width: 18, height: 18, borderRadius: "5px", flexShrink: 0,
-                            border: `2px solid ${rememberMe ? "#c9a84c" : "#d0d0d0"}`,
-                            background: rememberMe ? "#c9a84c" : "#fff",
-                            display: "flex", alignItems: "center", justifyContent: "center",
-                            transition: "all 0.15s", cursor: "pointer",
+                            width: 16, height: 16, borderRadius: 4,
+                            accentColor: "#d45f11", cursor: "pointer",
                           }}
-                        >
-                          {rememberMe && (
-                            <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                              <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                          )}
-                        </div>
-                        <span style={{ fontSize: "0.82rem", color: "#555", fontFamily: "var(--font-sans)" }}>
+                        />
+                        <span style={{ fontSize: "0.78rem", fontWeight: 500, color: "rgba(34,23,16,0.7)", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                           Remember my session
                         </span>
                       </label>
-                    )}
+                    </div>
 
                     {/* Submit */}
                     <button
                       type="submit"
-                      disabled={submitting}
                       id="auth-submit-btn"
+                      disabled={submitting}
                       style={{
-                        marginTop: "0.25rem",
-                        padding: "0.9rem",
-                        borderRadius: "100px",
-                        border: "none",
-                        cursor: submitting ? "not-allowed" : "pointer",
-                        background: submitting ? "#c9a84c99" : "linear-gradient(135deg, #c9a84c 0%, #b8912e 100%)",
+                        width: "100%", height: 48, marginTop: "0.25rem",
+                        display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem",
+                        background: submitting ? "rgba(212,95,17,0.6)" : "#d45f11",
                         color: "#fff",
-                        fontFamily: "var(--font-sans)",
-                        fontWeight: 700,
-                        fontSize: "0.95rem",
-                        display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-                        transition: "opacity 0.2s, transform 0.15s",
+                        border: "none", borderRadius: "0.75rem",
+                        fontFamily: "'Plus Jakarta Sans', sans-serif",
+                        fontSize: "0.88rem", fontWeight: 700, letterSpacing: "0.03em",
+                        cursor: submitting ? "not-allowed" : "pointer",
+                        boxShadow: "0 4px 16px rgba(212,95,17,0.35)",
+                        transition: "background 0.2s, box-shadow 0.2s, transform 0.15s",
                         transform: submitting ? "scale(0.98)" : "scale(1)",
-                        boxShadow: "0 4px 20px rgba(201,168,76,0.35)",
                       }}
+                      onMouseEnter={(e) => { if (!submitting) (e.currentTarget.style.background = "#bd520d"); }}
+                      onMouseLeave={(e) => { if (!submitting) (e.currentTarget.style.background = "#d45f11"); }}
                     >
-                      {submitting
-                        ? "Please wait…"
-                        : tab === "login"
-                          ? <>Sign In to Explorer <span style={{ fontSize: "1rem" }}>→</span></>
-                          : <>Create Explorer Account <span style={{ fontSize: "1rem" }}>→</span></>
-                      }
+                      <span>
+                        {submitting ? "Please wait…" : tab === "login" ? "Sign In to Explorer" : "Create Travel Account"}
+                      </span>
+                      {!submitting && (
+                        <span className="material-symbols-outlined" style={{ fontSize: "1rem" }}>arrow_forward</span>
+                      )}
                     </button>
                   </form>
 
                   {/* Legal */}
-                  <p style={{ textAlign: "center", fontSize: "0.72rem", color: "#aaa", marginTop: "1rem", lineHeight: 1.6 }}>
+                  <p style={{ fontSize: "0.69rem", textAlign: "center", color: "rgba(34,23,16,0.5)", lineHeight: 1.65, paddingTop: "0.25rem" }}>
                     By continuing, you agree to Raste Aur Raahein's{" "}
-                    <a href="/terms" style={{ color: "#c9a84c", textDecoration: "underline" }}>Terms of Journey</a>
-                    {" "}and{" "}
-                    <a href="/privacy" style={{ color: "#c9a84c", textDecoration: "underline" }}>Privacy Dispatch</a>.
+                    <a href="/terms" style={{ textDecoration: "underline", color: "inherit", transition: "color 0.2s" }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = "#221710")}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(34,23,16,0.5)")}
+                    >Terms of Journey</a>{" "}and{" "}
+                    <a href="/privacy" style={{ textDecoration: "underline", color: "inherit", transition: "color 0.2s" }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = "#221710")}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(34,23,16,0.5)")}
+                    >Privacy Dispatch</a>.
                   </p>
                 </>
 
               ) : view === "forgot" ? (
-                /* ── FORGOT PASSWORD ── */
-                <div style={{ animation: "am-fadeIn 0.2s ease" }}>
+                /* ── FORGOT PASSWORD VIEW ── */
+                <div style={{ animation: "rar2-fade 0.22s ease" }}>
                   <button
                     onClick={() => { setView("auth"); forgotIdentifier.reset(); setGlobalError(""); }}
                     style={{
                       background: "none", border: "none", cursor: "pointer",
-                      color: "#888", fontSize: "0.8rem", fontFamily: "var(--font-sans)",
-                      display: "flex", alignItems: "center", gap: "4px",
-                      padding: 0, marginBottom: "1.5rem",
+                      display: "flex", alignItems: "center", gap: "6px",
+                      color: "rgba(34,23,16,0.6)", fontSize: "0.8rem", fontWeight: 600,
+                      fontFamily: "'Plus Jakarta Sans', sans-serif", padding: 0, marginBottom: "1.5rem",
                     }}
                   >
-                    <ArrowLeft size={13} /> Back to sign in
+                    <span className="material-symbols-outlined" style={{ fontSize: "1rem" }}>arrow_back</span>
+                    Back to sign in
                   </button>
-                  <h2 style={{ fontFamily: "Georgia, serif", fontSize: "1.5rem", color: "#1a1a1a", marginBottom: "0.5rem" }}>
+
+                  <h2 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "1.6rem", fontWeight: 700, color: "#221710", letterSpacing: "-0.02em", marginBottom: "0.5rem" }}>
                     Reset your password
                   </h2>
-                  <p style={{ color: "#888", fontSize: "0.84rem", lineHeight: 1.6, marginBottom: "1.5rem" }}>
+                  <p style={{ color: "rgba(34,23,16,0.6)", fontSize: "0.84rem", lineHeight: 1.6, marginBottom: "1.5rem" }}>
                     Enter your username or email and we'll send a reset link to your registered address.
                   </p>
 
                   {globalError && (
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "0.7rem 1rem", marginBottom: "1rem", background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: "10px", color: "#ef4444", fontSize: "0.84rem" }}>
-                      <AlertCircle size={14} style={{ flexShrink: 0 }} />
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "0.7rem 1rem", marginBottom: "1rem", background: "rgba(239,68,68,0.07)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: "0.75rem", color: "#dc2626", fontSize: "0.83rem" }}>
+                      <span className="material-symbols-outlined" style={{ fontSize: "1rem", flexShrink: 0 }}>error</span>
                       {globalError}
                     </div>
                   )}
 
-                  <label style={labelStyle}>USERNAME OR EMAIL</label>
-                  <div style={{ position: "relative", marginBottom: "1rem" }}>
-                    <input
-                      ref={forgotRef}
-                      type="text"
-                      placeholder="Username or email address"
-                      value={forgotIdentifier.value}
-                      onChange={(e) => { forgotIdentifier.set(e.target.value); setGlobalError(""); }}
-                      id="forgot-identifier"
-                      autoComplete="username"
-                      style={{ ...inputBase, paddingLeft: "1rem" }}
-                    />
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem", marginBottom: "1.1rem" }}>
+                    <label htmlFor="forgot-id" style={labelCss}>Username or Email</label>
+                    <div style={{ position: "relative" }}>
+                      <input
+                        ref={forgotRef}
+                        id="forgot-id"
+                        type="text"
+                        placeholder="Username or email address"
+                        value={forgotIdentifier.value}
+                        onChange={(e) => { forgotIdentifier.set(e.target.value); setGlobalError(""); }}
+                        autoComplete="username"
+                        style={{ ...inputCss({ value: forgotIdentifier.value, error: "", touched: false }), paddingRight: "1rem" }}
+                      />
+                    </div>
                   </div>
 
                   <button
-                    onClick={async () => {
-                      if (!forgotIdentifier.value.trim()) { setGlobalError("Please enter your username or email"); return; }
-                      setSubmitting(true); setGlobalError("");
-                      try {
-                        await fetch("/api/auth/forgot-password", {
-                          method: "POST", headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({ identifier: forgotIdentifier.value.trim() }),
-                        });
-                        setView("forgotSent");
-                      } catch { setGlobalError("Network error — please try again"); }
-                      finally { setSubmitting(false); }
-                    }}
+                    onClick={handleForgot}
                     disabled={submitting}
                     style={{
-                      width: "100%", padding: "0.9rem", borderRadius: "100px", border: "none",
+                      width: "100%", height: 48,
+                      display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem",
+                      background: submitting ? "rgba(212,95,17,0.6)" : "#d45f11",
+                      color: "#fff", border: "none", borderRadius: "0.75rem",
+                      fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "0.88rem", fontWeight: 700,
                       cursor: submitting ? "not-allowed" : "pointer",
-                      background: "linear-gradient(135deg, #c9a84c 0%, #b8912e 100%)",
-                      color: "#fff", fontFamily: "var(--font-sans)", fontWeight: 700,
-                      fontSize: "0.9rem", opacity: submitting ? 0.7 : 1,
+                      boxShadow: "0 4px 16px rgba(212,95,17,0.3)",
+                      transition: "background 0.2s",
                     }}
+                    onMouseEnter={(e) => { if (!submitting) (e.currentTarget.style.background = "#bd520d"); }}
+                    onMouseLeave={(e) => { if (!submitting) (e.currentTarget.style.background = "#d45f11"); }}
                   >
-                    {submitting ? "Sending…" : "Send Reset Link →"}
+                    {submitting ? "Sending…" : "Send Reset Link"}
+                    {!submitting && <span className="material-symbols-outlined" style={{ fontSize: "1rem" }}>arrow_forward</span>}
                   </button>
                 </div>
 
               ) : (
-                /* ── FORGOT SENT ── */
-                <div style={{ textAlign: "center", padding: "2rem 0", animation: "am-fadeIn 0.2s ease" }}>
+                /* ── FORGOT SENT VIEW ── */
+                <div style={{ textAlign: "center", padding: "2.5rem 0", animation: "rar2-fade 0.22s ease" }}>
                   <div style={{
                     width: 64, height: 64, borderRadius: "50%",
-                    background: "rgba(201,168,76,0.1)", border: "2px solid #c9a84c",
+                    background: "rgba(212,95,17,0.1)", border: "2px solid #d45f11",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     margin: "0 auto 1.25rem",
-                    animation: "am-scaleIn 0.3s cubic-bezier(0.34,1.56,0.64,1)",
+                    animation: "rar2-scale 0.35s cubic-bezier(0.34,1.56,0.64,1)",
                   }}>
-                    <CheckCircle size={28} style={{ color: "#c9a84c" }} />
+                    <span className="material-symbols-outlined" style={{ fontSize: "2rem", color: "#d45f11" }}>mark_email_read</span>
                   </div>
-                  <h2 style={{ fontFamily: "Georgia, serif", fontSize: "1.4rem", color: "#1a1a1a", marginBottom: "0.75rem" }}>
+                  <h2 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "1.5rem", fontWeight: 700, color: "#221710", marginBottom: "0.75rem" }}>
                     Check your inbox
                   </h2>
-                  <p style={{ color: "#888", fontSize: "0.84rem", lineHeight: 1.7, marginBottom: "1.75rem" }}>
-                    If an account exists for <strong style={{ color: "#555" }}>{forgotIdentifier.value}</strong>,
-                    you'll receive a reset link shortly. Check your spam folder if it doesn't arrive.
+                  <p style={{ color: "rgba(34,23,16,0.6)", fontSize: "0.84rem", lineHeight: 1.7, marginBottom: "1.75rem" }}>
+                    If an account exists for <strong style={{ color: "#221710" }}>{forgotIdentifier.value}</strong>,
+                    you'll receive a reset link shortly. Check your spam folder too.
                   </p>
                   <button
                     onClick={() => { setView("auth"); forgotIdentifier.reset(); }}
                     style={{
-                      background: "none", border: "1.5px solid #e2e2e2", borderRadius: "100px",
-                      padding: "0.6rem 1.75rem", color: "#555", cursor: "pointer",
-                      fontFamily: "var(--font-sans)", fontSize: "0.875rem", fontWeight: 600,
+                      background: "none", border: "1.5px solid rgba(34,23,16,0.15)", borderRadius: "9999px",
+                      padding: "0.6rem 1.75rem", cursor: "pointer", color: "#221710",
+                      fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "0.875rem", fontWeight: 600,
                       transition: "border-color 0.2s",
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#c9a84c")}
-                    onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#e2e2e2")}
+                    onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#d45f11")}
+                    onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(34,23,16,0.15)")}
                   >
                     ← Back to sign in
                   </button>
@@ -672,21 +691,21 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
 
             {/* Footer */}
             <div style={{
-              borderTop: "1px solid #f0f0f0",
-              padding: "1rem 2rem",
-              display: "flex", flexWrap: "wrap",
-              justifyContent: "space-between", alignItems: "center",
+              paddingTop: "1.25rem",
+              borderTop: "1px solid rgba(34,23,16,0.07)",
+              display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center",
               gap: "0.5rem",
             }}>
-              <span style={{ fontSize: "0.72rem", color: "#bbb" }}>© 2025 Raste Aur Raahein</span>
+              <span style={{ fontSize: "0.72rem", color: "rgba(34,23,16,0.45)" }}>© 2025 Raste Aur Raahein</span>
               <div style={{ display: "flex", gap: "1.25rem" }}>
-                {["Stories", "Galleries", "Journalist Bio"].map((item) => (
-                  <a key={item} href={item === "Stories" ? "/" : item === "Galleries" ? "/trips" : "/about"}
-                    style={{ fontSize: "0.72rem", color: "#bbb", textDecoration: "none", transition: "color 0.2s" }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = "#c9a84c")}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = "#bbb")}
+                {[["Stories", "/"], ["Galleries", "/trips"], ["Journalist Bio", "/about"]].map(([label, href]) => (
+                  <a
+                    key={label} href={href}
+                    style={{ fontSize: "0.72rem", color: "rgba(34,23,16,0.45)", textDecoration: "none", transition: "color 0.2s" }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = "#d45f11")}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(34,23,16,0.45)")}
                   >
-                    {item}
+                    {label}
                   </a>
                 ))}
               </div>
@@ -695,47 +714,93 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
         </div>
       </div>
 
-      <style>{`
-        @keyframes am-fadeIn { from { opacity: 0 } to { opacity: 1 } }
-        @keyframes am-slideUp {
-          from { opacity: 0; transform: scale(0.96) translateY(12px); }
-          to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        @keyframes am-scaleIn { from { transform: scale(0.5); opacity: 0 } to { transform: scale(1); opacity: 1 } }
+      {/* Google Material Symbols + Plus Jakarta Sans */}
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+      {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+      <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+        rel="stylesheet"
+      />
 
-        /* Responsive: stack on mobile */
-        @media (max-width: 640px) {
-          .am-left-panel { display: none !important; }
+      <style>{`
+        @keyframes rar2-fade   { from { opacity: 0 } to { opacity: 1 } }
+        @keyframes rar2-up     { from { opacity: 0; transform: scale(0.96) translateY(14px) } to { opacity: 1; transform: scale(1) translateY(0) } }
+        @keyframes rar2-scale  { from { transform: scale(0.45); opacity: 0 } to { transform: scale(1); opacity: 1 } }
+        @keyframes rar2-pulse  { 0%, 100% { opacity: 1 } 50% { opacity: 0.45 } }
+
+        .material-symbols-outlined {
+          font-family: 'Material Symbols Outlined';
+          font-weight: normal;
+          font-style: normal;
+          font-size: 1.25rem;
+          line-height: 1;
+          letter-spacing: normal;
+          text-transform: none;
+          display: inline-block;
+          white-space: nowrap;
+          word-wrap: normal;
+          direction: ltr;
+          -webkit-font-feature-settings: 'liga';
+          font-feature-settings: 'liga';
+          -webkit-font-smoothing: antialiased;
         }
+
+        /* Hide left panel on small screens */
+        @media (max-width: 768px) {
+          .rar2-left-panel { display: none !important; }
+          .rar2-mobile-back { display: inline-flex !important; }
+        }
+
+        /* Input focus ring */
+        input:focus { outline: none; }
       `}</style>
     </>
   );
 }
 
-// Shared style helpers
-const labelStyle: React.CSSProperties = {
-  display: "block",
+/* ── Shared inline style helpers ── */
+const labelCss: React.CSSProperties = {
   fontSize: "0.68rem",
   fontWeight: 700,
-  color: "#aaa",
-  letterSpacing: "0.1em",
+  color: "rgba(34,23,16,0.65)",
   textTransform: "uppercase",
-  marginBottom: "0.35rem",
-  fontFamily: "var(--font-sans)",
+  letterSpacing: "0.1em",
+  fontFamily: "'Plus Jakarta Sans', sans-serif",
 };
 
-const iconStyle: React.CSSProperties = {
+function inputCss(field: { touched?: boolean; error?: string; value?: string }): React.CSSProperties {
+  const hasError = field.touched && field.error;
+  const isValid = field.touched && !field.error && field.value;
+  return {
+    width: "100%",
+    height: 48,
+    padding: "0 2.75rem 0 1rem",
+    borderRadius: "0.75rem",
+    border: `1.5px solid ${hasError ? "rgba(220,38,38,0.5)" : isValid ? "rgba(212,95,17,0.5)" : "rgba(34,23,16,0.14)"}`,
+    background: "#fff",
+    color: "#221710",
+    fontSize: "0.875rem",
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    transition: "border-color 0.2s, box-shadow 0.2s",
+    boxSizing: "border-box",
+    boxShadow: hasError ? "0 0 0 3px rgba(220,38,38,0.08)" : isValid ? "0 0 0 3px rgba(212,95,17,0.1)" : "none",
+  };
+}
+
+const iconCss: React.CSSProperties = {
   position: "absolute",
-  right: "0.9rem",
+  right: "0.85rem",
   top: "50%",
   transform: "translateY(-50%)",
-  color: "#bbb",
+  fontSize: "1.1rem",
+  color: "rgba(34,23,16,0.35)",
   pointerEvents: "none",
 };
 
-const errStyle: React.CSSProperties = {
-  color: "#ef4444",
+const errCss: React.CSSProperties = {
+  color: "#dc2626",
   fontSize: "0.72rem",
-  marginTop: "4px",
-  marginLeft: "2px",
+  marginTop: "3px",
+  fontFamily: "'Plus Jakarta Sans', sans-serif",
 };

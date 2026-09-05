@@ -5,6 +5,27 @@ import type { FuelStop } from "@/lib/types";
 
 // ── Per-trip fuel & rest stop data ───────────────────────────────────────────
 const FUEL_DATA: Record<string, FuelStop[]> = {
+  "jyotirlinga-pilgrimage-road-trip": [
+    { id: "jy_r1", name: "HP Pump, Nashik Phata", type: "fuel", town: "Nashik Phata, Pune", distanceFromPrev: 0, notes: "Fill up before Bhimashankar road. Mountain road ahead; last easy fuel station." },
+    { id: "jy_r2", name: "Bhimashankar Forest Gate", type: "viewpoint", town: "Bhimashankar Wildlife Sanctuary", distanceFromPrev: 100, altitude: 1050, notes: "Check-in point for sanctuary. Beautiful Sahyadri forest trail starts here." },
+    { id: "jy_r3", name: "Bhimashankar Temple Parking", type: "rest", town: "Bhimashankar", distanceFromPrev: 50, altitude: 1050, notes: "Park and walk 5 minutes to the Jyotirlinga. Keep temple dress code." },
+    { id: "jy_r4", name: "BPCL Pump, Nashik", type: "fuel", town: "Nashik", distanceFromPrev: 120, notes: "Refuel before heading to Trimbakeshwar — 28 km ahead on NH-61." },
+    { id: "jy_r5", name: "Trimbakeshwar Temple Area", type: "rest", town: "Trimbakeshwar", distanceFromPrev: 28, altitude: 750, notes: "Park at main lot. Walk to the temple ghats. Godavari river origin nearby." },
+    { id: "jy_r6", name: "Brahmagiri Viewpoint", type: "viewpoint", town: "Brahmagiri Hill, Trimbakeshwar", distanceFromPrev: 5, altitude: 1298, notes: "Origin of River Godavari. 45-min trek from the base. Stunning valley view." },
+    { id: "jy_r7", name: "Igatpuri Rest Stop", type: "food", town: "Igatpuri, NH-3", distanceFromPrev: 60, notes: "MTDC rest area on the Nashik–Aurangabad highway; good thali and restrooms." },
+    { id: "jy_r8", name: "IOC Pump, Aurangabad", type: "fuel", town: "Aurangabad (Chhatrapati Sambhajinagar)", distanceFromPrev: 135, notes: "Full refuel before visiting Ellora and Grishneshwar." },
+    { id: "jy_r9", name: "Grishneshwar Temple Lot", type: "rest", town: "Ellora Village", distanceFromPrev: 30, notes: "Park at designated lot. 5-minute walk to the temple. Photography not allowed inside." },
+    { id: "jy_r10", name: "Ellora Caves Ticket Counter", type: "viewpoint", town: "Ellora, Aurangabad", distanceFromPrev: 1, notes: "UNESCO World Heritage Site. Budget 3–4 hours; hire a licensed guide." },
+    { id: "jy_r11", name: "SBI ATM, Aurangabad", type: "atm", town: "Aurangabad", distanceFromPrev: 30, notes: "Withdraw cash before the Indore–Ujjain stretch. ATMs sparse on NH-52 through Madhya Pradesh." },
+    { id: "jy_r12", name: "BPCL Pump, Jalgaon", type: "fuel", town: "Jalgaon, Maharashtra", distanceFromPrev: 130, notes: "Refuel on the Aurangabad–Indore highway. Long stretch to Indore ahead." },
+    { id: "jy_r13", name: "Indore Bypass Rest", type: "food", town: "Indore Ring Road", distanceFromPrev: 220, notes: "Quick stop for Indori Poha and chai before the final 55 km to Ujjain." },
+    { id: "jy_r14", name: "HPCL Pump, Ujjain", type: "fuel", town: "Ujjain, Madhya Pradesh", distanceFromPrev: 55, notes: "Top up before Omkareshwar. Station is 2 km from the Mahakaleshwar temple gate." },
+    { id: "jy_r15", name: "Mahakaleshwar Temple Gate", type: "rest", town: "Ujjain", distanceFromPrev: 2, notes: "Park at sanctioned lot. Attend the Bhasma Aarti (4 AM) and Sandhya Aarti (7 PM)." },
+    { id: "jy_r16", name: "Ram Ghat, Shipra River", type: "viewpoint", town: "Ujjain Ghats", distanceFromPrev: 1, notes: "Evening river walk. Aarti at sunset. Tea stalls line the ghat — great photo spot." },
+    { id: "jy_r17", name: "Omkareshwar Bridge Fuel", type: "fuel", town: "Omkareshwar Road, MP", distanceFromPrev: 120, notes: "Small pump near the Narmada bridge. Last fuel before the island pilgrimage." },
+    { id: "jy_r18", name: "Mandhata Island Ferry Ghat", type: "rest", town: "Omkareshwar", distanceFromPrev: 5, notes: "Leave vehicles at the mainland lot; cross via foot bridge or short boat to the island." },
+    { id: "jy_r19", name: "Narmada River Boat Launch", type: "viewpoint", town: "Omkareshwar Island", distanceFromPrev: 1, notes: "Best views of the twin shrines from the water. Life vests mandatory on the boat." },
+  ],
   "spiti-valley": [
     { id: "r1", name: "HPCL Pump, Manali", type: "fuel", town: "Manali", distanceFromPrev: 0, notes: "FILL UP FULLY — next reliable fuel is 210 km away." },
     { id: "r2", name: "Dhaba at Gramphu", type: "food", town: "Gramphu Junction", distanceFromPrev: 75, notes: "Last chai before Kunzum Pass. Also last mobile signal zone." },
