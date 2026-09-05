@@ -56,13 +56,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const logout = useCallback(async () => {
     await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
     setUser(null);
+    setModalOpen(true);
   }, []);
 
   const openAuthModal = useCallback(() => setModalOpen(true), []);
 
+  const [initialPromptDone, setInitialPromptDone] = useState(false);
+
   useEffect(() => {
     refresh();
   }, [refresh]);
+
+  // Detect user login status on page load and load login page if not logged in
+  useEffect(() => {
+    if (!loading && !initialPromptDone) {
+      if (!user) {
+        setModalOpen(true);
+      }
+      setInitialPromptDone(true);
+    }
+  }, [loading, user, initialPromptDone]);
 
   return (
     <AuthContext.Provider value={{ user, loading, refresh, logout, openAuthModal }}>

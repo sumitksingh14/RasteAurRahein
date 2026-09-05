@@ -37,17 +37,7 @@ const FEATURES = [
   { icon: "auto_awesome", label: "AI Trip Planner — generate itineraries" },
 ];
 
-// Brand SVG logo — matching code.html exactly
-function BrandLogo({ size = 24, color = "currentColor" }: { size?: number; color?: string }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z"
-        fill={color}
-      />
-    </svg>
-  );
-}
+// Removed BrandLogo SVG per request to use Home Page logo
 
 export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthModalProps) {
   const { refresh } = useAuth();
@@ -56,6 +46,7 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
   const [submitting, setSubmitting] = useState(false);
   const [globalError, setGlobalError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState<any>(null);
   const [showPass, setShowPass] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const firstInputRef = useRef<HTMLInputElement>(null);
@@ -79,13 +70,21 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
 
   useEffect(() => {
     if (open) {
+      // Reset all state when opened (since returning null doesn't unmount the component)
+      setSuccess(false);
+      setGlobalError("");
+      setSubmitting(false);
+      setView("auth");
+      setTab(defaultTab);
+      username.reset(); email.reset(); identifier.reset(); password.reset();
+      
       setTimeout(() => firstInputRef.current?.focus(), 150);
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
     }
     return () => { document.body.style.overflow = ""; };
-  }, [open]);
+  }, [open, defaultTab]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -98,7 +97,7 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
   const validate = (): boolean => {
     let ok = true;
     if (tab === "register") {
-      if (username.value.trim().length < 2) { username.setError("Please enter your full name"); ok = false; }
+      if (username.value.trim().length < 3) { username.setError("Username must be at least 3 characters"); ok = false; }
       if (!email.value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) { email.setError("Enter a valid email"); ok = false; }
     } else {
       if (!identifier.value.trim()) { identifier.setError("Enter your email address"); ok = false; }
@@ -123,11 +122,16 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
       });
       const data = await res.json();
       if (!res.ok) {
-        setGlobalError(data.error || "Something went wrong. Please try again.");
+        if (data.error.toLowerCase().includes("username")) {
+          username.setError(data.error);
+        } else {
+          setGlobalError(data.error || "Something went wrong. Please try again.");
+        }
       } else {
+        setLoggedInUser(data.user);
         setSuccess(true);
         await refresh();
-        setTimeout(onClose, 950);
+        setTimeout(onClose, 1500);
       }
     } catch {
       setGlobalError("Network error — please check your connection and try again.");
@@ -219,29 +223,8 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
               background: "linear-gradient(to top, rgba(34,23,16,0.92) 0%, rgba(34,23,16,0.35) 45%, rgba(34,23,16,0.42) 100%)",
             }} />
 
-            {/* Top: back link */}
-            <div style={{ position: "relative", zIndex: 2 }}>
-              <a
-                href="/"
-                style={{
-                  display: "inline-flex", alignItems: "center", gap: "8px",
-                  color: "rgba(255,255,255,0.8)",
-                  fontSize: "0.8rem", fontWeight: 500, letterSpacing: "0.04em",
-                  textDecoration: "none",
-                  background: "rgba(34,23,16,0.4)",
-                  backdropFilter: "blur(12px)",
-                  padding: "0.45rem 1rem",
-                  borderRadius: "9999px",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  transition: "color 0.2s",
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.8)")}
-              >
-                <span className="material-symbols-outlined" style={{ fontSize: "1rem" }}>arrow_back</span>
-                Back to Journal
-              </a>
-            </div>
+            {/* Top: spacer for layout since Back is removed */}
+            <div style={{ position: "relative", zIndex: 2, height: "40px" }} />
 
             {/* Bottom: quote + features */}
             <div style={{ position: "relative", zIndex: 2 }}>
@@ -317,8 +300,8 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
             {/* Brand header */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingBottom: "1.5rem" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-                <div style={{ color: "#d45f11", width: 22, height: 22, flexShrink: 0 }}>
-                  <BrandLogo size={22} color="#d45f11" />
+                <div style={{ width: 32, height: 32, flexShrink: 0, display: "flex", alignItems: "center" }}>
+                  <img src="/logo.png" alt="Raste Aur Rahein Logo" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
                 </div>
                 <span style={{
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -359,7 +342,7 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
                     <span className="material-symbols-outlined" style={{ fontSize: "2rem", color: "#d45f11" }}>check_circle</span>
                   </div>
                   <h2 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "1.5rem", fontWeight: 700, color: "#221710", marginBottom: "0.5rem" }}>
-                    {tab === "login" ? "Welcome back!" : "Account created!"}
+                    {tab === "login" ? `Welcome back, ${(loggedInUser?.username || "Explorer").split(" ")[0]}!` : "Account created!"}
                   </h2>
                   <p style={{ color: "rgba(34,23,16,0.6)", fontSize: "0.875rem" }}>Signing you in…</p>
                 </div>
@@ -422,16 +405,16 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
 
                   <form onSubmit={handleSubmit} noValidate style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
 
-                    {/* Full name (register only) */}
+                    {/* Username (register only) */}
                     {tab === "register" && (
                       <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
-                        <label htmlFor="auth-username" style={labelCss}>Full Name</label>
+                        <label htmlFor="auth-username" style={labelCss}>Username</label>
                         <div style={{ position: "relative" }}>
                           <input
                             ref={firstInputRef}
                             id="auth-username"
                             type="text"
-                            placeholder="Sumit Singh"
+                            placeholder="sumitsingh"
                             value={username.value}
                             onChange={(e) => username.set(e.target.value)}
                             onBlur={username.touch}
@@ -444,16 +427,16 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
                       </div>
                     )}
 
-                    {/* Email */}
+                    {/* Email / Username for Login */}
                     <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
-                      <label htmlFor="auth-email" style={labelCss}>Email Address</label>
+                      <label htmlFor="auth-email" style={labelCss}>{tab === "login" ? "Username/Email" : "Email Address"}</label>
                       <div style={{ position: "relative" }}>
                         {tab === "login" ? (
                           <input
                             ref={firstInputRef}
                             id="auth-email"
                             type="text"
-                            placeholder="sumit@example.com"
+                            placeholder="username / email"
                             value={identifier.value}
                             onChange={(e) => identifier.set(e.target.value)}
                             onBlur={identifier.touch}
@@ -564,7 +547,7 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
                       onMouseLeave={(e) => { if (!submitting) (e.currentTarget.style.background = "#d45f11"); }}
                     >
                       <span>
-                        {submitting ? "Please wait…" : tab === "login" ? "Sign In to Explorer" : "Create Travel Account"}
+                        {submitting ? "Please wait…" : tab === "login" ? "Unlock & Explore" : "Create Travel Account"}
                       </span>
                       {!submitting && (
                         <span className="material-symbols-outlined" style={{ fontSize: "1rem" }}>arrow_forward</span>
