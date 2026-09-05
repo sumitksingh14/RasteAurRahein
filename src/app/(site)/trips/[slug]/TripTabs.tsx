@@ -169,8 +169,9 @@ export default function TripTabs({ trip }: TripTabsProps) {
 
   return (
     <div>
-      {/* Tab Bar */}
+      {/* Tab Bar — horizontally scrollable on mobile */}
       <div
+        className="trip-tabs-bar"
         style={{
           display: "flex",
           gap: "0.25rem",
@@ -179,6 +180,9 @@ export default function TripTabs({ trip }: TripTabsProps) {
           borderRadius: "var(--radius-md)",
           marginBottom: "2rem",
           overflowX: "auto",
+          WebkitOverflowScrolling: "touch" as React.CSSProperties["WebkitOverflowScrolling"],
+          scrollbarWidth: "none" as React.CSSProperties["scrollbarWidth"],
+          msOverflowStyle: "none" as React.CSSProperties["msOverflowStyle"],
         }}
       >
         {TABS.map(({ id, label, Icon }) => {
@@ -188,11 +192,12 @@ export default function TripTabs({ trip }: TripTabsProps) {
               key={id}
               onClick={() => setActiveTab(id)}
               id={`tab-${id}`}
+              className="trip-tab-btn"
               style={{
                 display: "flex",
                 alignItems: "center",
                 gap: "6px",
-                padding: "0.625rem 1.25rem",
+                padding: "0.625rem 1rem",
                 borderRadius: "var(--radius-sm)",
                 border: "none",
                 cursor: "pointer",
@@ -200,7 +205,7 @@ export default function TripTabs({ trip }: TripTabsProps) {
                 fontWeight: 500,
                 fontFamily: "var(--font-sans)",
                 whiteSpace: "nowrap",
-                flex: 1,
+                flexShrink: 0,
                 justifyContent: "center",
                 transition: "all var(--transition)",
                 background: isActive ? "var(--bg-card)" : "transparent",
@@ -209,7 +214,7 @@ export default function TripTabs({ trip }: TripTabsProps) {
               }}
             >
               <Icon size={15} />
-              {label}
+              <span className="trip-tab-label">{label}</span>
             </button>
           );
         })}
@@ -460,7 +465,9 @@ export default function TripTabs({ trip }: TripTabsProps) {
 
               {/* Daily & total summary */}
               <div style={{
-                display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem",
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(min(160px, 100%), 1fr))",
+                gap: "0.75rem",
                 marginBottom: "1.25rem",
               }}>
                 {[

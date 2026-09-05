@@ -1747,3 +1747,49 @@ code {
   border-radius: var(--radius-sm);
 }
 
+/* ============================================================
+   Trip Detail Page — Tab Bar Mobile Responsiveness
+   ============================================================ */
+
+/* Hide scrollbar on WebKit (Chrome, Safari) */
+.trip-tabs-bar::-webkit-scrollbar {
+  display: none;
+}
+
+/* On small phones: hide text labels, show icons only — saves ~40px per tab */
+@media (max-width: 480px) {
+  .trip-tab-label {
+    display: none;
+  }
+
+  .trip-tab-btn {
+    padding: 0.625rem 0.875rem !important;
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Distribute tabs evenly across the bar on small screens */
+  .trip-tabs-bar {
+    overflow-x: visible !important;
+  }
+}
+
+/* On medium phones (481px–640px): show labels, distribute evenly with tighter padding */
+@media (min-width: 481px) and (max-width: 640px) {
+  .trip-tab-btn {
+    flex: 1;
+    padding: 0.625rem 0.5rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  .trip-tabs-bar {
+    overflow-x: visible !important;
+  }
+}
+
+/* On larger screens: restore comfortable padding and let tabs grow naturally */
+@media (min-width: 641px) {
+  .trip-tab-btn {
+    flex: 1;
+  }
+}
