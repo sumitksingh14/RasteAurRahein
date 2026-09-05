@@ -118,7 +118,7 @@ export default function AdminDashboard() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fill, minmax(min(200px, 100%), 1fr))",
               gap: "1rem",
               marginBottom: "2rem",
             }}

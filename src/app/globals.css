@@ -491,7 +491,7 @@ code {
 
 @media (min-width: 480px) {
   .trip-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
     gap: 1.5rem;
   }
 }
@@ -520,7 +520,7 @@ code {
 
 @media (min-width: 640px) {
   .about-grid {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
     gap: 4rem;
   }
 }
@@ -1325,7 +1325,7 @@ code {
 }
 .stay-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
   gap: 1rem;
 }
 .stay-card {
@@ -1472,7 +1472,7 @@ code {
 }
 .food-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
   gap: 1rem;
 }
 .food-card {

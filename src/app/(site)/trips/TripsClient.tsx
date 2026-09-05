@@ -317,7 +317,7 @@ export default function TripsClient({ trips, initialQuery = "", initialTag = "",
                 paddingTop: "1.25rem",
                 borderTop: "1px solid var(--border)",
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                gridTemplateColumns: "repeat(auto-fit, minmax(min(200px, 100%), 1fr))",
                 gap: "1.5rem",
               }}
             >

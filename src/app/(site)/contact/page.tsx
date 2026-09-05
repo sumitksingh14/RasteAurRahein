@@ -184,7 +184,7 @@ export default function ContactPage() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(280px, 100%), 1fr))",
             gap: "4rem",
             maxWidth: 900,
             margin: "0 auto",

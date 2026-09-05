@@ -248,7 +248,7 @@ export default async function RegionHubPage({ params }: Props) {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+                gridTemplateColumns: "repeat(auto-fill, minmax(min(320px, 100%), 1fr))",
                 gap: "1.5rem",
               }}
             >
@@ -315,7 +315,7 @@ export default async function RegionHubPage({ params }: Props) {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+                gridTemplateColumns: "repeat(auto-fit, minmax(min(260px, 100%), 1fr))",
                 gap: "1.25rem",
               }}
             >
