@@ -145,7 +145,16 @@ export default function TripTabs({ trip }: TripTabsProps) {
       {activeTab === "itinerary" && (
         <div>
           {trip.itinerary && trip.itinerary.length > 0 ? (
-            <ItineraryAccordion days={trip.itinerary} />
+            <ItineraryAccordion
+              days={trip.itinerary}
+              destination={trip.title}
+              origin={
+                // Best-effort: pull the first transport activity title as Day 1 origin,
+                // or fall back to an empty string (Maps button will still show destination-only)
+                trip.itinerary[0]?.activities?.find((a) => a.type === "transport")?.location?.name ||
+                ""
+              }
+            />
           ) : (
             <div
               style={{

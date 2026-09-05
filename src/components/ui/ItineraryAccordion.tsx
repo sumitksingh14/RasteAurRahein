@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import type { ItineraryDay, Activity } from "@/lib/types";
 import { format } from "date-fns";
+import GoogleMapsRouteButton from "@/components/ui/GoogleMapsRouteButton";
+import { extractWaypointsFromItinerary, type ItineraryActivity, type ItineraryDay as RouteDay } from "@/lib/googleMapsRoute";
 
 const ACTIVITY_ICONS: Record<string, React.ElementType> = {
   transport: Car,
@@ -197,9 +199,13 @@ function ActivityItem({ activity }: { activity: Activity }) {
 
 interface ItineraryAccordionProps {
   days: ItineraryDay[];
+  /** User's trip origin city — enables Google Maps route button */
+  origin?: string;
+  /** Trip destination — used as final stop in Google Maps link */
+  destination?: string;
 }
 
-export default function ItineraryAccordion({ days }: ItineraryAccordionProps) {
+export default function ItineraryAccordion({ days, origin, destination }: ItineraryAccordionProps) {
   const [openDays, setOpenDays] = useState<Set<string>>(
     new Set(days.slice(0, 1).map((d) => d._key))
   );
@@ -269,7 +275,26 @@ export default function ItineraryAccordion({ days }: ItineraryAccordionProps) {
             </span>
           )}
         </div>
-        <div style={{ display: "flex", gap: "0.5rem" }}>
+        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "wrap" }}>
+          {/* Google Maps route button */}
+          {destination && (
+            <GoogleMapsRouteButton
+              origin={origin || ""}
+              destination={destination}
+              waypoints={extractWaypointsFromItinerary(
+                days.map((d) => ({
+                  activities: (d.activities ?? []).map((a) => ({
+                    title: a.title,
+                    type: a.type,
+                    location: a.location
+                      ? { name: a.location.name, lat: a.location.lat, lng: a.location.lng }
+                      : undefined,
+                  })) as ItineraryActivity[],
+                })) as RouteDay[]
+              )}
+              compact
+            />
+          )}
           <button
             onClick={expandAll}
             style={{

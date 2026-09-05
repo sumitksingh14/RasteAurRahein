@@ -1,21 +1,25 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import {
   X, Sparkles, MapPin, Calendar, ChevronRight,
   CheckCircle, AlertCircle, Loader2, Clock, Utensils,
-  Bus, Bed, Camera, Navigation, Trash2,
+  Bus, Bed, Camera, Navigation, Trash2, LocateFixed,
 } from "lucide-react";
 import { useGeneratedTrips, type GeneratedTrip } from "@/components/providers/GeneratedTripsProvider";
 import ExportPDFButton from "./ExportPDFButton";
 import "../ui/AnimatedLoader.css";
+import GoogleMapsRouteButton from "@/components/ui/GoogleMapsRouteButton";
+import { detectUserLocation, type GeolocationStatus } from "@/lib/geolocation";
+import LocationAutocomplete from "@/components/ui/LocationAutocomplete";
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 interface TripParams {
   destination: string;
+  origin: string;
   days: number;
   style: string;
   month: string;
@@ -157,6 +161,7 @@ export default function AIItineraryModal({ onClose }: Props) {
   const [step, setStep] = useState<Step>("form");
   const [params, setParams] = useState<TripParams>({
     destination: "",
+    origin: "",
     days: 5,
     style: "Adventure",
     month: MONTHS[new Date().getMonth()],
@@ -183,8 +188,24 @@ export default function AIItineraryModal({ onClose }: Props) {
   const stageTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const streamAbortRef = useRef<AbortController | null>(null);
 
+  // Geolocation state
+  const [locationStatus, setLocationStatus] = useState<GeolocationStatus>("idle");
+
   // GROQ model list (fetched once on mount)
   const [groqModels, setGroqModels] = useState<{ id: string; ownedBy: string }[]>([]);
+
+  // Geolocation handler (kept for reference but LocationAutocomplete handles internally)
+  const handleDetectLocation = useCallback(async () => {
+    setLocationStatus("requesting");
+    try {
+      const result = await detectUserLocation();
+      setParams((p) => ({ ...p, origin: result.label }));
+      setLocationStatus("granted");
+    } catch {
+      setLocationStatus("denied");
+    }
+  }, []);
+
   useEffect(() => {
     fetch("/api/groq-models")
       .then((r) => r.json())
@@ -527,6 +548,25 @@ export default function AIItineraryModal({ onClose }: Props) {
             {/* ====== STEP: FORM ====== */}
             {step === "form" && (
               <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+
+                {/* ── Origin / Starting From ── */}
+                <div>
+                  <label htmlFor="ai-origin" style={labelStyle}>
+                    <LocateFixed size={12} style={{ display: "inline", marginRight: 4 }} />
+                    Starting From
+                    <span style={{ color: "var(--text-muted)", textTransform: "none", fontWeight: 400, marginLeft: 4 }}>(optional)</span>
+                  </label>
+                  <LocationAutocomplete
+                    id="ai-origin"
+                    value={params.origin}
+                    onChange={(v) => setParams((p) => ({ ...p, origin: v }))}
+                    onSelect={(s) => setParams((p) => ({ ...p, origin: s.label }))}
+                    placeholder="e.g. Mumbai, Bengaluru, Delhi…"
+                    theme="light"
+                    showGpsButton
+                  />
+                </div>
+
                 {/* Destination */}
                 <div>
                   <label htmlFor="ai-destination" style={labelStyle}>
@@ -1666,6 +1706,16 @@ export default function AIItineraryModal({ onClose }: Props) {
                     </div>
                   ))}
                 </div>
+
+                {/* Google Maps route button — shown after all days are streamed */}
+                {!isStreaming && itinerary.destination && (
+                  <div style={{ marginBottom: "1rem" }}>
+                    <GoogleMapsRouteButton
+                      origin={params.origin}
+                      destination={itinerary.destination}
+                    />
+                  </div>
+                )}
 
                 {/* Action buttons */}
                 <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>

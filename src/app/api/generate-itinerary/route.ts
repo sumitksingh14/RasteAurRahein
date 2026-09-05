@@ -28,6 +28,8 @@ interface GenerateRequest {
   openaiModel?: string;
   /** If true, respond with NDJSON streamed progressively instead of a single JSON payload */
   stream?: boolean;
+  /** User's detected or typed starting location (city / area) */
+  origin?: string;
 }
 
 interface GeneratedActivity {
@@ -60,6 +62,7 @@ import { LLMService } from "@/lib/services/LLMService";
 // Shared free-text preference lines appended to every prompt variant.
 function buildPreferenceLines(req: GenerateRequest): string {
   const lines: string[] = [];
+  if (req.origin) lines.push(`Starting from: ${req.origin} (plan the first day's travel from this origin)`);
   if (req.budget) lines.push(`Budget: ${req.budget}`);
   if (req.travelers && req.travelers > 0) {
     lines.push(`Travelers: ${req.travelers} ${req.travelers === 1 ? "person" : "people"}`);
@@ -128,6 +131,7 @@ Return ONLY the JSON object, nothing else.`;
 // ~50% fewer tokens so input + 4 096 output stays under the cap.
 function buildGroqPrompt(req: GenerateRequest): string {
   const extras = [
+    req.origin && `Starting from: ${req.origin}`,
     req.budget && `Budget: ${req.budget}`,
     req.travelers && req.travelers > 0 && `Travelers: ${req.travelers}`,
     req.pace && `Pace: ${req.pace}`,
