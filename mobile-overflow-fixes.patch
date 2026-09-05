@@ -1,0 +1,166 @@
+diff --git a/src/app/(site)/about/page.tsx b/src/app/(site)/about/page.tsx
+index 9e744d7..a5053b5 100644
+--- a/src/app/(site)/about/page.tsx
++++ b/src/app/(site)/about/page.tsx
+@@ -39,7 +39,7 @@ export default function AboutPage() {
+           <div
+             style={{
+               display: "grid",
+-              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
++              gridTemplateColumns: "repeat(auto-fit, minmax(min(280px, 100%), 1fr))",
+               gap: "4rem",
+               alignItems: "center",
+             }}
+diff --git a/src/app/(site)/contact/page.tsx b/src/app/(site)/contact/page.tsx
+index 8c13deb..9c186d9 100644
+--- a/src/app/(site)/contact/page.tsx
++++ b/src/app/(site)/contact/page.tsx
+@@ -184,7 +184,7 @@ export default function ContactPage() {
+         <div
+           style={{
+             display: "grid",
+-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
++            gridTemplateColumns: "repeat(auto-fit, minmax(min(280px, 100%), 1fr))",
+             gap: "4rem",
+             maxWidth: 900,
+             margin: "0 auto",
+diff --git a/src/app/(site)/itineraries/page.tsx b/src/app/(site)/itineraries/page.tsx
+index 6169558..3c08caf 100644
+--- a/src/app/(site)/itineraries/page.tsx
++++ b/src/app/(site)/itineraries/page.tsx
+@@ -408,7 +408,7 @@ export default function ItinerariesPage() {
+           <div
+             style={{
+               display: "grid",
+-              gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))",
++              gridTemplateColumns: "repeat(auto-fill, minmax(min(340px, 100%), 1fr))",
+               gap: "2rem",
+             }}
+           >
+diff --git a/src/app/(site)/regions/[region]/page.tsx b/src/app/(site)/regions/[region]/page.tsx
+index 9fb6e13..b6d023f 100644
+--- a/src/app/(site)/regions/[region]/page.tsx
++++ b/src/app/(site)/regions/[region]/page.tsx
+@@ -248,7 +248,7 @@ export default async function RegionHubPage({ params }: Props) {
+             <div
+               style={{
+                 display: "grid",
+-                gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
++                gridTemplateColumns: "repeat(auto-fill, minmax(min(320px, 100%), 1fr))",
+                 gap: "1.5rem",
+               }}
+             >
+@@ -315,7 +315,7 @@ export default async function RegionHubPage({ params }: Props) {
+             <div
+               style={{
+                 display: "grid",
+-                gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
++                gridTemplateColumns: "repeat(auto-fit, minmax(min(260px, 100%), 1fr))",
+                 gap: "1.25rem",
+               }}
+             >
+diff --git a/src/app/(site)/regions/page.tsx b/src/app/(site)/regions/page.tsx
+index 94997c3..d29c6fb 100644
+--- a/src/app/(site)/regions/page.tsx
++++ b/src/app/(site)/regions/page.tsx
+@@ -82,7 +82,7 @@ export default async function RegionsIndexPage() {
+           <div
+             style={{
+               display: "grid",
+-              gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))",
++              gridTemplateColumns: "repeat(auto-fill, minmax(min(340px, 100%), 1fr))",
+               gap: "1.75rem",
+             }}
+           >
+diff --git a/src/app/(site)/trips/TripsClient.tsx b/src/app/(site)/trips/TripsClient.tsx
+index 3182945..2d3def3 100644
+--- a/src/app/(site)/trips/TripsClient.tsx
++++ b/src/app/(site)/trips/TripsClient.tsx
+@@ -317,7 +317,7 @@ export default function TripsClient({ trips, initialQuery = "", initialTag = "",
+                 paddingTop: "1.25rem",
+                 borderTop: "1px solid var(--border)",
+                 display: "grid",
+-                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
++                gridTemplateColumns: "repeat(auto-fit, minmax(min(200px, 100%), 1fr))",
+                 gap: "1.5rem",
+               }}
+             >
+diff --git a/src/app/(site)/trips/[slug]/page.tsx b/src/app/(site)/trips/[slug]/page.tsx
+index 8714cdc..0ee5692 100644
+--- a/src/app/(site)/trips/[slug]/page.tsx
++++ b/src/app/(site)/trips/[slug]/page.tsx
+@@ -503,7 +503,7 @@ export default async function TripDetailPage({ params }: Props) {
+             <div
+               style={{
+                 display: "grid",
+-                gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
++                gridTemplateColumns: "repeat(auto-fill, minmax(min(280px, 100%), 1fr))",
+                 gap: "1.25rem",
+               }}
+             >
+diff --git a/src/app/admin/page.tsx b/src/app/admin/page.tsx
+index fcfefbd..a6584e8 100644
+--- a/src/app/admin/page.tsx
++++ b/src/app/admin/page.tsx
+@@ -118,7 +118,7 @@ export default function AdminDashboard() {
+           <div
+             style={{
+               display: "grid",
+-              gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
++              gridTemplateColumns: "repeat(auto-fill, minmax(min(200px, 100%), 1fr))",
+               gap: "1rem",
+               marginBottom: "2rem",
+             }}
+diff --git a/src/app/globals.css b/src/app/globals.css
+index 7124615..87f4d1c 100644
+--- a/src/app/globals.css
++++ b/src/app/globals.css
+@@ -491,7 +491,7 @@ code {
+ 
+ @media (min-width: 480px) {
+   .trip-grid {
+-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
++    grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+     gap: 1.5rem;
+   }
+ }
+@@ -520,7 +520,7 @@ code {
+ 
+ @media (min-width: 640px) {
+   .about-grid {
+-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
++    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+     gap: 4rem;
+   }
+ }
+@@ -1325,7 +1325,7 @@ code {
+ }
+ .stay-grid {
+   display: grid;
+-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
++  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+   gap: 1rem;
+ }
+ .stay-card {
+@@ -1472,7 +1472,7 @@ code {
+ }
+ .food-grid {
+   display: grid;
+-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
++  grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
+   gap: 1rem;
+ }
+ .food-card {
+diff --git a/src/components/ui/PhotoGallery.tsx b/src/components/ui/PhotoGallery.tsx
+index 8910794..c90d6e9 100644
+--- a/src/components/ui/PhotoGallery.tsx
++++ b/src/components/ui/PhotoGallery.tsx
+@@ -109,7 +109,7 @@ export default function PhotoGallery({ images, title }: PhotoGalleryProps) {
+       <div
+         style={{
+           display: "grid",
+-          gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
++          gridTemplateColumns: "repeat(auto-fill, minmax(min(240px, 100%), 1fr))",
+           gap: "0.75rem",
+         }}
+       >
