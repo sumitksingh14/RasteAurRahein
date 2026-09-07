@@ -36,7 +36,7 @@ interface TripParams {
   transportMode: "self-drive" | "public-transport" | "flights" | "mixed";
   dietary: "no-preference" | "vegetarian" | "vegan" | "jain" | "non-vegetarian";
   avoid: string;
-  model: "gemini" | "nvidia" | "groq" | "openai";
+  model: "auto" | "gemini" | "nvidia" | "groq" | "openai";
   nvidiaModel: string;
   groqModel: string;
   openaiModel: string;
@@ -389,7 +389,7 @@ export default function AIPlanner() {
     transportMode: "mixed",
     dietary: "no-preference",
     avoid: "",
-    model: "gemini",
+    model: "auto",
     nvidiaModel: "nvidia/nemotron-3.5-lightning-30b-a3b",
     groqModel: "openai/gpt-oss-20b",
     openaiModel: "gpt-4o",
@@ -412,6 +412,7 @@ export default function AIPlanner() {
   const [streamingDays, setStreamingDays] = useState<GeneratedDay[]>([]);
   const [modelUsed, setModelUsed] = useState("");
   const [error, setError] = useState("");
+  const [isAuthError, setIsAuthError] = useState(false);
   const [failedModel, setFailedModel] = useState<TripParams["model"] | null>(null);
   const [isStreaming, setIsStreaming] = useState(false);
   const [stageIdx, setStageIdx] = useState(0);
@@ -503,6 +504,12 @@ export default function AIPlanner() {
   const handleGenerate = async () => {
     if (!params.destination.trim()) return;
 
+    // Must be signed in — open auth modal instead of hitting the API and getting a 401
+    if (!user) {
+      openAuthModal();
+      return;
+    }
+
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
@@ -535,6 +542,11 @@ export default function AIPlanner() {
       });
 
       if (!res.ok || !res.body) {
+        if (res.status === 401) {
+          setIsAuthError(true);
+          setStep("form");
+          return;
+        }
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || `Generation failed (${res.status})`);
       }
@@ -593,13 +605,11 @@ export default function AIPlanner() {
 
       const msg = err instanceof Error ? err.message : "Unknown error";
       const isQuota   = /quota|rate.?limit|429|too many/i.test(msg);
-      const isAuth    = /api.?key|auth|403|401|invalid.?key|signed in/i.test(msg);
       const isTimeout = /timeout|network|fetch|ECONNRESET/i.test(msg);
       const isModel   = /model|overload|503|unavailable|capacity/i.test(msg);
 
       let friendly = msg;
       if (isQuota)   friendly = "This model has hit its usage limit or rate limit. Please try again in a moment or switch to another AI.";
-      else if (isAuth)    friendly = "API authentication failed for this model. The key may be invalid or missing.";
       else if (isTimeout) friendly = "The request timed out — the model may be experiencing high load.";
       else if (isModel)   friendly = "This model is currently overloaded or unavailable. Try a different AI LLM.";
 
@@ -720,7 +730,7 @@ export default function AIPlanner() {
         @media (max-width: 768px) {
           .ai-planner-grid { grid-template-columns: 1fr !important; }
           .ai-form-2col { grid-template-columns: 1fr !important; }
-          .ai-model-grid { grid-template-columns: 1fr 1fr !important; }
+          .ai-model-dropdown-container { grid-template-columns: 1fr !important; }
         }
       `}</style>
 
@@ -1083,134 +1093,236 @@ export default function AIPlanner() {
                 />
               </div>
 
-              {/* ── AI Model Selector ── */}
+              {/* ── AI Model Selector (2-Level Dropdown) ── */}
               <div>
-                <div style={darkLabel}><Sparkles size={12} /> AI Model</div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "0.5rem" }} className="ai-model-grid">
-                  {/* Gemini */}
-                  <button
-                    id="model-select-gemini"
-                    onClick={() => setParams((p) => ({ ...p, model: "gemini" }))}
-                    style={{
-                      display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "0.25rem",
-                      padding: "0.7rem 0.75rem", borderRadius: 10,
-                      border: `1.5px solid ${params.model === "gemini" ? "#c9a84c" : "rgba(255,255,255,0.15)"}`,
-                      background: params.model === "gemini" ? "rgba(201,168,76,0.15)" : "rgba(255,255,255,0.06)",
-                      cursor: "pointer", fontFamily: "var(--font-sans)", textAlign: "left", transition: "all 0.15s",
-                    }}
-                  >
-                    <div style={{ display: "flex", alignItems: "center", gap: "5px", width: "100%" }}>
-                      <span style={{ fontSize: "1rem" }}>✦</span>
-                      <span style={{ fontSize: "0.75rem", fontWeight: 700, color: params.model === "gemini" ? "#f5c87a" : "#fff" }}>Gemini</span>
-                      {params.model === "gemini" && <span style={{ marginLeft: "auto", fontSize: "0.55rem", fontWeight: 700, padding: "1px 4px", borderRadius: 100, background: "#c9a84c", color: "#fff" }}>✓</span>}
-                    </div>
-                    <span style={{ fontSize: "0.62rem", color: "rgba(255,255,255,0.45)" }}>Fast · JSON</span>
-                  </button>
+                <div style={darkLabel}><Sparkles size={12} /> AI Model Selection</div>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "0.65rem",
+                    background: "rgba(255,255,255,0.03)",
+                    border: "1px solid rgba(255,255,255,0.09)",
+                    borderRadius: 12,
+                    padding: "0.85rem",
+                  }}
+                  className="ai-model-dropdown-container"
+                >
+                  {/* Level 1: Engine / Provider */}
+                  <div>
+                    <label
+                      htmlFor="ai-model-provider-select"
+                      style={{
+                        display: "block",
+                        fontSize: "0.72rem",
+                        fontWeight: 600,
+                        color: "rgba(255,255,255,0.7)",
+                        marginBottom: "0.35rem",
+                        letterSpacing: "0.02em",
+                      }}
+                    >
+                      Step 1 · Select Provider / Mode
+                    </label>
+                    <select
+                      id="ai-model-provider-select"
+                      value={params.model}
+                      onChange={(e) => setParams((p) => ({ ...p, model: e.target.value as TripParams["model"] }))}
+                      style={{
+                        ...darkInput,
+                        cursor: "pointer",
+                        border:
+                          params.model === "nvidia"
+                            ? "1.5px solid #76b900"
+                            : params.model === "groq"
+                            ? "1.5px solid #f55036"
+                            : params.model === "openai"
+                            ? "1.5px solid #10a37f"
+                            : "1.5px solid #c9a84c",
+                      }}
+                    >
+                      <option value="auto">⚡ Auto (Best Model — Recommended)</option>
+                      <option value="gemini">✦ Google Gemini</option>
+                      <option value="nvidia">⚡ NVIDIA NIM</option>
+                      <option value="groq">🖤 Groq</option>
+                      <option value="openai">🟢 OpenAI</option>
+                    </select>
+                  </div>
 
-                  {/* NVIDIA */}
-                  <button
-                    id="model-select-nvidia"
-                    onClick={() => setParams((p) => ({ ...p, model: "nvidia" }))}
-                    style={{
-                      display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "0.25rem",
-                      padding: "0.7rem 0.75rem", borderRadius: 10,
-                      border: `1.5px solid ${params.model === "nvidia" ? "#76b900" : "rgba(255,255,255,0.15)"}`,
-                      background: params.model === "nvidia" ? "rgba(118,185,0,0.12)" : "rgba(255,255,255,0.06)",
-                      cursor: "pointer", fontFamily: "var(--font-sans)", textAlign: "left", transition: "all 0.15s",
-                    }}
-                  >
-                    <div style={{ display: "flex", alignItems: "center", gap: "5px", width: "100%" }}>
-                      <span style={{ fontSize: "1rem" }}>⚡</span>
-                      <span style={{ fontSize: "0.75rem", fontWeight: 700, color: params.model === "nvidia" ? "#76b900" : "#fff" }}>NVIDIA</span>
-                      {params.model === "nvidia" && <span style={{ marginLeft: "auto", fontSize: "0.55rem", fontWeight: 700, padding: "1px 4px", borderRadius: 100, background: "#76b900", color: "#fff" }}>✓</span>}
-                    </div>
-                    <span style={{ fontSize: "0.62rem", color: "rgba(255,255,255,0.45)" }}>Reasoning</span>
-                  </button>
-
-                  {/* Groq */}
-                  <button
-                    id="model-select-groq"
-                    onClick={() => setParams((p) => ({ ...p, model: "groq" }))}
-                    style={{
-                      display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "0.25rem",
-                      padding: "0.7rem 0.75rem", borderRadius: 10,
-                      border: `1.5px solid ${params.model === "groq" ? "#f55036" : "rgba(255,255,255,0.15)"}`,
-                      background: params.model === "groq" ? "rgba(245,80,54,0.1)" : "rgba(255,255,255,0.06)",
-                      cursor: "pointer", fontFamily: "var(--font-sans)", textAlign: "left", transition: "all 0.15s",
-                    }}
-                  >
-                    <div style={{ display: "flex", alignItems: "center", gap: "5px", width: "100%" }}>
-                      <span style={{ fontSize: "1rem" }}>🖤</span>
-                      <span style={{ fontSize: "0.75rem", fontWeight: 700, color: params.model === "groq" ? "#f55036" : "#fff" }}>Groq</span>
-                      {params.model === "groq" && <span style={{ marginLeft: "auto", fontSize: "0.55rem", fontWeight: 700, padding: "1px 4px", borderRadius: 100, background: "#f55036", color: "#fff" }}>✓</span>}
-                    </div>
-                    <span style={{ fontSize: "0.62rem", color: "rgba(255,255,255,0.45)" }}>Ultra-fast</span>
-                  </button>
-
-                  {/* OpenAI */}
-                  <button
-                    id="model-select-openai"
-                    onClick={() => setParams((p) => ({ ...p, model: "openai" }))}
-                    style={{
-                      display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "0.25rem",
-                      padding: "0.7rem 0.75rem", borderRadius: 10,
-                      border: `1.5px solid ${params.model === "openai" ? "#10a37f" : "rgba(255,255,255,0.15)"}`,
-                      background: params.model === "openai" ? "rgba(16,163,127,0.12)" : "rgba(255,255,255,0.06)",
-                      cursor: "pointer", fontFamily: "var(--font-sans)", textAlign: "left", transition: "all 0.15s",
-                    }}
-                  >
-                    <div style={{ display: "flex", alignItems: "center", gap: "5px", width: "100%" }}>
-                      <span style={{ fontSize: "1rem" }}>🟢</span>
-                      <span style={{ fontSize: "0.75rem", fontWeight: 700, color: params.model === "openai" ? "#10a37f" : "#fff" }}>OpenAI</span>
-                      {params.model === "openai" && <span style={{ marginLeft: "auto", fontSize: "0.55rem", fontWeight: 700, padding: "1px 4px", borderRadius: 100, background: "#10a37f", color: "#fff" }}>✓</span>}
-                    </div>
-                    <span style={{ fontSize: "0.62rem", color: "rgba(255,255,255,0.45)" }}>GPT-4o · o3</span>
-                  </button>
+                  {/* Level 2: Specific Model */}
+                  <div>
+                    <label
+                      htmlFor="ai-specific-model-select"
+                      style={{
+                        display: "block",
+                        fontSize: "0.72rem",
+                        fontWeight: 600,
+                        color: "rgba(255,255,255,0.7)",
+                        marginBottom: "0.35rem",
+                        letterSpacing: "0.02em",
+                      }}
+                    >
+                      Step 2 · Select LLM Architecture
+                    </label>
+                    {params.model === "auto" && (
+                      <select
+                        id="ai-specific-model-select"
+                        disabled
+                        style={{
+                          ...darkInput,
+                          opacity: 0.9,
+                          cursor: "default",
+                          border: "1.5px solid rgba(201,168,76,0.45)",
+                          background: "rgba(201,168,76,0.06)",
+                          color: "#f5c87a",
+                        }}
+                      >
+                        <option value="auto">✨ Best Model (Gemini Flash + Failover)</option>
+                      </select>
+                    )}
+                    {params.model === "gemini" && (
+                      <select
+                        id="ai-specific-model-select"
+                        disabled
+                        style={{
+                          ...darkInput,
+                          opacity: 0.9,
+                          cursor: "default",
+                          border: "1.5px solid rgba(201,168,76,0.45)",
+                          background: "rgba(201,168,76,0.06)",
+                          color: "#f5c87a",
+                        }}
+                      >
+                        <option value="gemini-flash">Gemini 2.5 Flash (Fast · JSON)</option>
+                      </select>
+                    )}
+                    {params.model === "nvidia" && (
+                      <select
+                        id="ai-specific-model-select"
+                        value={params.nvidiaModel}
+                        onChange={(e) => setParams((p) => ({ ...p, nvidiaModel: e.target.value }))}
+                        style={{
+                          ...darkInput,
+                          cursor: "pointer",
+                          border: "1.5px solid #76b900",
+                          background: "rgba(118,185,0,0.06)",
+                        }}
+                      >
+                        {NVIDIA_MODEL_OPTIONS.map((m) => (
+                          <option key={m.id} value={m.id}>
+                            {m.label}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                    {params.model === "groq" && (
+                      <select
+                        id="ai-specific-model-select"
+                        value={params.groqModel}
+                        onChange={(e) => setParams((p) => ({ ...p, groqModel: e.target.value }))}
+                        style={{
+                          ...darkInput,
+                          cursor: "pointer",
+                          border: "1.5px solid #f55036",
+                          background: "rgba(245,80,54,0.06)",
+                        }}
+                      >
+                        {groqModels.length > 0 ? (
+                          groqModels.map((m) => (
+                            <option key={m.id} value={m.id}>
+                              {m.id} ({m.ownedBy})
+                            </option>
+                          ))
+                        ) : (
+                          <>
+                            <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile</option>
+                            <option value="llama-3.1-8b-instant">llama-3.1-8b-instant</option>
+                            <option value="openai/gpt-oss-20b">openai/gpt-oss-20b</option>
+                          </>
+                        )}
+                      </select>
+                    )}
+                    {params.model === "openai" && (
+                      <select
+                        id="ai-specific-model-select"
+                        value={params.openaiModel}
+                        onChange={(e) => setParams((p) => ({ ...p, openaiModel: e.target.value }))}
+                        style={{
+                          ...darkInput,
+                          cursor: "pointer",
+                          border: "1.5px solid #10a37f",
+                          background: "rgba(16,163,127,0.06)",
+                        }}
+                      >
+                        <option value="gpt-4o">GPT-4o (Flagship)</option>
+                        <option value="gpt-4o-mini">GPT-4o Mini (Fast & Compact)</option>
+                        <option value="o3-mini">o3 Mini (Reasoning)</option>
+                      </select>
+                    )}
+                  </div>
                 </div>
 
-                {/* Sub-pickers */}
-                {params.model === "groq" && groqModels.length > 0 && (
-                  <div style={{ marginTop: "0.5rem" }}>
-                    <div style={{ ...darkLabel, color: "#f55036", marginBottom: "0.3rem" }}>🖤 Select Groq Model</div>
-                    <select
-                      id="groq-model-select"
-                      value={params.groqModel}
-                      onChange={(e) => setParams((p) => ({ ...p, groqModel: e.target.value }))}
-                      style={{ ...darkInput, border: "1.5px solid #f55036", background: "rgba(245,80,54,0.06)" }}
-                    >
-                      {groqModels.map((m) => <option key={m.id} value={m.id}>{m.id} ({m.ownedBy})</option>)}
-                    </select>
-                  </div>
-                )}
-                {params.model === "openai" && (
-                  <div style={{ marginTop: "0.5rem" }}>
-                    <div style={{ ...darkLabel, color: "#10a37f", marginBottom: "0.3rem" }}>🟢 Select OpenAI Model</div>
-                    <select
-                      id="openai-model-select"
-                      value={params.openaiModel}
-                      onChange={(e) => setParams((p) => ({ ...p, openaiModel: e.target.value }))}
-                      style={{ ...darkInput, border: "1.5px solid #10a37f", background: "rgba(16,163,127,0.06)" }}
-                    >
-                      <option value="gpt-4o">GPT-4o</option>
-                      <option value="gpt-4o-mini">GPT-4o Mini</option>
-                      <option value="o3-mini">o3 Mini</option>
-                    </select>
-                  </div>
-                )}
-                {params.model === "nvidia" && (
-                  <div style={{ marginTop: "0.5rem" }}>
-                    <div style={{ ...darkLabel, color: "#76b900", marginBottom: "0.3rem" }}>⚡ Select NVIDIA Model</div>
-                    <select
-                      id="nvidia-model-select"
-                      value={params.nvidiaModel}
-                      onChange={(e) => setParams((p) => ({ ...p, nvidiaModel: e.target.value }))}
-                      style={{ ...darkInput, border: "1.5px solid #76b900", background: "rgba(118,185,0,0.06)" }}
-                    >
-                      {NVIDIA_MODEL_OPTIONS.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}
-                    </select>
-                  </div>
-                )}
+                {/* Engine description badge */}
+                <div style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.45)", marginTop: "0.4rem", display: "flex", alignItems: "center", gap: "6px" }}>
+                  <span
+                    style={{
+                      display: "inline-block",
+                      width: 6,
+                      height: 6,
+                      borderRadius: "50%",
+                      background:
+                        params.model === "nvidia"
+                          ? "#76b900"
+                          : params.model === "groq"
+                          ? "#f55036"
+                          : params.model === "openai"
+                          ? "#10a37f"
+                          : "#c9a84c",
+                    }}
+                  />
+                  {params.model === "auto" && "Auto selects the fastest and highest quality model (Gemini Flash) with automatic provider failover."}
+                  {params.model === "gemini" && "Gemini 2.5 Flash produces ultra-fast, structured itineraries with rich context."}
+                  {params.model === "nvidia" && "NVIDIA NIM delivers specialized open-weights models and high-parameter reasoning."}
+                  {params.model === "groq" && "Groq LPUs deliver near-instantaneous token generation speeds."}
+                  {params.model === "openai" && "OpenAI provides industry-standard GPT-4o and o3 reasoning architectures."}
+                </div>
               </div>
+
+              {/* ── Auth Error Panel (401) ── */}
+              {isAuthError && (
+                <div style={{
+                  borderRadius: 10, border: "1px solid rgba(250,204,21,0.35)",
+                  background: "rgba(250,204,21,0.06)", overflow: "hidden",
+                }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "0.9rem 1rem 0.75rem" }}>
+                    <LogIn size={17} color="#facc15" style={{ flexShrink: 0, marginTop: 2 }} />
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#facc15", marginBottom: 3, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+                        Sign in required
+                      </div>
+                      <div style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.55 }}>
+                        You need to be signed in to generate an itinerary.
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ padding: "0.6rem 1rem 0.85rem" }}>
+                    <button
+                      id="ai-planner-sign-in-btn"
+                      onClick={() => { setIsAuthError(false); openAuthModal(); }}
+                      style={{
+                        display: "inline-flex", alignItems: "center", gap: "0.45rem",
+                        padding: "0.5rem 1.1rem", borderRadius: 8,
+                        border: "1px solid rgba(250,204,21,0.45)",
+                        background: "rgba(250,204,21,0.12)",
+                        color: "#facc15", fontSize: "0.82rem", fontWeight: 700,
+                        fontFamily: "var(--font-sans)", cursor: "pointer",
+                        transition: "background 0.18s",
+                      }}
+                    >
+                      <LogIn size={14} /> Sign In to Continue
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {/* ── Error Panel ── */}
               {error && (
@@ -1223,7 +1335,7 @@ export default function AIPlanner() {
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#f87171", marginBottom: 3, textTransform: "uppercase", letterSpacing: "0.04em" }}>
                         {failedModel
-                          ? `${failedModel === "gemini" ? "Google Gemini" : failedModel === "nvidia" ? "NVIDIA" : failedModel === "openai" ? "OpenAI" : "Groq"} could not generate a result`
+                          ? `${failedModel === "auto" ? "AI Engine" : failedModel === "gemini" ? "Google Gemini" : failedModel === "nvidia" ? "NVIDIA" : failedModel === "openai" ? "OpenAI" : "Groq"} could not generate a result`
                           : "Generation failed"}
                       </div>
                       <div style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.55 }}>{error}</div>
@@ -1233,6 +1345,7 @@ export default function AIPlanner() {
                     <div style={{ padding: "0.75rem 1rem", borderTop: "1px solid rgba(243,139,168,0.15)" }}>
                       <div style={{ fontSize: "0.7rem", fontWeight: 600, color: "rgba(255,255,255,0.45)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.5rem" }}>🔄 Try a different AI</div>
                       <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+                        {failedModel !== "auto" && <button id="ai-switch-auto-btn" onClick={() => { setParams((p) => ({ ...p, model: "auto" })); setError(""); setFailedModel(null); }} style={{ padding: "0.35rem 0.75rem", borderRadius: 8, border: "1px solid rgba(201,168,76,0.4)", background: "rgba(201,168,76,0.1)", color: "#f5c87a", fontSize: "0.75rem", fontWeight: 600, fontFamily: "var(--font-sans)", cursor: "pointer" }}>⚡ Auto</button>}
                         {failedModel !== "gemini" && <button id="ai-switch-gemini-btn" onClick={() => { setParams((p) => ({ ...p, model: "gemini" })); setError(""); setFailedModel(null); }} style={{ padding: "0.35rem 0.75rem", borderRadius: 8, border: "1px solid rgba(201,168,76,0.4)", background: "rgba(201,168,76,0.1)", color: "#f5c87a", fontSize: "0.75rem", fontWeight: 600, fontFamily: "var(--font-sans)", cursor: "pointer" }}>✦ Gemini</button>}
                         {failedModel !== "nvidia" && <button id="ai-switch-nvidia-btn" onClick={() => { setParams((p) => ({ ...p, model: "nvidia" })); setError(""); setFailedModel(null); }} style={{ padding: "0.35rem 0.75rem", borderRadius: 8, border: "1px solid rgba(118,185,0,0.4)", background: "rgba(118,185,0,0.1)", color: "#76b900", fontSize: "0.75rem", fontWeight: 600, fontFamily: "var(--font-sans)", cursor: "pointer" }}>⚡ NVIDIA</button>}
                         {failedModel !== "groq" && <button id="ai-switch-groq-btn" onClick={() => { setParams((p) => ({ ...p, model: "groq" })); setError(""); setFailedModel(null); }} style={{ padding: "0.35rem 0.75rem", borderRadius: 8, border: "1px solid rgba(245,80,54,0.4)", background: "rgba(245,80,54,0.1)", color: "#f55036", fontSize: "0.75rem", fontWeight: 600, fontFamily: "var(--font-sans)", cursor: "pointer" }}>🖤 Groq</button>}

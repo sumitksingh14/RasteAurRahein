@@ -20,7 +20,7 @@ interface GenerateRequest {
   dietary?: "no-preference" | "vegetarian" | "vegan" | "jain" | "non-vegetarian";
   /** Free-text places/things to avoid */
   avoid?: string;
-  model?: "gemini" | "nvidia" | "groq" | "openai";
+  model?: "auto" | "gemini" | "nvidia" | "groq" | "openai";
   /** The specific NVIDIA model ID when model === "nvidia" */
   nvidiaModel?: string;
   /** The specific GROQ model ID when model === "groq" */
@@ -252,12 +252,19 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const requestedModel = body.model || "gemini";
-    const providersToTry = [requestedModel];
-    if (requestedModel === "nvidia") providersToTry.push("gemini", "groq", "openai");
-    else if (requestedModel === "groq") providersToTry.push("gemini", "nvidia", "openai");
-    else if (requestedModel === "openai") providersToTry.push("gemini", "groq", "nvidia");
-    else providersToTry.push("groq", "nvidia", "openai");
+    const requestedModel = body.model || "auto";
+    const providersToTry: ("gemini" | "nvidia" | "groq" | "openai")[] = [];
+    if (requestedModel === "auto") {
+      providersToTry.push("gemini", "nvidia", "groq", "openai");
+    } else if (requestedModel === "nvidia") {
+      providersToTry.push("nvidia", "gemini", "groq", "openai");
+    } else if (requestedModel === "groq") {
+      providersToTry.push("groq", "gemini", "nvidia", "openai");
+    } else if (requestedModel === "openai") {
+      providersToTry.push("openai", "gemini", "groq", "nvidia");
+    } else {
+      providersToTry.push("gemini", "groq", "nvidia", "openai");
+    }
 
     let itinerary: GeneratedItinerary | null = null;
     let modelUsed = "";
@@ -306,9 +313,13 @@ export async function POST(req: NextRequest) {
 
         // Success!
         itinerary = parsed;
-        modelUsed = currentModelLabel;
-        if (provider !== requestedModel) {
-          modelUsed += " (Fallback)";
+        if (requestedModel === "auto") {
+          modelUsed = `Auto · ${currentModelLabel}`;
+        } else {
+          modelUsed = currentModelLabel;
+          if (provider !== requestedModel) {
+            modelUsed += " (Fallback)";
+          }
         }
         break; // Stop trying if successful
       } catch (err) {
@@ -340,12 +351,19 @@ export async function POST(req: NextRequest) {
 // client can render trip metadata and each day as soon as it's generated.
 // ---------------------------------------------------------------------------
 function handleStreamingGenerate(body: GenerateRequest): Response {
-  const requestedModel = body.model || "gemini";
-  const providersToTry = [requestedModel];
-  if (requestedModel === "nvidia") providersToTry.push("gemini", "groq", "openai");
-  else if (requestedModel === "groq") providersToTry.push("gemini", "nvidia", "openai");
-  else if (requestedModel === "openai") providersToTry.push("gemini", "groq", "nvidia");
-  else providersToTry.push("groq", "nvidia", "openai");
+  const requestedModel = body.model || "auto";
+  const providersToTry: ("gemini" | "nvidia" | "groq" | "openai")[] = [];
+  if (requestedModel === "auto") {
+    providersToTry.push("gemini", "nvidia", "groq", "openai");
+  } else if (requestedModel === "nvidia") {
+    providersToTry.push("nvidia", "gemini", "groq", "openai");
+  } else if (requestedModel === "groq") {
+    providersToTry.push("groq", "gemini", "nvidia", "openai");
+  } else if (requestedModel === "openai") {
+    providersToTry.push("openai", "gemini", "groq", "nvidia");
+  } else {
+    providersToTry.push("gemini", "groq", "nvidia", "openai");
+  }
 
   const encoder = new TextEncoder();
 
@@ -373,7 +391,8 @@ function handleStreamingGenerate(body: GenerateRequest): Response {
             const groqModelId = body.groqModel ?? "llama3-70b-8192";
             modelLabel = `Groq · ${groqModelId}`;
             sentToClient = true;
-            send({ type: "model", label: provider !== requestedModel ? `${modelLabel} (Fallback)` : modelLabel });
+            const groqDisplayLabel = requestedModel === "auto" ? `Auto · ${modelLabel}` : (provider !== requestedModel ? `${modelLabel} (Fallback)` : modelLabel);
+            send({ type: "model", label: groqDisplayLabel });
 
             const groqRaw = await LLMService.generateContent(
               buildGroqPrompt(body),
@@ -421,7 +440,8 @@ function handleStreamingGenerate(body: GenerateRequest): Response {
           if (first.done) throw new Error(`[${provider}] returned no output.`);
 
           sentToClient = true;
-          send({ type: "model", label: provider !== requestedModel ? `${modelLabel} (Fallback)` : modelLabel });
+          const streamDisplayLabel = requestedModel === "auto" ? `Auto · ${modelLabel}` : (provider !== requestedModel ? `${modelLabel} (Fallback)` : modelLabel);
+          send({ type: "model", label: streamDisplayLabel });
 
           let rawBuffer = first.value;
           let processedCleanLen = 0;
