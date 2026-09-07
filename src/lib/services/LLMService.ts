@@ -105,7 +105,7 @@ export class LLMService {
             temperature: 0.8,
             topK: 40,
             topP: 0.9,
-            maxOutputTokens: 8192,
+            maxOutputTokens: 65536, // Flash supports up to 65536 output tokens
             ...(jsonMode ? { responseMimeType: "application/json" } : {}),
           },
         }),
@@ -118,7 +118,13 @@ export class LLMService {
     }
 
     const data = await res.json();
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    const candidate = data?.candidates?.[0];
+    const finishReason = candidate?.finishReason;
+    if (finishReason && finishReason !== "STOP") {
+      // MAX_TOKENS means the output was truncated; SAFETY means it was blocked
+      throw new Error(`Gemini stopped early (${finishReason}). Try fewer days or a shorter trip style.`);
+    }
+    const text = candidate?.content?.parts?.[0]?.text;
     if (!text) throw new Error("Gemini returned an empty response.");
     return text;
   }
@@ -282,7 +288,7 @@ export class LLMService {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.8, topK: 40, topP: 0.9, maxOutputTokens: 8192 },
+          generationConfig: { temperature: 0.8, topK: 40, topP: 0.9, maxOutputTokens: 65536 },
         }),
       }
     );
@@ -308,10 +314,16 @@ export class LLMService {
         if (!jsonStr || jsonStr === "[DONE]") continue;
         try {
           const obj = JSON.parse(jsonStr);
-          const text = obj?.candidates?.[0]?.content?.parts?.[0]?.text;
+          const candidate = obj?.candidates?.[0];
+          // Detect early termination (truncation)
+          if (candidate?.finishReason && candidate.finishReason !== "STOP") {
+            throw new Error(`Gemini stopped early (${candidate.finishReason}). The itinerary may be incomplete.`);
+          }
+          const text = candidate?.content?.parts?.[0]?.text;
           if (text) yield text;
-        } catch {
-          // ignore partial SSE frame
+        } catch (e: any) {
+          // Re-throw finishReason errors; ignore partial SSE parse errors
+          if (e?.message?.includes("Gemini stopped early")) throw e;
         }
       }
     }

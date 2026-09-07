@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
 import { redis } from "@/lib/redis";
+import { isAdmin } from "@/lib/admin";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -191,7 +192,7 @@ function stripUnclosedThink(raw: string): string {
 // Rate limiting — per-user sliding window via Redis (fails open if Redis is
 // not configured, so local/demo setups keep working without it)
 // ---------------------------------------------------------------------------
-const RATE_LIMIT_MAX = 10; // generations per window
+const RATE_LIMIT_MAX = 20; // generations per window (regular users)
 const RATE_LIMIT_WINDOW_SECONDS = 60 * 60; // 1 hour
 
 async function checkRateLimit(userId: string): Promise<{ limited: boolean; retryAfterSeconds: number }> {
@@ -217,16 +218,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "You must be signed in to generate an itinerary." }, { status: 401 });
   }
 
-  const rateLimit = await checkRateLimit(session.userId);
-  if (rateLimit.limited) {
-    return NextResponse.json(
-      {
-        error: `You've reached the generation limit (${RATE_LIMIT_MAX}/hour). Try again in ${Math.ceil(
-          rateLimit.retryAfterSeconds / 60
-        )} min.`,
-      },
-      { status: 429, headers: { "Retry-After": String(rateLimit.retryAfterSeconds) } }
-    );
+  // Admin users bypass rate limiting entirely
+  const adminCheck = await isAdmin(session.email, session.userId);
+  if (!adminCheck) {
+    const rateLimit = await checkRateLimit(session.userId);
+    if (rateLimit.limited) {
+      return NextResponse.json(
+        {
+          error: `You've reached the generation limit (${RATE_LIMIT_MAX}/hour). Try again in ${Math.ceil(
+            rateLimit.retryAfterSeconds / 60
+          )} min.`,
+        },
+        { status: 429, headers: { "Retry-After": String(rateLimit.retryAfterSeconds) } }
+      );
+    }
   }
 
   const body = (await req.json()) as GenerateRequest;
