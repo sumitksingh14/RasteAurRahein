@@ -99,8 +99,14 @@ export async function searchLocations(
       };
     })
     .filter((s, i, arr) => {
-      // Deduplicate by label
-      return arr.findIndex((x) => x.label === s.label) === i;
+      // Deduplicate: collapse entries that represent the same city+state.
+      // Nominatim often returns multiple admin-boundary records for the same
+      // city (e.g. city + district + taluk), producing near-identical labels.
+      const key = `${s.city.toLowerCase().trim()}|${s.state.toLowerCase().trim()}|${s.country.toLowerCase().trim()}`;
+      return arr.findIndex(
+        (x) =>
+          `${x.city.toLowerCase().trim()}|${x.state.toLowerCase().trim()}|${x.country.toLowerCase().trim()}` === key
+      ) === i;
     });
 }
 

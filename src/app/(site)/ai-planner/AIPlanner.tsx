@@ -2,11 +2,12 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import {
-  Sparkles, Loader2,
-  Mountain, Wallet, CheckCircle, AlertCircle,
-  Map, ChevronRight, Clock, Utensils, Bus, Bed, Camera,
-  Users, User, Calendar, LogIn, Download, FileText,
+  Sparkles, Loader2, AlertCircle, CheckCircle, ChevronRight,
+  Clock, Utensils, Bus, Bed, Camera, Navigation,
+  Calendar, Download, FileText, Map, LocateFixed, Trash2,
+  Mountain, Wallet, Users, User, LogIn,
 } from "lucide-react";
 import LocationAutocomplete from "@/components/ui/LocationAutocomplete";
 import { buildGoogleMapsUrl } from "@/lib/googleMapsRoute";
@@ -14,6 +15,7 @@ import ExportPDFButton from "@/components/ai/ExportPDFButton";
 import { useGeneratedTrips } from "@/components/providers/GeneratedTripsProvider";
 import { useAuth } from "@/components/providers/AuthProvider";
 import type { MapPin } from "@/lib/types";
+import "../../../components/ui/AnimatedLoader.css";
 
 // Lazy-load map (browser only)
 const MapView = dynamic(() => import("@/components/ui/MapView"), { ssr: false });
@@ -21,12 +23,32 @@ const MapView = dynamic(() => import("@/components/ui/MapView"), { ssr: false })
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
+interface TripParams {
+  destination: string;
+  origin: string;
+  days: number;
+  style: string;
+  month: string;
+  highlights: string;
+  budget: string;
+  travelers: number;
+  pace: "relaxed" | "moderate" | "packed";
+  transportMode: "self-drive" | "public-transport" | "flights" | "mixed";
+  dietary: "no-preference" | "vegetarian" | "vegan" | "jain" | "non-vegetarian";
+  avoid: string;
+  model: "gemini" | "nvidia" | "groq" | "openai";
+  nvidiaModel: string;
+  groqModel: string;
+  openaiModel: string;
+}
+
 interface GeneratedActivity {
   time?: string;
   title: string;
   description?: string;
   notes?: string;
   type?: string;
+  location?: { name: string; lat: number; lng: number };
 }
 
 interface GeneratedDay {
@@ -53,19 +75,20 @@ type StreamEvent =
   | { type: "error"; message: string }
   | { type: "done" };
 
-const ACTIVITY_ICONS: Record<string, React.ElementType> = {
-  transport: Bus,
-  accommodation: Bed,
-  food: Utensils,
-  activity: Camera,
-  sightseeing: Mountain,
-};
+type Step = "form" | "generating" | "result" | "saved";
 
-const DEMO_PINS: MapPin[] = [
-  { lat: 32.24, lng: 77.19, label: "Manali", day: 1 },
-  { lat: 32.32, lng: 77.16, label: "Solang Valley", day: 2 },
-  { lat: 32.41, lng: 77.14, label: "Dhundi", day: 3 },
-  { lat: 32.36, lng: 77.07, label: "Beas Kund", day: 4 },
+// ---------------------------------------------------------------------------
+// Constants
+// ---------------------------------------------------------------------------
+const STYLES = [
+  { value: "Adventure",    emoji: "🏔️" },
+  { value: "Culture",      emoji: "🛕" },
+  { value: "Relaxed",      emoji: "🌴" },
+  { value: "Budget",       emoji: "💰" },
+  { value: "Luxury",       emoji: "✨" },
+  { value: "Road Trip",    emoji: "🛻" },
+  { value: "Wildlife",     emoji: "🐅" },
+  { value: "Food & Culture", emoji: "🍛" },
 ];
 
 const MONTHS = [
@@ -73,8 +96,68 @@ const MONTHS = [
   "July","August","September","October","November","December",
 ];
 
+const BUDGET_OPTIONS = [
+  { value: "Budget (₹1,000–₹2,000/day)",    label: "Budget" },
+  { value: "Mid-range (₹2,000–₹5,000/day)", label: "Mid-range" },
+  { value: "Premium (₹5,000–₹10,000/day)",  label: "Premium" },
+  { value: "Luxury (₹10,000+/day)",          label: "Luxury" },
+];
+
+const PACE_OPTIONS: { value: TripParams["pace"]; label: string }[] = [
+  { value: "relaxed",  label: "Relaxed" },
+  { value: "moderate", label: "Moderate" },
+  { value: "packed",   label: "Packed" },
+];
+
+const TRANSPORT_OPTIONS: { value: TripParams["transportMode"]; label: string }[] = [
+  { value: "self-drive",       label: "Self-drive" },
+  { value: "public-transport", label: "Public Transport" },
+  { value: "flights",          label: "Flights" },
+  { value: "mixed",            label: "Mixed" },
+];
+
+const DIETARY_OPTIONS: { value: TripParams["dietary"]; label: string }[] = [
+  { value: "no-preference",  label: "No preference" },
+  { value: "vegetarian",     label: "Vegetarian" },
+  { value: "vegan",          label: "Vegan" },
+  { value: "jain",           label: "Jain" },
+  { value: "non-vegetarian", label: "Non-vegetarian" },
+];
+
+const NVIDIA_MODEL_OPTIONS = [
+  { id: "nvidia/nemotron-3.5-lightning-30b-a3b", label: "Nemotron 3.5 Lightning (30B)" },
+  { id: "nvidia/nemotron-3-ultra-550b-a55b",     label: "Nemotron Ultra (550B)" },
+  { id: "deepseek-ai/deepseek-v4-flash-0731",    label: "DeepSeek v4 Flash" },
+  { id: "nvidia/nemotron-3-nano-30b-a3b",        label: "Nemotron Nano (30B)" },
+  { id: "nvidia/nemotron-3-super-120b-a12b",     label: "Nemotron Super (120B)" },
+];
+
+const GENERATING_STAGES = [
+  "🌍 Researching destination...",
+  "🗺️  Planning routes & logistics...",
+  "🍴 Curating local food & stays...",
+  "📅 Writing day-by-day schedule...",
+  "✨ Adding tips & hidden gems...",
+  "🎒 Finalising your itinerary...",
+];
+
+const ACTIVITY_ICONS: Record<string, React.ElementType> = {
+  transport:     Bus,
+  accommodation: Bed,
+  food:          Utensils,
+  activity:      Navigation,
+  sightseeing:   Camera,
+};
+
+const DEMO_PINS: MapPin[] = [
+  { lat: 32.24, lng: 77.19, label: "Manali",       day: 1 },
+  { lat: 32.32, lng: 77.16, label: "Solang Valley", day: 2 },
+  { lat: 32.41, lng: 77.14, label: "Dhundi",        day: 3 },
+  { lat: 32.36, lng: 77.07, label: "Beas Kund",     day: 4 },
+];
+
 // ---------------------------------------------------------------------------
-// Topo background SVG pattern
+// Topo background
 // ---------------------------------------------------------------------------
 const TOPO_PATTERN = `
 <svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'>
@@ -91,122 +174,70 @@ const TOPO_PATTERN = `
     <path d='M0,120 Q90,80 200,120 T400,120'/>
     <path d='M0,280 Q110,230 200,280 T400,280'/>
     <path d='M0,300 Q100,260 200,300 T400,300'/>
-    <path d='M0,320 Q120,280 200,320 T400,320'/>
-    <path d='M0,100 Q100,60 200,100 T400,100'/>
-    <path d='M0,80 Q90,40 200,80 T400,80'/>
-    <path d='M0,340 Q110,300 200,340 T400,340'/>
-    <path d='M0,60 Q120,20 200,60 T400,60'/>
-    <path d='M0,360 Q100,320 200,360 T400,360'/>
-    <path d='M0,380 Q90,340 200,380 T400,380'/>
-    <path d='M0,40 Q110,0 200,40 T400,40'/>
     <path d='M50,0 Q50,100 50,200 T50,400'/>
-    <path d='M100,0 Q120,100 100,200 T100,400'/>
     <path d='M150,0 Q130,100 150,200 T150,400'/>
     <path d='M200,0 Q200,100 200,200 T200,400'/>
     <path d='M250,0 Q270,100 250,200 T250,400'/>
     <path d='M300,0 Q280,100 300,200 T300,400'/>
-    <path d='M350,0 Q330,100 350,200 T350,400'/>
   </g>
 </svg>`;
-
 const TOPO_BG = `url("data:image/svg+xml,${encodeURIComponent(TOPO_PATTERN)}")`;
 
 // ---------------------------------------------------------------------------
-// SmoothSlider helper component
+// SmoothSlider
 // ---------------------------------------------------------------------------
 function SmoothSlider({
   value, onChange, leftIcon: LeftIcon, rightIcon: RightIcon,
-  leftLabel, rightLabel, id, min = 0, max = 100, step = 1,
-  showValue = false, valueSuffix = "",
+  id, min = 0, max = 100, step = 1, showValue = false, valueSuffix = "",
 }: {
   value: number; onChange: (v: number) => void;
   leftIcon: React.ElementType; rightIcon: React.ElementType;
-  leftLabel: string; rightLabel: string; id: string;
-  min?: number; max?: number; step?: number;
+  id: string; min?: number; max?: number; step?: number;
   showValue?: boolean; valueSuffix?: string;
 }) {
   const pct = ((value - min) / (max - min)) * 100;
-
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
       <LeftIcon size={22} style={{ color: "#f5c87a", flexShrink: 0 }} />
       <div style={{ flex: 1, position: "relative" }}>
-        {/* Floating value tooltip */}
         {showValue && (
           <div style={{
-            position: "absolute",
-            left: `${pct}%`,
-            top: -30,
+            position: "absolute", left: `${pct}%`, top: -30,
             transform: "translateX(-50%)",
             background: "linear-gradient(135deg, #f5a623, #e05c20)",
-            color: "#fff",
-            fontSize: "0.7rem",
-            fontWeight: 700,
-            padding: "2px 8px",
-            borderRadius: 6,
-            whiteSpace: "nowrap",
-            pointerEvents: "none",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.35)",
-            transition: "left 0.1s cubic-bezier(0.25,0.46,0.45,0.94)",
-            zIndex: 2,
+            color: "#fff", fontSize: "0.7rem", fontWeight: 700,
+            padding: "2px 8px", borderRadius: 6, whiteSpace: "nowrap",
+            pointerEvents: "none", boxShadow: "0 2px 8px rgba(0,0,0,0.35)",
+            transition: "left 0.1s cubic-bezier(0.25,0.46,0.45,0.94)", zIndex: 2,
           }}>
             {value}{valueSuffix}
             <div style={{
-              position: "absolute",
-              bottom: -4,
-              left: "50%",
-              transform: "translateX(-50%)",
-              width: 0,
-              height: 0,
-              borderLeft: "4px solid transparent",
-              borderRight: "4px solid transparent",
+              position: "absolute", bottom: -4, left: "50%", transform: "translateX(-50%)",
+              width: 0, height: 0,
+              borderLeft: "4px solid transparent", borderRight: "4px solid transparent",
               borderTop: "4px solid #e05c20",
-            }}/>
+            }} />
           </div>
         )}
-
-        {/* Custom track */}
         <div style={{ position: "relative", height: 24, display: "flex", alignItems: "center" }}>
-          {/* Track background */}
           <div style={{
-            position: "absolute",
-            left: 0, right: 0,
-            height: 6,
-            borderRadius: 3,
-            background: "rgba(255,255,255,0.18)",
-            overflow: "hidden",
+            position: "absolute", left: 0, right: 0, height: 6, borderRadius: 3,
+            background: "rgba(255,255,255,0.18)", overflow: "hidden",
           }}>
-            {/* Filled portion with smooth transition */}
             <div style={{
-              height: "100%",
-              width: `${pct}%`,
-              background: "linear-gradient(90deg, #f5a623, #e05c20)",
-              borderRadius: 3,
+              height: "100%", width: `${pct}%`,
+              background: "linear-gradient(90deg, #f5a623, #e05c20)", borderRadius: 3,
               transition: "width 0.1s cubic-bezier(0.25,0.46,0.45,0.94)",
             }} />
           </div>
-          {/* Native range input (transparent, overlaid) */}
           <input
-            id={id}
-            type="range"
-            min={min}
-            max={max}
-            step={step}
-            value={value}
+            id={id} type="range" min={min} max={max} step={step} value={value}
             onChange={(e) => onChange(Number(e.target.value))}
             className="planner-range"
             style={{
-              position: "absolute",
-              left: 0,
-              width: "100%",
-              height: 6,
-              borderRadius: 3,
-              appearance: "none",
-              background: "transparent",
-              cursor: "pointer",
-              outline: "none",
-              margin: 0,
-              zIndex: 1,
+              position: "absolute", left: 0, width: "100%", height: 6, borderRadius: 3,
+              appearance: "none", background: "transparent", cursor: "pointer",
+              outline: "none", margin: 0, zIndex: 1,
             }}
           />
         </div>
@@ -217,12 +248,12 @@ function SmoothSlider({
 }
 
 // ---------------------------------------------------------------------------
-// ExportDropdown component
+// ExportDropdown
 // ---------------------------------------------------------------------------
-function ExportDropdown({ itinerary, streamingDays, adventureLevel }: {
+function ExportDropdown({ itinerary, streamingDays, params }: {
   itinerary: GeneratedItinerary | null;
   streamingDays: GeneratedDay[];
-  adventureLevel: number;
+  params: TripParams;
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -274,8 +305,8 @@ function ExportDropdown({ itinerary, streamingDays, adventureLevel }: {
     totalBudgetEstimate: itinerary?.totalBudgetEstimate,
     tags: itinerary?.tags,
     days: streamingDays,
-    style: adventureLevel > 60 ? "Adventure" : "Relaxed",
-    month: MONTHS[new Date().getMonth()],
+    style: params.style,
+    month: params.month,
     generatedAt: new Date().toISOString(),
   };
 
@@ -285,19 +316,12 @@ function ExportDropdown({ itinerary, streamingDays, adventureLevel }: {
         id="ai-planner-export-btn"
         onClick={() => setOpen((o) => !o)}
         style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "0.4rem",
-          padding: "0.7rem 1rem",
-          borderRadius: 10,
+          display: "flex", alignItems: "center", gap: "0.4rem",
+          padding: "0.7rem 1rem", borderRadius: 10,
           border: "1px solid rgba(245,166,35,0.45)",
           background: "linear-gradient(135deg, rgba(245,166,35,0.12), rgba(224,92,32,0.12))",
-          color: "#f5c87a",
-          fontSize: "0.82rem",
-          fontWeight: 600,
-          fontFamily: "var(--font-sans)",
-          cursor: "pointer",
-          transition: "all 0.2s",
+          color: "#f5c87a", fontSize: "0.82rem", fontWeight: 600,
+          fontFamily: "var(--font-sans)", cursor: "pointer", transition: "all 0.2s",
         }}
       >
         <Download size={14} /> Export ▾
@@ -306,16 +330,10 @@ function ExportDropdown({ itinerary, streamingDays, adventureLevel }: {
         <div
           className="export-dropdown"
           style={{
-            position: "absolute",
-            bottom: "calc(100% + 8px)",
-            right: 0,
-            minWidth: 170,
-            background: "#1a2440",
-            border: "1px solid rgba(255,255,255,0.14)",
-            borderRadius: 12,
-            boxShadow: "0 8px 32px rgba(0,0,0,0.45)",
-            overflow: "hidden",
-            zIndex: 100,
+            position: "absolute", bottom: "calc(100% + 8px)", right: 0,
+            minWidth: 170, background: "#1a2440",
+            border: "1px solid rgba(255,255,255,0.14)", borderRadius: 12,
+            boxShadow: "0 8px 32px rgba(0,0,0,0.45)", overflow: "hidden", zIndex: 100,
           }}
         >
           <div style={{ padding: "0.5rem 0.75rem", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
@@ -324,19 +342,12 @@ function ExportDropdown({ itinerary, streamingDays, adventureLevel }: {
           <button
             onClick={handleExportText}
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              width: "100%",
-              padding: "0.65rem 1rem",
-              background: "none",
-              border: "none",
-              color: "rgba(255,255,255,0.75)",
-              fontSize: "0.82rem",
-              fontFamily: "var(--font-sans)",
-              cursor: "pointer",
-              textAlign: "left",
-              transition: "background 0.15s",
+              display: "flex", alignItems: "center", gap: "0.5rem",
+              width: "100%", padding: "0.65rem 1rem",
+              background: "none", border: "none",
+              color: "rgba(255,255,255,0.75)", fontSize: "0.82rem",
+              fontFamily: "var(--font-sans)", cursor: "pointer",
+              textAlign: "left", transition: "background 0.15s",
             }}
             onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(245,166,35,0.1)")}
             onMouseLeave={(e) => (e.currentTarget.style.background = "none")}
@@ -350,32 +361,105 @@ function ExportDropdown({ itinerary, streamingDays, adventureLevel }: {
 }
 
 // ---------------------------------------------------------------------------
+// ActivityIcon helper
+// ---------------------------------------------------------------------------
+function ActivityIcon({ type }: { type?: string }) {
+  const Icon = (type && ACTIVITY_ICONS[type]) || Camera;
+  return <Icon size={13} />;
+}
+
+// ---------------------------------------------------------------------------
 // Main AIPlanner component
 // ---------------------------------------------------------------------------
 export default function AIPlanner() {
   const { addTrip } = useGeneratedTrips();
   const { user, loading: authLoading, openAuthModal } = useAuth();
 
-  // Form state
-  const [prompt, setPrompt] = useState("");
-  const [isGroup, setIsGroup] = useState(false);
+  // ── Unified params ──────────────────────────────────────────────────────
+  const [params, setParams] = useState<TripParams>({
+    destination: "",
+    origin: "",
+    days: 5,
+    style: "Adventure",
+    month: MONTHS[new Date().getMonth()],
+    highlights: "",
+    budget: "Mid-range (₹2,000–₹5,000/day)",
+    travelers: 2,
+    pace: "moderate",
+    transportMode: "mixed",
+    dietary: "no-preference",
+    avoid: "",
+    model: "gemini",
+    nvidiaModel: "nvidia/nemotron-3.5-lightning-30b-a3b",
+    groqModel: "openai/gpt-oss-20b",
+    openaiModel: "gpt-4o",
+  });
+
+  // ── Visual sliders (adventure / budget — these map to params.pace / params.budget) ──
   const [adventureLevel, setAdventureLevel] = useState(50);
   const [budgetLevel, setBudgetLevel] = useState(40);
-  const [numberOfDays, setNumberOfDays] = useState(5);
-  const [origin, setOrigin] = useState("");
 
+  // Keep params.pace in sync with adventureLevel slider
+  useEffect(() => {
+    const pace: TripParams["pace"] =
+      adventureLevel < 33 ? "relaxed" : adventureLevel < 66 ? "moderate" : "packed";
+    setParams((p) => ({ ...p, pace }));
+  }, [adventureLevel]);
 
-  // Generation state
-  const [generating, setGenerating] = useState(false);
+  // ── Generation state ──────────────────────────────────────────────────────
+  const [step, setStep] = useState<Step>("form");
   const [itinerary, setItinerary] = useState<GeneratedItinerary | null>(null);
   const [streamingDays, setStreamingDays] = useState<GeneratedDay[]>([]);
+  const [modelUsed, setModelUsed] = useState("");
   const [error, setError] = useState("");
-  const [saved, setSaved] = useState(false);
+  const [failedModel, setFailedModel] = useState<TripParams["model"] | null>(null);
+  const [isStreaming, setIsStreaming] = useState(false);
+  const [stageIdx, setStageIdx] = useState(0);
+  const [expandedDays, setExpandedDays] = useState<Set<number>>(new Set([1]));
   const [progress, setProgress] = useState(0);
+  const [saved, setSaved] = useState(false);
+  const [savedTitle, setSavedTitle] = useState("");
+
+  // ── GROQ models (dynamic) ────────────────────────────────────────────────
+  const [groqModels, setGroqModels] = useState<{ id: string; ownedBy: string }[]>([]);
+
   const abortRef = useRef<AbortController | null>(null);
   const progressTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+  const stageTimer = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Derived map pins
+  // Fetch Groq model list on mount
+  useEffect(() => {
+    fetch("/api/groq-models")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.models?.length) {
+          setGroqModels(d.models);
+          const pref = d.models.find((m: any) => m.id === "openai/gpt-oss-20b");
+          setParams((p) => ({ ...p, groqModel: pref?.id ?? d.models[0].id }));
+        }
+      })
+      .catch(() => {/* non-fatal */});
+  }, []);
+
+  // Cycling stage labels during generation
+  useEffect(() => {
+    if (step === "generating") {
+      setStageIdx(0);
+      stageTimer.current = setInterval(() => {
+        setStageIdx((i) => Math.min(i + 1, GENERATING_STAGES.length - 1));
+      }, 1400);
+    }
+    return () => { if (stageTimer.current) clearInterval(stageTimer.current); };
+  }, [step]);
+
+  // Cleanup on unmount
+  useEffect(() => () => {
+    abortRef.current?.abort();
+    if (progressTimer.current) clearInterval(progressTimer.current);
+    if (stageTimer.current) clearInterval(stageTimer.current);
+  }, []);
+
+  // Derived map pins from streamed activities
   const mapPins: MapPin[] = streamingDays.flatMap((d) =>
     (d.activities ?? [])
       .filter((a: any) => a.location?.lat && a.location?.lng)
@@ -387,74 +471,44 @@ export default function AIPlanner() {
       }))
   );
 
-  useEffect(() => () => {
-    abortRef.current?.abort();
-    if (progressTimer.current) clearInterval(progressTimer.current);
-  }, []);
-
-  function buildParams() {
-    const monthMatch = MONTHS.find((m) =>
-      prompt.toLowerCase().includes(m.toLowerCase())
-    );
-    const paceLabel =
-      adventureLevel < 33 ? "relaxed" : adventureLevel < 66 ? "moderate" : "packed";
-    const budgetLabel =
-      budgetLevel < 25
-        ? "Budget (Rs.1,000-Rs.2,000/day)"
-        : budgetLevel < 50
-        ? "Mid-range (Rs.2,000-Rs.5,000/day)"
-        : budgetLevel < 75
-        ? "Premium (Rs.5,000-Rs.10,000/day)"
-        : "Luxury (Rs.10,000+/day)";
-
-    return {
-      destination: prompt,
-      days: numberOfDays,
-      style: adventureLevel > 60 ? "Adventure" : "Relaxed",
-      month: monthMatch ?? MONTHS[new Date().getMonth()],
-      travelers: isGroup ? 4 : 1,
-      pace: paceLabel as "relaxed" | "moderate" | "packed",
-      budget: budgetLabel,
-      transportMode: "mixed" as const,
-      dietary: "no-preference" as const,
-      highlights: prompt,
-      avoid: "",
-      model: "openai" as const,
-      nvidiaModel: "nvidia/nemotron-3.5-lightning-30b-a3b",
-      groqModel: "openai/gpt-oss-20b",
-      openaiModel: "gpt-4o",
-      stream: true,
-      origin,
-    };
-  }
-
+  // ── Generate ──────────────────────────────────────────────────────────────
   const handleGenerate = async () => {
-    if (!prompt.trim()) return;
+    if (!params.destination.trim()) return;
+
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
 
-    setGenerating(true);
+    setStep("generating");
     setError("");
-    setSaved(false);
+    setFailedModel(null);
     setItinerary(null);
     setStreamingDays([]);
+    setModelUsed("");
     setProgress(0);
+    setIsStreaming(true);
+    setExpandedDays(new Set([1]));
+    setSaved(false);
 
     if (progressTimer.current) clearInterval(progressTimer.current);
     progressTimer.current = setInterval(() => {
       setProgress((p) => Math.min(p + Math.random() * 4, 88));
     }, 500);
 
+    let gotAnyContent = false;
+
     try {
       const res = await fetch("/api/generate-itinerary", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(buildParams()),
+        body: JSON.stringify({ ...params, stream: true }),
         signal: controller.signal,
       });
 
-      if (!res.ok || !res.body) throw new Error(`Generation failed (${res.status})`);
+      if (!res.ok || !res.body) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || `Generation failed (${res.status})`);
+      }
 
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -471,9 +525,12 @@ export default function AIPlanner() {
           const line = rawLine.trim();
           if (!line) continue;
           let evt: StreamEvent;
-          try { evt = JSON.parse(line); } catch { continue; }
+          try { evt = JSON.parse(line) as StreamEvent; } catch { continue; }
 
-          if (evt.type === "meta") {
+          if (evt.type === "model") {
+            setModelUsed(evt.label || "");
+          } else if (evt.type === "meta") {
+            gotAnyContent = true;
             setItinerary({
               title: evt.title,
               destination: evt.destination,
@@ -483,7 +540,9 @@ export default function AIPlanner() {
               tags: evt.tags,
               days: [],
             });
+            setStep("result");
           } else if (evt.type === "day") {
+            gotAnyContent = true;
             setStreamingDays((prev) => {
               const next = [
                 ...prev.filter((d) => d.dayNumber !== evt.dayNumber),
@@ -491,22 +550,40 @@ export default function AIPlanner() {
               ].sort((a, b) => a.dayNumber - b.dayNumber);
               return next;
             });
+            setStep("result");
           } else if (evt.type === "error") {
-            throw new Error(evt.message);
+            throw new Error((evt as any).message || "Generation failed.");
           }
         }
       }
 
+      if (!gotAnyContent) throw new Error("The AI returned no itinerary content.");
       setProgress(100);
     } catch (err) {
       if (err instanceof DOMException && err.name === "AbortError") return;
-      setError(err instanceof Error ? err.message : "Generation failed. Please try again.");
+
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      const isQuota   = /quota|rate.?limit|429|too many/i.test(msg);
+      const isAuth    = /api.?key|auth|403|401|invalid.?key|signed in/i.test(msg);
+      const isTimeout = /timeout|network|fetch|ECONNRESET/i.test(msg);
+      const isModel   = /model|overload|503|unavailable|capacity/i.test(msg);
+
+      let friendly = msg;
+      if (isQuota)   friendly = "This model has hit its usage limit or rate limit. Please try again in a moment or switch to another AI.";
+      else if (isAuth)    friendly = "API authentication failed for this model. The key may be invalid or missing.";
+      else if (isTimeout) friendly = "The request timed out — the model may be experiencing high load.";
+      else if (isModel)   friendly = "This model is currently overloaded or unavailable. Try a different AI LLM.";
+
+      setFailedModel(params.model);
+      setError(friendly);
+      if (!gotAnyContent) setStep("form");
     } finally {
-      setGenerating(false);
+      setIsStreaming(false);
       if (progressTimer.current) clearInterval(progressTimer.current);
     }
   };
 
+  // ── Save ───────────────────────────────────────────────────────────────────
   const handleSave = () => {
     if (!itinerary || streamingDays.length === 0) return;
     addTrip({
@@ -517,116 +594,116 @@ export default function AIPlanner() {
       totalBudgetEstimate: itinerary.totalBudgetEstimate,
       tags: itinerary.tags,
       days: streamingDays,
-      style: adventureLevel > 60 ? "Adventure" : "Relaxed",
-      month: MONTHS[new Date().getMonth()],
+      style: params.style,
+      month: params.month,
       generatedAt: new Date().toISOString(),
     });
+    setSavedTitle(itinerary.title);
     setSaved(true);
+    setStep("saved");
   };
 
+  const toggleDay = (n: number) =>
+    setExpandedDays((prev) => {
+      const next = new Set(prev);
+      next.has(n) ? next.delete(n) : next.add(n);
+      return next;
+    });
+
   const mapsUrl =
-    origin && itinerary?.destination
-      ? buildGoogleMapsUrl(origin, itinerary.destination)
+    params.origin && itinerary?.destination
+      ? buildGoogleMapsUrl(params.origin, itinerary.destination)
       : itinerary?.destination
       ? buildGoogleMapsUrl(itinerary.destination, itinerary.destination)
       : null;
 
   const hasResult = streamingDays.length > 0;
-  const previewTitle = itinerary?.title ?? (generating ? "Generating..." : "Live Preview");
-  const daysLabel = `${numberOfDays} ${numberOfDays === 1 ? "Day" : "Days"}`;
 
+  // ── Shared input style ────────────────────────────────────────────────────
+  const darkInput: React.CSSProperties = {
+    width: "100%",
+    padding: "0.75rem 1rem",
+    borderRadius: 10,
+    border: "1px solid rgba(255,255,255,0.18)",
+    background: "rgba(255,255,255,0.1)",
+    color: "#fff",
+    fontSize: "0.88rem",
+    fontFamily: "var(--font-sans)",
+    outline: "none",
+    cursor: "pointer",
+    boxSizing: "border-box",
+  };
+
+  const darkLabel: React.CSSProperties = {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.4rem",
+    fontSize: "0.72rem",
+    fontWeight: 600,
+    textTransform: "uppercase",
+    letterSpacing: "0.06em",
+    color: "rgba(255,255,255,0.6)",
+    marginBottom: "0.5rem",
+  };
+
+  // ── Model badge colours ────────────────────────────────────────────────────
+  const modelColor = params.model === "nvidia" ? "#76b900"
+    : params.model === "groq"   ? "#f55036"
+    : params.model === "openai" ? "#10a37f"
+    : "#c9a84c";
+
+  // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <>
       <style>{`
         /* Smooth slider thumb */
-        .planner-range {
-          -webkit-appearance: none;
-          appearance: none;
-        }
+        .planner-range { -webkit-appearance: none; appearance: none; }
         .planner-range::-webkit-slider-thumb {
           -webkit-appearance: none;
-          width: 22px; height: 22px;
-          border-radius: 50%;
+          width: 22px; height: 22px; border-radius: 50%;
           background: linear-gradient(135deg, #f5a623, #e05c20);
-          border: 3px solid #fff;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-          cursor: grab;
-          transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s;
+          border: 3px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+          cursor: grab; transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s;
           margin-top: -8px;
         }
-        .planner-range::-webkit-slider-thumb:active {
-          cursor: grabbing;
-          transform: scale(1.18);
-          box-shadow: 0 2px 14px rgba(0,0,0,0.5), 0 0 0 6px rgba(245,166,35,0.22);
-        }
-        .planner-range:focus::-webkit-slider-thumb {
-          box-shadow: 0 2px 8px rgba(0,0,0,0.4), 0 0 0 4px rgba(245,166,35,0.3);
-        }
+        .planner-range::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.18); }
         .planner-range::-moz-range-thumb {
-          width: 22px; height: 22px;
-          border-radius: 50%;
+          width: 22px; height: 22px; border-radius: 50%;
           background: linear-gradient(135deg, #f5a623, #e05c20);
-          border: 3px solid #fff;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-          cursor: grab;
-          transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s;
+          border: 3px solid #fff; cursor: grab;
         }
-        .planner-range::-moz-range-thumb:active {
-          cursor: grabbing;
-          transform: scale(1.18);
-        }
-        .planner-range::-webkit-slider-runnable-track {
-          background: transparent;
-          height: 6px;
-        }
-        .planner-range::-moz-range-track {
-          background: transparent;
-          height: 6px;
-          border-radius: 3px;
-        }
-        /* Green glowing dot */
-        .day-dot {
-          width: 9px; height: 9px;
-          border-radius: 50%;
-          background: #4ade80;
-          box-shadow: 0 0 6px #4ade80;
-          flex-shrink: 0;
-          margin-top: 3px;
-        }
+        .planner-range::-webkit-slider-runnable-track { background: transparent; height: 6px; }
+        .planner-range::-moz-range-track { background: transparent; height: 6px; border-radius: 3px; }
+        .day-dot { width: 9px; height: 9px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 6px #4ade80; flex-shrink: 0; margin-top: 3px; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .planner-spin { animation: spin 1s linear infinite; }
-        @keyframes planner-pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.4; }
-        }
+        @keyframes planner-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
         .planner-pulse { animation: planner-pulse 1.4s ease-in-out infinite; }
-        @keyframes planner-slide-in {
-          from { opacity: 0; transform: translateY(10px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes planner-slide-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .planner-day-in { animation: planner-slide-in 0.35s ease forwards; }
-        @keyframes planner-shimmer {
-          0%   { background-position: -200% 0; }
-          100% { background-position: 200% 0; }
-        }
+        @keyframes planner-shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
         .export-dropdown { animation: planner-slide-in 0.18s ease forwards; }
-        @keyframes login-glow {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(245,166,35,0); }
-          50% { box-shadow: 0 0 0 4px rgba(245,166,35,0.2); }
-        }
+        @keyframes login-glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(245,166,35,0); } 50% { box-shadow: 0 0 0 4px rgba(245,166,35,0.2); } }
         .login-banner { animation: login-glow 2.5s ease-in-out infinite; }
+        @keyframes ai-skel-pulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.7; } }
+        .planner-skel { animation: ai-skel-pulse 1.4s ease-in-out infinite; }
+        select option { background: #1a2440; color: #fff; }
+        @media (max-width: 768px) {
+          .ai-planner-grid { grid-template-columns: 1fr !important; }
+          .ai-form-2col { grid-template-columns: 1fr !important; }
+          .ai-model-grid { grid-template-columns: 1fr 1fr !important; }
+        }
       `}</style>
 
       <div
         style={{
           minHeight: "100vh",
           paddingTop: "var(--nav-height)",
-          background: `#6b7f5e ${TOPO_BG}`,
+          background: `#5a6e4e ${TOPO_BG}`,
           backgroundSize: "400px 400px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "flex-start",
           padding: `calc(var(--nav-height) + 2rem) 1rem 3rem`,
         }}
       >
@@ -638,585 +715,910 @@ export default function AIPlanner() {
             fontWeight: 800,
             color: "#fff",
             textAlign: "center",
-            marginBottom: "2rem",
+            marginBottom: "0.5rem",
             letterSpacing: "-0.02em",
             textShadow: "0 2px 12px rgba(0,0,0,0.3)",
           }}
         >
-          Your AI Trip Planner Buddy
+          ✨ AI Trip Planner
         </h1>
+        <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.95rem", marginBottom: "2rem", textAlign: "center" }}>
+          Describe your dream trip — get a personalised itinerary in seconds.
+        </p>
 
-        {/* Two-panel grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "1.5rem",
-            width: "100%",
-            maxWidth: 1080,
-          }}
-          className="ai-planner-grid"
-        >
-          {/* LEFT PANEL */}
+        {/* ═══════════════════════════════════════════════════════════════════
+            SAVED STATE
+        ═══════════════════════════════════════════════════════════════════ */}
+        {step === "saved" && (
           <div
             style={{
-              background: "linear-gradient(160deg, #8B3D1F 0%, #6e2e12 100%)",
-              borderRadius: 20,
-              padding: "2rem",
-              display: "flex",
-              flexDirection: "column",
-              gap: "1.5rem",
+              width: "100%", maxWidth: 540,
+              background: "rgba(255,255,255,0.07)",
+              backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
+              borderRadius: 20, border: "1px solid rgba(255,255,255,0.15)",
+              padding: "3rem 2rem",
+              display: "flex", flexDirection: "column", alignItems: "center",
+              gap: "1.5rem", textAlign: "center",
               boxShadow: "0 8px 40px rgba(0,0,0,0.35)",
             }}
           >
-            <h2
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: "1.75rem",
-                fontWeight: 800,
-                color: "#f5c87a",
-                letterSpacing: "-0.02em",
-                lineHeight: 1.1,
-              }}
-            >
-              Craft Your Journey
-            </h2>
-
-            {/* Starting City with LocationAutocomplete */}
-            <div>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
-                <span style={{ fontSize: 14 }}>📍</span>
-                <span style={{ fontSize: "0.75rem", fontWeight: 600, color: "rgba(255,255,255,0.7)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-                  Starting City
-                </span>
-              </div>
-              <LocationAutocomplete
-                id="ai-planner-origin"
-                value={origin}
-                onChange={setOrigin}
-                onSelect={(s) => setOrigin(s.label)}
-                placeholder="e.g. Mumbai, Delhi, Bengaluru..."
-                theme="dark"
-                showGpsButton
-              />
-            </div>
-
-            {/* Destination with LocationAutocomplete */}
-            <div>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
-                <span style={{ fontSize: 14 }}>🗺️</span>
-                <span style={{ fontSize: "0.75rem", fontWeight: 600, color: "rgba(255,255,255,0.7)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-                  Destination
-                </span>
-              </div>
-              <LocationAutocomplete
-                id="ai-planner-destination"
-                value={prompt}
-                onChange={setPrompt}
-                onSelect={(s) => setPrompt(s.label)}
-                placeholder="e.g. Manali, Coorg, Jaipur..."
-                theme="dark"
-                showGpsButton={false}
-              />
-              <p style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.38)", marginTop: "0.4rem" }}>
-                Add more trip details below (optional)
-              </p>
-              {/* Additional prompt textarea */}
-              <textarea
-                id="ai-planner-prompt"
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                placeholder="e.g. Budget trek in Himachal for June — Solang Valley, Beas Kund, alpine camping..."
-                rows={3}
-                style={{
-                  width: "100%",
-                  marginTop: "0.45rem",
-                  padding: "0.85rem 1rem",
-                  borderRadius: 12,
-                  border: "none",
-                  background: "rgba(255,255,255,0.92)",
-                  color: "#2d1a0e",
-                  fontSize: "0.9rem",
-                  fontFamily: "var(--font-sans)",
-                  resize: "vertical",
-                  outline: "none",
-                  lineHeight: 1.6,
-                  boxSizing: "border-box",
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) handleGenerate();
-                }}
-              />
-              <p style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.35)", marginTop: "0.3rem" }}>
-                Cmd+Enter to generate
-              </p>
-            </div>
-
-            {/* Generate button */}
-            <button
-              id="ai-planner-generate-btn"
-              onClick={handleGenerate}
-              disabled={generating || !prompt.trim()}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "0.6rem",
-                padding: "0.9rem 1.5rem",
-                borderRadius: 12,
-                border: "none",
-                background: !prompt.trim() || generating ? "rgba(255,255,255,0.2)" : "#1C2B4A",
-                color: !prompt.trim() || generating ? "rgba(255,255,255,0.4)" : "#fff",
-                fontSize: "1rem",
-                fontWeight: 700,
-                fontFamily: "var(--font-sans)",
-                cursor: !prompt.trim() || generating ? "not-allowed" : "pointer",
-                transition: "all 0.25s",
-                letterSpacing: "0.01em",
-              }}
-            >
-              {generating ? (
-                <><Loader2 size={18} className="planner-spin" /> Generating...</>
-              ) : (
-                <><Sparkles size={18} /> Generate Itinerary</>
-              )}
-            </button>
-
-            {/* Solo / Group */}
-            <div>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <div>
-                  <div style={{ fontSize: "1rem", fontWeight: 700, color: "#fff", marginBottom: "0.5rem" }}>
-                    Solo / Group
-                  </div>
-                  <button
-                    id="ai-planner-solo-toggle"
-                    onClick={() => setIsGroup((g) => !g)}
-                    style={{ display: "flex", alignItems: "center", gap: 10, background: "transparent", border: "none", cursor: "pointer", padding: 0 }}
-                  >
-                    <div style={{
-                      width: 52, height: 28, borderRadius: 14,
-                      background: isGroup ? "#f5a623" : "rgba(255,255,255,0.25)",
-                      position: "relative",
-                      transition: "background 0.25s",
-                      flexShrink: 0,
-                    }}>
-                      <div style={{
-                        position: "absolute",
-                        top: 4,
-                        left: isGroup ? 28 : 4,
-                        width: 20, height: 20,
-                        borderRadius: "50%",
-                        background: "#fff",
-                        transition: "left 0.25s cubic-bezier(0.34,1.56,0.64,1)",
-                        boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
-                      }} />
-                    </div>
-                    <span style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.8)" }}>
-                      {isGroup ? "Group" : "Solo"}
-                    </span>
-                  </button>
-                </div>
-                <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-                  <User size={28} style={{ color: isGroup ? "rgba(255,255,255,0.4)" : "#f5c87a" }} />
-                  <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.8rem" }}>vs</span>
-                  <Users size={28} style={{ color: isGroup ? "#f5c87a" : "rgba(255,255,255,0.4)" }} />
-                </div>
-              </div>
-            </div>
-
-            {/* Number of Days Slider */}
-            <div>
-              <div style={{
-                fontSize: "1rem", fontWeight: 700, color: "#fff",
-                marginBottom: "1rem",
-                display: "flex", alignItems: "center", justifyContent: "space-between",
-              }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                  <Calendar size={18} style={{ color: "#f5c87a" }} />
-                  Number of Days
-                </div>
-                <span style={{
-                  background: "linear-gradient(135deg, #f5a623, #e05c20)",
-                  color: "#fff",
-                  fontSize: "0.78rem", fontWeight: 700,
-                  padding: "3px 12px", borderRadius: 20,
-                  minWidth: 56, textAlign: "center",
-                  transition: "all 0.2s",
-                }}>
-                  {daysLabel}
-                </span>
-              </div>
-              <SmoothSlider
-                id="ai-days-slider"
-                value={numberOfDays}
-                onChange={setNumberOfDays}
-                min={1}
-                max={21}
-                step={1}
-                leftIcon={() => <span style={{ fontSize: 18 }}>1️⃣</span>}
-                rightIcon={() => <span style={{ fontSize: 18 }}>📅</span>}
-                leftLabel="1 Day"
-                rightLabel="21 Days"
-                showValue
-                valueSuffix=""
-              />
-              <div style={{ display: "flex", justifyContent: "space-between", marginTop: "0.35rem" }}>
-                <span style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.5)" }}>1 Day</span>
-                <span style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.5)" }}>21 Days</span>
-              </div>
-            </div>
-
-            {/* Adventure Level */}
-            <div>
-              <div style={{
-                fontSize: "1rem", fontWeight: 700, color: "#fff",
-                marginBottom: "1rem",
-                display: "flex", alignItems: "center", gap: "0.5rem",
-              }}>
-                <Mountain size={18} style={{ color: "#f5c87a" }} />
-                Adventure Level
-                <span style={{ marginLeft: "auto", fontSize: "0.75rem", color: "rgba(255,255,255,0.5)", fontWeight: 500 }}>
-                  {adventureLevel < 33 ? "Relaxed" : adventureLevel < 66 ? "Moderate" : "Packed"}
-                </span>
-              </div>
-              <SmoothSlider
-                id="ai-adventure-level"
-                value={adventureLevel}
-                onChange={setAdventureLevel}
-                leftIcon={() => <span style={{ fontSize: 20 }}>🚶</span>}
-                rightIcon={() => <span style={{ fontSize: 20 }}>🧗</span>}
-                leftLabel="Low"
-                rightLabel="High"
-              />
-              <div style={{ display: "flex", justifyContent: "space-between", marginTop: "0.35rem" }}>
-                <span style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.5)" }}>Relaxed</span>
-                <span style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.5)" }}>Packed</span>
-              </div>
-            </div>
-
-            {/* Budget */}
-            <div>
-              <div style={{
-                fontSize: "1rem", fontWeight: 700, color: "#fff",
-                marginBottom: "1rem",
-                display: "flex", alignItems: "center", gap: "0.5rem",
-              }}>
-                <Wallet size={18} style={{ color: "#f5c87a" }} />
-                Budget
-                <span style={{ marginLeft: "auto", fontSize: "0.75rem", color: "rgba(255,255,255,0.5)", fontWeight: 500 }}>
-                  {budgetLevel < 25 ? "Budget" : budgetLevel < 50 ? "Mid-range" : budgetLevel < 75 ? "Premium" : "Luxury"}
-                </span>
-              </div>
-              <SmoothSlider
-                id="ai-budget-level"
-                value={budgetLevel}
-                onChange={setBudgetLevel}
-                leftIcon={() => <span style={{ fontSize: 20 }}>💰</span>}
-                rightIcon={() => <span style={{ fontSize: 20 }}>💎</span>}
-                leftLabel="Economy"
-                rightLabel="Luxury"
-              />
-              <div style={{ display: "flex", justifyContent: "space-between", marginTop: "0.35rem" }}>
-                <span style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.5)" }}>Economy</span>
-                <span style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.5)" }}>Luxury</span>
-              </div>
-            </div>
-
-
-
-            {/* Error */}
-            {error && (
-              <div style={{
-                display: "flex", gap: "0.5rem", alignItems: "flex-start",
-                padding: "0.75rem 1rem", borderRadius: 10,
-                background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)",
-              }}>
-                <AlertCircle size={16} style={{ color: "#f87171", flexShrink: 0, marginTop: 1 }} />
-                <p style={{ fontSize: "0.82rem", color: "#fca5a5", lineHeight: 1.5 }}>{error}</p>
-              </div>
-            )}
-          </div>
-
-          {/* RIGHT PANEL */}
-          <div
-            style={{
-              background: "linear-gradient(160deg, #1C2B4A 0%, #111827 100%)",
-              borderRadius: 20,
-              padding: "1.75rem",
-              display: "flex",
-              flexDirection: "column",
-              gap: "1rem",
-              boxShadow: "0 8px 40px rgba(0,0,0,0.45)",
-              minHeight: 480,
-            }}
-          >
-            <h2 style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: "1.35rem", fontWeight: 800,
-              color: "#f5c87a", letterSpacing: "-0.01em", lineHeight: 1.2,
+            <div style={{
+              width: 80, height: 80, borderRadius: "50%",
+              background: "linear-gradient(135deg, #4ade80, #22c55e)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              boxShadow: "0 0 0 10px rgba(74,222,128,0.15)",
             }}>
-              {hasResult && itinerary?.title
-                ? `📍 ${itinerary.title}`
-                : previewTitle === "Generating..."
-                ? "🗺️ Generating..."
-                : "Live Preview"}
-            </h2>
-
-            {/* Map */}
-            <div style={{ borderRadius: 14, overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)", flexShrink: 0 }}>
-              <MapView
-                pins={mapPins.length > 0 ? mapPins : DEMO_PINS}
-                height={200}
-                zoom={mapPins.length > 0 ? 9 : 10}
-              />
+              <CheckCircle size={40} color="#fff" />
             </div>
-
-            {/* Status / day list */}
-            <div style={{ flex: 1, overflowY: "auto" }}>
-              {generating && streamingDays.length === 0 && (
-                <div className="planner-pulse" style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#4ade80", fontSize: "0.9rem", fontWeight: 600, marginBottom: "0.75rem" }}>
-                  <Loader2 size={15} className="planner-spin" />
-                  Generating your itinerary...
-                </div>
-              )}
-              {generating && streamingDays.length > 0 && (
-                <div className="planner-pulse" style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#4ade80", fontSize: "0.85rem", fontWeight: 600, marginBottom: "0.75rem" }}>
-                  <Loader2 size={14} className="planner-spin" />
-                  Generating day {streamingDays.length + 1}...
-                </div>
-              )}
-
-              {itinerary?.overview && (
-                <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.6)", lineHeight: 1.6, marginBottom: "0.75rem" }}>
-                  {itinerary.overview}
-                </p>
-              )}
-
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-                {streamingDays.map((day) => (
-                  <div key={day.dayNumber} className="planner-day-in" style={{ display: "flex", gap: "0.6rem", alignItems: "flex-start" }}>
-                    <div className="day-dot" />
-                    <div style={{ flex: 1 }}>
-                      <span style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.95)", fontWeight: 600 }}>Day {day.dayNumber}: </span>
-                      <span style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.65)" }}>
-                        {day.title}{generating && day.dayNumber === streamingDays.length && "..."}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {!generating && streamingDays.length === 0 && (
-                <div style={{ textAlign: "center", padding: "1.5rem 0" }}>
-                  <Map size={36} style={{ color: "rgba(255,255,255,0.15)", marginBottom: "0.75rem" }} />
-                  <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.35)" }}>Describe your trip on the left and click Generate</p>
-                </div>
-              )}
-
-              {!generating && hasResult && (
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", marginTop: "0.75rem" }}>
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "0.25rem 0.65rem", borderRadius: 100, background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)", color: "#a5b4fc", fontSize: "0.72rem", fontWeight: 500 }}>
-                    📅 {streamingDays.length} Days
-                  </span>
-                  {itinerary?.bestTimeToVisit && (
-                    <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "0.25rem 0.65rem", borderRadius: 100, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", color: "rgba(255,255,255,0.6)", fontSize: "0.72rem" }}>
-                      🗓 {itinerary.bestTimeToVisit}
-                    </span>
-                  )}
-                  {itinerary?.totalBudgetEstimate && (
-                    <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "0.25rem 0.65rem", borderRadius: 100, background: "rgba(245,166,35,0.12)", border: "1px solid rgba(245,166,35,0.25)", color: "#f5c87a", fontSize: "0.72rem", fontWeight: 500 }}>
-                      💰 {itinerary.totalBudgetEstimate}
-                    </span>
-                  )}
-                </div>
-              )}
+            <div>
+              <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "1.5rem", fontWeight: 800, color: "#fff", marginBottom: "0.5rem" }}>
+                Itinerary Saved!
+              </h2>
+              <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.9rem", lineHeight: 1.6 }}>
+                <strong style={{ color: "#f5c87a" }}>{savedTitle}</strong> has been added to your itineraries library.
+              </p>
             </div>
-
-            {/* Progress bar */}
-            <div style={{ borderRadius: 8, overflow: "hidden", height: 36, background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.1)", display: "flex", alignItems: "center", position: "relative", flexShrink: 0 }}>
-              <div style={{
-                position: "absolute", left: 0, top: 0, bottom: 0,
-                width: `${progress}%`,
-                background: progress === 100 ? "linear-gradient(90deg, #22c55e, #16a34a)" : "linear-gradient(90deg, #f5a623, #f59e0b)",
-                transition: "width 0.5s ease, background 0.5s",
-                backgroundSize: "200% 100%",
-                animation: generating && progress < 100 ? "planner-shimmer 2s linear infinite" : "none",
-              }} />
-              <span style={{ position: "relative", zIndex: 1, fontSize: "0.78rem", fontWeight: 600, color: progress > 15 ? "#fff" : "rgba(255,255,255,0.5)", paddingLeft: "0.75rem", whiteSpace: "nowrap" }}>
-                {progress === 0 && "Ready to generate"}
-                {progress > 0 && progress < 100 && `Creating your journey... ${Math.round(progress)}%`}
-                {progress === 100 && "Itinerary complete!"}
-              </span>
-            </div>
-
-            {/* Action buttons */}
-            {!generating && hasResult && (
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", flexShrink: 0 }}>
-
-                {/* Auth-gated Save */}
-                {!authLoading && !user ? (
-                  <div className="login-banner" style={{
-                    display: "flex", alignItems: "center", gap: "0.75rem",
-                    padding: "0.75rem 1rem", borderRadius: 12,
-                    background: "rgba(245,166,35,0.08)", border: "1px solid rgba(245,166,35,0.3)",
-                  }}>
-                    <LogIn size={18} style={{ color: "#f5c87a", flexShrink: 0 }} />
-                    <div style={{ flex: 1 }}>
-                      <p style={{ fontSize: "0.82rem", color: "#f5c87a", fontWeight: 600, marginBottom: 2 }}>Login to save your itinerary</p>
-                      <p style={{ fontSize: "0.73rem", color: "rgba(255,255,255,0.4)" }}>Sign in to keep this trip in your collection</p>
-                    </div>
-                    <button
-                      id="ai-planner-login-btn"
-                      onClick={openAuthModal}
-                      style={{
-                        padding: "0.5rem 1rem", borderRadius: 8, border: "none",
-                        background: "linear-gradient(135deg, #f5a623, #e05c20)",
-                        color: "#fff", fontSize: "0.78rem", fontWeight: 700,
-                        fontFamily: "var(--font-sans)", cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0,
-                      }}
-                    >
-                      Sign In
-                    </button>
-                  </div>
-                ) : (
-                  !authLoading && (
-                    <button
-                      id="ai-planner-save-btn"
-                      onClick={handleSave}
-                      disabled={saved}
-                      style={{
-                        display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem",
-                        padding: "0.7rem 1rem", borderRadius: 10, border: "none",
-                        background: saved ? "rgba(34,197,94,0.2)" : "linear-gradient(135deg, #f5a623, #e88c10)",
-                        color: saved ? "#4ade80" : "#fff",
-                        fontSize: "0.85rem", fontWeight: 700, fontFamily: "var(--font-sans)",
-                        cursor: saved ? "default" : "pointer", transition: "all 0.25s",
-                      }}
-                    >
-                      {saved ? <><CheckCircle size={15} /> Saved!</> : <><CheckCircle size={15} /> Save Itinerary</>}
-                    </button>
-                  )
-                )}
-
-                {/* Export + Maps + Redo row */}
-                <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
-                  <ExportDropdown itinerary={itinerary} streamingDays={streamingDays} adventureLevel={adventureLevel} />
-
-                  {mapsUrl && (
-                    <a
-                      href={mapsUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      id="ai-planner-maps-btn"
-                      style={{
-                        display: "flex", alignItems: "center", gap: "0.4rem",
-                        padding: "0.7rem 1rem", borderRadius: 10,
-                        border: "1px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.07)",
-                        color: "#fff", fontSize: "0.82rem", fontWeight: 600,
-                        textDecoration: "none", fontFamily: "var(--font-sans)",
-                        flexShrink: 0, transition: "all 0.2s",
-                      }}
-                    >
-                      <Map size={15} /> Maps
-                    </a>
-                  )}
-
-                  <button
-                    id="ai-planner-regen-btn"
-                    onClick={handleGenerate}
-                    style={{
-                      display: "flex", alignItems: "center", gap: "0.4rem",
-                      padding: "0.7rem 1rem", borderRadius: 10,
-                      border: "1px solid rgba(255,255,255,0.15)", background: "transparent",
-                      color: "rgba(255,255,255,0.6)", fontSize: "0.82rem",
-                      fontFamily: "var(--font-sans)", cursor: "pointer",
-                      flexShrink: 0, transition: "all 0.2s",
-                    }}
-                  >
-                    <Sparkles size={14} /> Redo
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Full day-by-day breakdown */}
-        {!generating && streamingDays.length > 0 && (
-          <div style={{
-            marginTop: "2rem", width: "100%", maxWidth: 1080,
-            background: "rgba(255,255,255,0.06)", backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)", borderRadius: 20,
-            border: "1px solid rgba(255,255,255,0.12)", padding: "1.75rem",
-          }}>
-            <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.2rem", fontWeight: 700, color: "#fff", marginBottom: "1.25rem" }}>
-              Full Itinerary — {streamingDays.length} Days
-            </h3>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-              {streamingDays.map((day) => (
-                <details key={day.dayNumber} style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)" }}>
-                  <summary style={{
-                    padding: "1rem 1.25rem", background: "rgba(255,255,255,0.06)",
-                    cursor: "pointer", display: "flex", alignItems: "center", gap: "0.75rem",
-                    listStyle: "none", fontFamily: "var(--font-sans)",
-                  }}>
-                    <span style={{ width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg, #f5a623, #e05c20)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.72rem", fontWeight: 700, flexShrink: 0 }}>
-                      D{day.dayNumber}
-                    </span>
-                    <span style={{ flex: 1, fontSize: "0.9rem", fontWeight: 600, color: "#fff" }}>{day.title}</span>
-                    <span style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.4)" }}>{(day.activities || []).length} stops</span>
-                    <ChevronRight size={16} style={{ color: "rgba(255,255,255,0.4)" }} />
-                  </summary>
-
-                  <div style={{ padding: "1rem 1.25rem", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
-                    {day.summary && (
-                      <p style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.55)", fontStyle: "italic", marginBottom: "1rem", lineHeight: 1.6, borderLeft: "2px solid #f5a623", paddingLeft: "0.75rem" }}>
-                        {day.summary}
-                      </p>
-                    )}
-
-                    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                      {(day.activities || []).map((act, i) => {
-                        const Icon = (act.type && ACTIVITY_ICONS[act.type]) || Camera;
-                        return (
-                          <div key={i} style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start" }}>
-                            <span style={{ width: 28, height: 28, borderRadius: "50%", background: "rgba(245,166,35,0.15)", border: "1px solid rgba(245,166,35,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "#f5c87a" }}>
-                              <Icon size={12} />
-                            </span>
-                            <div style={{ flex: 1 }}>
-                              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: 2 }}>
-                                {act.time && (
-                                  <span style={{ fontSize: "0.7rem", color: "#f5a623", fontWeight: 600, display: "flex", alignItems: "center", gap: 3 }}>
-                                    <Clock size={10} /> {act.time}
-                                  </span>
-                                )}
-                                <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "rgba(255,255,255,0.9)" }}>{act.title}</span>
-                              </div>
-                              {act.description && <p style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.5)", lineHeight: 1.55 }}>{act.description}</p>}
-                              {act.notes && (
-                                <div style={{ marginTop: 4, padding: "0.3rem 0.6rem", borderRadius: 6, background: "rgba(245,166,35,0.1)", border: "1px solid rgba(245,166,35,0.2)", fontSize: "0.72rem", color: "#f5c87a", lineHeight: 1.5 }}>
-                                  {act.notes}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </details>
-              ))}
+            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", justifyContent: "center" }}>
+              <Link
+                href="/itineraries"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: "6px",
+                  padding: "0.75rem 1.5rem", borderRadius: 10,
+                  background: "linear-gradient(135deg, #f5a623, #e05c20)",
+                  color: "#fff", fontSize: "0.9rem", fontWeight: 600,
+                  fontFamily: "var(--font-sans)", textDecoration: "none",
+                }}
+              >
+                <Navigation size={15} /> View All Itineraries
+              </Link>
+              <button
+                onClick={() => { setStep("form"); setItinerary(null); setStreamingDays([]); setSaved(false); setProgress(0); setError(""); setFailedModel(null); }}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: "6px",
+                  padding: "0.75rem 1.25rem", borderRadius: 10,
+                  background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)",
+                  color: "rgba(255,255,255,0.85)", fontSize: "0.85rem",
+                  fontFamily: "var(--font-sans)", cursor: "pointer",
+                }}
+              >
+                <Sparkles size={14} /> Plan Another Trip
+              </button>
             </div>
           </div>
         )}
 
-        <style>{`
-          @media (max-width: 768px) {
-            .ai-planner-grid { grid-template-columns: 1fr !important; }
-          }
-        `}</style>
+        {/* ═══════════════════════════════════════════════════════════════════
+            MAIN TWO-PANEL GRID (form + generating + result share the grid)
+        ═══════════════════════════════════════════════════════════════════ */}
+        {step !== "saved" && (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "1.5rem",
+              width: "100%",
+              maxWidth: 1100,
+            }}
+            className="ai-planner-grid"
+          >
+            {/* ──────────────────────────────────────────────────────────
+                LEFT PANEL — Form
+            ────────────────────────────────────────────────────────── */}
+            <div
+              style={{
+                background: "linear-gradient(160deg, #8B3D1F 0%, #6e2e12 100%)",
+                borderRadius: 20, padding: "2rem",
+                display: "flex", flexDirection: "column", gap: "1.25rem",
+                boxShadow: "0 8px 40px rgba(0,0,0,0.35)",
+              }}
+            >
+              <h2 style={{
+                fontFamily: "var(--font-serif)", fontSize: "1.5rem", fontWeight: 800,
+                color: "#f5c87a", letterSpacing: "-0.02em", lineHeight: 1.1,
+              }}>
+                Craft Your Journey
+              </h2>
+
+              {/* Starting city */}
+              <div>
+                <div style={darkLabel}><LocateFixed size={12} /> Starting From <span style={{ fontWeight: 400, textTransform: "none" }}>(optional)</span></div>
+                <LocationAutocomplete
+                  id="ai-planner-origin"
+                  value={params.origin}
+                  onChange={(v) => setParams((p) => ({ ...p, origin: v }))}
+                  onSelect={(s) => setParams((p) => ({ ...p, origin: s.label }))}
+                  placeholder="e.g. Mumbai, Delhi, Bengaluru..."
+                  theme="dark"
+                  showGpsButton
+                />
+              </div>
+
+              {/* Destination */}
+              <div>
+                <div style={darkLabel}><span>🗺️</span> Destination</div>
+                <LocationAutocomplete
+                  id="ai-planner-destination"
+                  value={params.destination}
+                  onChange={(v) => setParams((p) => ({ ...p, destination: v }))}
+                  onSelect={(s) => setParams((p) => ({ ...p, destination: s.label }))}
+                  placeholder="e.g. Manali, Coorg, Jaipur..."
+                  theme="dark"
+                  showGpsButton={false}
+                />
+              </div>
+
+              {/* Travelers + Pace */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.85rem" }} className="ai-form-2col">
+                <div>
+                  <div style={darkLabel}><Users size={12} /> Travelers</div>
+                  <input
+                    id="ai-planner-travelers"
+                    type="number" min={1} max={20}
+                    value={params.travelers}
+                    onChange={(e) => setParams((p) => ({ ...p, travelers: Math.min(20, Math.max(1, Number(e.target.value) || 1)) }))}
+                    style={darkInput}
+                  />
+                </div>
+                <div>
+                  <div style={darkLabel}><span>🎯</span> Pace</div>
+                  <div style={{ display: "flex", gap: "0.3rem" }}>
+                    {PACE_OPTIONS.map((opt) => (
+                      <button
+                        key={opt.value}
+                        onClick={() => setParams((p) => ({ ...p, pace: opt.value }))}
+                        style={{
+                          flex: 1, padding: "0.6rem 0.3rem",
+                          borderRadius: 8,
+                          border: `1px solid ${params.pace === opt.value ? "#f5a623" : "rgba(255,255,255,0.2)"}`,
+                          background: params.pace === opt.value ? "rgba(245,166,35,0.2)" : "rgba(255,255,255,0.07)",
+                          color: params.pace === opt.value ? "#f5c87a" : "rgba(255,255,255,0.65)",
+                          fontSize: "0.72rem", fontWeight: params.pace === opt.value ? 700 : 400,
+                          cursor: "pointer", fontFamily: "var(--font-sans)",
+                          transition: "all 0.15s",
+                        }}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Days slider */}
+              <div>
+                <div style={{
+                  ...darkLabel, marginBottom: "1rem",
+                  justifyContent: "space-between",
+                }}>
+                  <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}><Calendar size={12} /> Number of Days</span>
+                  <span style={{ background: "linear-gradient(135deg, #f5a623, #e05c20)", color: "#fff", fontSize: "0.72rem", fontWeight: 700, padding: "2px 10px", borderRadius: 20 }}>
+                    {params.days} {params.days === 1 ? "Day" : "Days"}
+                  </span>
+                </div>
+                <SmoothSlider
+                  id="ai-days-slider"
+                  value={params.days}
+                  onChange={(v) => setParams((p) => ({ ...p, days: v }))}
+                  min={1} max={21} step={1}
+                  leftIcon={() => <span style={{ fontSize: 18 }}>1️⃣</span>}
+                  rightIcon={() => <span style={{ fontSize: 18 }}>📅</span>}
+                  showValue valueSuffix=""
+                />
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "0.3rem" }}>
+                  <span style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.4)" }}>1 Day</span>
+                  <span style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.4)" }}>21 Days</span>
+                </div>
+              </div>
+
+              {/* Adventure Level */}
+              <div>
+                <div style={{ ...darkLabel, justifyContent: "space-between", marginBottom: "1rem" }}>
+                  <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}><Mountain size={12} /> Adventure Level</span>
+                  <span style={{ fontWeight: 500, textTransform: "none", color: "rgba(255,255,255,0.5)", fontSize: "0.72rem" }}>
+                    {adventureLevel < 33 ? "Relaxed" : adventureLevel < 66 ? "Moderate" : "Packed"}
+                  </span>
+                </div>
+                <SmoothSlider
+                  id="ai-adventure-level"
+                  value={adventureLevel}
+                  onChange={setAdventureLevel}
+                  leftIcon={() => <span style={{ fontSize: 20 }}>🚶</span>}
+                  rightIcon={() => <span style={{ fontSize: 20 }}>🧗</span>}
+                />
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "0.3rem" }}>
+                  <span style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.4)" }}>Relaxed</span>
+                  <span style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.4)" }}>Packed</span>
+                </div>
+              </div>
+
+              {/* Budget slider */}
+              <div>
+                <div style={{ ...darkLabel, justifyContent: "space-between", marginBottom: "1rem" }}>
+                  <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}><Wallet size={12} /> Budget</span>
+                  <span style={{ fontWeight: 500, textTransform: "none", color: "rgba(255,255,255,0.5)", fontSize: "0.72rem" }}>
+                    {budgetLevel < 25 ? "Budget" : budgetLevel < 50 ? "Mid-range" : budgetLevel < 75 ? "Premium" : "Luxury"}
+                  </span>
+                </div>
+                <SmoothSlider
+                  id="ai-budget-level"
+                  value={budgetLevel}
+                  onChange={setBudgetLevel}
+                  leftIcon={() => <span style={{ fontSize: 20 }}>💰</span>}
+                  rightIcon={() => <span style={{ fontSize: 20 }}>💎</span>}
+                />
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "0.3rem" }}>
+                  <span style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.4)" }}>Economy</span>
+                  <span style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.4)" }}>Luxury</span>
+                </div>
+              </div>
+
+              {/* Travel Style */}
+              <div>
+                <div style={darkLabel}><span>🎨</span> Travel Style</div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
+                  {STYLES.map((s) => (
+                    <button
+                      key={s.value}
+                      onClick={() => setParams((p) => ({ ...p, style: s.value }))}
+                      style={{
+                        padding: "0.35rem 0.75rem", borderRadius: 100,
+                        border: `1px solid ${params.style === s.value ? "#f5a623" : "rgba(255,255,255,0.2)"}`,
+                        background: params.style === s.value ? "rgba(245,166,35,0.2)" : "rgba(255,255,255,0.07)",
+                        color: params.style === s.value ? "#f5c87a" : "rgba(255,255,255,0.7)",
+                        fontSize: "0.78rem", fontWeight: params.style === s.value ? 700 : 400,
+                        cursor: "pointer", fontFamily: "var(--font-sans)", transition: "all 0.15s",
+                      }}
+                    >
+                      {s.emoji} {s.value}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Month + Budget dropdown */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.85rem" }} className="ai-form-2col">
+                <div>
+                  <div style={darkLabel}><Calendar size={12} /> Travel Month</div>
+                  <select
+                    id="ai-month"
+                    value={params.month}
+                    onChange={(e) => setParams((p) => ({ ...p, month: e.target.value }))}
+                    style={darkInput}
+                  >
+                    {MONTHS.map((m) => <option key={m} value={m}>{m}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <div style={darkLabel}><Wallet size={12} /> Budget Range</div>
+                  <select
+                    id="ai-budget"
+                    value={params.budget}
+                    onChange={(e) => setParams((p) => ({ ...p, budget: e.target.value }))}
+                    style={darkInput}
+                  >
+                    {BUDGET_OPTIONS.map((b) => <option key={b.value} value={b.value}>{b.label}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              {/* Transport + Dietary */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.85rem" }} className="ai-form-2col">
+                <div>
+                  <div style={darkLabel}><Bus size={12} /> Transport</div>
+                  <select
+                    id="ai-transport"
+                    value={params.transportMode}
+                    onChange={(e) => setParams((p) => ({ ...p, transportMode: e.target.value as TripParams["transportMode"] }))}
+                    style={darkInput}
+                  >
+                    {TRANSPORT_OPTIONS.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <div style={darkLabel}><Utensils size={12} /> Dietary</div>
+                  <select
+                    id="ai-dietary"
+                    value={params.dietary}
+                    onChange={(e) => setParams((p) => ({ ...p, dietary: e.target.value as TripParams["dietary"] }))}
+                    style={darkInput}
+                  >
+                    {DIETARY_OPTIONS.map((d) => <option key={d.value} value={d.value}>{d.label}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              {/* Highlights */}
+              <div>
+                <div style={darkLabel}><Camera size={12} /> Highlights <span style={{ fontWeight: 400, textTransform: "none" }}>(optional)</span></div>
+                <textarea
+                  id="ai-highlights"
+                  value={params.highlights}
+                  onChange={(e) => setParams((p) => ({ ...p, highlights: e.target.value }))}
+                  placeholder="e.g. Chandratal Lake, Key Monastery, local food..."
+                  rows={2}
+                  style={{ ...darkInput, resize: "vertical", lineHeight: 1.6 }}
+                />
+              </div>
+
+              {/* Things to avoid */}
+              <div>
+                <div style={darkLabel}><Trash2 size={12} /> Avoid <span style={{ fontWeight: 400, textTransform: "none" }}>(optional)</span></div>
+                <textarea
+                  id="ai-avoid"
+                  value={params.avoid}
+                  onChange={(e) => setParams((p) => ({ ...p, avoid: e.target.value }))}
+                  placeholder="e.g. overnight drives, crowded tourist traps, spicy food..."
+                  rows={2}
+                  style={{ ...darkInput, resize: "vertical", lineHeight: 1.6 }}
+                />
+              </div>
+
+              {/* ── AI Model Selector ── */}
+              <div>
+                <div style={darkLabel}><Sparkles size={12} /> AI Model</div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "0.5rem" }} className="ai-model-grid">
+                  {/* Gemini */}
+                  <button
+                    id="model-select-gemini"
+                    onClick={() => setParams((p) => ({ ...p, model: "gemini" }))}
+                    style={{
+                      display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "0.25rem",
+                      padding: "0.7rem 0.75rem", borderRadius: 10,
+                      border: `1.5px solid ${params.model === "gemini" ? "#c9a84c" : "rgba(255,255,255,0.15)"}`,
+                      background: params.model === "gemini" ? "rgba(201,168,76,0.15)" : "rgba(255,255,255,0.06)",
+                      cursor: "pointer", fontFamily: "var(--font-sans)", textAlign: "left", transition: "all 0.15s",
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", gap: "5px", width: "100%" }}>
+                      <span style={{ fontSize: "1rem" }}>✦</span>
+                      <span style={{ fontSize: "0.75rem", fontWeight: 700, color: params.model === "gemini" ? "#f5c87a" : "#fff" }}>Gemini</span>
+                      {params.model === "gemini" && <span style={{ marginLeft: "auto", fontSize: "0.55rem", fontWeight: 700, padding: "1px 4px", borderRadius: 100, background: "#c9a84c", color: "#fff" }}>✓</span>}
+                    </div>
+                    <span style={{ fontSize: "0.62rem", color: "rgba(255,255,255,0.45)" }}>Fast · JSON</span>
+                  </button>
+
+                  {/* NVIDIA */}
+                  <button
+                    id="model-select-nvidia"
+                    onClick={() => setParams((p) => ({ ...p, model: "nvidia" }))}
+                    style={{
+                      display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "0.25rem",
+                      padding: "0.7rem 0.75rem", borderRadius: 10,
+                      border: `1.5px solid ${params.model === "nvidia" ? "#76b900" : "rgba(255,255,255,0.15)"}`,
+                      background: params.model === "nvidia" ? "rgba(118,185,0,0.12)" : "rgba(255,255,255,0.06)",
+                      cursor: "pointer", fontFamily: "var(--font-sans)", textAlign: "left", transition: "all 0.15s",
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", gap: "5px", width: "100%" }}>
+                      <span style={{ fontSize: "1rem" }}>⚡</span>
+                      <span style={{ fontSize: "0.75rem", fontWeight: 700, color: params.model === "nvidia" ? "#76b900" : "#fff" }}>NVIDIA</span>
+                      {params.model === "nvidia" && <span style={{ marginLeft: "auto", fontSize: "0.55rem", fontWeight: 700, padding: "1px 4px", borderRadius: 100, background: "#76b900", color: "#fff" }}>✓</span>}
+                    </div>
+                    <span style={{ fontSize: "0.62rem", color: "rgba(255,255,255,0.45)" }}>Reasoning</span>
+                  </button>
+
+                  {/* Groq */}
+                  <button
+                    id="model-select-groq"
+                    onClick={() => setParams((p) => ({ ...p, model: "groq" }))}
+                    style={{
+                      display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "0.25rem",
+                      padding: "0.7rem 0.75rem", borderRadius: 10,
+                      border: `1.5px solid ${params.model === "groq" ? "#f55036" : "rgba(255,255,255,0.15)"}`,
+                      background: params.model === "groq" ? "rgba(245,80,54,0.1)" : "rgba(255,255,255,0.06)",
+                      cursor: "pointer", fontFamily: "var(--font-sans)", textAlign: "left", transition: "all 0.15s",
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", gap: "5px", width: "100%" }}>
+                      <span style={{ fontSize: "1rem" }}>🖤</span>
+                      <span style={{ fontSize: "0.75rem", fontWeight: 700, color: params.model === "groq" ? "#f55036" : "#fff" }}>Groq</span>
+                      {params.model === "groq" && <span style={{ marginLeft: "auto", fontSize: "0.55rem", fontWeight: 700, padding: "1px 4px", borderRadius: 100, background: "#f55036", color: "#fff" }}>✓</span>}
+                    </div>
+                    <span style={{ fontSize: "0.62rem", color: "rgba(255,255,255,0.45)" }}>Ultra-fast</span>
+                  </button>
+
+                  {/* OpenAI */}
+                  <button
+                    id="model-select-openai"
+                    onClick={() => setParams((p) => ({ ...p, model: "openai" }))}
+                    style={{
+                      display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "0.25rem",
+                      padding: "0.7rem 0.75rem", borderRadius: 10,
+                      border: `1.5px solid ${params.model === "openai" ? "#10a37f" : "rgba(255,255,255,0.15)"}`,
+                      background: params.model === "openai" ? "rgba(16,163,127,0.12)" : "rgba(255,255,255,0.06)",
+                      cursor: "pointer", fontFamily: "var(--font-sans)", textAlign: "left", transition: "all 0.15s",
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", gap: "5px", width: "100%" }}>
+                      <span style={{ fontSize: "1rem" }}>🟢</span>
+                      <span style={{ fontSize: "0.75rem", fontWeight: 700, color: params.model === "openai" ? "#10a37f" : "#fff" }}>OpenAI</span>
+                      {params.model === "openai" && <span style={{ marginLeft: "auto", fontSize: "0.55rem", fontWeight: 700, padding: "1px 4px", borderRadius: 100, background: "#10a37f", color: "#fff" }}>✓</span>}
+                    </div>
+                    <span style={{ fontSize: "0.62rem", color: "rgba(255,255,255,0.45)" }}>GPT-4o · o3</span>
+                  </button>
+                </div>
+
+                {/* Sub-pickers */}
+                {params.model === "groq" && groqModels.length > 0 && (
+                  <div style={{ marginTop: "0.5rem" }}>
+                    <div style={{ ...darkLabel, color: "#f55036", marginBottom: "0.3rem" }}>🖤 Select Groq Model</div>
+                    <select
+                      id="groq-model-select"
+                      value={params.groqModel}
+                      onChange={(e) => setParams((p) => ({ ...p, groqModel: e.target.value }))}
+                      style={{ ...darkInput, border: "1.5px solid #f55036", background: "rgba(245,80,54,0.06)" }}
+                    >
+                      {groqModels.map((m) => <option key={m.id} value={m.id}>{m.id} ({m.ownedBy})</option>)}
+                    </select>
+                  </div>
+                )}
+                {params.model === "openai" && (
+                  <div style={{ marginTop: "0.5rem" }}>
+                    <div style={{ ...darkLabel, color: "#10a37f", marginBottom: "0.3rem" }}>🟢 Select OpenAI Model</div>
+                    <select
+                      id="openai-model-select"
+                      value={params.openaiModel}
+                      onChange={(e) => setParams((p) => ({ ...p, openaiModel: e.target.value }))}
+                      style={{ ...darkInput, border: "1.5px solid #10a37f", background: "rgba(16,163,127,0.06)" }}
+                    >
+                      <option value="gpt-4o">GPT-4o</option>
+                      <option value="gpt-4o-mini">GPT-4o Mini</option>
+                      <option value="o3-mini">o3 Mini</option>
+                    </select>
+                  </div>
+                )}
+                {params.model === "nvidia" && (
+                  <div style={{ marginTop: "0.5rem" }}>
+                    <div style={{ ...darkLabel, color: "#76b900", marginBottom: "0.3rem" }}>⚡ Select NVIDIA Model</div>
+                    <select
+                      id="nvidia-model-select"
+                      value={params.nvidiaModel}
+                      onChange={(e) => setParams((p) => ({ ...p, nvidiaModel: e.target.value }))}
+                      style={{ ...darkInput, border: "1.5px solid #76b900", background: "rgba(118,185,0,0.06)" }}
+                    >
+                      {NVIDIA_MODEL_OPTIONS.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}
+                    </select>
+                  </div>
+                )}
+              </div>
+
+              {/* ── Error Panel ── */}
+              {error && (
+                <div style={{
+                  borderRadius: 10, border: "1px solid rgba(243,139,168,0.4)",
+                  background: "rgba(243,139,168,0.07)", overflow: "hidden",
+                }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "0.9rem 1rem 0.75rem" }}>
+                    <AlertCircle size={17} color="#f87171" style={{ flexShrink: 0, marginTop: 2 }} />
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#f87171", marginBottom: 3, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+                        {failedModel
+                          ? `${failedModel === "gemini" ? "Google Gemini" : failedModel === "nvidia" ? "NVIDIA" : failedModel === "openai" ? "OpenAI" : "Groq"} could not generate a result`
+                          : "Generation failed"}
+                      </div>
+                      <div style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.55 }}>{error}</div>
+                    </div>
+                  </div>
+                  {failedModel && (
+                    <div style={{ padding: "0.75rem 1rem", borderTop: "1px solid rgba(243,139,168,0.15)" }}>
+                      <div style={{ fontSize: "0.7rem", fontWeight: 600, color: "rgba(255,255,255,0.45)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.5rem" }}>🔄 Try a different AI</div>
+                      <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+                        {failedModel !== "gemini" && <button id="ai-switch-gemini-btn" onClick={() => { setParams((p) => ({ ...p, model: "gemini" })); setError(""); setFailedModel(null); }} style={{ padding: "0.35rem 0.75rem", borderRadius: 8, border: "1px solid rgba(201,168,76,0.4)", background: "rgba(201,168,76,0.1)", color: "#f5c87a", fontSize: "0.75rem", fontWeight: 600, fontFamily: "var(--font-sans)", cursor: "pointer" }}>✦ Gemini</button>}
+                        {failedModel !== "nvidia" && <button id="ai-switch-nvidia-btn" onClick={() => { setParams((p) => ({ ...p, model: "nvidia" })); setError(""); setFailedModel(null); }} style={{ padding: "0.35rem 0.75rem", borderRadius: 8, border: "1px solid rgba(118,185,0,0.4)", background: "rgba(118,185,0,0.1)", color: "#76b900", fontSize: "0.75rem", fontWeight: 600, fontFamily: "var(--font-sans)", cursor: "pointer" }}>⚡ NVIDIA</button>}
+                        {failedModel !== "groq" && <button id="ai-switch-groq-btn" onClick={() => { setParams((p) => ({ ...p, model: "groq" })); setError(""); setFailedModel(null); }} style={{ padding: "0.35rem 0.75rem", borderRadius: 8, border: "1px solid rgba(245,80,54,0.4)", background: "rgba(245,80,54,0.1)", color: "#f55036", fontSize: "0.75rem", fontWeight: 600, fontFamily: "var(--font-sans)", cursor: "pointer" }}>🖤 Groq</button>}
+                        {failedModel !== "openai" && <button id="ai-switch-openai-btn" onClick={() => { setParams((p) => ({ ...p, model: "openai" })); setError(""); setFailedModel(null); }} style={{ padding: "0.35rem 0.75rem", borderRadius: 8, border: "1px solid rgba(16,163,127,0.4)", background: "rgba(16,163,127,0.1)", color: "#10a37f", fontSize: "0.75rem", fontWeight: 600, fontFamily: "var(--font-sans)", cursor: "pointer" }}>🟢 OpenAI</button>}
+                      </div>
+                      <p style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.35)", marginTop: "0.35rem" }}>Switch model above, then hit Generate again.</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Generate button */}
+              <button
+                id="ai-planner-generate-btn"
+                onClick={handleGenerate}
+                disabled={!params.destination.trim() || step === "generating"}
+                style={{
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: "0.6rem",
+                  padding: "0.9rem 1.5rem", borderRadius: 12, border: "none",
+                  background: !params.destination.trim() || step === "generating"
+                    ? "rgba(255,255,255,0.15)"
+                    : "#1C2B4A",
+                  color: !params.destination.trim() || step === "generating"
+                    ? "rgba(255,255,255,0.4)"
+                    : "#fff",
+                  fontSize: "1rem", fontWeight: 700, fontFamily: "var(--font-sans)",
+                  cursor: !params.destination.trim() || step === "generating" ? "not-allowed" : "pointer",
+                  transition: "all 0.25s", letterSpacing: "0.01em",
+                }}
+              >
+                {step === "generating"
+                  ? <><Loader2 size={18} className="planner-spin" /> Generating...</>
+                  : <><Sparkles size={18} /> Generate {params.days}-Day Itinerary</>
+                }
+              </button>
+            </div>
+
+            {/* ──────────────────────────────────────────────────────────
+                RIGHT PANEL — Preview / Generating / Result
+            ────────────────────────────────────────────────────────── */}
+            <div
+              style={{
+                background: "linear-gradient(160deg, #1C2B4A 0%, #111827 100%)",
+                borderRadius: 20, padding: "1.75rem",
+                display: "flex", flexDirection: "column", gap: "1rem",
+                boxShadow: "0 8px 40px rgba(0,0,0,0.45)", minHeight: 500,
+              }}
+            >
+              {/* ── GENERATING STATE ── */}
+              {step === "generating" && !hasResult && (
+                <div style={{
+                  flex: 1, display: "flex", flexDirection: "column",
+                  alignItems: "center", justifyContent: "center", gap: "1.75rem", padding: "2rem 1rem",
+                }}>
+                  {/* Animated SVG loader */}
+                  <svg className="pl" viewBox="0 0 160 160" width="140px" height="140px" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="pl-grad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#000" />
+                        <stop offset="100%" stopColor="#fff" />
+                      </linearGradient>
+                      <mask id="pl-mask1"><rect x="0" y="0" width="160" height="160" fill="url(#pl-grad)" /></mask>
+                      <mask id="pl-mask2"><rect x="28" y="28" width="104" height="104" fill="url(#pl-grad)" /></mask>
+                    </defs>
+                    <g><g className="pl__ring-rotate"><circle className="pl__ring-stroke" cx="80" cy="80" r="72" fill="none" stroke="hsl(223,90%,55%)" strokeWidth="16" strokeDasharray="452.39 452.39" strokeDashoffset="452" strokeLinecap="round" transform="rotate(-45,80,80)" /></g></g>
+                    <g mask="url(#pl-mask1)"><g className="pl__ring-rotate"><circle className="pl__ring-stroke" cx="80" cy="80" r="72" fill="none" stroke="hsl(193,90%,55%)" strokeWidth="16" strokeDasharray="452.39 452.39" strokeDashoffset="452" strokeLinecap="round" transform="rotate(-45,80,80)" /></g></g>
+                    <g><g strokeWidth="4" strokeDasharray="12 12" strokeDashoffset="12" strokeLinecap="round" transform="translate(80,80)">
+                      {[-135,-90,-45,0,45,90,135,180].map((r) => <polyline key={r} className="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform={`rotate(${r},0,0) translate(0,40)`} />)}
+                    </g></g>
+                    <g mask="url(#pl-mask1)"><g strokeWidth="4" strokeDasharray="12 12" strokeDashoffset="12" strokeLinecap="round" transform="translate(80,80)">
+                      {[-135,-90,-45,0,45,90,135,180].map((r) => <polyline key={r} className="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform={`rotate(${r},0,0) translate(0,40)`} />)}
+                    </g></g>
+                    <g><g transform="translate(64,28)"><g className="pl__arrows" transform="rotate(45,16,52)">
+                      <path fill="hsl(3,90%,55%)" d="M17.998,1.506l13.892,43.594c.455,1.426-.56,2.899-1.998,2.899H2.108c-1.437,0-2.452-1.473-1.998-2.899L14.002,1.506c.64-2.008,3.356-2.008,3.996,0Z" />
+                      <path fill="hsl(223,10%,90%)" d="M14.009,102.499L.109,58.889c-.453-1.421,.559-2.889,1.991-2.889H29.899c1.433,0,2.444,1.468,1.991,2.889l-13.899,43.61c-.638,2.001-3.345,2.001-3.983,0Z" />
+                    </g></g></g>
+                  </svg>
+                  <div style={{ textAlign: "center" }}>
+                    <div style={{ fontFamily: "var(--font-serif)", fontSize: "1.05rem", color: "#fff", marginBottom: "0.4rem" }}>
+                      Crafting your {params.days}-day trip to{" "}
+                      <span style={{ color: "#f5c87a" }}>{params.destination}</span>
+                    </div>
+                    <div style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.5)", minHeight: 24, animation: "planner-slide-in 0.4s ease" }} key={stageIdx}>
+                      {GENERATING_STAGES[stageIdx]}
+                    </div>
+                    <p style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", marginTop: "0.75rem" }}>
+                      Usually takes 5–15 seconds…
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* ── RESULT / STREAMING STATE ── */}
+              {(step === "result" || (step === "generating" && hasResult)) && (
+                <>
+                  {/* Map — only shown after generation is complete */}
+                  {!isStreaming && mapPins.length > 0 && (
+                    <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)", flexShrink: 0 }}>
+                      <MapView
+                        pins={mapPins}
+                        height={180}
+                        zoom={9}
+                      />
+                    </div>
+                  )}
+
+                  {/* Panel header */}
+                  <h2 style={{
+                    fontFamily: "var(--font-serif)", fontSize: "1.2rem", fontWeight: 800,
+                    color: "#f5c87a", letterSpacing: "-0.01em", lineHeight: 1.2,
+                  }}>
+                    {itinerary?.title ? `📍 ${itinerary.title}` : "🗺️ Generating…"}
+                  </h2>
+
+                  {/* Live streaming banner */}
+                  {isStreaming && (
+                    <div style={{
+                      display: "flex", alignItems: "center", gap: 8,
+                      padding: "0.55rem 0.85rem", borderRadius: 8,
+                      background: "rgba(245,166,35,0.12)", border: "1px solid rgba(245,166,35,0.3)",
+                      fontSize: "0.78rem", color: "#f5c87a", fontWeight: 600,
+                    }}>
+                      <Loader2 size={14} className="planner-spin" />
+                      Generating day {streamingDays.length + 1} of {params.days}…
+                    </div>
+                  )}
+
+                  {/* "Generated by" badge */}
+                  {!isStreaming && modelUsed && (
+                    <div>
+                      <span style={{
+                        display: "inline-flex", alignItems: "center", gap: 5,
+                        padding: "0.22rem 0.65rem", borderRadius: 100, fontSize: "0.68rem", fontWeight: 600,
+                        background: `${modelColor}18`, border: `1px solid ${modelColor}44`, color: modelColor,
+                      }}>
+                        {params.model === "nvidia" ? "⚡" : params.model === "groq" ? "🖤" : params.model === "openai" ? "🟢" : "✦"} Generated by {modelUsed}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Overview */}
+                  {itinerary?.overview && (
+                    <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>
+                      {itinerary.overview}
+                    </p>
+                  )}
+
+                  {/* Meta chips */}
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "0.22rem 0.6rem", borderRadius: 100, background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)", color: "#a5b4fc", fontSize: "0.7rem", fontWeight: 500 }}>
+                      📅 {streamingDays.length} of {params.days} Days
+                    </span>
+                    {itinerary?.bestTimeToVisit && (
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "0.22rem 0.6rem", borderRadius: 100, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", color: "rgba(255,255,255,0.6)", fontSize: "0.7rem" }}>
+                        🗓 {itinerary.bestTimeToVisit}
+                      </span>
+                    )}
+                    {itinerary?.totalBudgetEstimate && (
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "0.22rem 0.6rem", borderRadius: 100, background: "rgba(245,166,35,0.12)", border: "1px solid rgba(245,166,35,0.25)", color: "#f5c87a", fontSize: "0.7rem", fontWeight: 500 }}>
+                        💰 {itinerary.totalBudgetEstimate}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Streaming day list */}
+                  <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "0.4rem", overflowY: "auto" }}>
+                    {streamingDays.map((day) => (
+                      <div key={day.dayNumber} className="planner-day-in" style={{ display: "flex", gap: "0.6rem", alignItems: "flex-start" }}>
+                        <div className="day-dot" />
+                        <div style={{ flex: 1 }}>
+                          <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.95)", fontWeight: 600 }}>Day {day.dayNumber}: </span>
+                          <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.6)" }}>
+                            {day.title}{isStreaming && day.dayNumber === streamingDays.length ? "…" : ""}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                    {/* Skeletons for un-arrived days */}
+                    {isStreaming && Array.from({ length: Math.max(0, params.days - streamingDays.length) }).map((_, i) => (
+                      <div key={`skel-${i}`} style={{ display: "flex", gap: "0.6rem", alignItems: "center" }}>
+                        <div className="planner-skel" style={{ width: 9, height: 9, borderRadius: "50%", background: "rgba(255,255,255,0.2)", flexShrink: 0 }} />
+                        <div className="planner-skel" style={{ flex: 1, height: 10, borderRadius: 4, background: "rgba(255,255,255,0.1)" }} />
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Progress bar */}
+                  <div style={{ borderRadius: 8, overflow: "hidden", height: 32, background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.1)", position: "relative", flexShrink: 0 }}>
+                    <div style={{
+                      position: "absolute", left: 0, top: 0, bottom: 0, width: `${progress}%`,
+                      background: progress === 100 ? "linear-gradient(90deg, #22c55e, #16a34a)" : "linear-gradient(90deg, #f5a623, #f59e0b)",
+                      transition: "width 0.5s ease, background 0.5s",
+                      animation: isStreaming && progress < 100 ? "planner-shimmer 2s linear infinite" : "none",
+                      backgroundSize: "200% 100%",
+                    }} />
+                    <span style={{ position: "relative", zIndex: 1, fontSize: "0.73rem", fontWeight: 600, color: progress > 15 ? "#fff" : "rgba(255,255,255,0.5)", paddingLeft: "0.75rem", lineHeight: "32px", whiteSpace: "nowrap" }}>
+                      {progress === 0 && "Ready to generate"}
+                      {progress > 0 && progress < 100 && `Creating your journey… ${Math.round(progress)}%`}
+                      {progress === 100 && "✓ Itinerary complete!"}
+                    </span>
+                  </div>
+
+                  {/* Action buttons */}
+                  {!isStreaming && hasResult && (
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", flexShrink: 0 }}>
+                      {/* Auth-gated Save */}
+                      {!authLoading && !user ? (
+                        <div className="login-banner" style={{
+                          display: "flex", alignItems: "center", gap: "0.75rem",
+                          padding: "0.75rem 1rem", borderRadius: 12,
+                          background: "rgba(245,166,35,0.08)", border: "1px solid rgba(245,166,35,0.3)",
+                        }}>
+                          <LogIn size={18} style={{ color: "#f5c87a", flexShrink: 0 }} />
+                          <div style={{ flex: 1 }}>
+                            <p style={{ fontSize: "0.8rem", color: "#f5c87a", fontWeight: 600, marginBottom: 2 }}>Login to save your itinerary</p>
+                            <p style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.4)" }}>Sign in to keep this trip in your collection</p>
+                          </div>
+                          <button
+                            id="ai-planner-login-btn"
+                            onClick={openAuthModal}
+                            style={{
+                              padding: "0.45rem 0.9rem", borderRadius: 8, border: "none",
+                              background: "linear-gradient(135deg, #f5a623, #e05c20)",
+                              color: "#fff", fontSize: "0.75rem", fontWeight: 700,
+                              fontFamily: "var(--font-sans)", cursor: "pointer", flexShrink: 0,
+                            }}
+                          >
+                            Sign In
+                          </button>
+                        </div>
+                      ) : !authLoading && (
+                        <button
+                          id="ai-planner-save-btn"
+                          onClick={handleSave}
+                          style={{
+                            display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem",
+                            padding: "0.75rem 1rem", borderRadius: 10, border: "none",
+                            background: "linear-gradient(135deg, #f5a623, #e88c10)",
+                            color: "#fff", fontSize: "0.88rem", fontWeight: 700,
+                            fontFamily: "var(--font-sans)", cursor: "pointer", transition: "all 0.25s",
+                          }}
+                        >
+                          <CheckCircle size={15} /> Save to My Itineraries
+                        </button>
+                      )}
+
+                      {/* Export + Maps + Redo row */}
+                      <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+                        <ExportDropdown itinerary={itinerary} streamingDays={streamingDays} params={params} />
+
+                        {mapsUrl && (
+                          <a
+                            href={mapsUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            id="ai-planner-maps-btn"
+                            style={{
+                              display: "flex", alignItems: "center", gap: "0.4rem",
+                              padding: "0.7rem 1rem", borderRadius: 10,
+                              border: "1px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.07)",
+                              color: "#fff", fontSize: "0.82rem", fontWeight: 600,
+                              textDecoration: "none", fontFamily: "var(--font-sans)",
+                              flexShrink: 0, transition: "all 0.2s",
+                            }}
+                          >
+                            <Map size={15} /> Maps
+                          </a>
+                        )}
+
+                        <button
+                          id="ai-planner-regen-btn"
+                          onClick={handleGenerate}
+                          style={{
+                            display: "flex", alignItems: "center", gap: "0.4rem",
+                            padding: "0.7rem 1rem", borderRadius: 10,
+                            border: "1px solid rgba(255,255,255,0.15)", background: "transparent",
+                            color: "rgba(255,255,255,0.6)", fontSize: "0.82rem",
+                            fontFamily: "var(--font-sans)", cursor: "pointer",
+                            flexShrink: 0, transition: "all 0.2s",
+                          }}
+                        >
+                          <Sparkles size={14} /> Redo
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {/* ── IDLE (no generation yet) ── */}
+              {step === "form" && (
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1rem" }}>
+                  <Map size={42} style={{ color: "rgba(255,255,255,0.12)", marginBottom: "0.5rem" }} />
+                  <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.35)", textAlign: "center" }}>
+                    Fill in your trip details on the left and click Generate
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* ═══════════════════════════════════════════════════════════════════
+            FULL DAY-BY-DAY BREAKDOWN (below the panels, after generation)
+        ═══════════════════════════════════════════════════════════════════ */}
+        {!isStreaming && streamingDays.length > 0 && step !== "saved" && (
+          <div
+            style={{
+              marginTop: "2rem", width: "100%", maxWidth: 1100,
+              background: "rgba(255,255,255,0.06)", backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)", borderRadius: 20,
+              border: "1px solid rgba(255,255,255,0.12)", padding: "1.75rem",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem", flexWrap: "wrap", gap: "0.75rem" }}>
+              <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.2rem", fontWeight: 700, color: "#fff" }}>
+                Full Itinerary — {streamingDays.length} Days
+              </h3>
+              {itinerary?.tags && (
+                <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+                  {itinerary.tags.map((tag) => (
+                    <span key={tag} style={{ padding: "0.2rem 0.65rem", borderRadius: 100, background: "rgba(245,166,35,0.12)", border: "1px solid rgba(245,166,35,0.25)", color: "#f5c87a", fontSize: "0.7rem" }}>
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              {streamingDays.map((day) => (
+                <div key={day.dayNumber} style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)" }}>
+                  {/* Day header — clickable accordion */}
+                  <button
+                    onClick={() => toggleDay(day.dayNumber)}
+                    style={{
+                      width: "100%", display: "flex", alignItems: "center", gap: "0.75rem",
+                      padding: "1rem 1.25rem", background: "rgba(255,255,255,0.06)",
+                      border: "none", cursor: "pointer", fontFamily: "var(--font-sans)", textAlign: "left",
+                    }}
+                  >
+                    <span style={{
+                      width: 32, height: 32, borderRadius: 8,
+                      background: "linear-gradient(135deg, #f5a623, #e05c20)",
+                      color: "#fff", display: "flex", alignItems: "center", justifyContent: "center",
+                      fontSize: "0.72rem", fontWeight: 700, flexShrink: 0,
+                    }}>
+                      D{day.dayNumber}
+                    </span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: "0.9rem", fontWeight: 600, color: "#fff" }}>{day.title}</div>
+                      {day.summary && !expandedDays.has(day.dayNumber) && (
+                        <div style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.45)", marginTop: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          {day.summary}
+                        </div>
+                      )}
+                    </div>
+                    <span style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.4)", flexShrink: 0 }}>{(day.activities || []).length} stops</span>
+                    <ChevronRight
+                      size={16}
+                      style={{
+                        color: "rgba(255,255,255,0.4)", flexShrink: 0,
+                        transform: expandedDays.has(day.dayNumber) ? "rotate(90deg)" : "rotate(0deg)",
+                        transition: "transform 0.2s",
+                      }}
+                    />
+                  </button>
+
+                  {/* Day activities */}
+                  {expandedDays.has(day.dayNumber) && (
+                    <div style={{ padding: "1rem 1.25rem", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
+                      {day.summary && (
+                        <p style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.55)", fontStyle: "italic", marginBottom: "1rem", lineHeight: 1.6, borderLeft: "2px solid #f5a623", paddingLeft: "0.75rem" }}>
+                          {day.summary}
+                        </p>
+                      )}
+                      <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                        {(day.activities || []).map((act, i) => {
+                          const Icon = (act.type && ACTIVITY_ICONS[act.type]) || Camera;
+                          return (
+                            <div key={i} style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start" }}>
+                              <span style={{
+                                width: 28, height: 28, borderRadius: "50%",
+                                background: "rgba(245,166,35,0.15)", border: "1px solid rgba(245,166,35,0.3)",
+                                display: "flex", alignItems: "center", justifyContent: "center",
+                                flexShrink: 0, color: "#f5c87a",
+                              }}>
+                                <Icon size={12} />
+                              </span>
+                              <div style={{ flex: 1 }}>
+                                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: 2, flexWrap: "wrap" }}>
+                                  {act.time && (
+                                    <span style={{ fontSize: "0.7rem", color: "#f5a623", fontWeight: 600, display: "flex", alignItems: "center", gap: 3 }}>
+                                      <Clock size={10} /> {act.time}
+                                    </span>
+                                  )}
+                                  <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "rgba(255,255,255,0.9)" }}>{act.title}</span>
+                                </div>
+                                {act.description && <p style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.5)", lineHeight: 1.55 }}>{act.description}</p>}
+                                {act.notes && (
+                                  <div style={{ marginTop: 4, padding: "0.3rem 0.6rem", borderRadius: 6, background: "rgba(245,166,35,0.1)", border: "1px solid rgba(245,166,35,0.2)", fontSize: "0.72rem", color: "#f5c87a", lineHeight: 1.5 }}>
+                                    💡 {act.notes}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

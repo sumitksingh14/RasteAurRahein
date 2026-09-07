@@ -9,7 +9,7 @@ export default function AIItineraryButton() {
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
 
-  if (!user) return null;
+  if (!user?.isAdmin) return null;
 
   return (
     <>
