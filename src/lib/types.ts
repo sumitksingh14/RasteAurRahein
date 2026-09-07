@@ -72,6 +72,7 @@ export interface Trip {
   currency?: string;
   tripType?: string;
   readingTime?: number;
+  generationStatus?: "generating" | "complete" | "failed";
   _createdAt: string;
   _updatedAt: string;
 }
