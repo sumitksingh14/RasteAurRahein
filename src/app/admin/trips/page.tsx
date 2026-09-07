@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Plus, Pencil, Trash2, Eye, Globe, FileText, RefreshCw } from "lucide-react";
+import TripPreviewModal from "@/app/admin/TripPreviewModal";
 
 interface Trip {
   _id: string;
@@ -21,6 +22,7 @@ export default function AdminTripsPage() {
   const [loading, setLoading] = useState(true);
   const [deletingSlug, setDeletingSlug] = useState<string | null>(null);
   const [togglingSlug, setTogglingSlug] = useState<string | null>(null);
+  const [previewSlug, setPreviewSlug] = useState<{ slug: string; title: string } | null>(null);
 
   const load = () => {
     setLoading(true);
@@ -131,9 +133,13 @@ export default function AdminTripsPage() {
                   <td style={{ padding: "0.9rem 1rem" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                       {/* View */}
-                      <Link href={`/trips/${trip.slug}`} target="_blank" title="View trip" style={{ width: 32, height: 32, borderRadius: 8, border: "1px solid #E2E8F0", display: "flex", alignItems: "center", justifyContent: "center", color: "#64748b", textDecoration: "none" }}>
+                      <button
+                        onClick={() => setPreviewSlug({ slug: trip.slug, title: trip.title })}
+                        title="Preview trip"
+                        style={{ width: 32, height: 32, borderRadius: 8, border: "1px solid #E2E8F0", background: "transparent", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#64748b" }}
+                      >
                         <Eye size={14} />
-                      </Link>
+                      </button>
                       {/* Toggle status */}
                       <button
                         onClick={() => handleToggleStatus(trip)}
@@ -166,6 +172,15 @@ export default function AdminTripsPage() {
             <div style={{ padding: "3rem", textAlign: "center", color: "#94a3b8" }}>No trips found. Create your first trip.</div>
           )}
         </div>
+      )}
+
+      {/* Trip preview modal */}
+      {previewSlug && (
+        <TripPreviewModal
+          slug={previewSlug.slug}
+          title={previewSlug.title}
+          onClose={() => setPreviewSlug(null)}
+        />
       )}
     </div>
   );

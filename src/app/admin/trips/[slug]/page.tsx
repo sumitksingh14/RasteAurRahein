@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import type { Trip, ItineraryDay, Activity } from "@/lib/types";
+import TripPreviewModal from "@/app/admin/TripPreviewModal";
 
 // ─────────────────────────────────────────────────────────────
 // Shared styles
@@ -355,6 +356,7 @@ export default function EditTripPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [activeTab, setActiveTab] = useState<TabId>("overview");
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const loadTrip = useCallback(() => {
     setLoading(true);
@@ -446,13 +448,12 @@ export default function EditTripPage() {
           <ArrowLeft size={16} /> Back to Trips
         </Link>
         <div style={{ display: "flex", gap: "0.6rem" }}>
-          <Link
-            href={`/trips/${slug}`}
-            target="_blank"
-            style={{ display: "flex", alignItems: "center", gap: 6, padding: "0.5rem 0.9rem", borderRadius: 10, border: "1px solid #E2E8F0", background: "#fff", color: "#475569", textDecoration: "none", fontSize: "0.82rem" }}
+          <button
+            onClick={() => setPreviewOpen(true)}
+            style={{ display: "flex", alignItems: "center", gap: 6, padding: "0.5rem 0.9rem", borderRadius: 10, border: "1px solid #E2E8F0", background: "#fff", color: "#475569", cursor: "pointer", fontSize: "0.82rem", fontFamily: "inherit" }}
           >
             <Eye size={13} /> Preview
-          </Link>
+          </button>
           <button
             onClick={handleDelete}
             style={{ display: "flex", alignItems: "center", gap: 6, padding: "0.5rem 1rem", borderRadius: 10, border: "1px solid #FCA5A5", background: "#FEF2F2", color: "#dc2626", cursor: "pointer", fontSize: "0.85rem", fontWeight: 600 }}
@@ -633,6 +634,15 @@ export default function EditTripPage() {
         <div style={{ background: "#fff", borderRadius: 16, padding: "2rem", boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}>
           <RawDataTab trip={trip} />
         </div>
+      )}
+
+      {/* Trip preview modal */}
+      {previewOpen && trip && (
+        <TripPreviewModal
+          slug={slug}
+          title={trip.title}
+          onClose={() => setPreviewOpen(false)}
+        />
       )}
     </div>
   );
