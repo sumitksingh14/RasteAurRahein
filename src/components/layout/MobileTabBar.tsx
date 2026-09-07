@@ -350,7 +350,7 @@ export default function MobileTabBar() {
         </div>
       </div>
 
-      {/* Tab Bar — floating-circle design */}
+      {/* Tab Bar — floating pill design from code.html */}
       {(() => {
         // Determine which tab index is active (0-based, 3 = More)
         const activeIndex = PRIMARY_TABS.findIndex(({ to, exact }) => isActive(to, exact));
@@ -361,43 +361,49 @@ export default function MobileTabBar() {
             aria-label="Mobile navigation"
             data-active={resolvedIndex}
           >
-            {/* Sliding background bar with cutout bubble */}
-            <div className="tab-bar-back" aria-hidden="true" />
+            {/* Floating pill container */}
+            <div className="tab-bar-pill">
+              {PRIMARY_TABS.map(({ to, icon: Icon, label, exact }, idx) => {
+                const active = isActive(to, exact);
+                return (
+                  <Link
+                    key={to}
+                    href={to}
+                    className={`tab-bar-item${active ? " active" : ""}`}
+                    aria-label={label}
+                    aria-current={active ? "page" : undefined}
+                  >
+                    <span className="tab-bar-active-pill">
+                      <span className="tab-bar-icon">
+                        <Icon size={22} strokeWidth={active ? 2.2 : 1.8} />
+                      </span>
+                    </span>
+                    <span className="tab-bar-label">{label}</span>
+                    <span className="tab-bar-dot" aria-hidden="true" />
+                  </Link>
+                );
+              })}
 
-            {PRIMARY_TABS.map(({ to, icon: Icon, label, exact }, idx) => {
-              const active = isActive(to, exact);
-              return (
-                <Link
-                  key={to}
-                  href={to}
-                  className={`tab-bar-item${active ? " active" : ""}`}
-                  aria-label={label}
-                  aria-current={active ? "page" : undefined}
-                >
-                  <span className="tab-bar-circle">
-                    <Icon size={20} strokeWidth={active ? 2.2 : 1.8} />
+              {/* More button */}
+              <button
+                className={`tab-bar-item${moreIsActive && !moreOpen ? " active" : moreOpen ? " active" : ""}`}
+                onClick={() => setMoreOpen((o) => !o)}
+                aria-label="More navigation"
+                aria-expanded={moreOpen}
+              >
+                <span className="tab-bar-active-pill">
+                  <span className="tab-bar-icon">
+                    {moreOpen ? (
+                      <X size={22} strokeWidth={2.2} />
+                    ) : (
+                      <MoreHorizontal size={22} strokeWidth={1.8} />
+                    )}
                   </span>
-                  <span className="tab-bar-label">{label}</span>
-                </Link>
-              );
-            })}
-
-            {/* More button */}
-            <button
-              className={`tab-bar-item${moreIsActive && !moreOpen ? " active" : moreOpen ? " active" : ""}`}
-              onClick={() => setMoreOpen((o) => !o)}
-              aria-label="More navigation"
-              aria-expanded={moreOpen}
-            >
-              <span className="tab-bar-circle">
-                {moreOpen ? (
-                  <X size={20} strokeWidth={2.2} />
-                ) : (
-                  <MoreHorizontal size={20} strokeWidth={1.8} />
-                )}
-              </span>
-              <span className="tab-bar-label">More</span>
-            </button>
+                </span>
+                <span className="tab-bar-label">More</span>
+                <span className="tab-bar-dot" aria-hidden="true" />
+              </button>
+            </div>
           </nav>
         );
       })()}

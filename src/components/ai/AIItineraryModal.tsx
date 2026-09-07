@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useGeneratedTrips, type GeneratedTrip } from "@/components/providers/GeneratedTripsProvider";
 import ExportPDFButton from "./ExportPDFButton";
+import ShareItineraryButton from "./ShareItineraryButton";
 import "../ui/AnimatedLoader.css";
 import GoogleMapsRouteButton from "@/components/ui/GoogleMapsRouteButton";
 import { detectUserLocation, type GeolocationStatus } from "@/lib/geolocation";
@@ -1744,24 +1745,27 @@ export default function AIItineraryModal({ onClose }: Props) {
                     {isStreaming ? "Generating…" : "Save to My Itineraries"}
                   </button>
                   
-                  {!isStreaming && (
-                    <ExportPDFButton 
-                      trip={{
-                        id: "preview",
-                        title: itinerary.title,
-                        destination: itinerary.destination,
-                        overview: itinerary.overview,
-                        bestTimeToVisit: itinerary.bestTimeToVisit,
-                        totalBudgetEstimate: itinerary.totalBudgetEstimate,
-                        tags: itinerary.tags,
-                        days: itinerary.days,
-                        style: params.style,
-                        month: params.month,
-                        generatedAt: new Date().toISOString(),
-                      }} 
-                      variant="outline" 
-                    />
-                  )}
+                  {!isStreaming && (() => {
+                    const previewTrip = {
+                      id: "preview",
+                      title: itinerary.title,
+                      destination: itinerary.destination,
+                      overview: itinerary.overview,
+                      bestTimeToVisit: itinerary.bestTimeToVisit,
+                      totalBudgetEstimate: itinerary.totalBudgetEstimate,
+                      tags: itinerary.tags,
+                      days: itinerary.days,
+                      style: params.style,
+                      month: params.month,
+                      generatedAt: new Date().toISOString(),
+                    };
+                    return (
+                      <>
+                        <ExportPDFButton trip={previewTrip} variant="outline" />
+                        <ShareItineraryButton trip={previewTrip} variant="outline" />
+                      </>
+                    );
+                  })()}
 
                   <button
                     onClick={() => { streamAbortRef.current?.abort(); setStep("form"); setItinerary(null); }}
@@ -1848,6 +1852,8 @@ export default function AIItineraryModal({ onClose }: Props) {
                     <Navigation size={15} />
                     View All Itineraries
                   </Link>
+                  <ExportPDFButton trip={savedTrip} variant="outline" />
+                  <ShareItineraryButton trip={savedTrip} variant="outline" />
                   <button
                     onClick={() => { setStep("form"); setItinerary(null); setSavedTrip(null); }}
                     style={{
