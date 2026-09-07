@@ -357,14 +357,29 @@ export class LLMService {
       model: modelId,
       messages: [{ role: "user", content: prompt }],
       temperature: 0.7,
-      max_tokens: 4096,
+      max_tokens: 8000,
       stream: true,
     });
 
+    // Strip <think>...</think> blocks that some Groq reasoning models emit
+    let thinkBuf = "";
+    let inThink = false;
     for await (const chunk of stream) {
       const piece = chunk.choices[0]?.delta?.content ?? "";
-      if (piece) yield piece;
+      if (!piece) continue;
+      thinkBuf += piece;
+      if (!inThink) {
+        const openIdx = thinkBuf.search(/<think>/i);
+        if (openIdx !== -1) { inThink = true; thinkBuf = thinkBuf.slice(openIdx + 7); continue; }
+        const emit = thinkBuf;
+        thinkBuf = "";
+        if (emit) yield emit;
+      } else {
+        const closeIdx = thinkBuf.search(/<\/think>/i);
+        if (closeIdx !== -1) { inThink = false; thinkBuf = thinkBuf.slice(closeIdx + 8); }
+      }
     }
+    if (thinkBuf && !inThink) yield thinkBuf;
   }
 
   private static async *streamOpenAI(prompt: string, modelId: string): AsyncGenerator<string> {

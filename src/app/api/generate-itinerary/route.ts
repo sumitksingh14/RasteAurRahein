@@ -360,9 +360,47 @@ function handleStreamingGenerate(body: GenerateRequest): Response {
             generator = LLMService.generateContentStream(prompt, { model: "nvidia", specificModelId: nvidiaModelId });
             modelLabel = `NVIDIA · ${nvidiaModelId || "default"}`;
           } else if (provider === "groq") {
+            // Groq free tier has tight TPM limits — the NDJSON stream prompt
+            // often exhausts the budget mid-response, producing no parseable
+            // output. Instead we call Groq non-streaming with the compact
+            // prompt, parse the full JSON, then emit it as NDJSON lines so
+            // the client still sees the same progressive experience.
             const groqModelId = body.groqModel ?? "llama3-70b-8192";
-            generator = LLMService.generateContentStream(prompt, { model: "groq", specificModelId: groqModelId });
             modelLabel = `Groq · ${groqModelId}`;
+            sentToClient = true;
+            send({ type: "model", label: provider !== requestedModel ? `${modelLabel} (Fallback)` : modelLabel });
+
+            const groqRaw = await LLMService.generateContent(
+              buildGroqPrompt(body),
+              { model: "groq", specificModelId: groqModelId, jsonMode: true }
+            );
+            let groqParsed: any;
+            try {
+              groqParsed = JSON.parse(groqRaw);
+            } catch {
+              const m = groqRaw.match(/```(?:json)?\s*([\s\S]*?)```/);
+              groqParsed = m ? JSON.parse(m[1]) : null;
+            }
+            if (!groqParsed?.days?.length) throw new Error(`[groq] produced no parseable output.`);
+
+            // Emit meta line
+            send({
+              type: "meta",
+              title: groqParsed.title,
+              destination: groqParsed.destination,
+              overview: groqParsed.overview,
+              bestTimeToVisit: groqParsed.bestTimeToVisit,
+              totalBudgetEstimate: groqParsed.totalBudgetEstimate,
+              tags: groqParsed.tags,
+            });
+            // Emit each day with a small delay for progressive feel
+            for (const day of groqParsed.days) {
+              send({ type: "day", ...day });
+              await new Promise((r) => setTimeout(r, 60));
+            }
+            send({ type: "done" });
+            controller.close();
+            return;
           } else if (provider === "openai") {
             const openaiModelId = body.openaiModel ?? "gpt-4o";
             generator = LLMService.generateContentStream(prompt, { model: "openai", specificModelId: openaiModelId });
@@ -399,7 +437,6 @@ function handleStreamingGenerate(body: GenerateRequest): Response {
                 send(JSON.parse(line));
                 linesSeen++;
               } catch {
-                // partial or malformed line — skip it
               }
             }
           };

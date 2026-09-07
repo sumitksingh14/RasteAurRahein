@@ -419,6 +419,8 @@ export default function AIPlanner() {
   const [progress, setProgress] = useState(0);
   const [saved, setSaved] = useState(false);
   const [savedTitle, setSavedTitle] = useState("");
+  // Geocoded pin for the destination — set when streaming finishes
+  const [destinationPin, setDestinationPin] = useState<{ lat: number; lng: number } | null>(null);
 
   // ── GROQ models (dynamic) ────────────────────────────────────────────────
   const [groqModels, setGroqModels] = useState<{ id: string; ownedBy: string }[]>([]);
@@ -459,6 +461,23 @@ export default function AIPlanner() {
     if (stageTimer.current) clearInterval(stageTimer.current);
   }, []);
 
+  // Geocode destination once streaming finishes so we can show the map
+  useEffect(() => {
+    if (isStreaming || !itinerary) return;
+    const query = itinerary.destination || params.destination;
+    if (!query.trim()) return;
+    const url = new URL("https://nominatim.openstreetmap.org/search");
+    url.searchParams.set("q", query);
+    url.searchParams.set("format", "json");
+    url.searchParams.set("limit", "1");
+    fetch(url.toString(), { headers: { "User-Agent": "RasteAurRahein/1.0 (travel-blog)" } })
+      .then((r) => r.json())
+      .then((data) => {
+        if (data?.[0]) setDestinationPin({ lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) });
+      })
+      .catch(() => {}); // silently fail — map just won't show
+  }, [isStreaming, itinerary, params.destination]);
+
   // Derived map pins from streamed activities
   const mapPins: MapPin[] = streamingDays.flatMap((d) =>
     (d.activities ?? [])
@@ -470,6 +489,15 @@ export default function AIPlanner() {
         day: d.dayNumber,
       }))
   );
+
+  // The pin set to show on the map: real activity pins if the LLM returned
+  // coordinates, otherwise a single centred pin on the destination.
+  const activePins: MapPin[] =
+    mapPins.length > 0
+      ? mapPins
+      : destinationPin
+      ? [{ lat: destinationPin.lat, lng: destinationPin.lng, label: params.destination }]
+      : [];
 
   // ── Generate ──────────────────────────────────────────────────────────────
   const handleGenerate = async () => {
@@ -489,6 +517,7 @@ export default function AIPlanner() {
     setIsStreaming(true);
     setExpandedDays(new Set([1]));
     setSaved(false);
+    setDestinationPin(null); // clear stale pin from previous trip
 
     if (progressTimer.current) clearInterval(progressTimer.current);
     progressTimer.current = setInterval(() => {
@@ -699,7 +728,8 @@ export default function AIPlanner() {
         style={{
           minHeight: "100vh",
           paddingTop: "var(--nav-height)",
-          background: `#5a6e4e ${TOPO_BG}`,
+          backgroundColor: "#5a6e4e",
+          backgroundImage: TOPO_BG,
           backgroundSize: "400px 400px",
           display: "flex",
           flexDirection: "column",
@@ -1299,12 +1329,12 @@ export default function AIPlanner() {
               {(step === "result" || (step === "generating" && hasResult)) && (
                 <>
                   {/* Map — only shown after generation is complete */}
-                  {!isStreaming && mapPins.length > 0 && (
+                  {!isStreaming && activePins.length > 0 && (
                     <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)", flexShrink: 0 }}>
                       <MapView
-                        pins={mapPins}
+                        pins={activePins}
                         height={180}
-                        zoom={9}
+                        zoom={mapPins.length > 0 ? 9 : 10}
                       />
                     </div>
                   )}
@@ -1393,8 +1423,8 @@ export default function AIPlanner() {
                   <div style={{ borderRadius: 8, overflow: "hidden", height: 32, background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.1)", position: "relative", flexShrink: 0 }}>
                     <div style={{
                       position: "absolute", left: 0, top: 0, bottom: 0, width: `${progress}%`,
-                      background: progress === 100 ? "linear-gradient(90deg, #22c55e, #16a34a)" : "linear-gradient(90deg, #f5a623, #f59e0b)",
-                      transition: "width 0.5s ease, background 0.5s",
+                      backgroundImage: progress === 100 ? "linear-gradient(90deg, #22c55e, #16a34a)" : "linear-gradient(90deg, #f5a623, #f59e0b)",
+                      transition: "width 0.5s ease, background-image 0.5s",
                       animation: isStreaming && progress < 100 ? "planner-shimmer 2s linear infinite" : "none",
                       backgroundSize: "200% 100%",
                     }} />

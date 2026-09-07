@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { Home, Map, Compass, MoreHorizontal, BookOpen, Mail, Upload, X, User, Sparkles, Download, Bookmark } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
-import AIItineraryModal from "@/components/ai/AIItineraryModal";
 
 const PRIMARY_TABS = [
   { to: "/", icon: Home, label: "Home", exact: true },
@@ -29,7 +28,6 @@ export default function MobileTabBar() {
   const pathname = usePathname();
   const { user, openAuthModal, logout } = useAuth();
   const [moreOpen, setMoreOpen] = useState(false);
-  const [aiModalOpen, setAiModalOpen] = useState(false);
 
   // PWA install prompt interception
   const installPromptRef = useRef<BeforeInstallPromptEvent | null>(null);
@@ -147,26 +145,17 @@ export default function MobileTabBar() {
 
         {/* AI Trip Planner button in More drawer */}
         {user && (
-          <button
-            className="tab-more-drawer-link"
-            onClick={() => {
-              setAiModalOpen(true);
-              setMoreOpen(false);
-            }}
-            style={{
-              width: "100%",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              textAlign: "left",
-            }}
+          <Link
+            href="/ai-planner"
+            className={`tab-more-drawer-link${pathname.startsWith("/ai-planner") ? " active" : ""}`}
+            onClick={() => setMoreOpen(false)}
           >
             <span
               style={{
                 width: 36,
                 height: 36,
                 borderRadius: "50%",
-                background: "var(--accent-gold-dim)",
+                background: pathname.startsWith("/ai-planner") ? "var(--accent-gold-dim)" : "var(--bg-card)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -178,7 +167,7 @@ export default function MobileTabBar() {
               <Sparkles size={16} />
             </span>
             <span style={{ color: "var(--accent-gold)", fontWeight: 600 }}>AI Trip Planner</span>
-          </button>
+          </Link>
         )}
 
         {user && (
@@ -412,8 +401,6 @@ export default function MobileTabBar() {
           </nav>
         );
       })()}
-
-      {aiModalOpen && <AIItineraryModal onClose={() => setAiModalOpen(false)} />}
     </>
   );
 }
