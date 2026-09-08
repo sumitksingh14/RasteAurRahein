@@ -21,6 +21,8 @@ import { format } from "date-fns";
 
 // Fallback hero images by slug — 1920px for full-bleed hero banner
 const FALLBACK_IMAGES: Record<string, string> = {
+  // Leh Ladakh — Pangong Tso with prayer flags and Karakoram peaks (generated)
+  "leh-ladakh-9-days": "/images/leh-ladakh-pangong-lake.jpg",
   // Spiti Valley — Ki Monastery with Spiti Valley and Himalayan peaks (user photo)
   "spiti-valley": "/images/spiti-ki-monastery.jpg",
   // Mysore · Coorg · Wayanad · Ooty — Mysore Palace (user photo)

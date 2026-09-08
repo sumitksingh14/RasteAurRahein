@@ -9,6 +9,8 @@ import { useState } from "react";
 
 // Curated cover images from Unsplash — one per trip slug
 const FALLBACK_IMAGES: Record<string, string> = {
+  // Leh Ladakh — Pangong Tso with prayer flags and Karakoram ranges (generated)
+  "leh-ladakh-9-days": "/images/leh-ladakh-pangong-lake.jpg",
   "spiti-valley": "/images/spiti-ki-monastery.jpg",
   "mysore-coorg-wayanad-ooty": "/images/mysore-palace.jpg",
   "rajasthan-desert-kingdom":
