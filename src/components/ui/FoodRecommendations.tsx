@@ -5,6 +5,50 @@ import type { FoodSpot } from "@/lib/types";
 
 // ── Per-trip food data ────────────────────────────────────────────────────────
 const FOOD_DATA: Record<string, FoodSpot[]> = {
+  "leh-ladakh-9-days": [
+    {
+      id: "ll_f1", name: "The Tibetan Kitchen, Leh", type: "restaurant", town: "Leh Market",
+      mustTry: ["Thukpa (Tibetan noodle soup)", "Momos", "Skyu (Ladakhi pasta stew)", "Butter Tea"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Best Tibetan restaurant in Leh — warm interior, generous portions. Try the yak stew on cold evenings. Located on the upper main bazaar road.",
+    },
+    {
+      id: "ll_f2", name: "Bon Appétit, Leh", type: "restaurant", town: "Fort Road, Leh",
+      mustTry: ["Yak Steak", "Trout Fish Curry", "Ladakhi Thali", "Chhang (barley beer)"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "The most popular multi-cuisine restaurant in Leh among Indian and foreign travellers. Rooftop seating with fort views. Ideal for celebration dinners.",
+    },
+    {
+      id: "ll_f3", name: "Thiksey Monastery Café", type: "cafe", town: "Thiksey Monastery",
+      mustTry: ["Tibetan Bread with Butter", "Hot Porridge", "Butter Tea", "Thukpa"],
+      priceRange: "₹", isVeg: true,
+      notes: "Monastery-run café with sweeping Indus Valley views. Best at 9 AM after the morning puja. A deeply calming breakfast experience before the monastery circuit.",
+    },
+    {
+      id: "ll_f4", name: "Dzomsa Restaurant, Alchi", type: "cafe", town: "Alchi Monastery, Sham Valley",
+      mustTry: ["Apricot Jam Tarts", "Butter Tea", "Fresh Local Bread", "Apricot Juice"],
+      priceRange: "₹", isVeg: true,
+      notes: "Monastery cooperative restaurant — proceeds support local monks. The apricot tarts are legendary. Only open in summer season (May–September).",
+    },
+    {
+      id: "ll_f5", name: "Diskit Dhaba, Nubra Valley", type: "dhaba", town: "Diskit, Nubra Valley",
+      mustTry: ["Dal Chawal", "Aloo Paratha", "Fresh Chai", "Tsampa Porridge"],
+      priceRange: "₹", isVeg: true,
+      notes: "First proper meal stop after descending from Khardung La. Simple roadside dhaba; best to arrive by 1 PM as food runs out early. Also sells basic supplies.",
+    },
+    {
+      id: "ll_f6", name: "Hunder Camp Kitchen, Nubra", type: "homestay-kitchen", town: "Hunder, Nubra Valley",
+      mustTry: ["Trout Fish Fry (local Nubra river)", "Yak Cheese", "Balti Apricot Soup", "Dried Apricots"],
+      priceRange: "₹", isVeg: false,
+      notes: "Most camps in Hunder serve dinner in-house. Ask specifically for Balti cuisine — the dried apricot soup is unique to Nubra. Best eaten under an open sky with Karakoram views.",
+    },
+    {
+      id: "ll_f7", name: "Pangong Tso Shore Café", type: "cafe", town: "Spangmik, Pangong Tso",
+      mustTry: ["Instant Maggi Noodles at 4,350m", "Tsampa Porridge", "Butter Tea", "Hot Soup"],
+      priceRange: "₹", isVeg: true,
+      notes: "There are no restaurants at Pangong — all food is from small lakeside makeshift stalls/cafés. Maggi, tea, and tsampa are the staples. Carry snacks as an insurance.",
+    },
+  ],
   "jyotirlinga-pilgrimage-road-trip": [
     {
       id: "jy_f1", name: "Madhurima Dhaba, Bhimashankar", type: "dhaba", town: "Bhimashankar",

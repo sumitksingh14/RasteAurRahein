@@ -5,6 +5,64 @@ import type { HotelSuggestion } from "@/lib/types";
 
 // ── Per-trip hotel & homestay data ────────────────────────────────────────────
 const STAY_DATA: Record<string, HotelSuggestion[]> = {
+  "leh-ladakh-9-days": [
+    {
+      id: "ll1", name: "The Grand Dragon Ladakh", type: "hotel", stars: 5,
+      avgPricePerNight: 12000, town: "Leh City", contact: "+91-1982-257786",
+      bookingUrl: "https://www.thegranddragonladakh.com/",
+      amenities: ["Mountain View", "Restaurant", "Wi-Fi", "Parking", "Oxygen Bar"],
+      notes: "Best luxury hotel in Leh with rooftop panoramic views of the Stok Kangri range. Altitude-friendly rooms with oxygen support. 5 min from Leh Market.",
+    },
+    {
+      id: "ll2", name: "Stok Palace Heritage Hotel", type: "hotel", stars: 4,
+      avgPricePerNight: 8500, town: "Stok Village, Leh", contact: "+91-1982-242336",
+      bookingUrl: "https://www.stokpalace.in/",
+      amenities: ["Heritage Property", "Restaurant", "Garden", "Mountain View", "Hot Water"],
+      notes: "11th-century royal palace of the Namgyal dynasty converted to a heritage hotel. Authentic royal Ladakhi décor; ask for rooms overlooking the Stok Kangri peak.",
+    },
+    {
+      id: "ll3", name: "Nimmu House", type: "homestay", stars: 4,
+      avgPricePerNight: 4500, town: "Nimmu Village, Leh", contact: "+91-94191-17666",
+      bookingUrl: "https://www.nimmuhouse.com/",
+      amenities: ["Traditional Ladakhi Rooms", "Meals Included", "River View", "Hot Water"],
+      notes: "Award-winning traditional Ladakhi house on the Indus river. Beautifully restored with Himalayan art and hand-woven textiles. Ideal base for monasteries.",
+    },
+    {
+      id: "ll4", name: "Mystic Meadows Camp, Hunder", type: "camp", stars: 4,
+      avgPricePerNight: 5500, town: "Hunder, Nubra Valley", contact: "+91-94191-67845",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Hunder+Nubra+Valley",
+      amenities: ["Swiss Tents", "Meals Included", "Bonfire", "Camel Dunes View", "Stargazing"],
+      notes: "Set amongst the famous Hunder sand dunes. Premium Swiss tents with attached bathrooms; wake up to Bactrian camels outside. Book 3–4 weeks ahead in July–Aug.",
+    },
+    {
+      id: "ll5", name: "Himalayan Ecotourism Camp, Hunder", type: "camp", stars: 3,
+      avgPricePerNight: 3500, town: "Hunder, Nubra Valley", contact: "+91-98169-40011",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Hunder+Nubra+Valley",
+      amenities: ["Tents", "Meals Included", "Bonfire", "Sand Dunes Nearby"],
+      notes: "Budget-friendly camp near the dunes. Basic but clean shared facilities. Great value for overnight in Nubra.",
+    },
+    {
+      id: "ll6", name: "The Pangong Retreat (Norbu Camps)", type: "camp", stars: 4,
+      avgPricePerNight: 6500, town: "Spangmik, Pangong Tso", contact: "+91-94191-23454",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Pangong+Tso",
+      amenities: ["Lake View Tents", "Meals Included", "Sunrise Views", "Photography Spot"],
+      notes: "Lakeside Swiss tents facing Pangong Tso's blue waters directly. The sunrise from your tent is unmissable. Book 4–6 weeks in advance for June–August.",
+    },
+    {
+      id: "ll7", name: "Lake View Camp, Spangmik", type: "camp", stars: 3,
+      avgPricePerNight: 4000, town: "Spangmik, Pangong Tso", contact: "+91-96228-07888",
+      bookingUrl: "https://www.airbnb.co.in/s/Pangong-Tso/homes",
+      amenities: ["Lake View", "Meals Included", "Sleeping Bags", "Generator Power"],
+      notes: "Budget lakeside camp with great views. Shared Western-style restrooms. Popular with backpackers for the classic Pangong overnight experience.",
+    },
+    {
+      id: "ll8", name: "Korzok Village Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 1500, town: "Korzok Village, Tso Moriri", contact: "+91-94192-01237",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Korzok+Tso+Moriri",
+      amenities: ["Traditional Stone House", "Home-Cooked Meals", "Yak Wool Blankets"],
+      notes: "Authentic Ladakhi stone homestay in the highest permanently inhabited village at 4,595 m. Warming family kitchen; the warmest and most memorable overnight of the entire trip.",
+    },
+  ],
   "jyotirlinga-pilgrimage-road-trip": [
     {
       id: "jy1", name: "Bhimashankar Eco Resort", type: "resort", stars: 3,

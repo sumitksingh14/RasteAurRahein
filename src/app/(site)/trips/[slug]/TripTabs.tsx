@@ -31,6 +31,12 @@ const AI_BUDGET_ESTIMATES: Record<string, {
   source: string;
   searchQuery: string;
 }> = {
+  "leh-ladakh-9-days": {
+    accommodation: [1500, 12000], food: [300, 1000], transport: [1000, 2500],
+    activities: [500, 1500], misc: [500, 1200], currency: "INR",
+    source: "Based on Leh Ladakh traveller reports (2024–26)",
+    searchQuery: "Leh Ladakh trip budget per person 9 days 2024",
+  },
   "jyotirlinga-pilgrimage-road-trip": {
     accommodation: [1200, 5500], food: [200, 600], transport: [800, 1500],
     activities: [200, 500], misc: [300, 600], currency: "INR",
