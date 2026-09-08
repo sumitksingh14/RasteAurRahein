@@ -65,17 +65,19 @@ export default function Navbar() {
               alignItems: "center",
               gap: "8px",
               fontFamily: "var(--font-sans)",
-              fontSize: "1.4rem",
+              fontSize: "1.25rem",
               fontWeight: 800,
               color: "#006CE4",
               textDecoration: "none",
               letterSpacing: "-0.02em",
+              whiteSpace: "nowrap",
+              flexShrink: 0,
             }}
           >
             <img 
               src="/logo.png" 
               alt="Raste Aur Rahein Logo" 
-              style={{ height: "40px", width: "auto", objectFit: "contain" }} 
+              style={{ height: "36px", width: "auto", objectFit: "contain", flexShrink: 0 }} 
             />
             Raste Aur Rahein
           </Link>
@@ -85,7 +87,7 @@ export default function Navbar() {
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "2rem",
+              gap: "1.25rem",
             }}
             className="desktop-nav"
           >
@@ -530,13 +532,13 @@ export default function Navbar() {
       </div>
 
       <style>{`
-        @media (min-width: 768px) {
+        @media (min-width: 1024px) {
           .mobile-only { display: none !important; }
           .desktop-nav { display: flex !important; }
         }
-        @media (max-width: 767px) {
+        @media (max-width: 1023px) {
           .desktop-nav { display: none !important; }
-          .mobile-only { display: none !important; }
+          .mobile-only { display: flex !important; }
         }
         /* Regions dropdown */
         .nav-regions-dropdown {

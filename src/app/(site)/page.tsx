@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, MapPin, Smartphone, ArrowRight } from "lucide-react";
+import { ArrowRight, MapPin, Smartphone } from "lucide-react";
 import { getFeaturedTrips, getAllTrips, DEMO_AUTHOR } from "@/lib/queries";
 import TripCard from "@/components/ui/TripCard";
 import HeroSearch from "@/components/ui/HeroSearch";
@@ -11,8 +11,6 @@ export const metadata: Metadata = {
   description:
     "Portfolio-style travel blog documenting high-altitude treks, desert roads, and off-the-beaten-path adventures across India and beyond.",
 };
-
-const TRIP_TYPES = ["Treks", "Road Trips", "Destinations", "Itineraries"];
 
 export default async function HomePage() {
   const [featuredTrips, allTrips] = await Promise.all([
@@ -31,82 +29,204 @@ export default async function HomePage() {
     <div style={{ background: "#FFFFFF", minHeight: "100vh" }}>
 
       {/* ========================================================
-          HERO SECTION — Large rounded card with search overlay
+          HERO SECTION — Full-width centered hero (Stitch design)
+      ======================================================== */}
+      <section
+        style={{
+          position: "relative",
+          height: "min(620px, 70vw)",
+          minHeight: "480px",
+          overflow: "hidden",
+        }}
+      >
+        {/* Background image — Spiti Valley / mountain landscape */}
+        <Image
+          src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1920&q=85"
+          alt="Stunning Himalayan mountain landscape — Spiti Valley"
+          fill
+          style={{ objectFit: "cover", objectPosition: "center 30%" }}
+          className="animate-ken-burns"
+          priority
+          quality={85}
+        />
+
+        {/* Dark gradient overlay */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.50) 60%, rgba(0,0,0,0.65) 100%)",
+          }}
+        />
+
+        {/* Centered hero content */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
+            padding: "calc(var(--nav-height) + 1rem) 1.5rem 8rem",
+            zIndex: 2,
+          }}
+        >
+          <h1
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 900,
+              fontSize: "clamp(2.5rem, 6vw, 4rem)",
+              color: "#FFFFFF",
+              lineHeight: 1.1,
+              letterSpacing: "0.04em",
+              textTransform: "uppercase",
+              marginBottom: "0.6rem",
+              textShadow: "0 2px 16px rgba(0,0,0,0.5)",
+            }}
+          >
+            Raste Aur Raahein
+          </h1>
+          <p
+            style={{
+              color: "rgba(255,255,255,0.82)",
+              fontSize: "clamp(0.85rem, 1.8vw, 1rem)",
+              fontFamily: "var(--font-sans)",
+              fontWeight: 400,
+              letterSpacing: "0.01em",
+              maxWidth: "480px",
+            }}
+          >
+            By Sumit Singh — Discovering India&apos;s Best Road Trips and Treks
+          </p>
+        </div>
+
+        {/* Search overlay — Trip Discovery */}
+        <HeroSearch />
+      </section>
+
+      {/* ========================================================
+          STATS STRIP — 12+ States | 48+ Guides | 60k+ KM
       ======================================================== */}
       <section
         style={{
           background: "#F7F7F7",
-          paddingTop: "calc(var(--nav-height) + 1.5rem)",
-          paddingBottom: "3rem",
+          borderBottom: "1px solid #E5E7EB",
+          padding: "1.25rem 0",
         }}
       >
-        <div className="container">
-          {/* Hero Card */}
-          <div
-            style={{
-              position: "relative",
-              borderRadius: "24px",
-              overflow: "hidden",
-              height: "min(560px, 60vw)",
-              minHeight: "380px",
-            }}
-          >
-            {/* Background image */}
-            <Image
-              src="https://images.unsplash.com/photo-1518098268026-4e89f1a2cd8e?w=1920&q=85"
-              alt="Stunning travel destination"
-              fill
-              style={{ objectFit: "cover" }}
-              className="animate-ken-burns"
-              priority
-              quality={85}
-            />
-            {/* Gradient overlay */}
+        <div
+          className="container"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0",
+            flexWrap: "wrap",
+          }}
+        >
+          {[
+            { value: "12+", label: "States" },
+            { value: "48+", label: "Guides" },
+            { value: "60k+", label: "KM" },
+          ].map((stat, idx, arr) => (
             <div
+              key={stat.label}
               style={{
-                position: "absolute",
-                inset: 0,
-                background:
-                  "linear-gradient(135deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.25) 60%, transparent 100%)",
-              }}
-            />
-
-            {/* Hero Text */}
-            <div
-              style={{
-                position: "absolute",
-                top: "2.5rem",
-                left: "2.5rem",
-                zIndex: 2,
+                display: "flex",
+                alignItems: "center",
+                gap: "0",
               }}
             >
-              <h1
+              <div
                 style={{
-                  fontFamily: "var(--font-sans)",
-                  fontWeight: 800,
-                  fontSize: "clamp(1.8rem, 4.5vw, 3rem)",
-                  color: "#FFFFFF",
-                  lineHeight: 1.2,
-                  marginBottom: "0.75rem",
-                  maxWidth: "520px",
+                  textAlign: "center",
+                  padding: "0.5rem 2.5rem",
                 }}
               >
-                Find your next great<br />Indian adventure
-              </h1>
-              <p
-                style={{
-                  color: "rgba(255,255,255,0.85)",
-                  fontSize: "1rem",
-                  maxWidth: "400px",
-                  lineHeight: 1.6,
-                }}
-              >
-                Curated itineraries from high-altitude treks to coastal drives — every road has a story.
-              </p>
+                <div
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontWeight: 900,
+                    fontSize: "clamp(1.4rem, 3vw, 1.8rem)",
+                    color: "#262729",
+                    lineHeight: 1,
+                  }}
+                >
+                  {stat.value}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.75rem",
+                    color: "#6B7280",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.06em",
+                    fontWeight: 500,
+                    marginTop: "2px",
+                  }}
+                >
+                  {stat.label}
+                </div>
+              </div>
+              {idx < arr.length - 1 && (
+                <div
+                  style={{
+                    width: "1px",
+                    height: "32px",
+                    background: "#D1D5DB",
+                  }}
+                />
+              )}
             </div>
+          ))}
+        </div>
+      </section>
 
-            {/* Search Bar Card — sits on bottom of hero card */}
-            <HeroSearch />
+      {/* ========================================================
+          FEATURED TRIPS — Property listing card grid
+      ======================================================== */}
+      <section style={{ background: "#FFFFFF", padding: "3.5rem 0" }}>
+        <div className="container">
+          {/* Section header */}
+          <div style={{ marginBottom: "2rem" }}>
+            <h2
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 800,
+                fontSize: "clamp(1.4rem, 3vw, 1.75rem)",
+                color: "#262729",
+                marginBottom: "0",
+              }}
+            >
+              Featured Trips
+            </h2>
+            <div
+              style={{
+                width: 40,
+                height: 3,
+                borderRadius: "2px",
+                background: "#FEBB02",
+                marginTop: "0.5rem",
+              }}
+            />
+          </div>
+
+          <div className="trip-grid">
+            {featuredTrips.map((trip) => (
+              <TripCard key={trip._id} trip={trip} featured priority />
+            ))}
+          </div>
+
+          {/* View all link */}
+          <div style={{ textAlign: "center", marginTop: "2.5rem" }}>
+            <Link href="/trips" className="btn btn-outline">
+              View All Trips <ArrowRight size={16} />
+            </Link>
           </div>
         </div>
       </section>
@@ -114,7 +234,7 @@ export default async function HomePage() {
       {/* ========================================================
           TRY HOSTING — "Share Your Journey" section
       ======================================================== */}
-      <section style={{ background: "#FFFFFF", padding: "4rem 0" }}>
+      <section style={{ background: "#F7F7F7", padding: "4rem 0" }}>
         <div className="container">
           <div
             style={{
@@ -150,11 +270,7 @@ export default async function HomePage() {
               >
                 Have an incredible trip story? Import your itinerary or write about your adventures and inspire thousands of fellow travellers across India.
               </p>
-              <Link
-                href="/import"
-                id="hosting-cta-btn"
-                className="btn btn-primary"
-              >
+              <Link href="/import" id="hosting-cta-btn" className="btn btn-primary">
                 Import Your Itinerary
               </Link>
             </div>
@@ -170,7 +286,7 @@ export default async function HomePage() {
             >
               <Image
                 src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80"
-                alt="Beautiful apartment interior"
+                alt="Beautiful travel destination"
                 fill
                 style={{ objectFit: "cover" }}
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -181,58 +297,7 @@ export default async function HomePage() {
       </section>
 
       {/* ========================================================
-          FEATURED TRIPS — Property listing card grid
-      ======================================================== */}
-      <section style={{ background: "#F7F7F7", padding: "4rem 0" }}>
-        <div className="container">
-          {/* Section header */}
-          <div style={{ marginBottom: "2.5rem" }}>
-            <h2
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 800,
-                fontSize: "clamp(1.5rem, 3vw, 2rem)",
-                color: "#262729",
-                marginBottom: "0.5rem",
-                lineHeight: 1.2,
-              }}
-            >
-              Featured Trips
-              <br />
-              <span style={{ color: "#262729" }}>Worth Reading</span>
-            </h2>
-            {/* Yellow underline accent */}
-            <div
-              style={{
-                width: 48,
-                height: 4,
-                borderRadius: "2px",
-                background: "#FEBB02",
-                marginTop: "0.75rem",
-              }}
-            />
-          </div>
-
-          <div className="trip-grid">
-            {featuredTrips.map((trip) => (
-              <TripCard key={trip._id} trip={trip} featured priority />
-            ))}
-          </div>
-
-          {/* View all link */}
-          <div style={{ textAlign: "center", marginTop: "2.5rem" }}>
-            <Link
-              href="/trips"
-              className="btn btn-outline"
-            >
-              View All Trips <ArrowRight size={16} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================
-          DISCOVER MORE — About the blog (blue heading, yellow accent)
+          DISCOVER MORE — About the blog
       ======================================================== */}
       <section style={{ background: "#FFFFFF", padding: "5rem 0" }}>
         <div className="container">
@@ -281,11 +346,7 @@ export default async function HomePage() {
               >
                 From high-altitude Himalayan treks to Kerala backwaters and Rajasthan desert drives — Raste Aur Raahein documents real, honest travel experiences with detailed itineraries, cost breakdowns, and the kind of tips you only learn the hard way.
               </p>
-              <Link
-                href="/about"
-                id="discover-more-btn"
-                className="btn btn-primary"
-              >
+              <Link href="/about" id="discover-more-btn" className="btn btn-primary">
                 Discover More
               </Link>
             </div>
@@ -316,25 +377,25 @@ export default async function HomePage() {
       ======================================================== */}
       <section style={{ background: "#F7F7F7", padding: "4rem 0" }}>
         <div className="container">
-          <div style={{ marginBottom: "2.5rem" }}>
+          <div style={{ marginBottom: "2rem" }}>
             <h2
               style={{
                 fontFamily: "var(--font-sans)",
                 fontWeight: 800,
-                fontSize: "clamp(1.5rem, 3vw, 2rem)",
+                fontSize: "clamp(1.4rem, 3vw, 1.75rem)",
                 color: "#262729",
-                marginBottom: "0.5rem",
+                marginBottom: "0",
               }}
             >
               Recent Adventures
             </h2>
             <div
               style={{
-                width: 48,
-                height: 4,
+                width: 40,
+                height: 3,
                 borderRadius: "2px",
                 background: "#FEBB02",
-                marginTop: "0.75rem",
+                marginTop: "0.5rem",
               }}
             />
           </div>
@@ -423,10 +484,7 @@ export default async function HomePage() {
               <p style={{ color: "#6B7280", lineHeight: 1.75, marginBottom: "1.5rem", fontSize: "0.9rem" }}>
                 This blog documents real trips with honest cost breakdowns, detailed day-by-day itineraries, and the kind of tips you only learn by making mistakes.
               </p>
-              <Link
-                href="/about"
-                className="btn btn-outline"
-              >
+              <Link href="/about" className="btn btn-outline">
                 Read More
               </Link>
             </div>
@@ -464,19 +522,11 @@ export default async function HomePage() {
                 Install our app for offline access to all itineraries and trip guides
               </p>
               <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-                <Link
-                  href="/import"
-                  id="import-trip-btn"
-                  className="btn btn-primary"
-                >
+                <Link href="/import" id="import-trip-btn" className="btn btn-primary">
                   <Smartphone size={16} />
                   Import Itinerary
                 </Link>
-                <Link
-                  href="/trips"
-                  id="explore-all-btn"
-                  className="btn btn-primary"
-                >
+                <Link href="/trips" id="explore-all-btn" className="btn btn-primary">
                   <MapPin size={16} />
                   Browse Trips
                 </Link>

@@ -4,61 +4,31 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 
-const TRIP_TYPES = ["Treks", "Road Trips", "Destinations", "Itineraries"];
+const CATEGORY_CHIPS = ["Treks", "Road Trip", "Destinations", "Itineraries"];
 
-const DURATION_OPTIONS = [
-  "Any length",
-  "1–3 days",
-  "4–7 days",
-  "8–14 days",
-  "15+ days",
-];
-
-const SEASON_OPTIONS = [
-  "Any season",
-  "Spring",
-  "Summer",
-  "Monsoon",
-  "Autumn",
-  "Winter",
-];
+const SEASON_OPTIONS = ["Summer", "Monsoon", "Winter", "Spring", "Autumn"];
+const DURATION_OPTIONS = ["1 Week", "2+ Weeks", "Weekend", "3–5 Days"];
 
 export default function HeroSearch() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState(TRIP_TYPES[0]);
-  const [location, setLocation] = useState("");
+  const [activeCategory, setActiveCategory] = useState(CATEGORY_CHIPS[1]);
   const [season, setSeason] = useState(SEASON_OPTIONS[0]);
   const [duration, setDuration] = useState(DURATION_OPTIONS[0]);
+  const [query, setQuery] = useState("");
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-
     const params = new URLSearchParams();
-    if (location.trim()) {
-      params.append("query", location.trim());
+    if (query.trim()) params.append("query", query.trim());
+    const tagMap: Record<string, string> = {
+      Treks: "Trekking",
+      "Road Trip": "Adventure",
+    };
+    const mappedTag = tagMap[activeCategory] || activeCategory;
+    if (activeCategory !== "Destinations" && activeCategory !== "Itineraries") {
+      params.append("tag", mappedTag);
     }
-    
-    // We map the active tab to a tag
-    if (activeTab !== "Destinations" && activeTab !== "Itineraries") {
-       const tagMap: Record<string, string> = {
-         "Treks": "Trekking",
-         "Road Trips": "Adventure", 
-       };
-       const mappedTag = tagMap[activeTab] || activeTab;
-       params.append("tag", mappedTag);
-    }
-
-    if (duration !== "Any length") {
-       const durationIdx = DURATION_OPTIONS.indexOf(duration);
-       if (durationIdx > 0) {
-         params.append("durationIdx", durationIdx.toString());
-       }
-    }
-
-    if (season !== "Any season") {
-       params.append("season", season);
-    }
-
+    params.append("season", season);
     router.push(`/trips?${params.toString()}`);
   };
 
@@ -66,75 +36,97 @@ export default function HeroSearch() {
     <div
       style={{
         position: "absolute",
-        bottom: "2rem",
-        left: "2rem",
-        right: "2rem",
+        bottom: "2.5rem",
+        left: "50%",
+        transform: "translateX(-50%)",
         zIndex: 3,
+        width: "min(680px, calc(100% - 2rem))",
+        overflow: "hidden",
       }}
     >
-      {/* Type tabs */}
+      {/* "Trip Discovery" label + category chips */}
       <div
         style={{
+          background: "rgba(255,255,255,0.12)",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+          borderRadius: "12px",
+          padding: "0.4rem 0.7rem",
           display: "flex",
-          gap: "0.5rem",
-          marginBottom: "0.75rem",
+          alignItems: "center",
+          gap: "0.4rem",
+          marginBottom: "0.65rem",
+          width: "100%",
+          overflow: "hidden",
+          flexWrap: "nowrap",
         }}
       >
         <span
           style={{
             fontFamily: "var(--font-sans)",
-            fontWeight: 800,
-            fontSize: "1.1rem",
-            color: "rgba(255,255,255,0.9)",
-            marginRight: "0.5rem",
+            fontWeight: 700,
+            fontSize: "0.75rem",
+            color: "rgba(255,255,255,0.85)",
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            paddingLeft: "0.25rem",
+            whiteSpace: "nowrap",
           }}
         >
-          FIND
+          Trip Discovery
         </span>
-        {TRIP_TYPES.map((type) => {
-          const isActive = activeTab === type;
+        <div
+          style={{
+            width: "1px",
+            height: "14px",
+            background: "rgba(255,255,255,0.3)",
+            flexShrink: 0,
+          }}
+        />
+        {CATEGORY_CHIPS.map((chip) => {
+          const isActive = activeCategory === chip;
           return (
             <button
-              key={type}
-              onClick={() => setActiveTab(type)}
+              key={chip}
               type="button"
+              onClick={() => setActiveCategory(chip)}
               style={{
-                border: "none",
-                background: "transparent",
-                color: isActive ? "#FFFFFF" : "rgba(255,255,255,0.65)",
+                border: isActive ? "1.5px solid #FEBB02" : "1.5px solid rgba(255,255,255,0.3)",
+                background: isActive ? "#FEBB02" : "rgba(255,255,255,0.1)",
+                color: isActive ? "#262729" : "rgba(255,255,255,0.9)",
                 fontFamily: "var(--font-sans)",
-                fontSize: "0.875rem",
-                fontWeight: isActive ? 600 : 400,
+                fontSize: "0.72rem",
+                fontWeight: isActive ? 700 : 500,
                 cursor: "pointer",
-                borderBottom: isActive ? "2px solid #FEBB02" : "2px solid transparent",
-                borderRadius: "0",
-                padding: "0.3rem 0.75rem",
+                borderRadius: "100px",
+                padding: "0.25rem 0.7rem",
+                transition: "all 0.2s ease",
+                whiteSpace: "nowrap",
               }}
             >
-              {type}
+              {chip}
             </button>
           );
         })}
       </div>
 
-      {/* Search inputs row */}
+      {/* Main search bar */}
       <form
         onSubmit={handleSearch}
         style={{
           display: "flex",
           alignItems: "stretch",
           background: "#FFFFFF",
-          borderRadius: "100px",
+          borderRadius: "12px",
           overflow: "hidden",
-          boxShadow: "0 4px 24px rgba(0,0,0,0.18)",
-          maxWidth: "680px",
+          boxShadow: "0 8px 32px rgba(0,0,0,0.22)",
         }}
       >
-        {/* Location */}
+        {/* Query input */}
         <div
           style={{
             flex: 2,
-            padding: "0 1.5rem",
+            padding: "0 1.25rem",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -142,22 +134,30 @@ export default function HeroSearch() {
             borderRight: "1px solid #E5E7EB",
           }}
         >
-          <label style={{ fontSize: "0.7rem", fontWeight: 600, color: "#374151", letterSpacing: "0.04em", textTransform: "uppercase" }}>
-            Location
+          <label
+            style={{
+              fontSize: "0.65rem",
+              fontWeight: 700,
+              color: "#374151",
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+            }}
+          >
+            Category
           </label>
           <input
             type="text"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder="Which state do you prefer?"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={activeCategory === "Road Trip" ? "Road Trip" : activeCategory}
             style={{
               border: "none",
               outline: "none",
               fontSize: "0.82rem",
-              color: "#006CE4",
+              color: "#262729",
               background: "transparent",
               fontFamily: "var(--font-sans)",
-              fontWeight: 500,
+              fontWeight: 600,
               padding: 0,
             }}
           />
@@ -167,7 +167,7 @@ export default function HeroSearch() {
         <div
           style={{
             flex: 1,
-            padding: "0 1.25rem",
+            padding: "0 1.1rem",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -175,7 +175,15 @@ export default function HeroSearch() {
             borderRight: "1px solid #E5E7EB",
           }}
         >
-          <label style={{ fontSize: "0.7rem", fontWeight: 600, color: "#374151", letterSpacing: "0.04em", textTransform: "uppercase" }}>
+          <label
+            style={{
+              fontSize: "0.65rem",
+              fontWeight: 700,
+              color: "#374151",
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+            }}
+          >
             Season
           </label>
           <select
@@ -185,10 +193,10 @@ export default function HeroSearch() {
               border: "none",
               outline: "none",
               fontSize: "0.82rem",
-              color: season === "Any season" ? "#9CA3AF" : "#006CE4",
+              color: "#262729",
               background: "transparent",
               fontFamily: "var(--font-sans)",
-              fontWeight: season === "Any season" ? 400 : 500,
+              fontWeight: 600,
               padding: 0,
               cursor: "pointer",
               WebkitAppearance: "none",
@@ -197,7 +205,9 @@ export default function HeroSearch() {
             }}
           >
             {SEASON_OPTIONS.map((opt) => (
-              <option key={opt} value={opt}>{opt}</option>
+              <option key={opt} value={opt}>
+                {opt}
+              </option>
             ))}
           </select>
         </div>
@@ -206,14 +216,22 @@ export default function HeroSearch() {
         <div
           style={{
             flex: 1,
-            padding: "0 1.25rem",
+            padding: "0 1.1rem",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             minHeight: "56px",
           }}
         >
-          <label style={{ fontSize: "0.7rem", fontWeight: 600, color: "#374151", letterSpacing: "0.04em", textTransform: "uppercase" }}>
+          <label
+            style={{
+              fontSize: "0.65rem",
+              fontWeight: 700,
+              color: "#374151",
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+            }}
+          >
             Duration
           </label>
           <select
@@ -223,10 +241,10 @@ export default function HeroSearch() {
               border: "none",
               outline: "none",
               fontSize: "0.82rem",
-              color: duration === "Any length" ? "#9CA3AF" : "#006CE4",
+              color: "#262729",
               background: "transparent",
               fontFamily: "var(--font-sans)",
-              fontWeight: duration === "Any length" ? 400 : 500,
+              fontWeight: 600,
               padding: 0,
               cursor: "pointer",
               WebkitAppearance: "none",
@@ -235,7 +253,9 @@ export default function HeroSearch() {
             }}
           >
             {DURATION_OPTIONS.map((opt) => (
-              <option key={opt} value={opt}>{opt}</option>
+              <option key={opt} value={opt}>
+                {opt}
+              </option>
             ))}
           </select>
         </div>
@@ -243,20 +263,27 @@ export default function HeroSearch() {
         {/* Search button */}
         <button
           type="submit"
-          className="hero-search-btn"
           style={{
             width: 56,
             height: 56,
-            borderRadius: "50%",
+            borderRadius: "0",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             flexShrink: 0,
             border: "none",
+            background: "#006CE4",
             cursor: "pointer",
+            transition: "background 0.2s ease",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.background = "#0057b8";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.background = "#006CE4";
           }}
         >
-          <Search size={20} color="#262729" />
+          <Search size={20} color="#FFFFFF" />
         </button>
       </form>
     </div>
