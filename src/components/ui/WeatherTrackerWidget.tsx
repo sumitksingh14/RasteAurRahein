@@ -207,9 +207,16 @@ export default function WeatherTrackerWidget() {
             gap: "1rem",
           }}
         >
-          {(data?.locations || []).map((loc) => (
-            <WeatherCard key={`${loc.lat}-${loc.lon}`} loc={loc} />
-          ))}
+          {(data?.locations || [])
+            .filter(
+              (loc, idx, arr) =>
+                arr.findIndex(
+                  (l) => l.lat === loc.lat && l.lon === loc.lon
+                ) === idx
+            )
+            .map((loc, idx) => (
+              <WeatherCard key={`${loc.lat}-${loc.lon}-${idx}`} loc={loc} />
+            ))}
         </div>
       )}
 
