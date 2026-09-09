@@ -8,9 +8,9 @@ import { format } from "date-fns";
 import { useState } from "react";
 import BookmarkButton from "@/components/ui/BookmarkButton";
 
-// Curated cover images from Unsplash — one per trip slug
+// Curated cover images — one per trip slug
 const FALLBACK_IMAGES: Record<string, string> = {
-  // Leh Ladakh — Pangong Tso with prayer flags and Karakoram ranges (generated)
+  // Leh Ladakh — Pangong Tso with prayer flags and Karakoram ranges
   "leh-ladakh-9-days": "/images/leh-ladakh-pangong-lake.jpg",
   "spiti-valley": "/images/spiti-ki-monastery.jpg",
   "mysore-coorg-wayanad-ooty": "/images/mysore-palace.jpg",
@@ -27,6 +27,13 @@ const FALLBACK_IMAGES: Record<string, string> = {
     "https://images.unsplash.com/photo-1712733900711-d0b929d0d7cc?w=800&q=80",
   "panch-kedar-trek-10-days": "/images/panch-kedar-temple.png",
   "pune-konkan-coast-raigad": "/images/konkan-coast.png",
+  // New trips — generated destination images
+  "haridwar-rishikesh-3-days": "/images/haridwar-rishikesh-ganga-aarti.jpg",
+  "nainital-jim-corbett-3-days": "/images/nainital-naini-lake.jpg",
+  "himachal-shimla-manali-dharamshala-dalhousie-5-days": "/images/himachal-manali-mountains.jpg",
+  "jammu-kashmir-5-days": "/images/kashmir-dal-lake.jpg",
+  "agra-mathura-3-days": "/images/agra-taj-mahal-sunrise.jpg",
+  "auli-nearby-3-days": "/images/auli-ski-nanda-devi.jpg",
 };
 
 const DEFAULT_IMAGE =
