@@ -233,6 +233,8 @@ export default function EnrichmentGapsPage() {
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<FieldStatus | "all">("all");
   const [sweeping, setSweeping] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [enrichingTrip, setEnrichingTrip] = useState<string | null>(null);
   const [sweepMsg, setSweepMsg] = useState<string | null>(null);
 
   const load = () => {
@@ -264,6 +266,21 @@ export default function EnrichmentGapsPage() {
       setSweepMsg("Failed to trigger sweep.");
     } finally {
       setSweeping(false);
+    }
+  };
+
+  const handleProcessQueue = async () => {
+    setProcessing(true);
+    setSweepMsg(null);
+    try {
+      const res = await fetch("/api/enrichment/process", { method: "POST" });
+      const d = await res.json();
+      setSweepMsg(`Processed ${d.processed ?? 0} jobs (Success: ${d.success ?? 0}, Failed: ${d.failed ?? 0}, Skipped: ${d.skipped ?? 0}).`);
+      setTimeout(load, 1000);
+    } catch {
+      setSweepMsg("Failed to process queue.");
+    } finally {
+      setProcessing(false);
     }
   };
 
@@ -332,6 +349,26 @@ export default function EnrichmentGapsPage() {
           >
             Run Logs
           </Link>
+          <button
+            onClick={handleProcessQueue}
+            disabled={processing}
+            style={{
+              padding: "0.55rem 1.1rem",
+              borderRadius: 10,
+              border: "1px solid #cbd5e1",
+              background: processing ? "#e2e8f0" : "#f8fafc",
+              fontSize: "0.85rem",
+              fontWeight: 600,
+              color: "#334155",
+              cursor: processing ? "not-allowed" : "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+            }}
+          >
+            <RefreshCw size={14} className={processing ? "animate-spin" : ""} />
+            {processing ? "Processing…" : "Process Queue"}
+          </button>
           <button
             onClick={handleSweep}
             disabled={sweeping}
@@ -539,37 +576,56 @@ export default function EnrichmentGapsPage() {
               </div>
 
               {/* Actions */}
-              <div style={{ display: "flex", gap: 6 }}>
+              <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
                 <button
                   onClick={async () => {
-                    const missingFields = trip.fields
-                      .filter((f) => f.status === "missing" || f.status === "stale")
-                      .map((f) => f.field);
-                    for (const field of missingFields) {
-                      await fetch("/api/enrichment/trigger", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                          tripSlug: trip.tripSlug,
-                          field,
-                          priority: "high",
-                        }),
-                      });
+                    if (enrichingTrip) return;
+                    setEnrichingTrip(trip.tripSlug);
+                    setSweepMsg(`Enriching fields for ${trip.tripTitle}...`);
+                    try {
+                      const missingFields = trip.fields
+                        .filter((f) => f.status === "missing" || f.status === "stale")
+                        .map((f) => f.field);
+                      for (const field of missingFields) {
+                        await fetch("/api/enrichment/trigger", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({
+                            tripSlug: trip.tripSlug,
+                            field,
+                            priority: "high",
+                          }),
+                        });
+                      }
+                      setSweepMsg(`Finished enriching ${trip.tripTitle}!`);
+                    } catch {
+                      setSweepMsg(`Failed enriching ${trip.tripTitle}.`);
+                    } finally {
+                      setEnrichingTrip(null);
+                      load();
                     }
-                    setTimeout(load, 1000);
                   }}
+                  disabled={enrichingTrip === trip.tripSlug}
                   title="Trigger enrichment for missing fields"
                   style={{
                     padding: "0.35rem 0.65rem",
                     borderRadius: 8,
                     border: "1px solid #e2e8f0",
-                    background: "#f8fafc",
+                    background: enrichingTrip === trip.tripSlug ? "#e0e7ff" : "#f8fafc",
                     fontSize: "0.75rem",
-                    cursor: "pointer",
-                    color: "#475569",
+                    cursor: enrichingTrip === trip.tripSlug ? "not-allowed" : "pointer",
+                    color: enrichingTrip === trip.tripSlug ? "#4338ca" : "#475569",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 4,
                   }}
                 >
-                  <Sparkles size={12} />
+                  {enrichingTrip === trip.tripSlug ? (
+                    <RefreshCw size={12} className="animate-spin" />
+                  ) : (
+                    <Sparkles size={12} />
+                  )}
+                  {enrichingTrip === trip.tripSlug && <span>Enriching...</span>}
                 </button>
               </div>
             </div>

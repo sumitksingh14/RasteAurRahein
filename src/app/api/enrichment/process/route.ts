@@ -9,6 +9,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
+import { getAdminSession } from "@/lib/admin";
 import { dequeueJobs } from "@/lib/enrichment/store";
 import { runEnrichment } from "@/lib/enrichment/enrichmentEngine";
 import type { EnrichmentJob } from "@/lib/enrichment/types";
@@ -19,15 +20,16 @@ const MAX_JOBS_PER_RUN = 5;
 export const maxDuration = 300; // Vercel Pro: 5 minutes
 
 export async function POST(req: NextRequest) {
-  // Auth check: allow Vercel Cron (x-vercel-signature) OR CRON_SECRET header
+  // Auth check: allow Vercel Cron, CRON_SECRET header, or authenticated Admin session
   const authHeader = req.headers.get("authorization");
   const cronHeader = req.headers.get("x-cron-secret");
 
   const isVercelCron = req.headers.get("x-vercel-cron") === "1";
   const hasCronSecret =
     CRON_SECRET && (cronHeader === CRON_SECRET || authHeader === `Bearer ${CRON_SECRET}`);
+  const adminSession = await getAdminSession();
 
-  if (!isVercelCron && !hasCronSecret) {
+  if (!isVercelCron && !hasCronSecret && !adminSession) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

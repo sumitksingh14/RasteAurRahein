@@ -11,15 +11,19 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { isLocked, enqueueJob, getFieldStatus } from "@/lib/enrichment/store";
+import { runEnrichment } from "@/lib/enrichment/enrichmentEngine";
 import type { TripFieldName, EnrichmentJob } from "@/lib/enrichment/types";
+
+export const maxDuration = 120; // Allow up to 2 minutes for worker LLM + API execution
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { tripSlug, field, priority = "high" } = body as {
+    const { tripSlug, field, priority = "high", sync = false } = body as {
       tripSlug: string;
       field: TripFieldName;
       priority?: "high" | "normal";
+      sync?: boolean;
     };
 
     if (!tripSlug || !field) {
@@ -69,7 +73,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Enqueue the job
+    // Prepare job
     const job: EnrichmentJob = {
       jobId: crypto.randomUUID(),
       tripSlug,
@@ -79,6 +83,23 @@ export async function POST(req: NextRequest) {
       attempt: 0,
     };
 
+    // If high priority or sync requested (e.g. from admin action or on-demand page load), run immediately
+    if (priority === "high" || sync) {
+      const result = await runEnrichment(job);
+      return NextResponse.json(
+        {
+          status: result.outcome === "success" ? "success" : result.outcome === "skipped" ? "skipped" : "failed",
+          jobId: job.jobId,
+          outcome: result.outcome,
+          message: result.message,
+          tokensUsed: result.tokensUsed,
+          durationMs: result.durationMs,
+        },
+        { status: result.outcome === "failed" ? 500 : 200 }
+      );
+    }
+
+    // Otherwise enqueue for background worker processing
     await enqueueJob(job);
 
     return NextResponse.json(
@@ -92,7 +113,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error("[enrichment/trigger] Error:", err);
     return NextResponse.json(
-      { error: "Failed to enqueue enrichment job" },
+      { error: "Failed to process enrichment trigger" },
       { status: 500 }
     );
   }

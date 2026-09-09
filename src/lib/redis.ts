@@ -11,12 +11,13 @@ async function redisCmd(cmd: string, ...args: (string | number)[]): Promise<unkn
     throw new Error("Upstash Redis is not configured (UPSTASH_REDIS_REST_URL / TOKEN)");
   }
 
-  const response = await fetch(`${UPSTASH_URL}/${cmd}/${args.map(encodeURIComponent).join("/")}`, {
+  const response = await fetch(UPSTASH_URL, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${UPSTASH_TOKEN}`,
       "Content-Type": "application/json",
     },
+    body: JSON.stringify([cmd, ...args]),
   });
 
   if (!response.ok) {
@@ -64,12 +65,18 @@ export const redis = {
   /** HGETALL key → Record<string,string> | null */
   async hgetall(key: string): Promise<Record<string, string> | null> {
     const result = await redisCmd("hgetall", key);
-    if (!result || !Array.isArray(result) || result.length === 0) return null;
-    const obj: Record<string, string> = {};
-    for (let i = 0; i < result.length; i += 2) {
-      obj[result[i] as string] = result[i + 1] as string;
+    if (!result) return null;
+    if (Array.isArray(result)) {
+      if (result.length === 0) return null;
+      const obj: Record<string, string> = {};
+      for (let i = 0; i < result.length; i += 2) {
+        obj[result[i] as string] = result[i + 1] as string;
+      }
+      return obj;
+    } else if (typeof result === "object" && Object.keys(result).length > 0) {
+      return result as Record<string, string>;
     }
-    return obj;
+    return null;
   },
 
   /** SADD key member → 0|1 */
