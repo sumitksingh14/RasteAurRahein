@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Map, List, DollarSign, Hotel, Utensils, Gauge, Cloud, Sparkles, ExternalLink } from "lucide-react";
 import ItineraryAccordion from "@/components/ui/ItineraryAccordion";
 import MapView from "@/components/ui/MapView";
@@ -10,6 +10,120 @@ import FuelRestStops from "@/components/ui/FuelRestStops";
 import WeatherPanel from "@/components/ui/WeatherPanel";
 import { TRIP_WEATHER_COORDS } from "@/lib/weatherCoords";
 import type { Trip, MapPin } from "@/lib/types";
+import type { TripFieldName } from "@/lib/enrichment/types";
+
+// ---------------------------------------------------------------------------
+// Unverified badge — shown when a field is ai_filled but not yet verified
+// ---------------------------------------------------------------------------
+function UnverifiedBadge({
+  field,
+  tripSlug,
+  confidence,
+}: {
+  field: TripFieldName;
+  tripSlug: string;
+  confidence?: number;
+}) {
+  const [reported, setReported] = useState(false);
+
+  const handleReport = async () => {
+    if (reported) return;
+    await fetch("/api/admin/enrichment/report-issue", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tripSlug, field, reason: "User flagged via trip page" }),
+    });
+    setReported(true);
+  };
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        padding: "0.4rem 0.8rem",
+        background: "rgba(245,158,11,0.08)",
+        border: "1px solid rgba(245,158,11,0.25)",
+        borderRadius: 8,
+        marginBottom: "0.75rem",
+        fontSize: "0.75rem",
+        color: "#92400e",
+        flexWrap: "wrap",
+      }}
+    >
+      <Sparkles size={12} style={{ flexShrink: 0 }} />
+      <span>
+        <strong>AI-suggested, unverified</strong>
+        {confidence !== undefined && (
+          <span style={{ opacity: 0.7 }}> · {Math.round(confidence * 100)}% confidence</span>
+        )}
+      </span>
+      <button
+        onClick={handleReport}
+        disabled={reported}
+        style={{
+          marginLeft: "auto",
+          fontSize: "0.7rem",
+          color: reported ? "#9ca3af" : "#d97706",
+          background: "none",
+          border: "none",
+          cursor: reported ? "default" : "pointer",
+          padding: 0,
+          textDecoration: "underline",
+          flexShrink: 0,
+        }}
+      >
+        {reported ? "Reported ✓" : "Report an issue"}
+      </button>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Hook: fire async trigger for missing fields and track enrichment statuses
+// ---------------------------------------------------------------------------
+type FieldStatusMap = Partial<Record<TripFieldName, { status: string; confidence: number }>>;
+
+function useEnrichmentStatuses(tripSlug: string) {
+  const [statuses, setStatuses] = useState<FieldStatusMap>({});
+
+  useEffect(() => {
+    const fields: TripFieldName[] = [
+      "cover_image",
+      "gallery_images",
+      "overall_cost",
+      "stay_recommendations",
+      "route_options",
+      "weather_summary",
+    ];
+
+    // Check each field status and trigger enrichment for missing ones
+    for (const field of fields) {
+      fetch(`/api/enrichment/status?tripSlug=${tripSlug}&field=${field}`)
+        .then((r) => r.json())
+        .then((d) => {
+          const s = d.status;
+          if (!s || s.status === "missing") {
+            // Fire async trigger — non-blocking
+            fetch("/api/enrichment/trigger", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ tripSlug, field, priority: "normal" }),
+            }).catch(() => {});
+          } else {
+            setStatuses((prev) => ({
+              ...prev,
+              [field]: { status: s.status, confidence: s.confidence ?? 0 },
+            }));
+          }
+        })
+        .catch(() => {});
+    }
+  }, [tripSlug]);
+
+  return statuses;
+}
 
 type TabId = "itinerary" | "map" | "costs" | "stay" | "food" | "route" | "weather";
 
@@ -139,6 +253,7 @@ interface TripTabsProps {
 
 export default function TripTabs({ trip }: TripTabsProps) {
   const [activeTab, setActiveTab] = useState<TabId>("itinerary");
+  const enrichmentStatuses = useEnrichmentStatuses(trip.slug);
 
   // Collect all map pins from itinerary
   const mapPins: MapPin[] =
@@ -562,7 +677,16 @@ export default function TripTabs({ trip }: TripTabsProps) {
       )}
 
       {activeTab === "stay" && (
-        <StaySuggestions tripSlug={trip.slug} tripTitle={trip.title} />
+        <div>
+          {enrichmentStatuses.stay_recommendations?.status === "ai_filled" && (
+            <UnverifiedBadge
+              field="stay_recommendations"
+              tripSlug={trip.slug}
+              confidence={enrichmentStatuses.stay_recommendations.confidence}
+            />
+          )}
+          <StaySuggestions tripSlug={trip.slug} tripTitle={trip.title} />
+        </div>
       )}
 
       {activeTab === "food" && (

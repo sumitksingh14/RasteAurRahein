@@ -11,6 +11,7 @@ import {
   LogOut,
   Shield,
   ChevronRight,
+  Sparkles,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -18,6 +19,7 @@ const NAV_ITEMS = [
   { href: "/admin/trips", label: "Trips", icon: MapPin },
   { href: "/admin/comments", label: "Comments", icon: MessageSquare },
   { href: "/admin/users", label: "Users", icon: Users },
+  { href: "/admin/enrichment", label: "Enrichment", icon: Sparkles },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
