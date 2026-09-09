@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.sumit.rasteaurrahein",
+    "sha256_cert_fingerprints": [
+      "C0:69:03:FE:F7:58:9E:05:AF:75:FB:2F:B9:E4:27:8D:34:6C:06:14:69:EA:EA:87:09:8F:0C:C9:39:59:C1:44"
+    ]
+  }
+}]

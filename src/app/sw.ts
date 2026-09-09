@@ -1,5 +1,12 @@
 import { defaultCache } from "@serwist/next/worker";
-import { Serwist, NetworkOnly, NetworkFirst, CacheFirst, ExpirationPlugin, type PrecacheEntry } from "serwist";
+import {
+  Serwist,
+  NetworkOnly,
+  NetworkFirst,
+  CacheFirst,
+  ExpirationPlugin,
+  type PrecacheEntry,
+} from "serwist";
 
 // Serwist injects the precache manifest at build time as `self.__SW_MANIFEST`.
 // Declare it here so TypeScript is satisfied.
@@ -46,3 +53,24 @@ const serwist = new Serwist({
 });
 
 serwist.addEventListeners();
+
+// ── Offline fallback for navigation requests ────────────────────────────────
+// When a page navigation fails (offline + not cached), serve /offline.
+// We listen for fetch events after Serwist's handlers; if no match or
+// network error, we fall back to the cached /offline page.
+self.addEventListener("fetch", (event: FetchEvent) => {
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetch(event.request).catch(async () => {
+        const cache = await caches.open("pages");
+        const cached = await cache.match("/offline");
+        if (cached) return cached;
+        // Ultimate fallback — basic offline message
+        return new Response("You are offline. Please reconnect.", {
+          status: 503,
+          headers: { "Content-Type": "text/plain" },
+        });
+      })
+    );
+  }
+});

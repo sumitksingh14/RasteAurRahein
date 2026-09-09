@@ -47,7 +47,20 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+        {/* ── Android PWA: status-bar colour ── */}
+        <meta name="theme-color" content="#006CE4" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#111318" media="(prefers-color-scheme: dark)" />
+        {/* ── Android legacy flag ── */}
+        <meta name="mobile-web-app-capable" content="yes" />
+        {/* ── iOS standalone flags ── */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Raste Aur Raahein" />
+        {/* ── iOS touch icon (shown when "Add to Home Screen") ── */}
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+        <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512.png" />
         <WebSiteSchema />
       </head>
       <body>
