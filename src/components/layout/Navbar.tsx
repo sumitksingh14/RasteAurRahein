@@ -205,12 +205,12 @@ export default function Navbar() {
               );
             })}
 
-            {/* My Itineraries — logged-in only */}
+            {/* Dashboard — logged-in only */}
             {user && (() => {
-              const isActive = pathname.startsWith("/itineraries");
+              const isActive = pathname.startsWith("/dashboard");
               return (
                 <Link
-                  href="/itineraries"
+                  href="/dashboard"
                   style={{
                     fontSize: "0.9rem",
                     fontWeight: 500,
@@ -228,7 +228,7 @@ export default function Navbar() {
                     (e.currentTarget.style.color = isActive ? "#006CE4" : "#374151")
                   }
                 >
-                  My Itineraries
+                  Dashboard
                   {isActive && (
                     <span
                       style={{
