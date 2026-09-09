@@ -283,6 +283,18 @@ export default function GroupTripPage() {
     router.push("/dashboard");
   };
 
+  const handleDeleteTrip = async () => {
+    if (!group) return;
+    if (!confirm(`Permanently delete "${group.name}"? This cannot be undone.`)) return;
+    const res = await fetch(`/api/group-trips/${groupId}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+    if (res.ok) {
+      router.push("/dashboard");
+    }
+  };
+
   const handleRemoveMember = async (memberId: string) => {
     if (!confirm("Remove this member?")) return;
     await fetch(`/api/group-trips/${groupId}/members/${memberId}`, {
@@ -466,6 +478,27 @@ export default function GroupTripPage() {
                   }}
                 >
                   <LogOut size={13} /> Leave Trip
+                </button>
+              )}
+              {isOrganizer && (
+                <button
+                  onClick={handleDeleteTrip}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    padding: "0.5rem 1rem",
+                    borderRadius: "var(--radius-sm)",
+                    border: "1px solid #FCA5A5",
+                    background: "rgba(239,68,68,0.04)",
+                    color: "#DC2626",
+                    cursor: "pointer",
+                    fontSize: "0.82rem",
+                    fontFamily: "var(--font-sans)",
+                    fontWeight: 500,
+                  }}
+                >
+                  <Trash2 size={13} /> Delete Trip
                 </button>
               )}
             </div>

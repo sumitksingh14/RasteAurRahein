@@ -9,12 +9,11 @@ import { useAuth } from "@/components/providers/AuthProvider";
 
 const navLinks = [
   { href: "/trips", label: "Find a Trip" },
-  { href: "/ai-planner", label: "AI Planner ✦" },
+  { href: "/ai-planner", label: "Generate Itinerary" },
   { href: "/regions", label: "Regions" },
   { href: "/weather", label: "Weather 🌤️" },
   { href: "/about", label: "Share Stories" },
   { href: "/contact", label: "Contact" },
-  { href: "/ai-planner", label: "Generate Itinerary" },
 ];
 
 export default function Navbar() {
