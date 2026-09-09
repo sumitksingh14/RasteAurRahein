@@ -1,15 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { Map, List, DollarSign, Hotel, Utensils, Gauge, Sparkles, ExternalLink } from "lucide-react";
+import { Map, List, DollarSign, Hotel, Utensils, Gauge, Cloud, Sparkles, ExternalLink } from "lucide-react";
 import ItineraryAccordion from "@/components/ui/ItineraryAccordion";
 import MapView from "@/components/ui/MapView";
 import StaySuggestions from "@/components/ui/StaySuggestions";
 import FoodRecommendations from "@/components/ui/FoodRecommendations";
 import FuelRestStops from "@/components/ui/FuelRestStops";
+import WeatherPanel from "@/components/ui/WeatherPanel";
+import { TRIP_WEATHER_COORDS } from "@/lib/weatherCoords";
 import type { Trip, MapPin } from "@/lib/types";
 
-type TabId = "itinerary" | "map" | "costs" | "stay" | "food" | "route";
+type TabId = "itinerary" | "map" | "costs" | "stay" | "food" | "route" | "weather";
 
 const TABS: { id: TabId; label: string; Icon: React.ElementType }[] = [
   { id: "itinerary", label: "Itinerary", Icon: List },
@@ -18,6 +20,7 @@ const TABS: { id: TabId; label: string; Icon: React.ElementType }[] = [
   { id: "stay", label: "Stay", Icon: Hotel },
   { id: "food", label: "Food", Icon: Utensils },
   { id: "route", label: "Route", Icon: Gauge },
+  { id: "weather", label: "Weather", Icon: Cloud },
 ];
 
 // AI-estimated budget ranges per trip slug (derived from trip type & destination)
@@ -569,6 +572,23 @@ export default function TripTabs({ trip }: TripTabsProps) {
       {activeTab === "route" && (
         <FuelRestStops tripSlug={trip.slug} tripTitle={trip.title} />
       )}
+
+      {activeTab === "weather" && (() => {
+        const coords = TRIP_WEATHER_COORDS[trip.slug];
+        if (!coords) return (
+          <div style={{ padding: "2rem", textAlign: "center", color: "#6B7280" }}>
+            Weather data not available for this destination yet.
+          </div>
+        );
+        return (
+          <WeatherPanel
+            slug={trip.slug}
+            lat={coords.lat}
+            lon={coords.lon}
+            locationName={coords.name}
+          />
+        );
+      })()}
     </div>
   );
 }

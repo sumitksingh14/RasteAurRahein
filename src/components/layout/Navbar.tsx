@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Search, User, Menu, X, ChevronDown, LogOut, Shield } from "lucide-react";
+import { Search, User, Menu, X, ChevronDown, LogOut, Shield, LayoutDashboard } from "lucide-react";
 import { REGIONS } from "@/lib/regions";
 import { useAuth } from "@/components/providers/AuthProvider";
 
@@ -11,6 +11,7 @@ const navLinks = [
   { href: "/trips", label: "Find a Trip" },
   { href: "/ai-planner", label: "AI Planner ✦" },
   { href: "/regions", label: "Regions" },
+  { href: "/weather", label: "Weather 🌤️" },
   { href: "/about", label: "Share Stories" },
   { href: "/contact", label: "Contact" },
 ];
@@ -323,6 +324,37 @@ export default function Navbar() {
                       <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "#262729" }}>@{user.username}</div>
                       <div style={{ fontSize: "0.75rem", color: "#6B7280" }}>{user.email}</div>
                     </div>
+                    {/* Dashboard link */}
+                    <Link
+                      href="/dashboard"
+                      onClick={() => setAvatarMenuOpen(false)}
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        padding: "0.6rem 1rem",
+                        borderRadius: "var(--radius-sm)",
+                        color: "#374151",
+                        fontSize: "0.875rem",
+                        fontWeight: 500,
+                        fontFamily: "var(--font-sans)",
+                        textDecoration: "none",
+                        transition: "all 0.15s ease",
+                        marginBottom: "0.1rem",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = "#F9FAFB";
+                        e.currentTarget.style.color = "#006CE4";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "transparent";
+                        e.currentTarget.style.color = "#374151";
+                      }}
+                    >
+                      <LayoutDashboard size={14} />
+                      Dashboard
+                    </Link>
                     {/* Admin Panel link — only for admin user */}
                     {user.isAdmin && (
                       <Link

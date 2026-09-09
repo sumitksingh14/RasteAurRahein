@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin, Clock, Calendar, Heart, BedDouble, Users, Maximize2 } from "lucide-react";
+import { MapPin, BedDouble, Users, Maximize2 } from "lucide-react";
 import type { Trip } from "@/lib/types";
 import { format } from "date-fns";
 import { useState } from "react";
+import BookmarkButton from "@/components/ui/BookmarkButton";
 
 // Curated cover images from Unsplash — one per trip slug
 const FALLBACK_IMAGES: Record<string, string> = {
@@ -35,11 +36,11 @@ interface TripCardProps {
   trip: Trip;
   featured?: boolean;
   priority?: boolean;
+  initialSaved?: boolean;
 }
 
-export default function TripCard({ trip, featured = false, priority = false }: TripCardProps) {
+export default function TripCard({ trip, featured = false, priority = false, initialSaved = false }: TripCardProps) {
   const imageSrc = FALLBACK_IMAGES[trip.slug] || DEFAULT_IMAGE;
-  const [liked, setLiked] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
   const dateLabel =
@@ -108,41 +109,17 @@ export default function TripCard({ trip, featured = false, priority = false }: T
           }}
         />
 
-        {/* Heart / Save button — top right */}
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            setLiked((l) => !l);
-          }}
-          aria-label={liked ? "Remove from saved" : "Save trip"}
+        {/* Bookmark / Save button — top right */}
+        <div
           style={{
             position: "absolute",
             top: "0.75rem",
             right: "0.75rem",
-            width: 36,
-            height: 36,
-            borderRadius: "50%",
-            background: "rgba(255,255,255,0.92)",
-            border: "none",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
-            transition: "transform 0.2s ease",
             zIndex: 2,
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.15)")}
-          onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
         >
-          <Heart
-            size={16}
-            fill={liked ? "#FEBB02" : "none"}
-            color={liked ? "#FEBB02" : "#9CA3AF"}
-            strokeWidth={2}
-          />
-        </button>
+          <BookmarkButton tripSlug={trip.slug} initialSaved={initialSaved} />
+        </div>
 
         {/* Tags */}
         {trip.tags && trip.tags.length > 0 && (

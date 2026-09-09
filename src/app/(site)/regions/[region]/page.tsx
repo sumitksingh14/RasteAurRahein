@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, MapPin } from "lucide-react";
+import { ArrowLeft, ArrowRight, MapPin, Cloud } from "lucide-react";
 import { getAllTrips } from "@/lib/queries";
 import { REGIONS, filterTripsByRegion } from "@/lib/regions";
 import TripCard from "@/components/ui/TripCard";
+import WeatherPanel from "@/components/ui/WeatherPanel";
+import { REGION_WEATHER_COORDS } from "@/lib/weatherCoords";
 
 interface Props {
   params: Promise<{ region: string }>;
@@ -196,6 +198,62 @@ export default async function RegionHubPage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {/* ── Weather Advisory ── */}
+      {(() => {
+        const regionWeather = REGION_WEATHER_COORDS[region.slug];
+        if (!regionWeather) return null;
+        return (
+          <section style={{ padding: "2rem 0" }}>
+            <div className="container">
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                  marginBottom: "1.25rem",
+                }}
+              >
+                <Cloud size={18} color="#006CE4" />
+                <div>
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      fontWeight: 700,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.08em",
+                      color: "#006CE4",
+                      marginBottom: 2,
+                    }}
+                  >
+                    ✦ Weather Advisory
+                  </div>
+                  <p style={{ color: "#6B7280", fontSize: "0.85rem", margin: 0 }}>
+                    Live conditions at representative hubs across {region.label}.
+                  </p>
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "grid",
+                  gap: "1.25rem",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(min(340px,100%),1fr))",
+                }}
+              >
+                {regionWeather.hubTowns.map((loc) => (
+                  <WeatherPanel
+                    key={`${loc.lat}-${loc.lon}`}
+                    slug={region.slug}
+                    lat={loc.lat}
+                    lon={loc.lon}
+                    locationName={loc.name}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      })()}
 
       {/* ── Trip Grid ── */}
       <section style={{ paddingBottom: "5rem" }}>

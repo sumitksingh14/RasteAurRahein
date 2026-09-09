@@ -1,11 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+"use client";
 
-export const metadata: Metadata = {
-  title: "You're Offline — Raste Aur Raahein",
-  description: "No internet connection. Check your connection and try again.",
-  robots: { index: false, follow: false },
-};
+import Link from "next/link";
 
 export default function OfflinePage() {
   return (

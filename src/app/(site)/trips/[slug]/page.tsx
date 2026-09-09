@@ -18,6 +18,10 @@ import LikeButton from "@/components/ui/LikeButton";
 import TripRating from "@/components/ui/TripRating";
 import CommentSection from "@/components/ui/CommentSection";
 import { format } from "date-fns";
+import { getSession } from "@/lib/session";
+import { isTripSaved } from "@/lib/savedTrips";
+import BookmarkButton from "@/components/ui/BookmarkButton";
+import StartTripButton from "@/components/ui/StartTripButton";
 
 // Fallback hero images by slug — 1920px for full-bleed hero banner
 const FALLBACK_IMAGES: Record<string, string> = {
@@ -106,12 +110,18 @@ export async function generateStaticParams() {
 
 export default async function TripDetailPage({ params }: Props) {
   const { slug } = await params;
-  const [trip, allTrips] = await Promise.all([
+  const [trip, allTrips, session] = await Promise.all([
     getTripBySlug(slug),
     getAllTrips(),
+    getSession(),
   ]);
 
   if (!trip) notFound();
+
+  // Server-side bookmark state (false for signed-out users)
+  const initialSaved = session
+    ? await isTripSaved(session.userId, trip.slug)
+    : false;
 
   const imageSrc = FALLBACK_IMAGES[trip.slug] || DEFAULT_IMAGE;
 
@@ -257,6 +267,8 @@ export default async function TripDetailPage({ params }: Props) {
               </span>
             )}
             <ShareButton title={trip.title} excerpt={trip.excerpt} />
+            <BookmarkButton tripSlug={trip.slug} initialSaved={initialSaved} />
+            <StartTripButton tripSlug={trip.slug} tripTitle={trip.title} />
           </div>
         </div>
       </div>
