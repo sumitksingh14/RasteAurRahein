@@ -21,7 +21,6 @@ import { useAuth } from "@/components/providers/AuthProvider";
 import { useGeneratedTrips, type GeneratedTrip } from "@/components/providers/GeneratedTripsProvider";
 import type { Trip } from "@/lib/types";
 import ExportPDFButton from "@/components/ai/ExportPDFButton";
-import AIItineraryModal from "@/components/ai/AIItineraryModal";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -606,7 +605,7 @@ export default function DashboardPage() {
   const [serverItineraries, setServerItineraries] = useState<ServerItinerary[]>([]);
   const [groupTrips, setGroupTrips] = useState<GroupTripCard[]>([]);
   const [dataLoading, setDataLoading] = useState(true);
-  const [aiModalOpen, setAiModalOpen] = useState(false);
+
 
   // Import from localStorage prompt
   const [showImportPrompt, setShowImportPrompt] = useState(false);
@@ -742,14 +741,14 @@ export default function DashboardPage() {
                 Your saved trips, itineraries, and group adventures.
               </p>
             </div>
-            <button
-              onClick={() => setAiModalOpen(true)}
+            <Link
+              href="/ai-planner"
               className="btn btn-primary"
-              style={{ display: "inline-flex", gap: 8, alignItems: "center", flexShrink: 0 }}
+              style={{ display: "inline-flex", gap: 8, alignItems: "center", flexShrink: 0, textDecoration: "none" }}
             >
               <Sparkles size={16} />
               Plan a new trip
-            </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -941,7 +940,7 @@ export default function DashboardPage() {
         )}
       </div>
 
-      {aiModalOpen && <AIItineraryModal onClose={() => setAiModalOpen(false)} />}
+
     </div>
   );
 }
