@@ -41,45 +41,6 @@ A region-wise list of lesser-known, non-touristy destinations across India — s
 32. **Champaner-Pavagadh** – UNESCO ruins near Vadodara
 33. **Palitana** – 900+ Jain temples atop Shatrunjaya hill
 
-## Maharashtra & Goa
-34. **Velas** – Olive Ridley turtle-nesting village, Konkan coast
-35. **Tarkarli** – clear-water beach and scuba diving, Sindhudurg
-36. **Panhala** – hill fort near Kolhapur
-37. **Amboli** – monsoon waterfalls in the Sahyadris
-38. **Toranmal** – lesser-known Satpura hill station
-39. **Chorla Ghat** – Western Ghats viewpoint on the Goa-Karnataka border
-40. **Cotigao Wildlife Sanctuary** – quiet forest reserve, South Goa
-41. **Gorakhgad** – trekking fort near Mumbai
-
-## Madhya Pradesh & Chhattisgarh (Central)
-42. **Orchha** – riverside Bundela-era palaces and cenotaphs
-43. **Mandu** – Afghan-era ruins on a plateau
-44. **Chitrakoot (MP)** – Ramayana-linked pilgrim town
-45. **Bhimbetka** – prehistoric rock shelters and cave paintings
-46. **Amarkantak** – source of the Narmada and Son rivers
-47. **Patalkot Valley** – deep horseshoe valley with tribal hamlets
-48. **Panna** – tiger reserve and diamond-mining town
-49. **Tirathgarh Falls** – multi-tiered falls in Bastar, Chhattisgarh
-50. **Chitrakoot Falls (Chhattisgarh)** – India's widest waterfall
-51. **Bastar** – tribal heartland with weekly haat markets
-
-## Northeast India
-52. **Ziro Valley** – Apatani tribal rice-paddy valley, Arunachal Pradesh
-53. **Dzukou Valley** – seasonal-flower valley, Nagaland-Manipur border
-54. **Mawlynnong** – Asia's cleanest village, Meghalaya
-55. **Nongriat** – living root bridges, Meghalaya
-56. **Dawki** – crystal-clear Umngot river, Meghalaya
-57. **Mawsynram** – wettest place on Earth, Meghalaya
-58. **Majuli Island** – world's largest river island, Assam
-59. **Khonoma** – Angami Naga green village, Nagaland
-60. **Ukhrul** – Tangkhul hills and Shirui lily home, Manipur
-61. **Loktak Lake (Sendra & phumdis)** – floating islands, Manipur
-62. **Reiek** – hilltop village near Aizawl, Mizoram
-63. **Vantawng Falls** – Mizoram's tallest waterfall
-64. **Unakoti** – rock-cut giant carvings, Tripura
-65. **Namdapha National Park** – remote biodiversity hotspot, Arunachal Pradesh
-66. **Bomdila** – monastery town on the way to Tawang, Arunachal Pradesh
-
 ## Karnataka & Andhra/Telangana (South-Central)
 67. **Anegundi** – ancient village across the river from Hampi
 68. **Yana Rocks** – limestone monoliths in Uttara Kannada
@@ -124,3 +85,12 @@ A region-wise list of lesser-known, non-touristy destinations across India — s
 
 ---
 *Tip: many of these places have limited connectivity, homestays rather than hotels, and are best visited with some flexibility in your itinerary — that's part of what keeps them offbeat.*
+Prompt:
+add separate detail trip itineraries for below places with suggested details including below mentioned details:
+- No of days from Mumbai/Pune
+- Best Restaurants
+-  Best Places to stay
+- Weather Details
+- Route Map
+- Trip Thumbnail image
+Locations:
