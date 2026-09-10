@@ -61,6 +61,12 @@ export default function RootLayout({
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
         <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512.png" />
+        {/* ── Google AdSense ── */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4406894064911133"
+          crossOrigin="anonymous"
+        />
         <WebSiteSchema />
       </head>
       <body>
