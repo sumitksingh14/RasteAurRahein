@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
-import { Home, Map, Compass, MoreHorizontal, BookOpen, Mail, Upload, X, User, Sparkles, Download, Bookmark } from "lucide-react";
+import { Home, Map, Compass, MoreHorizontal, BookOpen, Mail, Upload, X, User, Sparkles, Download, Bookmark, LayoutDashboard } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
 
 const PRIMARY_TABS = [
@@ -85,7 +85,11 @@ export default function MobileTabBar() {
   }
 
   // Check if any "more" link is the active route
-  const moreIsActive = MORE_LINKS.some((l) => pathname.startsWith(l.href));
+  const moreIsActive =
+    MORE_LINKS.some((l) => pathname.startsWith(l.href)) ||
+    pathname.startsWith("/ai-planner") ||
+    pathname.startsWith("/itineraries") ||
+    pathname.startsWith("/dashboard");
 
   return (
     <>
@@ -142,6 +146,37 @@ export default function MobileTabBar() {
             <X size={18} />
           </button>
         </div>
+
+        {/* Dashboard link in More drawer */}
+        <Link
+          href="/dashboard"
+          className={`tab-more-drawer-link${pathname.startsWith("/dashboard") ? " active" : ""}`}
+          onClick={(e) => {
+            setMoreOpen(false);
+            if (!user) {
+              e.preventDefault();
+              openAuthModal();
+            }
+          }}
+        >
+          <span
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: "50%",
+              background: pathname.startsWith("/dashboard") ? "var(--accent-gold-dim)" : "var(--bg-card)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+              border: "1px solid var(--border)",
+              color: pathname.startsWith("/dashboard") ? "var(--accent-gold)" : "var(--text-secondary)",
+            }}
+          >
+            <LayoutDashboard size={16} />
+          </span>
+          Dashboard
+        </Link>
 
         {/* AI Trip Planner button in More drawer */}
         {user && (

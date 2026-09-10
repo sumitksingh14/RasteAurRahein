@@ -514,6 +514,31 @@ export default function Navbar() {
             );
           })}
 
+          <Link
+            href="/dashboard"
+            onClick={(e) => {
+              if (!user) {
+                e.preventDefault();
+                setMenuOpen(false);
+                openAuthModal();
+              }
+            }}
+            style={{
+              display: "block",
+              padding: "0.9rem 1rem",
+              borderRadius: "var(--radius-sm)",
+              fontSize: "1rem",
+              fontFamily: "var(--font-sans)",
+              fontWeight: pathname.startsWith("/dashboard") ? 700 : 500,
+              color: pathname.startsWith("/dashboard") ? "#006CE4" : "#262729",
+              background: pathname.startsWith("/dashboard") ? "rgba(0,108,228,0.06)" : "transparent",
+              transition: "all var(--transition)",
+              textDecoration: "none",
+            }}
+          >
+            Dashboard
+          </Link>
+
           <div style={{ marginTop: "auto", paddingTop: "2rem", borderTop: "1px solid #E5E7EB" }}>
             <Link
               href="/import"
