@@ -17,8 +17,11 @@ export default async function TripsPage(props: PageProps) {
   const trips = await getAllTrips();
   
   const initialQuery = typeof sp.query === 'string' ? sp.query : "";
-  const initialTag = typeof sp.tag === 'string' ? sp.tag : "";
+  const initialTag = typeof sp.tag === 'string' ? sp.tag : (typeof sp.tags === 'string' ? sp.tags : "");
+  const initialSeason = typeof sp.season === 'string' ? sp.season : "Any";
   const initialDurationIdx = typeof sp.durationIdx === 'string' ? parseInt(sp.durationIdx, 10) : 0;
+  const initialBudgetIdx = typeof sp.budgetIdx === 'string' ? parseInt(sp.budgetIdx, 10) : 0;
+  const initialRegion = typeof sp.region === 'string' ? sp.region : "Any";
 
   return (
     <div style={{ paddingTop: "var(--nav-height)", minHeight: "100vh" }}>
@@ -64,7 +67,10 @@ export default async function TripsPage(props: PageProps) {
         trips={trips} 
         initialQuery={initialQuery}
         initialTag={initialTag}
+        initialSeason={initialSeason}
         initialDurationIdx={initialDurationIdx}
+        initialBudgetIdx={initialBudgetIdx}
+        initialRegion={initialRegion}
       />
     </div>
   );

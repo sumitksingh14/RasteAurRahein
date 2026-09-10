@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { Search, SlidersHorizontal, X, TrendingUp, Clock } from "lucide-react";
 import TripCard from "@/components/ui/TripCard";
 import type { Trip } from "@/lib/types";
@@ -34,6 +35,97 @@ const BUDGET_OPTIONS: { label: string; min: number; max: number }[] = [
   { label: "₹1L+", min: 100000, max: Infinity },
 ];
 
+const SEASON_OPTIONS = ["Any", "Summer", "Monsoon", "Winter", "Spring", "Autumn"];
+
+const MONTH_NAMES: Record<string, number> = {
+  jan: 1, january: 1,
+  feb: 2, february: 2,
+  mar: 3, march: 3,
+  apr: 4, april: 4,
+  may: 5,
+  jun: 6, june: 6,
+  jul: 7, july: 7,
+  aug: 8, august: 8,
+  sep: 9, sept: 9, september: 9,
+  oct: 10, october: 10,
+  nov: 11, november: 11,
+  dec: 12, december: 12,
+};
+
+const SEASON_MONTHS: Record<string, number[]> = {
+  Summer: [3, 4, 5, 6],
+  Monsoon: [6, 7, 8, 9],
+  Autumn: [9, 10, 11],
+  Winter: [11, 12, 1, 2, 3],
+  Spring: [2, 3, 4],
+};
+
+function tripMatchesSeason(trip: Trip, targetSeason: string): boolean {
+  if (!targetSeason || targetSeason === "Any") return true;
+
+  const seasonMonths = SEASON_MONTHS[targetSeason];
+  if (!seasonMonths) return true;
+
+  // Direct tag match
+  if (trip.tags?.some((t) => t.toLowerCase() === targetSeason.toLowerCase())) {
+    return true;
+  }
+
+  // Check bestSuggestedMonth
+  if (trip.bestSuggestedMonth) {
+    const text = trip.bestSuggestedMonth.toLowerCase();
+
+    // If explicit word appears
+    if (text.includes(targetSeason.toLowerCase())) {
+      return true;
+    }
+
+    const foundMonths: number[] = [];
+
+    // Look for ranges like "June – September", "October - March", "May - June"
+    const rangeRegex = /([a-z]+)\s*(?:[\u2013\u2014\-–—]|to)\s*([a-z]+)/gi;
+    let match;
+    while ((match = rangeRegex.exec(text)) !== null) {
+      const startM = MONTH_NAMES[match[1].toLowerCase()];
+      const endM = MONTH_NAMES[match[2].toLowerCase()];
+      if (startM && endM) {
+        let curr = startM;
+        let count = 0;
+        while (count < 12) {
+          foundMonths.push(curr);
+          if (curr === endM) break;
+          curr = curr === 12 ? 1 : curr + 1;
+          count++;
+        }
+      }
+    }
+
+    // Also look for standalone month names (e.g. "September")
+    const words = text.match(/[a-z]+/g) || [];
+    for (const w of words) {
+      const m = MONTH_NAMES[w];
+      if (m) {
+        foundMonths.push(m);
+      }
+    }
+
+    if (foundMonths.some((m) => seasonMonths.includes(m))) {
+      return true;
+    }
+  }
+
+  // Check startDate
+  if (trip.startDate) {
+    const d = new Date(trip.startDate);
+    if (!isNaN(d.getTime())) {
+      const m = d.getMonth() + 1;
+      if (seasonMonths.includes(m)) return true;
+    }
+  }
+
+  return false;
+}
+
 function computeDuration(trip: Trip): number | null {
   if (!trip.startDate || !trip.endDate) return null;
   return (
@@ -48,17 +140,31 @@ interface TripsClientProps {
   trips: Trip[];
   initialQuery?: string;
   initialTag?: string;
+  initialSeason?: string;
   initialDurationIdx?: number;
+  initialBudgetIdx?: number;
+  initialRegion?: string;
 }
 
-export default function TripsClient({ trips, initialQuery = "", initialTag = "", initialDurationIdx = 0 }: TripsClientProps) {
+export default function TripsClient({
+  trips,
+  initialQuery = "",
+  initialTag = "",
+  initialSeason = "Any",
+  initialDurationIdx = 0,
+  initialBudgetIdx = 0,
+  initialRegion = "Any",
+}: TripsClientProps) {
+  const router = useRouter();
   const [query, setQuery] = useState(initialQuery);
-  const [selectedTags, setSelectedTags] = useState<string[]>(initialTag ? [initialTag] : []);
+  const initialTagList = initialTag ? initialTag.split(",").map((t) => t.trim()).filter(Boolean) : [];
+  const [selectedTags, setSelectedTags] = useState<string[]>(initialTagList);
+  const [season, setSeason] = useState(initialSeason || "Any");
   const [sortBy, setSortBy] = useState<"date" | "views" | "title">("date");
   const [showFilters, setShowFilters] = useState(false);
   const [durationIdx, setDurationIdx] = useState(initialDurationIdx); // index into DURATION_OPTIONS
-  const [budgetIdx, setBudgetIdx] = useState(0);     // index into BUDGET_OPTIONS
-  const [regionLabel, setRegionLabel] = useState("Any");
+  const [budgetIdx, setBudgetIdx] = useState(initialBudgetIdx);     // index into BUDGET_OPTIONS
+  const [regionLabel, setRegionLabel] = useState(initialRegion || "Any");
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
@@ -69,10 +175,15 @@ export default function TripsClient({ trips, initialQuery = "", initialTag = "",
   const clearFilters = () => {
     setQuery("");
     setSelectedTags([]);
+    setSeason("Any");
     setSortBy("date");
     setDurationIdx(0);
     setBudgetIdx(0);
     setRegionLabel("Any");
+    if (typeof window !== "undefined") {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+    router.replace("/trips", { scroll: false });
   };
 
   const filtered = useMemo(() => {
@@ -130,6 +241,11 @@ export default function TripsClient({ trips, initialQuery = "", initialTag = "",
       }
     }
 
+    // Season filter
+    if (season && season !== "Any") {
+      result = result.filter((t) => tripMatchesSeason(t, season));
+    }
+
     // Sort
     if (sortBy === "date") {
       result.sort(
@@ -143,11 +259,12 @@ export default function TripsClient({ trips, initialQuery = "", initialTag = "",
     }
 
     return result;
-  }, [trips, query, selectedTags, sortBy, durationIdx, budgetIdx, regionLabel]);
+  }, [trips, query, selectedTags, season, sortBy, durationIdx, budgetIdx, regionLabel]);
 
   const hasActiveFilters =
-    query ||
+    Boolean(query) ||
     selectedTags.length > 0 ||
+    (season !== "Any" && Boolean(season)) ||
     durationIdx > 0 ||
     budgetIdx > 0 ||
     regionLabel !== "Any";
@@ -158,6 +275,7 @@ export default function TripsClient({ trips, initialQuery = "", initialTag = "",
 
   const activeFilterCount =
     selectedTags.length +
+    (season !== "Any" && Boolean(season) ? 1 : 0) +
     (durationIdx > 0 ? 1 : 0) +
     (budgetIdx > 0 ? 1 : 0) +
     (regionLabel !== "Any" ? 1 : 0);
@@ -374,6 +492,26 @@ export default function TripsClient({ trips, initialQuery = "", initialTag = "",
                         style={pillStyle(active)}
                       >
                         {opt.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Season */}
+              <div>
+                <div style={labelStyle}>Season</div>
+                <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+                  {SEASON_OPTIONS.map((opt) => {
+                    const active = season === opt;
+                    return (
+                      <button
+                        key={opt}
+                        onClick={() => setSeason(opt)}
+                        id={`season-filter-${opt.toLowerCase()}`}
+                        style={pillStyle(active)}
+                      >
+                        {opt}
                       </button>
                     );
                   })}

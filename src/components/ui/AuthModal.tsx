@@ -122,10 +122,16 @@ export default function AuthModal({ open, onClose, defaultTab = "login" }: AuthM
       });
       const data = await res.json();
       if (!res.ok) {
-        if (data.error.toLowerCase().includes("username")) {
-          username.setError(data.error);
+        if (tab === "register") {
+          if (data.error && data.error.toLowerCase().includes("username")) {
+            username.setError(data.error);
+          } else if (data.error && data.error.toLowerCase().includes("email")) {
+            email.setError(data.error);
+          } else {
+            setGlobalError(data.error || "Something went wrong. Please try again.");
+          }
         } else {
-          setGlobalError(data.error || "Something went wrong. Please try again.");
+          setGlobalError(data.error || "Invalid username/email or password");
         }
       } else {
         setLoggedInUser(data.user);
