@@ -19,6 +19,7 @@ import {
   Crown,
 } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
+import GroupExpenseSplitter, { type ExpenseItem } from "@/components/group/GroupExpenseSplitter";
 
 interface Member {
   id: string;
@@ -38,6 +39,7 @@ interface GroupData {
   sourceItineraryId?: string;
   members: Member[];
   userRole: "organizer" | "member";
+  expenses?: ExpenseItem[];
 }
 
 interface ChecklistItem {
@@ -702,6 +704,17 @@ export default function GroupTripPage() {
               username={user?.username || ""}
             />
           </div>
+        </div>
+
+        {/* ── Group Expenses & Splitter (Tier 4) ── */}
+        <div style={{ marginTop: "2rem" }}>
+          <GroupExpenseSplitter
+            groupId={groupId}
+            members={group.members}
+            initialExpenses={group.expenses || []}
+            currentUserId={user?.id || ""}
+            currentUsername={user?.username || ""}
+          />
         </div>
       </div>
 

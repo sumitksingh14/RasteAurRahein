@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Map, List, DollarSign, Hotel, Utensils, Gauge, Cloud, Sparkles, ExternalLink } from "lucide-react";
+import { Map, List, DollarSign, Hotel, Utensils, Gauge, Cloud, Sparkles, ExternalLink, CheckSquare } from "lucide-react";
 import ItineraryAccordion from "@/components/ui/ItineraryAccordion";
 import MapView from "@/components/ui/MapView";
 import StaySuggestions from "@/components/ui/StaySuggestions";
@@ -10,6 +10,9 @@ import FuelRestStops from "@/components/ui/FuelRestStops";
 import WeatherPanel from "@/components/ui/WeatherPanel";
 import GPXDownloadButton from "@/components/ui/GPXDownloadButton";
 import BudgetEstimator from "@/components/ui/BudgetEstimator";
+import ElevationProfile from "@/components/ui/ElevationProfile";
+import PermitVault from "@/components/ui/PermitVault";
+import SmartPackingChecklist from "@/components/ui/SmartPackingChecklist";
 import { TRIP_WEATHER_COORDS } from "@/lib/weatherCoords";
 import type { Trip, MapPin } from "@/lib/types";
 import type { TripFieldName } from "@/lib/enrichment/types";
@@ -127,7 +130,7 @@ function useEnrichmentStatuses(tripSlug: string) {
   return statuses;
 }
 
-type TabId = "itinerary" | "map" | "costs" | "stay" | "food" | "route" | "weather";
+type TabId = "itinerary" | "map" | "costs" | "stay" | "food" | "route" | "packing" | "weather";
 
 const TABS: { id: TabId; label: string; Icon: React.ElementType }[] = [
   { id: "itinerary", label: "Itinerary", Icon: List },
@@ -135,7 +138,8 @@ const TABS: { id: TabId; label: string; Icon: React.ElementType }[] = [
   { id: "costs", label: "Costs", Icon: DollarSign },
   { id: "stay", label: "Stay", Icon: Hotel },
   { id: "food", label: "Food", Icon: Utensils },
-  { id: "route", label: "Route", Icon: Gauge },
+  { id: "route", label: "Route & Altitude", Icon: Gauge },
+  { id: "packing", label: "Packing", Icon: CheckSquare },
   { id: "weather", label: "Weather", Icon: Cloud },
 ];
 
@@ -700,7 +704,15 @@ export default function TripTabs({ trip }: TripTabsProps) {
       )}
 
       {activeTab === "route" && (
-        <FuelRestStops tripSlug={trip.slug} tripTitle={trip.title} />
+        <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+          <ElevationProfile tripSlug={trip.slug} tripTitle={trip.title} />
+          <PermitVault tripSlug={trip.slug} />
+          <FuelRestStops tripSlug={trip.slug} tripTitle={trip.title} />
+        </div>
+      )}
+
+      {activeTab === "packing" && (
+        <SmartPackingChecklist trip={trip} />
       )}
 
       {activeTab === "weather" && (() => {

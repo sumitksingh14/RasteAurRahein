@@ -16,11 +16,13 @@ import {
   Navigation,
   Map,
   X,
+  Compass,
 } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useGeneratedTrips, type GeneratedTrip } from "@/components/providers/GeneratedTripsProvider";
 import type { Trip } from "@/lib/types";
 import ExportPDFButton from "@/components/ai/ExportPDFButton";
+import PassportStamps from "@/components/ui/PassportStamps";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -49,7 +51,7 @@ interface GroupTripCard {
 // ---------------------------------------------------------------------------
 // Tab type
 // ---------------------------------------------------------------------------
-type Tab = "saved" | "itineraries" | "groups";
+type Tab = "saved" | "itineraries" | "groups" | "passport";
 
 // ---------------------------------------------------------------------------
 // Saved trip card (minimal — just slug + fetched trip data)
@@ -843,6 +845,13 @@ export default function DashboardPage() {
             label="Group Trips"
             count={groupTrips.length}
           />
+          <TabButton
+            id="passport"
+            active={activeTab === "passport"}
+            onClick={setActiveTab}
+            icon={Compass}
+            label="Passport Stamps"
+          />
         </div>
 
         {/* ── Saved Trips Tab ── */}
@@ -937,6 +946,11 @@ export default function DashboardPage() {
               </div>
             )}
           </>
+        )}
+
+        {/* ── Passport Stamps Tab ── */}
+        {activeTab === "passport" && (
+          <PassportStamps savedTripSlugs={savedSlugs} />
         )}
       </div>
 

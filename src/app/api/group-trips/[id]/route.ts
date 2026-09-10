@@ -47,6 +47,7 @@ export async function GET(_req: NextRequest, { params }: Props) {
   return NextResponse.json({
     group: {
       ...hash,
+      expenses: hash.expenses ? JSON.parse(hash.expenses) : [],
       members,
       userRole: membersHash?.[session.userId] || "member",
     },
@@ -54,7 +55,7 @@ export async function GET(_req: NextRequest, { params }: Props) {
 }
 
 // ---------------------------------------------------------------------------
-// PATCH /api/group-trips/[id] — update name, startDate, or checklist
+// PATCH /api/group-trips/[id] — update name, startDate, checklist, or expenses
 // ---------------------------------------------------------------------------
 export async function PATCH(req: NextRequest, { params }: Props) {
   const session = await getSession();
@@ -79,6 +80,7 @@ export async function PATCH(req: NextRequest, { params }: Props) {
   if (body.name && typeof body.name === "string") updates.name = body.name;
   if (body.startDate && typeof body.startDate === "string") updates.startDate = body.startDate;
   if (body.checklist !== undefined) updates.checklist = JSON.stringify(body.checklist);
+  if (body.expenses !== undefined) updates.expenses = JSON.stringify(body.expenses);
 
   if (Object.keys(updates).length > 0) {
     await redis.hset(`group:${id}`, updates);

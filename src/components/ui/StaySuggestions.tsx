@@ -1,7 +1,16 @@
 "use client";
 
-import { Phone, ExternalLink, MapPin, Star, Wifi, Car, Utensils, Droplets, Search, Sparkles } from "lucide-react";
+import { Phone, ExternalLink, MapPin, Star, Wifi, Car, Utensils, Droplets, Search, Sparkles, MessageCircle } from "lucide-react";
 import type { HotelSuggestion } from "@/lib/types";
+
+function cleanWhatsAppNumber(phone?: string): string | null {
+  if (!phone) return null;
+  const digits = phone.replace(/[^0-9]/g, "");
+  if (digits.length === 10) return `91${digits}`;
+  if (digits.length === 12 && digits.startsWith("91")) return digits;
+  if (digits.length > 10) return digits;
+  return null;
+}
 
 // ── Per-trip hotel & homestay data ────────────────────────────────────────────
 const STAY_DATA: Record<string, HotelSuggestion[]> = {
@@ -462,6 +471,25 @@ export default function StaySuggestions({ tripSlug, tripTitle }: StaySuggestions
 
             {/* Actions */}
             <div className="stay-actions">
+              {stay.contact && cleanWhatsAppNumber(stay.contact) && (
+                <a
+                  href={`https://wa.me/${cleanWhatsAppNumber(stay.contact)}?text=${encodeURIComponent(
+                    `Namaste! Found ${stay.name} on Raste Aur Raahein travel blog (${stay.town}). Wanted to check room availability and tariffs. Thank you!`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="stay-action-btn stay-action-whatsapp"
+                  aria-label={`WhatsApp ${stay.name}`}
+                  style={{
+                    borderColor: "rgba(37,211,102,0.35)",
+                    color: "#25D366",
+                    background: "rgba(37,211,102,0.06)",
+                  }}
+                >
+                  <MessageCircle size={13} />
+                  WhatsApp
+                </a>
+              )}
               {stay.contact && (
                 <a
                   href={`tel:${stay.contact}`}
