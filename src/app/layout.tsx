@@ -10,7 +10,7 @@ import NewsletterPopup from "@/components/ui/NewsletterPopup";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://rasteaurrahein.com"
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://raste-aur-rahein.vercel.app/"
   ),
   title: {
     default: "Raste Aur Raahein — India Travel Blog by Sumit Singh",
