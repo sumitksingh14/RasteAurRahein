@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { AtSign, Globe, Video, Phone, Mail, MapPin, Share2 } from "lucide-react";
-
 import { REGIONS } from "@/lib/regions";
 import { useAuth } from "@/components/providers/AuthProvider";
+import NewsletterInline from "@/components/ui/NewsletterInline";
 
 const companyLinks = [
   { href: "/about", label: "About Us" },
@@ -225,7 +225,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact Info column */}
+          {/* Newsletter + Contact column */}
           <div>
             <h4
               style={{
@@ -238,9 +238,12 @@ export default function Footer() {
                 letterSpacing: "0.08em",
               }}
             >
-              Contact Info
+              Stay Updated
             </h4>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+            <NewsletterInline variant="strip" source="footer" />
+
+            {/* Contact links below newsletter */}
+            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.6rem", marginTop: "1.5rem" }}>
               <li>
                 <a
                   href="tel:+919196191109"

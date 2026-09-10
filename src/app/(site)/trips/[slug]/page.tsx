@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Clock, Eye, MapPin, Tag, ArrowLeft } from "lucide-react";
+import { Calendar, Clock, Eye, MapPin, Tag, ArrowLeft, RefreshCw } from "lucide-react";
 import { getTripBySlug, getAllTrips, DEMO_AUTHOR } from "@/lib/queries";
 import TripTabs from "./TripTabs";
 import ShareButton from "./ShareButton";
@@ -25,6 +25,8 @@ import StartTripButton from "@/components/ui/StartTripButton";
 import RemixTripButton from "@/components/ui/RemixTripButton";
 import AddToCalendarButton from "@/components/ui/AddToCalendarButton";
 import GPXDownloadButton from "@/components/ui/GPXDownloadButton";
+import Breadcrumb from "@/components/ui/Breadcrumb";
+import NewsletterInline from "@/components/ui/NewsletterInline";
 
 // Fallback hero images by slug — 1920px for full-bleed hero banner
 const FALLBACK_IMAGES: Record<string, string> = {
@@ -83,11 +85,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: trip.title,
     description: trip.excerpt,
     keywords: trip.tags,
+    alternates: {
+      canonical: `/trips/${trip.slug}`,
+    },
     openGraph: {
       title: trip.title,
       description: trip.excerpt,
       type: "article",
       publishedTime: trip._createdAt,
+      modifiedTime: trip._updatedAt || trip._createdAt,
       authors: trip.author?.name ? [trip.author.name] : undefined,
       images: [
         {
@@ -193,22 +199,38 @@ export default async function TripDetailPage({ params }: Props) {
             paddingTop: "calc(var(--nav-height) + 2rem)",
           }}
         >
-          {/* Back link */}
-          <Link
-            href="/trips"
+          {/* Breadcrumb + Back link row */}
+          <div
             style={{
-              display: "inline-flex",
+              display: "flex",
               alignItems: "center",
-              gap: "6px",
-              color: "rgba(255,255,255,0.6)",
-              fontSize: "0.85rem",
+              justifyContent: "space-between",
               marginBottom: "auto",
-              transition: "color var(--transition)",
+              gap: "1rem",
+              flexWrap: "wrap",
             }}
           >
-            <ArrowLeft size={14} />
-            All Trips
-          </Link>
+            <Link
+              href="/trips"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                color: "rgba(255,255,255,0.6)",
+                fontSize: "0.85rem",
+                transition: "color var(--transition)",
+              }}
+            >
+              <ArrowLeft size={14} />
+              All Trips
+            </Link>
+            <Breadcrumb
+              items={[
+                { label: "Trips", href: "/trips" },
+                { label: trip.title },
+              ]}
+            />
+          </div>
 
           {/* Tags */}
           <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginBottom: "1rem" }}>
@@ -267,6 +289,12 @@ export default async function TripDetailPage({ params }: Props) {
               <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
                 <Eye size={14} />
                 {trip.viewCount.toLocaleString()} views
+              </span>
+            )}
+            {trip._updatedAt && (
+              <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                <RefreshCw size={13} />
+                Updated {format(new Date(trip._updatedAt), "MMM yyyy")}
               </span>
             )}
             <ShareButton title={trip.title} excerpt={trip.excerpt} />
@@ -533,6 +561,15 @@ export default async function TripDetailPage({ params }: Props) {
           </div>
         </section>
       )}
+
+      {/* ============================================================
+          NEWSLETTER CTA — between related trips and comments
+      ============================================================ */}
+      <section style={{ padding: "3rem 0", borderTop: "1px solid var(--border)" }}>
+        <div className="container" style={{ maxWidth: 760 }}>
+          <NewsletterInline variant="card" source="trip-page" />
+        </div>
+      </section>
 
       {/* ============================================================
           COMMENTS

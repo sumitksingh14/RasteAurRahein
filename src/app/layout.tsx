@@ -5,32 +5,37 @@ import { GeneratedTripsProvider } from "@/components/providers/GeneratedTripsPro
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import { WebSiteSchema } from "@/components/ui/AuthorSchema";
 import InstallPrompt from "@/components/pwa/InstallPrompt";
+import GoogleAnalytics from "@/components/providers/GoogleAnalytics";
+import NewsletterPopup from "@/components/ui/NewsletterPopup";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://rasteaurrahein.com"
   ),
   title: {
-    default: "Raste Aur Raahein — Travel Blog by Sumit Singh",
+    default: "Raste Aur Raahein — India Travel Blog by Sumit Singh",
     template: "%s | Raste Aur Raahein",
   },
   description:
-    "Portfolio-style travel blog documenting high-altitude treks, desert roads, and off-the-beaten-path adventures across India and beyond.",
-  keywords: ["travel blog", "India travel", "trekking", "Spiti Valley", "adventure travel", "itinerary"],
+    "India travel blog with detailed itineraries, budgets, and route maps for Himalayan treks, road trips, and off-the-beaten-path adventures.",
+  keywords: ["India travel blog", "travel itinerary India", "Himalayan road trip", "Spiti Valley", "Leh Ladakh guide", "adventure travel India"],
   authors: [{ name: "Sumit Singh" }],
   creator: "Sumit Singh",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
     locale: "en_IN",
     siteName: "Raste Aur Raahein",
-    title: "Raste Aur Raahein — Travel Blog by Sumit Singh",
+    title: "Raste Aur Raahein — India Travel Blog by Sumit Singh",
     description:
-      "Portfolio-style travel blog documenting high-altitude treks, desert roads, and off-the-beaten-path adventures.",
+      "Detailed travel itineraries, honest budgets, and route maps for India's greatest road trips and treks.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Raste Aur Raahein — Travel Blog by Sumit Singh",
-    description: "Travel blog — high altitudes, ancient monasteries, and roads less taken.",
+    title: "Raste Aur Raahein — India Travel Blog",
+    description: "Travel itineraries for India — high altitudes, ancient monasteries, and roads less taken.",
   },
   robots: {
     index: true,
@@ -75,9 +80,13 @@ export default function RootLayout({
             <AuthProvider>
               {children}
               <InstallPrompt />
+              {/* Exit-intent newsletter popup — mounts once, self-manages visibility */}
+              <NewsletterPopup />
             </AuthProvider>
           </GeneratedTripsProvider>
         </ThemeProvider>
+        {/* Google Analytics 4 — loads after page is interactive, no-ops if env var not set */}
+        <GoogleAnalytics />
       </body>
     </html>
   );

@@ -3,10 +3,12 @@ import { getAllTrips } from "@/lib/queries";
 import TripsClient from "./TripsClient";
 
 export const metadata: Metadata = {
-  title: "All Trips — Raste Aur Raahein",
+  title: "India Travel Itineraries — All Trips | Raste Aur Raahein",
   description:
-    "Browse travel itineraries across India — from Himalayan treks to desert drives.",
+    "Browse detailed travel itineraries across India — Himalayan road trips, desert drives, coastal routes, and forest trails. Filter by region, season, and budget.",
+  alternates: { canonical: "/trips" },
 };
+
 
 type PageProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
