@@ -22,6 +22,9 @@ import { getSession } from "@/lib/session";
 import { isTripSaved } from "@/lib/savedTrips";
 import BookmarkButton from "@/components/ui/BookmarkButton";
 import StartTripButton from "@/components/ui/StartTripButton";
+import RemixTripButton from "@/components/ui/RemixTripButton";
+import AddToCalendarButton from "@/components/ui/AddToCalendarButton";
+import GPXDownloadButton from "@/components/ui/GPXDownloadButton";
 
 // Fallback hero images by slug — 1920px for full-bleed hero banner
 const FALLBACK_IMAGES: Record<string, string> = {
@@ -268,6 +271,8 @@ export default async function TripDetailPage({ params }: Props) {
             )}
             <ShareButton title={trip.title} excerpt={trip.excerpt} />
             <BookmarkButton tripSlug={trip.slug} initialSaved={initialSaved} />
+            <AddToCalendarButton trip={trip} />
+            <RemixTripButton trip={trip} />
             <StartTripButton tripSlug={trip.slug} tripTitle={trip.title} />
           </div>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Search, SlidersHorizontal, X, TrendingUp, Clock } from "lucide-react";
 import TripCard from "@/components/ui/TripCard";
@@ -144,6 +144,7 @@ interface TripsClientProps {
   initialDurationIdx?: number;
   initialBudgetIdx?: number;
   initialRegion?: string;
+  initialSortBy?: "date" | "views" | "title";
 }
 
 export default function TripsClient({
@@ -154,17 +155,42 @@ export default function TripsClient({
   initialDurationIdx = 0,
   initialBudgetIdx = 0,
   initialRegion = "Any",
+  initialSortBy = "date",
 }: TripsClientProps) {
   const router = useRouter();
   const [query, setQuery] = useState(initialQuery);
   const initialTagList = initialTag ? initialTag.split(",").map((t) => t.trim()).filter(Boolean) : [];
   const [selectedTags, setSelectedTags] = useState<string[]>(initialTagList);
   const [season, setSeason] = useState(initialSeason || "Any");
-  const [sortBy, setSortBy] = useState<"date" | "views" | "title">("date");
+  const [sortBy, setSortBy] = useState<"date" | "views" | "title">(initialSortBy);
   const [showFilters, setShowFilters] = useState(false);
   const [durationIdx, setDurationIdx] = useState(initialDurationIdx); // index into DURATION_OPTIONS
   const [budgetIdx, setBudgetIdx] = useState(initialBudgetIdx);     // index into BUDGET_OPTIONS
   const [regionLabel, setRegionLabel] = useState(initialRegion || "Any");
+
+  const isFirstMount = useRef(true);
+
+  // Synchronize filter state changes with URL query params
+  useEffect(() => {
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      return;
+    }
+    const params = new URLSearchParams();
+    if (query.trim()) params.set("query", query.trim());
+    if (selectedTags.length > 0) params.set("tag", selectedTags.join(","));
+    if (season && season !== "Any") params.set("season", season);
+    if (durationIdx > 0) params.set("durationIdx", String(durationIdx));
+    if (budgetIdx > 0) params.set("budgetIdx", String(budgetIdx));
+    if (regionLabel && regionLabel !== "Any") params.set("region", regionLabel);
+    if (sortBy && sortBy !== "date") params.set("sortBy", sortBy);
+
+    const queryString = params.toString();
+    const newUrl = queryString ? `/trips?${queryString}` : "/trips";
+    if (typeof window !== "undefined") {
+      window.history.replaceState(null, "", newUrl);
+    }
+  }, [query, selectedTags, season, durationIdx, budgetIdx, regionLabel, sortBy]);
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>

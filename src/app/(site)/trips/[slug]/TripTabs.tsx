@@ -8,6 +8,8 @@ import StaySuggestions from "@/components/ui/StaySuggestions";
 import FoodRecommendations from "@/components/ui/FoodRecommendations";
 import FuelRestStops from "@/components/ui/FuelRestStops";
 import WeatherPanel from "@/components/ui/WeatherPanel";
+import GPXDownloadButton from "@/components/ui/GPXDownloadButton";
+import BudgetEstimator from "@/components/ui/BudgetEstimator";
 import { TRIP_WEATHER_COORDS } from "@/lib/weatherCoords";
 import type { Trip, MapPin } from "@/lib/types";
 import type { TripFieldName } from "@/lib/enrichment/types";
@@ -374,48 +376,52 @@ export default function TripTabs({ trip }: TripTabsProps) {
 
       {activeTab === "map" && (
         <div>
-          {mapPins.length > 0 ? (
-            <div>
-              <p
-                style={{
-                  color: "var(--text-muted)",
-                  fontSize: "0.875rem",
-                  marginBottom: "1rem",
-                }}
-              >
-                {mapPins.length} location{mapPins.length !== 1 ? "s" : ""}{" "}
-                pinned along this route
-              </p>
-              <MapView pins={mapPins} height={480} />
-            </div>
-          ) : (
-            <div>
-              <p
-                style={{
-                  color: "var(--text-muted)",
-                  fontSize: "0.875rem",
-                  marginBottom: "1rem",
-                }}
-              >
-                Route overview — Spiti Valley circuit
-              </p>
-              <MapView
-                pins={[
-                  { lat: 31.42, lng: 77.45, label: "Narkanda", day: 1 },
-                  { lat: 31.59, lng: 78.24, label: "Sangla", day: 2 },
-                  { lat: 31.35, lng: 78.44, label: "Chitkul", day: 3 },
-                  { lat: 32.07, lng: 78.57, label: "Kaza", day: 4 },
-                  { lat: 32.3, lng: 78.02, label: "Chandratal", day: 5 },
-                ]}
-                height={480}
-              />
-            </div>
-          )}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: "0.75rem",
+              marginBottom: "1rem",
+            }}
+          >
+            <p
+              style={{
+                color: "var(--text-muted)",
+                fontSize: "0.875rem",
+                margin: 0,
+              }}
+            >
+              {mapPins.length > 0
+                ? `${mapPins.length} location${mapPins.length !== 1 ? "s" : ""} pinned along this route`
+                : "Route overview — Spiti Valley circuit"}
+            </p>
+            <GPXDownloadButton trip={trip} variant="pill" />
+          </div>
+
+          <MapView
+            pins={
+              mapPins.length > 0
+                ? mapPins
+                : [
+                    { lat: 31.42, lng: 77.45, label: "Narkanda", day: 1 },
+                    { lat: 31.59, lng: 78.24, label: "Sangla", day: 2 },
+                    { lat: 31.35, lng: 78.44, label: "Chitkul", day: 3 },
+                    { lat: 32.07, lng: 78.57, label: "Kaza", day: 4 },
+                    { lat: 32.3, lng: 78.02, label: "Chandratal", day: 5 },
+                  ]
+            }
+            height={480}
+          />
         </div>
       )}
 
       {activeTab === "costs" && (
-        <div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+          {/* Smart Budget Estimator */}
+          <BudgetEstimator trip={trip} baseDays={numDays} />
+
           {grandTotal > 0 ? (
             /* ── Structured cost data from itinerary ── */
             <div>

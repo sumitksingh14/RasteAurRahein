@@ -22,6 +22,7 @@ export default async function TripsPage(props: PageProps) {
   const initialDurationIdx = typeof sp.durationIdx === 'string' ? parseInt(sp.durationIdx, 10) : 0;
   const initialBudgetIdx = typeof sp.budgetIdx === 'string' ? parseInt(sp.budgetIdx, 10) : 0;
   const initialRegion = typeof sp.region === 'string' ? sp.region : "Any";
+  const initialSortBy = (sp.sortBy === "views" || sp.sortBy === "title" || sp.sortBy === "date") ? sp.sortBy : "date";
 
   return (
     <div style={{ paddingTop: "var(--nav-height)", minHeight: "100vh" }}>
@@ -71,6 +72,7 @@ export default async function TripsPage(props: PageProps) {
         initialDurationIdx={initialDurationIdx}
         initialBudgetIdx={initialBudgetIdx}
         initialRegion={initialRegion}
+        initialSortBy={initialSortBy}
       />
     </div>
   );

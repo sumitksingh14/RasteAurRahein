@@ -37,6 +37,7 @@ export interface GeneratedTrip {
 interface GeneratedTripsContextValue {
   trips: GeneratedTrip[];
   addTrip: (trip: Omit<GeneratedTrip, "id">) => GeneratedTrip;
+  updateTrip: (id: string, updated: Partial<GeneratedTrip>) => GeneratedTrip | null;
   removeTrip: (id: string) => void;
 }
 
@@ -46,6 +47,7 @@ interface GeneratedTripsContextValue {
 const GeneratedTripsContext = createContext<GeneratedTripsContextValue>({
   trips: [],
   addTrip: () => ({ id: "", title: "", destination: "", days: [], style: "", month: "", generatedAt: "" }),
+  updateTrip: () => null,
   removeTrip: () => {},
 });
 
@@ -83,6 +85,24 @@ export function GeneratedTripsProvider({ children }: { children: React.ReactNode
     [trips, persist]
   );
 
+  const updateTrip = useCallback(
+    (id: string, updated: Partial<GeneratedTrip>): GeneratedTrip | null => {
+      let updatedItem: GeneratedTrip | null = null;
+      const newList = trips.map((t) => {
+        if (t.id === id) {
+          updatedItem = { ...t, ...updated };
+          return updatedItem;
+        }
+        return t;
+      });
+      if (updatedItem) {
+        persist(newList);
+      }
+      return updatedItem;
+    },
+    [trips, persist]
+  );
+
   const removeTrip = useCallback(
     (id: string) => {
       persist(trips.filter((t) => t.id !== id));
@@ -93,7 +113,7 @@ export function GeneratedTripsProvider({ children }: { children: React.ReactNode
   if (!mounted) return <>{children}</>;
 
   return (
-    <GeneratedTripsContext.Provider value={{ trips, addTrip, removeTrip }}>
+    <GeneratedTripsContext.Provider value={{ trips, addTrip, updateTrip, removeTrip }}>
       {children}
     </GeneratedTripsContext.Provider>
   );

@@ -3,15 +3,17 @@
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, MapPin, Calendar, Clock, Navigation } from "lucide-react";
+import { ArrowLeft, MapPin, Calendar, Clock, Navigation, Edit3, Eye, Sparkles } from "lucide-react";
 import { useGeneratedTrips, type GeneratedTrip } from "@/components/providers/GeneratedTripsProvider";
 import ExportPDFButton from "@/components/ai/ExportPDFButton";
+import ItineraryEditor from "@/components/itinerary/ItineraryEditor";
 import { useAuth } from "@/components/providers/AuthProvider";
 
 export default function ItineraryDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const unwrappedParams = use(params);
-  const { trips } = useGeneratedTrips();
+  const { trips, updateTrip } = useGeneratedTrips();
   const [trip, setTrip] = useState<GeneratedTrip | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { user, loading } = useAuth();
   const router = useRouter();
@@ -32,6 +34,11 @@ export default function ItineraryDetailPage({ params }: { params: Promise<{ id: 
       setTrip(found || null);
     }
   }, [trips, unwrappedParams.id]);
+
+  const handleTripUpdate = (updatedTrip: GeneratedTrip) => {
+    setTrip(updatedTrip);
+    updateTrip(updatedTrip.id, updatedTrip);
+  };
 
   if (loading || !user) return null;
   if (!mounted) return null;
@@ -125,14 +132,40 @@ export default function ItineraryDetailPage({ params }: { params: Promise<{ id: 
             )}
           </div>
           
-          <ExportPDFButton trip={trip} />
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
+            <ExportPDFButton trip={trip} />
+            <button
+              onClick={() => setIsEditing((prev) => !prev)}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                padding: "0.6rem 1.25rem",
+                borderRadius: "var(--radius-sm)",
+                border: "1px solid var(--border-accent)",
+                background: isEditing ? "var(--accent-gold)" : "var(--accent-gold-dim)",
+                color: isEditing ? "var(--bg-primary)" : "var(--accent-gold)",
+                fontSize: "0.85rem",
+                fontWeight: 600,
+                fontFamily: "var(--font-sans)",
+                cursor: "pointer",
+                transition: "all var(--transition)",
+              }}
+            >
+              {isEditing ? <Eye size={15} /> : <Edit3 size={15} />}
+              <span>{isEditing ? "View Clean Itinerary" : "Customize & Reorder Stops"}</span>
+            </button>
+          </div>
         </div>
 
-        {/* Days Section */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-          <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "1.8rem", color: "var(--text-primary)", borderBottom: "1px solid var(--border)", paddingBottom: "1rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
-            <Navigation size={24} style={{ color: "#006CE4" }} /> Full Itinerary
-          </h2>
+        {/* Days Section / Editor */}
+        {isEditing ? (
+          <ItineraryEditor trip={trip} onUpdate={handleTripUpdate} />
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+            <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "1.8rem", color: "var(--text-primary)", borderBottom: "1px solid var(--border)", paddingBottom: "1rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+              <Navigation size={24} style={{ color: "#006CE4" }} /> Full Itinerary
+            </h2>
 
           {trip.days.map((day) => (
             <div key={day.dayNumber} style={{ background: "var(--bg-card)", padding: "2rem", borderRadius: "var(--radius-lg)", border: "1px solid var(--border)" }}>
@@ -187,7 +220,8 @@ export default function ItineraryDetailPage({ params }: { params: Promise<{ id: 
             </div>
           ))}
         </div>
-      </div>
+      )}
     </div>
-  );
+  </div>
+);
 }
