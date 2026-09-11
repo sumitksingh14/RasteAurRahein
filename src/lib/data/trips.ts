@@ -7795,5 +7795,423 @@ export const DEMO_TRIPS: Trip[] = [
         ]
       }
     ]
+  },
+  {
+    _id: "trip-pangi-valley-6-days",
+    title: "Pangi Valley — The Hidden Tribal Land",
+    slug: "pangi-valley-6-days",
+    excerpt: "Explore the most remote, rugged, and unspoiled valley of Himachal Pradesh. A paradise for extreme adventure seekers and nature lovers.",
+    tags: ["Mountains", "Offbeat", "Adventure", "Himachal", "Trekking"],
+    country: "India",
+    startDate: "2026-07-15",
+    endDate: "2026-07-20",
+    bestSuggestedMonth: "July – September",
+    status: "published",
+    viewCount: 0,
+    totalBudget: 25000,
+    currency: "INR",
+    tripType: "Adventure",
+    readingTime: 8,
+    _createdAt: "2026-09-11T00:00:00Z",
+    _updatedAt: "2026-09-11T00:00:00Z",
+    coverImage: { _type: "image", asset: { _type: "reference", _ref: "/images/pangi-valley.jpg" } } as any,
+    itinerary: [
+      {
+        _key: "pangi-day1",
+        dayNumber: 1,
+        title: "Manali to Keylong",
+        date: "2026-07-15",
+        summary: "Arrive in Manali and drive through the Atal Tunnel to Keylong.",
+        activities: [
+          {
+            _key: "pan1a",
+            title: "Drive to Keylong",
+            description: "Cross into the Lahaul valley via the Atal Tunnel.",
+            location: { name: "Keylong", lat: 32.5719, lng: 77.0322 },
+            time: "10:00 AM",
+            type: "transport"
+          }
+        ]
+      },
+      {
+        _key: "pangi-day2",
+        dayNumber: 2,
+        title: "Keylong to Killar (Pangi Valley)",
+        date: "2026-07-16",
+        summary: "Drive along the treacherous Chenab river gorge to reach Killar, the headquarters of Pangi.",
+        activities: [
+          {
+            _key: "pan2a",
+            title: "Drive to Killar",
+            description: "An extreme 5-hour off-roading experience on the Cliffhanger road.",
+            location: { name: "Killar", lat: 33.0833, lng: 76.5833 },
+            time: "08:00 AM",
+            type: "transport"
+          }
+        ]
+      },
+      {
+        _key: "pangi-day3",
+        dayNumber: 3,
+        title: "Explore Hudan Bhatori",
+        date: "2026-07-17",
+        summary: "Visit the highest village in the valley.",
+        activities: [
+          {
+            _key: "pan3a",
+            title: "Hudan Bhatori Visit",
+            description: "Explore the ancient monastery and the small alpine lake in the village.",
+            time: "10:00 AM",
+            type: "sightseeing"
+          }
+        ]
+      },
+      {
+        _key: "pangi-day4",
+        dayNumber: 4,
+        title: "Sural Bhatori",
+        date: "2026-07-18",
+        summary: "Visit another incredibly scenic and remote village.",
+        activities: [
+          {
+            _key: "pan4a",
+            title: "Drive to Sural Bhatori",
+            description: "Witness the unique Pangwala culture and towering waterfalls.",
+            time: "09:00 AM",
+            type: "activity"
+          }
+        ]
+      },
+      {
+        _key: "pangi-day5",
+        dayNumber: 5,
+        title: "Return to Keylong",
+        date: "2026-07-19",
+        summary: "Navigate the cliffhanger road back to Lahaul.",
+        activities: [
+          {
+            _key: "pan5a",
+            title: "Drive back",
+            description: "Slow drive back to Keylong for an overnight stay.",
+            time: "08:00 AM",
+            type: "transport"
+          }
+        ]
+      },
+      {
+        _key: "pangi-day6",
+        dayNumber: 6,
+        title: "Departure",
+        date: "2026-07-20",
+        summary: "Drive to Manali and depart.",
+        activities: [
+          {
+            _key: "pan6a",
+            title: "Drive to Manali",
+            description: "Return to Manali to end the adventurous journey.",
+            time: "09:00 AM",
+            type: "transport"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    _id: "trip-tosh-3-days",
+    title: "Tosh — The Alpine Village",
+    slug: "tosh-3-days",
+    excerpt: "A short weekend getaway to Tosh in the Parvati Valley. Experience the hippy culture, wooden cafes, and breathtaking Himalayan views.",
+    tags: ["Mountains", "Weekend Getaway", "Himachal", "Parvati Valley", "Relaxation"],
+    country: "India",
+    startDate: "2026-10-10",
+    endDate: "2026-10-12",
+    bestSuggestedMonth: "April – October",
+    status: "published",
+    viewCount: 0,
+    totalBudget: 8000,
+    currency: "INR",
+    tripType: "Relaxation",
+    readingTime: 5,
+    _createdAt: "2026-09-11T00:00:00Z",
+    _updatedAt: "2026-09-11T00:00:00Z",
+    coverImage: { _type: "image", asset: { _type: "reference", _ref: "/images/tosh.jpg" } } as any,
+    itinerary: [
+      {
+        _key: "tosh-day1",
+        dayNumber: 1,
+        title: "Bhuntar to Tosh",
+        date: "2026-10-10",
+        summary: "Arrive in Bhuntar, drive to Barshaini, and hike up to Tosh.",
+        activities: [
+          {
+            _key: "tosh1a",
+            title: "Drive to Barshaini",
+            description: "Take a local bus or cab from Bhuntar through Kasol.",
+            time: "09:00 AM",
+            type: "transport"
+          },
+          {
+            _key: "tosh1b",
+            title: "Hike to Tosh",
+            description: "A short 1-hour walk from the dam to the village.",
+            location: { name: "Tosh", lat: 32.0253, lng: 77.4475 },
+            time: "01:00 PM",
+            type: "activity"
+          }
+        ]
+      },
+      {
+        _key: "tosh-day2",
+        dayNumber: 2,
+        title: "Explore Tosh and Kutla",
+        date: "2026-10-11",
+        summary: "Cafe hopping and a short trek to Kutla.",
+        activities: [
+          {
+            _key: "tosh2a",
+            title: "Cafe Hopping",
+            description: "Try Israeli food and relax in the famous cafes like Pink Floyd.",
+            time: "10:00 AM",
+            type: "food"
+          },
+          {
+            _key: "tosh2b",
+            title: "Trek to Kutla",
+            description: "A beautiful 2-hour uphill trek to a pristine alpine meadow.",
+            time: "01:00 PM",
+            type: "activity"
+          }
+        ]
+      },
+      {
+        _key: "tosh-day3",
+        dayNumber: 3,
+        title: "Return",
+        date: "2026-10-12",
+        summary: "Hike back down and drive to Bhuntar.",
+        activities: [
+          {
+            _key: "tosh3a",
+            title: "Hike to Barshaini",
+            description: "Walk back down to catch a cab/bus.",
+            time: "10:00 AM",
+            type: "transport"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    _id: "trip-sach-pass-5-days",
+    title: "Sach Pass — The Ultimate Thrill",
+    slug: "sach-pass-5-days",
+    excerpt: "Conquer one of the most dangerous and thrilling mountain passes in India, connecting Chamba to the Pangi Valley.",
+    tags: ["Mountains", "Road Trip", "Adventure", "Extreme", "Himachal"],
+    country: "India",
+    startDate: "2026-08-01",
+    endDate: "2026-08-05",
+    bestSuggestedMonth: "Late July – September",
+    status: "published",
+    viewCount: 0,
+    totalBudget: 22000,
+    currency: "INR",
+    tripType: "Adventure",
+    readingTime: 6,
+    _createdAt: "2026-09-11T00:00:00Z",
+    _updatedAt: "2026-09-11T00:00:00Z",
+    coverImage: { _type: "image", asset: { _type: "reference", _ref: "/images/sach-pass.jpg" } } as any,
+    itinerary: [
+      {
+        _key: "sach-day1",
+        dayNumber: 1,
+        title: "Pathankot to Dalhousie",
+        date: "2026-08-01",
+        summary: "Arrive in Pathankot and drive to the hill station of Dalhousie.",
+        activities: [
+          {
+            _key: "sac1a",
+            title: "Drive to Dalhousie",
+            description: "A comfortable 3-hour drive to start the trip.",
+            location: { name: "Dalhousie", lat: 32.5387, lng: 75.9710 },
+            time: "02:00 PM",
+            type: "transport"
+          }
+        ]
+      },
+      {
+        _key: "sach-day2",
+        dayNumber: 2,
+        title: "Dalhousie to Bairagarh",
+        date: "2026-08-02",
+        summary: "Drive to the base of the pass.",
+        activities: [
+          {
+            _key: "sac2a",
+            title: "Drive to Bairagarh",
+            description: "The road starts getting narrower and rougher. Last major settlement before the pass.",
+            location: { name: "Bairagarh", lat: 32.8465, lng: 76.1432 },
+            time: "10:00 AM",
+            type: "transport"
+          }
+        ]
+      },
+      {
+        _key: "sach-day3",
+        dayNumber: 3,
+        title: "Cross Sach Pass to Killar",
+        date: "2026-08-03",
+        summary: "The main adventure day. Cross the 14,500 ft high pass.",
+        activities: [
+          {
+            _key: "sac3a",
+            title: "Cross Sach Pass",
+            description: "Drive through massive walls of ice, water crossings, and zero-visibility fog. A true test of driving skills.",
+            location: { name: "Sach Pass", lat: 32.9667, lng: 76.2333 },
+            time: "06:00 AM",
+            type: "activity"
+          },
+          {
+            _key: "sac3b",
+            title: "Arrive in Killar",
+            description: "Descend into the Pangi Valley and rest in Killar.",
+            time: "04:00 PM",
+            type: "accommodation"
+          }
+        ]
+      },
+      {
+        _key: "sach-day4",
+        dayNumber: 4,
+        title: "Killar to Keylong",
+        date: "2026-08-04",
+        summary: "Drive out of Pangi Valley into Lahaul.",
+        activities: [
+          {
+            _key: "sac4a",
+            title: "Cliffhanger Drive",
+            description: "Drive along the Chenab gorge on a road carved into the cliff face.",
+            time: "08:00 AM",
+            type: "transport"
+          }
+        ]
+      },
+      {
+        _key: "sach-day5",
+        dayNumber: 5,
+        title: "Departure",
+        date: "2026-08-05",
+        summary: "Keylong to Manali and depart.",
+        activities: [
+          {
+            _key: "sac5a",
+            title: "Drive to Manali",
+            description: "Cross the Atal Tunnel to Manali and take a bus/flight home.",
+            time: "09:00 AM",
+            type: "transport"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    _id: "trip-chopta-4-days",
+    title: "Chopta — The Mini Switzerland of India",
+    slug: "chopta-4-days",
+    excerpt: "Trek to Tungnath, the highest Shiva temple in the world, and Chandrashila peak, all starting from the lush green meadows of Chopta.",
+    tags: ["Mountains", "Trekking", "Pilgrimage", "Uttarakhand", "Nature"],
+    country: "India",
+    startDate: "2026-05-01",
+    endDate: "2026-05-04",
+    bestSuggestedMonth: "April – June, Sep – Nov",
+    status: "published",
+    viewCount: 0,
+    totalBudget: 12000,
+    currency: "INR",
+    tripType: "Adventure",
+    readingTime: 6,
+    _createdAt: "2026-09-11T00:00:00Z",
+    _updatedAt: "2026-09-11T00:00:00Z",
+    coverImage: { _type: "image", asset: { _type: "reference", _ref: "/images/chopta.jpg" } } as any,
+    itinerary: [
+      {
+        _key: "chop-day1",
+        dayNumber: 1,
+        title: "Dehradun to Chopta",
+        date: "2026-05-01",
+        summary: "Long scenic drive from Dehradun/Rishikesh to Chopta.",
+        activities: [
+          {
+            _key: "cho1a",
+            title: "Drive to Chopta",
+            description: "Drive alongside the Alaknanda and Mandakini rivers.",
+            location: { name: "Chopta", lat: 30.4851, lng: 79.1721 },
+            time: "08:00 AM",
+            type: "transport"
+          },
+          {
+            _key: "cho1b",
+            title: "Camp Check-in",
+            description: "Stay in a Swiss tent overlooking the bugyals (meadows).",
+            time: "04:00 PM",
+            type: "accommodation"
+          }
+        ]
+      },
+      {
+        _key: "chop-day2",
+        dayNumber: 2,
+        title: "Tungnath & Chandrashila Trek",
+        date: "2026-05-02",
+        summary: "The main trek day.",
+        activities: [
+          {
+            _key: "cho2a",
+            title: "Trek to Tungnath",
+            description: "A moderate 3.5 km trek to the highest Shiva temple (12,073 ft).",
+            time: "08:00 AM",
+            type: "activity"
+          },
+          {
+            _key: "cho2b",
+            title: "Trek to Chandrashila",
+            description: "A steep 1.5 km climb from Tungnath to the summit for a 360-degree Himalayan view.",
+            time: "11:00 AM",
+            type: "activity"
+          }
+        ]
+      },
+      {
+        _key: "chop-day3",
+        dayNumber: 3,
+        title: "Deoria Tal Trek",
+        date: "2026-05-03",
+        summary: "Drive to Sari village and trek to a beautiful alpine lake.",
+        activities: [
+          {
+            _key: "cho3a",
+            title: "Trek to Deoria Tal",
+            description: "A short 2 km uphill trek to a pristine lake reflecting the Chaukhamba peaks.",
+            time: "10:00 AM",
+            type: "sightseeing"
+          }
+        ]
+      },
+      {
+        _key: "chop-day4",
+        dayNumber: 4,
+        title: "Return",
+        date: "2026-05-04",
+        summary: "Drive back to Rishikesh/Dehradun.",
+        activities: [
+          {
+            _key: "cho4a",
+            title: "Drive Down",
+            description: "Head back to the plains to catch your flight/train.",
+            time: "09:00 AM",
+            type: "transport"
+          }
+        ]
+      }
+    ]
   }
 ];

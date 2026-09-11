@@ -3,17 +3,6 @@
 A region-wise list of lesser-known, non-touristy destinations across India — skipping the usual Goa/Manali/Shimla circuit.
 
 ## Himachal Pradesh & Uttarakhand (Himalayan West)
-1. **Chitkul** – last inhabited village on the Indo-Tibet road, Kinnaur
-2. **Kalpa** – apple orchards facing the Kinnner Kailash range
-3. **Tirthan Valley** – trout streams and Great Himalayan National Park base
-4. **Malana** – isolated village with its own ancient governance system
-5. **Barot Valley** – trout farms and pine forests near Mandi
-6. **Rakchham** – sleepy hamlet along the Baspa river
-7. **Nako** – high-altitude lake village near the Tibet border
-8. **Pangi Valley** – remote, cut-off-in-winter valley in Chamba
-9. **Tosh** – terraced village above Parvati Valley
-10. **Sach Pass** – dramatic high-altitude road trip route
-11. **Chopta** – "Mini Switzerland," gateway to Tungnath
 12. **Munsiyari** – Panchachuli peak views, Johar valley base
 13. **Khaliya Top** – meadow trek near Munsiyari
 14. **Chakrata** – cantonment town with Tiger Falls
