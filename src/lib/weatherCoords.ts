@@ -40,6 +40,16 @@ export const TRIP_WEATHER_COORDS: Record<string, WeatherLocation> = {
   "basgo-4-days": { name: "Basgo, Sham Valley", lat: 34.2250, lon: 77.2880 },
   "chumathang-4-days": { name: "Chumathang", lat: 33.3590, lon: 78.3240 },
   "hanle-5-days": { name: "Hanle Dark Sky Reserve", lat: 32.7660, lon: 78.9660 },
+  "kuldhara-4-days": { name: "Kuldhara, Jaisalmer", lat: 26.8708, lon: 70.7853 },
+  "narlai-4-days": { name: "Narlai, Pali", lat: 25.3211, lon: 73.5356 },
+  "khimsar-4-days": { name: "Khimsar, Nagaur", lat: 26.9786, lon: 73.4078 },
+  "bhangarh-4-days": { name: "Bhangarh, Alwar", lat: 27.0964, lon: 76.2864 },
+  "bishnoi-villages-3-days": { name: "Guda Bishnoiyan, Jodhpur", lat: 26.1367, lon: 73.0847 },
+  "dholavira-4-days": { name: "Dholavira, Kutch", lat: 23.8864, lon: 70.2178 },
+  "mandvi-4-days": { name: "Mandvi Port, Kutch", lat: 22.8336, lon: 69.3564 },
+  "poshina-3-days": { name: "Poshina, Sabarkantha", lat: 24.2389, lon: 73.0639 },
+  "champaner-pavagadh-3-days": { name: "Champaner-Pavagadh", lat: 22.4833, lon: 73.5333 },
+  "palitana-3-days": { name: "Palitana, Shatrunjaya", lat: 21.5222, lon: 71.8286 },
 };
 
 // ---------------------------------------------------------------------------

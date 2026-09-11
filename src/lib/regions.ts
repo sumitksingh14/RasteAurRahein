@@ -209,9 +209,19 @@ export const TRIP_REGION_MAP: Record<string, string[]> = {
   "kerala-7-days": ["south-india", "coastal"],
   "chorla-ghat-western-ghats": ["south-india", "coastal"],
 
-  // ── 6. Rajasthan & West (2 trips) ──
+  // ── 6. Rajasthan & West ──
   "rajasthan-desert-kingdom": ["rajasthan"],
   "agra-mathura-3-days": ["rajasthan", "himalayas"],
+  "kuldhara-4-days": ["rajasthan"],
+  "narlai-4-days": ["rajasthan"],
+  "khimsar-4-days": ["rajasthan"],
+  "bhangarh-4-days": ["rajasthan"],
+  "bishnoi-villages-3-days": ["rajasthan"],
+  "dholavira-4-days": ["rajasthan"],
+  "mandvi-4-days": ["rajasthan"],
+  "poshina-3-days": ["rajasthan"],
+  "champaner-pavagadh-3-days": ["rajasthan"],
+  "palitana-3-days": ["rajasthan"],
 };
 
 /**

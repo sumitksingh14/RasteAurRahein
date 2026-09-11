@@ -1627,6 +1627,245 @@ export const STAY_DATA: Record<string, HotelSuggestion[]> = {
       notes: "Modern dark-sky glamping domes with skylight windows allowing you to watch the stars right from your bed.",
     },
   ],
+  "kuldhara-4-days": [
+    {
+      id: "kul_s1", name: "Suryagarh Jaisalmer", type: "resort", stars: 5,
+      avgPricePerNight: 16000, town: "Sam Road (near Kuldhara)", contact: "+91-2992-269269",
+      bookingUrl: "https://www.suryagarh.com",
+      amenities: ["Thar Fortress Architecture","Rait Spa","Chudail Trail Night Safari","Heated Pool","Fine Dining"],
+      notes: "Spectacular golden stone palace fortress offering bespoke midnight expeditions into Kuldhara ghost village.",
+    },
+    {
+      id: "kul_s2", name: "Desert Springs Luxury Camp", type: "camp", stars: 3,
+      avgPricePerNight: 3200, town: "Kuldhara Road, Sam", contact: "+91-98290-77612",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Jaisalmer",
+      amenities: ["Swiss Glamping Tents","Camel Safari","Kalbelia Folk Dance","Bonfire Dinners"],
+      notes: "Comfortable desert tents set on rolling sand dunes just 10 minutes drive from the abandoned village ruins.",
+    },
+    {
+      id: "kul_s3", name: "Kuldhara Heritage Village Camp", type: "homestay", stars: 3,
+      avgPricePerNight: 1900, town: "Kuldhara Village Gate", contact: "+91-94141-89021",
+      bookingUrl: "https://www.google.com/search?q=Kuldhara+Camps",
+      amenities: ["Mud-Brick Huts","Stargazing","Desi Ghee Home Meals","Free Parking"],
+      notes: "Rustic mud huts built in traditional Paliwal architectural style near the ancient stepwell and temple.",
+    },
+  ],
+
+  "narlai-4-days": [
+    {
+      id: "nar_s1", name: "Rawla Narlai Heritage Resort", type: "resort", stars: 5,
+      avgPricePerNight: 9500, town: "Narlai Village, Pali", contact: "+91-2934-260443",
+      bookingUrl: "https://www.rawlanarlai.com",
+      amenities: ["17th-Century Hunting Lodge","Stepwell Dinner at Baoli","Leopard Safari","Swimming Pool","Ayurvedic Spa"],
+      notes: "Exquisite restored royal retreat nestled beneath Elephant Rock monolith, famous for candlelit 110-lamp stepwell feasts.",
+    },
+    {
+      id: "nar_s2", name: "Dadhikar Aravalli Homestay Narlai", type: "homestay", stars: 3,
+      avgPricePerNight: 2400, town: "Narlai Old Quarter", contact: "+91-98291-33201",
+      bookingUrl: "https://www.airbnb.co.in/s/Narlai/homes",
+      amenities: ["Courtyard Haveli","Home Cooked Mewari Food","Village Walks","Mountain Views"],
+      notes: "Charming family-run mansion with carved stone pillars and open terraces facing the surrounding granite crags.",
+    },
+    {
+      id: "nar_s3", name: "Elephant Rock Safari Camp", type: "camp", stars: 3,
+      avgPricePerNight: 2800, town: "Foot of Elephant Rock, Narlai", contact: "+91-94142-65410",
+      bookingUrl: "https://www.google.com/search?q=Narlai+Safari+Camp",
+      amenities: ["Safari Tents","Rock Climbing Assistance","Campfire","Stargazing"],
+      notes: "Glamping tents situated directly at the base of the massive granite dome with early morning trek access.",
+    },
+  ],
+
+  "khimsar-4-days": [
+    {
+      id: "khi_s1", name: "Welcomhotel by ITC Hotels Khimsar Fort", type: "resort", stars: 5,
+      avgPricePerNight: 11000, town: "Khimsar, Nagaur", contact: "+91-1585-262345",
+      bookingUrl: "https://www.itchotels.com",
+      amenities: ["16th-Century Battlements","Rampart Swimming Pool","Peacock Gardens","Royal Heritage Suites","Bar & Spa"],
+      notes: "Sprawling 11-acre fortress built in 1523 AD with cannon towers, royal courtyards, and war memorabilia museum.",
+    },
+    {
+      id: "khi_s2", name: "Khimsar Dunes Village", type: "resort", stars: 4,
+      avgPricePerNight: 7500, town: "Khimsar Sand Dunes", contact: "+91-1585-262345",
+      bookingUrl: "https://www.itchotels.com",
+      amenities: ["Isolated Eco Thatched Huts","Oasis Lake Views","Camel & Jeep Dunes Safari","Open Sky Dining"],
+      notes: "Accessible only by 4WD or camel cart, this secluded sanctuary features luxury circular huts around a desert lake.",
+    },
+    {
+      id: "khi_s3", name: "Desert Haveli Heritage Khimsar", type: "hotel", stars: 3,
+      avgPricePerNight: 2800, town: "Khimsar Town Bypass", contact: "+91-94144-88902",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Khimsar",
+      amenities: ["Carved Sandstone Balconies","Rooftop Restaurant","Rajasthani Dining","Free Parking"],
+      notes: "Traditional Rajasthani haveli offering comfortable budget accommodation right across from the fort entrance.",
+    },
+  ],
+
+  "bhangarh-4-days": [
+    {
+      id: "bha_s1", name: "Umaid Lake Palace Resort", type: "resort", stars: 4,
+      avgPricePerNight: 4800, town: "Kalakho, Dausa (near Bhangarh)", contact: "+91-97999-36888",
+      bookingUrl: "https://www.umaidlakepalace.com",
+      amenities: ["Organic Farmland","Swimming Pool","Vintage Jeep Tours","Royal Marwari Dining","Lakeside Walks"],
+      notes: "Sprawling heritage countryside estate located midway between Bhangarh ruins and the Chand Baori stepwell.",
+    },
+    {
+      id: "bha_s2", name: "Sariska Tiger Camp Resort", type: "resort", stars: 4,
+      avgPricePerNight: 5200, town: "Thanagazi, Alwar Road", contact: "+91-1465-224823",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Sariska",
+      amenities: ["Safari Booking Desk","Aravalli Hill View Cottages","Pool","Bonfire Nights"],
+      notes: "Ideal dual-base for exploring both Bhangarh Fort (25 km away) and Sariska Tiger Reserve morning safaris.",
+    },
+    {
+      id: "bha_s3", name: "Fort View Guesthouse Gola ka Baas", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1600, town: "Gola ka Baas (near Bhangarh)", contact: "+91-98294-11209",
+      bookingUrl: "https://www.google.com/search?q=Bhangarh+Guesthouse",
+      amenities: ["Village Setting","Home Cooked Meals","Parking","Geyser"],
+      notes: "Simple rural family guesthouse just 6 km from Bhangarh Fort, convenient for early morning photography.",
+    },
+  ],
+
+  "bishnoi-villages-3-days": [
+    {
+      id: "bis_s1", name: "Bishnoi Village Camp and Resort", type: "resort", stars: 3,
+      avgPricePerNight: 2800, town: "Guda Bishnoiyan, Jodhpur", contact: "+91-98280-31207",
+      bookingUrl: "https://www.bishnoivillage.com",
+      amenities: ["Traditional Thatched Huts (Jhopas)","Wildlife Safari Desk","Blackbuck Sighting","Folk Dance"],
+      notes: "Authentic desert village resort nestled in the heart of Guda Bishnoiyan with frequent blackbuck sightings on lawns.",
+    },
+    {
+      id: "bis_s2", name: "Chhotaram Prajapat's Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 2200, town: "Salawas Village, Jodhpur", contact: "+91-94147-20724",
+      bookingUrl: "https://www.airbnb.co.in/s/Salawas/homes",
+      amenities: ["Prajapat Family Hospitality","Durry Weaving Workshops","Organic Home Meals","Mud Cottages"],
+      notes: "World-renowned award-winning homestay offering immersive cultural experiences with traditional potter-weaver families.",
+    },
+    {
+      id: "bis_s3", name: "Rohet Garh Heritage Palace", type: "resort", stars: 5,
+      avgPricePerNight: 8500, town: "Rohet (near Bishnoi belt)", contact: "+91-2938-268231",
+      bookingUrl: "https://www.rohetgarh.com",
+      amenities: ["17th-Century Fortified Mansion","Pioneers of Bishnoi Village Safari","Equestrian Center","Lake Pool"],
+      notes: "Legendary luxury heritage haven whose royal family pioneered respectful rural Bishnoi community safaris.",
+    },
+  ],
+
+  "dholavira-4-days": [
+    {
+      id: "dho_s1", name: "Dholavira Tourism Resort", type: "resort", stars: 3,
+      avgPricePerNight: 3500, town: "Dholavira, Khadir Bet", contact: "+91-97277-50607",
+      bookingUrl: "https://www.dholaviratourismresort.com",
+      amenities: ["Traditional Bhunga Mud Cottages","White Rann Excursions","Kutchi Thali Included","Air Conditioned"],
+      notes: "Authentic Kutchi circular Bhungas featuring intricate mud and mirror Lipan work, 5 minutes from Harappan ruins.",
+    },
+    {
+      id: "dho_s2", name: "Rann Resort Dholavira", type: "resort", stars: 3,
+      avgPricePerNight: 4200, town: "Archaeological Road, Khadir Island", contact: "+91-94287-66551",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Dholavira",
+      amenities: ["Luxury Bhungas","Flamingo Sanctuary Tour Desk","Cultural Music Nights","Buffet Dining"],
+      notes: "Comfortable resort perched on the edge of the salt flats, renowned for sunset safaris and star-watching.",
+    },
+    {
+      id: "dho_s3", name: "Toran Tourist Complex Dholavira", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1800, town: "Archaeological Survey Gate", contact: "+91-2832-250000",
+      bookingUrl: "https://gujarattourism.com",
+      amenities: ["Government Guest House","Direct Site Access","Vegetarian Dining Hall","Parking"],
+      notes: "Gujarat Tourism rest house located directly adjacent to the UNESCO World Heritage excavation and museum.",
+    },
+  ],
+
+  "mandvi-4-days": [
+    {
+      id: "man_s1", name: "Serena Beach Resort Mandvi", type: "resort", stars: 5,
+      avgPricePerNight: 8500, town: "Nani Khakhar Beach, Mandvi", contact: "+91-2834-290000",
+      bookingUrl: "https://www.serenabeachresort.com",
+      amenities: ["Private White Sand Beach","Infinity Pool","Luxury Villas","Water Sports","Seafood Restaurant"],
+      notes: "Premier coastal luxury resort on the Arabian Sea with sprawling manicured palms and private beach access.",
+    },
+    {
+      id: "man_s2", name: "Vijay Vilas Heritage Camp", type: "resort", stars: 4,
+      avgPricePerNight: 5500, town: "Vijay Vilas Palace Estate", contact: "+91-98252-25956",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Mandvi",
+      amenities: ["Palace Beach Access","Swiss Tents & Cottages","Orchard Lawns","Birdwatching Haven"],
+      notes: "Exclusive accommodations set within the private estate gardens of the iconic red sandstone Vijay Vilas Palace.",
+    },
+    {
+      id: "man_s3", name: "Hotel Sea View Mandvi", type: "hotel", stars: 3,
+      avgPricePerNight: 2200, town: "Topansar Lake Road, Mandvi", contact: "+91-2834-222888",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Mandvi",
+      amenities: ["Shipbuilding Wharf Proximity","AC Rooms","Vegetarian & Seafood Dining","Free Wi-Fi"],
+      notes: "Convenient central hotel located walking distance from the historic wooden dhow shipyards along Rukmavati river.",
+    },
+  ],
+
+  "poshina-3-days": [
+    {
+      id: "pos_s1", name: "Darbargadh Poshina Heritage Hotel", type: "resort", stars: 4,
+      avgPricePerNight: 5800, town: "Poshina, Sabarkantha", contact: "+91-2775-283424",
+      bookingUrl: "https://www.darbargadhposhina.com",
+      amenities: ["Restored Royal Palace","Courtyards & Arches","Tribal Village Safari Desk","Traditional Royal Banquets"],
+      notes: "Historic 15th-century palace fortress hosted by royal family descendants who personally guide tribal village tours.",
+    },
+    {
+      id: "pos_s2", name: "Poshina Safari Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 2200, town: "Terracotta Shrine Road, Poshina", contact: "+91-94263-88120",
+      bookingUrl: "https://www.google.com/search?q=Poshina+Homestay",
+      amenities: ["Garasia Village Setting","Pottery Making Workshops","Home Cooked Food","Local Guides"],
+      notes: "Warm rural retreat near the sacred grove filled with thousands of terracotta horse offerings.",
+    },
+    {
+      id: "pos_s3", name: "Aravalli Hills Nature Retreat", type: "resort", stars: 3,
+      avgPricePerNight: 2600, town: "Himatnagar-Poshina Border", contact: "+91-98791-44021",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Gujarat",
+      amenities: ["Garden Cottages","Vegetarian Restaurant","Bonfire","Hill Views"],
+      notes: "Scenic border stop nestled among the rolling granite outcroppings of the southern Aravalli hills.",
+    },
+  ],
+
+  "champaner-pavagadh-3-days": [
+    {
+      id: "cha_s1", name: "Champaner Heritage Resort", type: "resort", stars: 4,
+      avgPricePerNight: 6200, town: "Halol, Vadodara Highway", contact: "+91-98240-33290",
+      bookingUrl: "https://www.champanerheritageresort.com",
+      amenities: ["Mango & Guava Orchards","Heritage Architecture","Swimming Pool","UNESCO Tour Guides"],
+      notes: "Tranquil luxury resort set in 50 acres of fruit orchards, 10 minutes from the Jami Masjid UNESCO monuments.",
+    },
+    {
+      id: "cha_s2", name: "Toran Hotel Pavagadh", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1800, town: "Manchi, Pavagadh Base", contact: "+91-2676-245623",
+      bookingUrl: "https://gujarattourism.com",
+      amenities: ["Ropeway Proximity","Vegetarian Dining Hall","Clean AC Rooms","Pilgrim Desk"],
+      notes: "Official Gujarat Tourism lodge positioned right at the cable car terminal ascending to the Kalika Mata summit.",
+    },
+    {
+      id: "cha_s3", name: "Vananchal Jungle Resort Jambughoda", type: "resort", stars: 3,
+      avgPricePerNight: 3200, town: "Jambughoda Wildlife Sanctuary", contact: "+91-98795-66700",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Vadodara",
+      amenities: ["Forest Cottages","Teak Canopy","Pool","Birdwatching Safari Desk"],
+      notes: "Eco-resort nestled in the teak forests of Jambughoda Wildlife Sanctuary, 18 km from Champaner ruins.",
+    },
+  ],
+
+  "palitana-3-days": [
+    {
+      id: "pal_s1", name: "Hotel Shetrunjay Palitana", type: "hotel", stars: 3,
+      avgPricePerNight: 2500, town: "Taleti Road, Palitana", contact: "+91-2848-252123",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Palitana",
+      amenities: ["Pilgrim Friendly","Satvik Jain Dining","Early 4 AM Wake-Up Calls","AC Rooms"],
+      notes: "Clean, comfortable hotel located 800 meters from the Shatrunjaya hill climb starting point (Taleti).",
+    },
+    {
+      id: "pal_s2", name: "Toran Tourist Bungalow Palitana", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1600, town: "Gariadhar Road, Palitana", contact: "+91-2848-252421",
+      bookingUrl: "https://gujarattourism.com",
+      amenities: ["Gujarat Tourism Run","Spacious Lawns","Jain Bhojanalaya Access","Free Parking"],
+      notes: "Government heritage property offering tranquil garden cottages catering to pilgrims and heritage travelers.",
+    },
+    {
+      id: "pal_s3", name: "Vijay Vilas Palace Adpur Palitana", type: "hotel", stars: 3,
+      avgPricePerNight: 4200, town: "Adpur Village, Palitana", contact: "+91-2848-252002",
+      bookingUrl: "https://www.google.com/search?q=Vijay+Vilas+Adpur+Palitana",
+      amenities: ["Panoramic Shatrunjaya Hill View","Country Palace Heritage","Pure Vegetarian Kitchen","Spacious Suites"],
+      notes: "Scenic royal country seat perched on a hillock overlooking the glistening white Jain temples of Shatrunjaya.",
+    },
+  ],
 };
 
 export const DEFAULT_STAYS: HotelSuggestion[] = [

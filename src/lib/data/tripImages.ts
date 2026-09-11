@@ -95,6 +95,18 @@ export const TRIP_IMAGES: Record<string, string> = {
   "basgo-4-days": "/images/basgo.jpg",
   "chumathang-4-days": "/images/chumathang.jpg",
   "hanle-5-days": "/images/hanle.jpg",
+
+  // Rajasthan & Gujarat Offbeat Destinations (from Mumbai/Pune)
+  "kuldhara-4-days": "/images/kuldhara.jpg",
+  "narlai-4-days": "/images/narlai.jpg",
+  "khimsar-4-days": "/images/khimsar.jpg",
+  "bhangarh-4-days": "/images/bhangarh.jpg",
+  "bishnoi-villages-3-days": "/images/bishnoi-villages.jpg",
+  "dholavira-4-days": "/images/dholavira.jpg",
+  "mandvi-4-days": "/images/mandvi.jpg",
+  "poshina-3-days": "/images/poshina.jpg",
+  "champaner-pavagadh-3-days": "/images/champaner-pavagadh.jpg",
+  "palitana-3-days": "/images/palitana.jpg",
 };
 
 export const DEFAULT_TRIP_IMAGE = "/images/leh-ladakh-pangong-lake.jpg";

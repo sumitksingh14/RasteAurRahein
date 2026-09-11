@@ -2,18 +2,6 @@
 
 A region-wise list of lesser-known, non-touristy destinations across India — skipping the usual Goa/Manali/Shimla circuit.
 
-## Rajasthan & Gujarat (West)
-24. **Kuldhara** – abandoned "ghost village" near Jaisalmer
-25. **Narlai** – small heritage village below a granite monolith
-26. **Khimsar** – desert village with sand dunes and a fort
-27. **Bhangarh** – ruined fort town, folklore-famous
-28. **Bishnoi Villages** – wildlife-friendly desert communities near Jodhpur
-29. **Dholavira** – Harappan-era excavation site in Kutch
-30. **Mandvi** – shipbuilding beach town in Kutch
-31. **Poshina** – tribal border town, Gujarat-Rajasthan
-32. **Champaner-Pavagadh** – UNESCO ruins near Vadodara
-33. **Palitana** – 900+ Jain temples atop Shatrunjaya hill
-
 ## Karnataka & Andhra/Telangana (South-Central)
 67. **Anegundi** – ancient village across the river from Hampi
 68. **Yana Rocks** – limestone monoliths in Uttara Kannada
@@ -63,4 +51,13 @@ Add separate detail trip itineraries in all trips section of webapp for below pl
 - Weather Details
 - Route Map
 - Trip Thumbnail image
-Locations:Munsiyari, Khaliya Top, Chakrata, Kanatal, Chaukori
+Locations:**Kuldhara** – abandoned "ghost village" near Jaisalmer
+**Narlai** – small heritage village below a granite monolith
+**Khimsar** – desert village with sand dunes and a fort
+**Bhangarh** – ruined fort town, folklore-famous
+**Bishnoi Villages** – wildlife-friendly desert communities near Jodhpur
+**Dholavira** – Harappan-era excavation site in Kutch
+**Mandvi** – shipbuilding beach town in Kutch
+**Poshina** – tribal border town, Gujarat-Rajasthan
+**Champaner-Pavagadh** – UNESCO ruins near Vadodara
+**Palitana** – 900+ Jain temples atop Shatrunjaya hill

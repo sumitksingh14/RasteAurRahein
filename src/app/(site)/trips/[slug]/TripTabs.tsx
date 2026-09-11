@@ -300,6 +300,66 @@ const AI_BUDGET_ESTIMATES: Record<string, {
     source: "Based on Hanle Dark Sky Reserve astrophotography reports (2024–26)",
     searchQuery: "Hanle dark sky reserve Ladakh trip budget per day 2024",
   },
+  "kuldhara-4-days": {
+    accommodation: [1500, 6000], food: [350, 950], transport: [900, 2200],
+    activities: [250, 800], misc: [300, 600], currency: "INR",
+    source: "Based on Jaisalmer & Kuldhara desert circuit reports (2024–26)",
+    searchQuery: "Kuldhara Jaisalmer trip budget per day 2024",
+  },
+  "narlai-4-days": {
+    accommodation: [2000, 9500], food: [400, 1200], transport: [800, 1800],
+    activities: [400, 1500], misc: [300, 700], currency: "INR",
+    source: "Based on Rawla Narlai & Pali heritage reports (2024–26)",
+    searchQuery: "Rawla Narlai trip budget per day 2024",
+  },
+  "khimsar-4-days": {
+    accommodation: [2200, 11000], food: [450, 1300], transport: [800, 1800],
+    activities: [350, 1200], misc: [300, 600], currency: "INR",
+    source: "Based on Khimsar Fort & Dunes reports (2024–26)",
+    searchQuery: "Khimsar Fort trip budget per day 2024",
+  },
+  "bhangarh-4-days": {
+    accommodation: [1500, 5500], food: [300, 850], transport: [700, 1600],
+    activities: [200, 900], misc: [200, 500], currency: "INR",
+    source: "Based on Bhangarh & Sariska weekend reports (2024–26)",
+    searchQuery: "Bhangarh Fort Sariska trip budget per day 2024",
+  },
+  "bishnoi-villages-3-days": {
+    accommodation: [1200, 4500], food: [250, 750], transport: [600, 1400],
+    activities: [300, 1000], misc: [200, 500], currency: "INR",
+    source: "Based on Jodhpur Bishnoi village safari reports (2024–26)",
+    searchQuery: "Bishnoi village Jodhpur safari budget per day 2024",
+  },
+  "dholavira-4-days": {
+    accommodation: [1600, 5000], food: [300, 800], transport: [1200, 2500],
+    activities: [200, 600], misc: [250, 500], currency: "INR",
+    source: "Based on Dholavira & Khadir Bet Kutch reports (2024–26)",
+    searchQuery: "Dholavira Kutch trip budget per day 2024",
+  },
+  "mandvi-4-days": {
+    accommodation: [1800, 8000], food: [350, 1000], transport: [700, 1500],
+    activities: [200, 700], misc: [250, 500], currency: "INR",
+    source: "Based on Mandvi beach & Kutch coast reports (2024–26)",
+    searchQuery: "Mandvi Kutch trip budget per day 2024",
+  },
+  "poshina-3-days": {
+    accommodation: [1500, 5800], food: [300, 800], transport: [700, 1600],
+    activities: [250, 800], misc: [200, 450], currency: "INR",
+    source: "Based on Poshina tribal heritage reports (2024–26)",
+    searchQuery: "Poshina Darbargadh Gujarat trip budget per day 2024",
+  },
+  "champaner-pavagadh-3-days": {
+    accommodation: [1400, 5500], food: [250, 750], transport: [600, 1400],
+    activities: [150, 500], misc: [200, 400], currency: "INR",
+    source: "Based on Champaner UNESCO & Pavagadh reports (2024–26)",
+    searchQuery: "Champaner Pavagadh trip budget per day 2024",
+  },
+  "palitana-3-days": {
+    accommodation: [1200, 4200], food: [200, 650], transport: [600, 1300],
+    activities: [150, 500], misc: [200, 450], currency: "INR",
+    source: "Based on Palitana Shatrunjaya pilgrim reports (2024–26)",
+    searchQuery: "Palitana Shatrunjaya trip budget per day 2024",
+  },
 };
 
 const DEFAULT_BUDGET = {

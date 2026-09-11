@@ -1372,6 +1372,215 @@ export const FOOD_DATA: Record<string, FoodSpot[]> = {
       notes: "Last major town settlement before Hanle with reliable hot meals and ATM access.",
     },
   ],
+  "kuldhara-4-days": [
+    {
+      id: "kul_f1", name: "The Desert Oasis Dhaba", type: "dhaba", town: "Kuldhara Road, Jaisalmer",
+      mustTry: ["Ker Sangri with Bajre ki Roti","Rajasthani Gatta Curry","Mirchi Vada","Makhaniya Lassi"],
+      priceRange: "₹", isVeg: true,
+      notes: "Traditional open-air thatched dhaba serving rustic Thar desert delicacies on khatiya cots.",
+    },
+    {
+      id: "kul_f2", name: "Khaba Fort Heritage Cafe", type: "cafe", town: "Khaba Fort, near Kuldhara",
+      mustTry: ["Kadhi Pakoda","Daal Baati Churma","Masala Chaach","Bajra Khichda with Desi Ghee"],
+      priceRange: "₹₹", isVeg: true,
+      notes: "Atmospheric cafe situated in the courtyard of 13th-century Khaba Fort ruins with desert views.",
+    },
+    {
+      id: "kul_f3", name: "Suryagarh Thar Dining", type: "restaurant", town: "Kahala Phata, Sam Road",
+      mustTry: ["Royal Laal Maas","Jungli Maas","Pyaaz Kachori","Ghevar with Rabdi"],
+      priceRange: "₹₹₹", isVeg: false,
+      notes: "Luxury desert fortress dining celebrating imperial Rajput hunting-lodge recipes with folk music.",
+    },
+  ],
+
+  "narlai-4-days": [
+    {
+      id: "nar_f1", name: "Jharokha Heritage Restaurant", type: "restaurant", town: "Rawla Narlai, Pali",
+      mustTry: ["Traditional Mewari Thali","Ker Dak (raisin & caper curry)","Pitor ki Sabzi","Malpua with Kesar"],
+      priceRange: "₹₹", isVeg: true,
+      notes: "Courtyard restaurant surrounded by frangipani trees and arched stone jharokhas in Rawla Narlai.",
+    },
+    {
+      id: "nar_f2", name: "Elephant Rock Stepwell Dining", type: "restaurant", town: "Narlai Baoli",
+      mustTry: ["Stepwell Royal Candlelit Dinner","Safed Maas","Millet Bread with White Butter","Gulab Jamun Sabzi"],
+      priceRange: "₹₹₹", isVeg: false,
+      notes: "Unforgettable dining experience inside a 500-year-old stepwell illuminated with hundreds of oil lamps.",
+    },
+    {
+      id: "nar_f3", name: "Rawat Mishthan & Tea Stall", type: "street-food", town: "Narlai Main Chawk",
+      mustTry: ["Kullhad Masala Chai","Moong Dal Pakodi","Crisp Poha","Besan Barfi"],
+      priceRange: "₹", isVeg: true,
+      notes: "Village meeting spot where local elders gather under neem trees for morning chai and gossip.",
+    },
+  ],
+
+  "khimsar-4-days": [
+    {
+      id: "khi_f1", name: "Fateh Mahal Fort Dining", type: "restaurant", town: "Khimsar Fort, Nagaur",
+      mustTry: ["Nagauri Methi Gosht","Bajra Roti with Garlic Chutney","Govind Gatta Curry","Moong Dal Halwa"],
+      priceRange: "₹₹₹", isVeg: false,
+      notes: "Imperial dining inside the 16th-century fortress ramparts featuring legendary fragrant Nagaur fenugreek.",
+    },
+    {
+      id: "khi_f2", name: "Sand Dunes Oasis Camp Kitchen", type: "dhaba", town: "Khimsar Dunes Village",
+      mustTry: ["Smoky Barbecue Skewers","Khichdi with Bilona Ghee","Churma Ladoo","Spiced Buttermilk"],
+      priceRange: "₹₹", isVeg: true,
+      notes: "Open-air desert dune dining set around a tranquil desert pond surrounded by towering sand dunes.",
+    },
+    {
+      id: "khi_f3", name: "Highway Royal Dhaba", type: "dhaba", town: "Nagaur-Jodhpur Highway",
+      mustTry: ["Sev Tamatar Sabzi","Daal Fry with Tandoori Roti","Pyaz Paratha","Adrak Wali Chai"],
+      priceRange: "₹", isVeg: true,
+      notes: "Popular trucker dhaba serving fast, piping hot vegetarian thalis and clay cup chai.",
+    },
+  ],
+
+  "bhangarh-4-days": [
+    {
+      id: "bha_f1", name: "Aravalli Heritage Rasoi", type: "restaurant", town: "Gola ka Baas, near Bhangarh",
+      mustTry: ["Famous Alwari Kalakand (milk cake)","Rajasthani Panchmel Dal","Missi Roti","Kachri ki Chutney"],
+      priceRange: "₹", isVeg: true,
+      notes: "Historic town eatery celebrated for the iconic Alwar milk cake and spicy wild melon relish.",
+    },
+    {
+      id: "bha_f2", name: "Fort Gate Tourist Dhaba", type: "street-food", town: "Bhangarh Fort Entry",
+      mustTry: ["Aloo Pyaz Poori Sabzi","Spiced Masala Maggi","Thandi Lassi in Clay Cup","Hot Ginger Tea"],
+      priceRange: "₹", isVeg: true,
+      notes: "Lively stall situated outside the ASI checkpoint before entering the ruined fortress gates.",
+    },
+    {
+      id: "bha_f3", name: "Sariska Wilderness Dhaba", type: "restaurant", town: "Thanagazi, Alwar Road",
+      mustTry: ["Handi Mutton","Paneer Tikka with Coriander Dip","Tawa Roti with Makhan","Shahi Tukda"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Jungle-edge open grill dhaba popular with safari visitors returning from Sariska Tiger Reserve.",
+    },
+  ],
+
+  "bishnoi-villages-3-days": [
+    {
+      id: "bis_f1", name: "Guda Bishnoiyan Rural Kitchen", type: "homestay-kitchen", town: "Guda Lake, Jodhpur",
+      mustTry: ["Sogra (thick pearl millet bread)","Kair Kumatia Sangri","Raw Garlic Red Chili Chutney","Fresh Spiced Buttermilk"],
+      priceRange: "₹", isVeg: true,
+      notes: "Wholesome 100% vegetarian Bishnoi home meal cooked over slow cow-dung cake fires with pure bilona ghee.",
+    },
+    {
+      id: "bis_f2", name: "Salawas Weavers Dhaba", type: "dhaba", town: "Salawas Village, Jodhpur",
+      mustTry: ["Marwari Dal Bati","Churma with Gond & Dry Fruits","Papad ki Sabzi","Gatta Pulao"],
+      priceRange: "₹", isVeg: true,
+      notes: "Welcoming artisan village dining hosted by generations of master durry and carpet weavers.",
+    },
+    {
+      id: "bis_f3", name: "Khejarli Martyrs Memorial Cafe", type: "street-food", town: "Khejarli Village",
+      mustTry: ["Bajra Roti with Jaggery & Ghee","Besan Mirchi","Lassi with Mawa","Masala Chai"],
+      priceRange: "₹", isVeg: true,
+      notes: "Rest stop near the sacred 363 Bishnoi tree martyrs memorial grove and blackbuck sanctuary.",
+    },
+  ],
+
+  "dholavira-4-days": [
+    {
+      id: "dho_f1", name: "Khadir Bet Kutchi Bhojanalaya", type: "restaurant", town: "Dholavira Village, Kutch",
+      mustTry: ["Kutchi Bajri No Rotlo","Ringna No Olo (smoky eggplant mash)","Kadhi Khichdi","Fresh Ghee & Gud"],
+      priceRange: "₹", isVeg: true,
+      notes: "Hearty authentic Kutchi pastoral meal served with clay-baked millet bread and roasted garlic chutney.",
+    },
+    {
+      id: "dho_f2", name: "White Rann Roadside Dhaba", type: "dhaba", town: "Road to Heaven, Rapar",
+      mustTry: ["Kutchi Dabeli","Methi Na Gota","Masala Chaach with Roasted Cumin","Khaman Dhokla"],
+      priceRange: "₹", isVeg: true,
+      notes: "Vital refreshment stop along the breathtaking highway crossing the pure white salt desert.",
+    },
+    {
+      id: "dho_f3", name: "Flamingo Oasis Kitchen", type: "restaurant", town: "Dholavira Tourism Resort",
+      mustTry: ["Gujarati Dal & Rice","Sev Tameta Nu Shaak","Shrikhand with Almond Flakes","Papad & Pickles"],
+      priceRange: "₹₹", isVeg: true,
+      notes: "Resort dining hall catering to archaeological explorers and flamingo photographers on Khadir island.",
+    },
+  ],
+
+  "mandvi-4-days": [
+    {
+      id: "man_f1", name: "Osho Dining Hall & Kutchi Thali", type: "restaurant", town: "Mandvi Town Center",
+      mustTry: ["Grand Kutchi Thali (unlimited)","Gulab Pak","Puran Poli with Ghee","Farsan Basket & Chaach"],
+      priceRange: "₹₹", isVeg: true,
+      notes: "Legendary Mandvi institution famous across Gujarat for its sprawling authentic traditional thali.",
+    },
+    {
+      id: "man_f2", name: "Shipbuilders Harbor Dhaba", type: "dhaba", town: "Rukmavati River Wharf, Mandvi",
+      mustTry: ["Fresh Surmai Tawa Fry","Prawn Curry with Steamed Rice","Fish Cutlets","Solkadhi"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Waterfront eatery right next to the active wooden dhow boatbuilding docks on the Rukmavati river.",
+    },
+    {
+      id: "man_f3", name: "Vijay Vilas Beach Cafe", type: "cafe", town: "Vijay Vilas Palace Beach",
+      mustTry: ["Kutchi Dabeli with Pomegranate","Tender Coconut Water","Cold Coffee","Crisp Vegetable Samosas"],
+      priceRange: "₹", isVeg: true,
+      notes: "Shaded seaside cafe overlooking the private beach estate of the royal Maharaos of Kutch.",
+    },
+  ],
+
+  "poshina-3-days": [
+    {
+      id: "pos_f1", name: "Darbargadh Royal Dining", type: "restaurant", town: "Poshina Palace, Sabarkantha",
+      mustTry: ["Royal Darbari Rajputana Thali","Laal Maas / Safed Paneer","Bajra Rotla with Garlic Thecha","Kansar with Pure Desi Ghee"],
+      priceRange: "₹₹₹", isVeg: false,
+      notes: "Heritage dining hall hosted by the royal family of Poshina showcasing Rajput-tribal fusion recipes.",
+    },
+    {
+      id: "pos_f2", name: "Aravalli Tribal Rasoi", type: "homestay-kitchen", town: "Poshina Market Gate",
+      mustTry: ["Makai No Rotlo (corn bread)","Urad Dal Tadka","Green Chili Thecha","Jaggery Halwa"],
+      priceRange: "₹", isVeg: true,
+      notes: "Rustic village eatery serving wholesome tribal fare to pilgrims and artisans visiting weekly haat.",
+    },
+    {
+      id: "pos_f3", name: "Ambaji Foothills Dhaba", type: "dhaba", town: "Himatnagar-Poshina Highway",
+      mustTry: ["Kathiyawadi Sev Usal","Khaman Dhokla","Adrak Masala Tea","Churma Ladoo"],
+      priceRange: "₹", isVeg: true,
+      notes: "Popular pilgrimage highway stop on the border route between Gujarat and Rajasthan.",
+    },
+  ],
+
+  "champaner-pavagadh-3-days": [
+    {
+      id: "cha_f1", name: "Heritage Jami Rasoi", type: "restaurant", town: "Champaner Fort Village",
+      mustTry: ["Traditional Gujarati Thali","Undhiyu (seasonal)","Rotli with Desi Makhan","Basundi with Pistachios"],
+      priceRange: "₹", isVeg: true,
+      notes: "Comfortable family dining near the UNESCO archaeological park serving classic Gujarati home cooking.",
+    },
+    {
+      id: "cha_f2", name: "Pavagadh Ropeway Foothills Dhaba", type: "dhaba", town: "Manchi, Pavagadh Base",
+      mustTry: ["Piping Hot Dal Vada","Bataka Vada with Green Chutney","Kadhi Khichdi with Ghee","Sugarcane Juice"],
+      priceRange: "₹", isVeg: true,
+      notes: "Bustling refreshment hub at the base of the cable car ascending to the Mahakali temple summit.",
+    },
+    {
+      id: "cha_f3", name: "Vadodara Highway Treat", type: "street-food", town: "Halol Bypass, Champaner",
+      mustTry: ["Sev Usal with Spicy Tari & Spring Onions","Kachori with Sweet Tamarind Dip","Chaas","Fafda Jalebi"],
+      priceRange: "₹", isVeg: true,
+      notes: "Famous regional street food junction serving Baroda's legendary fiery Sev Usal with pav.",
+    },
+  ],
+
+  "palitana-3-days": [
+    {
+      id: "pal_f1", name: "Shatrunjaya Jain Satvik Bhojanalaya", type: "restaurant", town: "Taleti Road, Palitana",
+      mustTry: ["100% Satvik Jain Thali (no root vegetables)","Moong Dal Khichdi with Cow Ghee","Gujarati Kadhi","Sweet Sukhdi"],
+      priceRange: "₹", isVeg: true,
+      notes: "Sacred community dining hall adhering strictly to Jain dietary principles in the world's first vegetarian city.",
+    },
+    {
+      id: "pal_f2", name: "Taleti Pilgrims Refreshment Center", type: "street-food", town: "Foot of Shatrunjaya Hill",
+      mustTry: ["Fresh Lemon Water with Mint","Boiled Moong with Lemon","Warm Herbal Kadha","Puri Shak"],
+      priceRange: "₹", isVeg: true,
+      notes: "Essential refreshment stall providing hydrating beverages for pilgrims climbing the 3,800 stone steps.",
+    },
+    {
+      id: "pal_f3", name: "Bhavnagar Kathiyawadi Rasoi", type: "restaurant", town: "Palitana Main Bazaar",
+      mustTry: ["Kathiyawadi Ringna No Oro","Bajra Na Rotla with White Butter","Lasaniya Bataka","Masala Chaas"],
+      priceRange: "₹", isVeg: true,
+      notes: "Authentic Saurashtra Kathiyawadi dhaba serving garlic-rich, spiced curries and fresh churned buttermilk.",
+    },
+  ],
 };
 
 export const DEFAULT_FOOD: FoodSpot[] = [
