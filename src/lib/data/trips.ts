@@ -7349,5 +7349,451 @@ export const DEMO_TRIPS: Trip[] = [
         ]
       }
     ]
+  },
+  {
+    _id: "trip-malana-4-days",
+    title: "Malana — The Ancient Isolated Village",
+    slug: "malana-4-days",
+    excerpt: "Trek to the isolated and mysterious village of Malana in the Parvati Valley. Known for its strict customs, unique dialect, and stunning natural beauty.",
+    tags: ["Mountains", "Trekking", "Culture", "Himachal", "Offbeat"],
+    country: "India",
+    startDate: "2026-05-15",
+    endDate: "2026-05-18",
+    bestSuggestedMonth: "May – June",
+    status: "published",
+    viewCount: 0,
+    totalBudget: 15000,
+    currency: "INR",
+    tripType: "Adventure",
+    readingTime: 6,
+    _createdAt: "2026-09-11T00:00:00Z",
+    _updatedAt: "2026-09-11T00:00:00Z",
+    coverImage: { _type: "image", asset: { _type: "reference", _ref: "/images/malana.jpg" } } as any,
+    itinerary: [
+      {
+        _key: "mal-day1",
+        dayNumber: 1,
+        title: "Chandigarh to Kasol",
+        date: "2026-05-15",
+        summary: "Travel from Chandigarh to the base town of Kasol in the Parvati Valley.",
+        activities: [
+          {
+            _key: "mal1a",
+            title: "Drive to Kasol",
+            description: "A scenic 8-hour drive. Check into a riverside cafe/homestay.",
+            location: { name: "Kasol", lat: 32.0098, lng: 77.3150 },
+            time: "10:00 AM",
+            type: "transport"
+          }
+        ]
+      },
+      {
+        _key: "mal-day2",
+        dayNumber: 2,
+        title: "Trek to Malana",
+        date: "2026-05-16",
+        summary: "Drive to the Malana gate and trek up to the ancient village.",
+        activities: [
+          {
+            _key: "mal2a",
+            title: "Drive to Malana Gate",
+            description: "A bumpy 1-hour drive from Kasol.",
+            time: "08:00 AM",
+            type: "transport"
+          },
+          {
+            _key: "mal2b",
+            title: "Trek up to Malana",
+            description: "A steep 2-hour trek to reach the village. Remember, outsiders cannot touch the villagers or their belongings.",
+            location: { name: "Malana", lat: 32.0645, lng: 77.2657 },
+            time: "10:00 AM",
+            type: "activity"
+          },
+          {
+            _key: "mal2c",
+            title: "Village Walk",
+            description: "Observe the unique Kanashi dialect and ancient wooden architecture.",
+            time: "01:00 PM",
+            type: "sightseeing"
+          }
+        ]
+      },
+      {
+        _key: "mal-day3",
+        dayNumber: 3,
+        title: "Magic Valley Trek",
+        date: "2026-05-17",
+        summary: "Trek further up to Magic Valley for incredible views.",
+        activities: [
+          {
+            _key: "mal3a",
+            title: "Magic Valley",
+            description: "Trek beyond Malana to Waichin (Magic Valley) for unparalleled peace and mountain views.",
+            time: "09:00 AM",
+            type: "activity"
+          }
+        ]
+      },
+      {
+        _key: "mal-day4",
+        dayNumber: 4,
+        title: "Return Journey",
+        date: "2026-05-18",
+        summary: "Trek down and drive back.",
+        activities: [
+          {
+            _key: "mal4a",
+            title: "Descend and Drive",
+            description: "Trek down to the gate, take a cab back to Kasol, and drive down to Chandigarh.",
+            time: "08:00 AM",
+            type: "transport"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    _id: "trip-barot-valley-4-days",
+    title: "Barot Valley — Hidden Gem of Himachal",
+    slug: "barot-valley-4-days",
+    excerpt: "Discover the untouched Barot Valley, known for trout fishing, the Uhl river, and serene cedar forests.",
+    tags: ["Mountains", "Nature", "Relaxation", "Himachal", "Offbeat"],
+    country: "India",
+    startDate: "2026-04-20",
+    endDate: "2026-04-23",
+    bestSuggestedMonth: "April – June",
+    status: "published",
+    viewCount: 0,
+    totalBudget: 20000,
+    currency: "INR",
+    tripType: "Nature",
+    readingTime: 6,
+    _createdAt: "2026-09-11T00:00:00Z",
+    _updatedAt: "2026-09-11T00:00:00Z",
+    coverImage: { _type: "image", asset: { _type: "reference", _ref: "/images/barot-valley.jpg" } } as any,
+    itinerary: [
+      {
+        _key: "barot-day1",
+        dayNumber: 1,
+        title: "Pathankot to Barot",
+        date: "2026-04-20",
+        summary: "Arrive via train to Pathankot or fly to Dharamshala, then drive to Barot.",
+        activities: [
+          {
+            _key: "bar1a",
+            title: "Drive to Barot",
+            description: "A beautiful drive through terraced fields and thick forests.",
+            location: { name: "Barot", lat: 32.0396, lng: 76.8447 },
+            time: "11:00 AM",
+            type: "transport"
+          },
+          {
+            _key: "bar1b",
+            title: "Riverside Check-in",
+            description: "Check into a wooden cottage or homestay near the Uhl river.",
+            time: "04:00 PM",
+            type: "accommodation"
+          }
+        ]
+      },
+      {
+        _key: "barot-day2",
+        dayNumber: 2,
+        title: "Uhl River and Trout Farm",
+        date: "2026-04-21",
+        summary: "Explore the local trout breeding center and relax by the river.",
+        activities: [
+          {
+            _key: "bar2a",
+            title: "Trout Farm Visit",
+            description: "Visit the government trout breeding center and learn about the fish.",
+            time: "10:00 AM",
+            type: "sightseeing"
+          },
+          {
+            _key: "bar2b",
+            title: "Trout Dinner",
+            description: "Enjoy freshly cooked trout for dinner at your homestay.",
+            time: "08:00 PM",
+            type: "food"
+          }
+        ]
+      },
+      {
+        _key: "barot-day3",
+        dayNumber: 3,
+        title: "Nargu Wildlife Sanctuary",
+        date: "2026-04-22",
+        summary: "Take a nature walk through the sanctuary.",
+        activities: [
+          {
+            _key: "bar3a",
+            title: "Nature Walk",
+            description: "Trek through the dense cedar forests. Spot monals and Himalayan black bears if lucky.",
+            time: "09:00 AM",
+            type: "activity"
+          }
+        ]
+      },
+      {
+        _key: "barot-day4",
+        dayNumber: 4,
+        title: "Departure",
+        date: "2026-04-23",
+        summary: "Head back to the plains.",
+        activities: [
+          {
+            _key: "bar4a",
+            title: "Drive Back",
+            description: "Drive back to Dharamshala/Pathankot.",
+            time: "09:00 AM",
+            type: "transport"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    _id: "trip-rakchham-5-days",
+    title: "Rakchham — The Pink Village of Kinnaur",
+    slug: "rakchham-5-days",
+    excerpt: "Nestled between Sangla and Chitkul, Rakchham is famous for its pink buckwheat fields, wooden houses, and serene Baspa river.",
+    tags: ["Mountains", "Road Trip", "Himalayas", "Kinnaur", "Offbeat"],
+    country: "India",
+    startDate: "2026-09-01",
+    endDate: "2026-09-05",
+    bestSuggestedMonth: "September – October",
+    status: "published",
+    viewCount: 0,
+    totalBudget: 32000,
+    currency: "INR",
+    tripType: "Relaxation",
+    readingTime: 7,
+    _createdAt: "2026-09-11T00:00:00Z",
+    _updatedAt: "2026-09-11T00:00:00Z",
+    coverImage: { _type: "image", asset: { _type: "reference", _ref: "/images/rakchham.jpg" } } as any,
+    itinerary: [
+      {
+        _key: "rak-day1",
+        dayNumber: 1,
+        title: "Chandigarh to Narkanda",
+        date: "2026-09-01",
+        summary: "Drive from Chandigarh to Narkanda for an overnight halt.",
+        activities: [
+          {
+            _key: "rak1a",
+            title: "Drive",
+            description: "Head up the NH5 to Narkanda.",
+            time: "10:00 AM",
+            type: "transport"
+          }
+        ]
+      },
+      {
+        _key: "rak-day2",
+        dayNumber: 2,
+        title: "Narkanda to Rakchham",
+        date: "2026-09-02",
+        summary: "Enter the stunning Baspa Valley.",
+        activities: [
+          {
+            _key: "rak2a",
+            title: "Drive to Rakchham",
+            description: "A breathtaking drive alongside the Sutlej and Baspa rivers.",
+            location: { name: "Rakchham", lat: 31.3917, lng: 78.3517 },
+            time: "08:00 AM",
+            type: "transport"
+          },
+          {
+            _key: "rak2b",
+            title: "Riverside Check-in",
+            description: "Check into a camp or homestay right on the banks of the Baspa.",
+            time: "04:00 PM",
+            type: "accommodation"
+          }
+        ]
+      },
+      {
+        _key: "rak-day3",
+        dayNumber: 3,
+        title: "Buckwheat Fields and Baspa River",
+        date: "2026-09-03",
+        summary: "Walk through the blooming pink fields (in September).",
+        activities: [
+          {
+            _key: "rak3a",
+            title: "Village and Fields Walk",
+            description: "Wander through the village surrounded by bright pink Ogal (buckwheat) fields.",
+            time: "10:00 AM",
+            type: "sightseeing"
+          }
+        ]
+      },
+      {
+        _key: "rak-day4",
+        dayNumber: 4,
+        title: "Day Trip to Chitkul",
+        date: "2026-09-04",
+        summary: "A short drive to the last village on the border.",
+        activities: [
+          {
+            _key: "rak4a",
+            title: "Visit Chitkul",
+            description: "Drive further up to Chitkul for a half-day excursion.",
+            time: "09:00 AM",
+            type: "activity"
+          }
+        ]
+      },
+      {
+        _key: "rak-day5",
+        dayNumber: 5,
+        title: "Departure",
+        date: "2026-09-05",
+        summary: "Long drive back to Chandigarh.",
+        activities: [
+          {
+            _key: "rak5a",
+            title: "Return Drive",
+            description: "Start early for the long drive down.",
+            time: "06:00 AM",
+            type: "transport"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    _id: "trip-nako-6-days",
+    title: "Nako — The High Altitude Desert Village",
+    slug: "nako-6-days",
+    excerpt: "Experience the rugged beauty of Nako in Spiti Valley. Visit the sacred Nako Lake, ancient monasteries, and mud-brick Tibetan houses.",
+    tags: ["Mountains", "Road Trip", "Spiti", "Himalayas", "Offbeat"],
+    country: "India",
+    startDate: "2026-06-10",
+    endDate: "2026-06-15",
+    bestSuggestedMonth: "June – September",
+    status: "published",
+    viewCount: 0,
+    totalBudget: 40000,
+    currency: "INR",
+    tripType: "Adventure",
+    readingTime: 9,
+    _createdAt: "2026-09-11T00:00:00Z",
+    _updatedAt: "2026-09-11T00:00:00Z",
+    coverImage: { _type: "image", asset: { _type: "reference", _ref: "/images/nako.jpg" } } as any,
+    itinerary: [
+      {
+        _key: "nako-day1",
+        dayNumber: 1,
+        title: "Chandigarh to Narkanda",
+        date: "2026-06-10",
+        summary: "Begin the Spiti circuit.",
+        activities: [
+          {
+            _key: "nak1a",
+            title: "Drive to Narkanda",
+            description: "Overnight halt to break the long journey.",
+            time: "12:00 PM",
+            type: "transport"
+          }
+        ]
+      },
+      {
+        _key: "nako-day2",
+        dayNumber: 2,
+        title: "Narkanda to Kalpa/Reckong Peo",
+        date: "2026-06-11",
+        summary: "Continue towards Kinnaur.",
+        activities: [
+          {
+            _key: "nak2a",
+            title: "Drive to Kalpa",
+            description: "Another halt to acclimatize.",
+            time: "10:00 AM",
+            type: "transport"
+          }
+        ]
+      },
+      {
+        _key: "nako-day3",
+        dayNumber: 3,
+        title: "Kalpa to Nako",
+        date: "2026-06-12",
+        summary: "Enter the high altitude desert landscape.",
+        activities: [
+          {
+            _key: "nak3a",
+            title: "Drive to Nako",
+            description: "The landscape dramatically changes from green pine forests to barren, rugged mountains. Drive on the treacherous Khab bridge route.",
+            location: { name: "Nako", lat: 31.8814, lng: 78.6272 },
+            time: "09:00 AM",
+            type: "transport"
+          },
+          {
+            _key: "nak3b",
+            title: "Check-in",
+            description: "Settle into a local homestay or camp near the lake.",
+            time: "03:00 PM",
+            type: "accommodation"
+          }
+        ]
+      },
+      {
+        _key: "nako-day4",
+        dayNumber: 4,
+        title: "Nako Lake and Monastery",
+        date: "2026-06-13",
+        summary: "Explore the ancient village.",
+        activities: [
+          {
+            _key: "nak4a",
+            title: "Nako Lake",
+            description: "Walk around the sacred high-altitude lake surrounded by willow trees.",
+            time: "09:00 AM",
+            type: "sightseeing"
+          },
+          {
+            _key: "nak4b",
+            title: "Nako Monastery",
+            description: "Visit the 11th-century monastery founded by Rinchen Zangpo.",
+            time: "11:00 AM",
+            type: "activity"
+          }
+        ]
+      },
+      {
+        _key: "nako-day5",
+        dayNumber: 5,
+        title: "Return to Rampur/Narkanda",
+        date: "2026-06-14",
+        summary: "Begin the descent.",
+        activities: [
+          {
+            _key: "nak5a",
+            title: "Long Drive Down",
+            description: "Start early for the long drive back towards the plains.",
+            time: "06:00 AM",
+            type: "transport"
+          }
+        ]
+      },
+      {
+        _key: "nako-day6",
+        dayNumber: 6,
+        title: "Departure",
+        date: "2026-06-15",
+        summary: "Drive to Chandigarh and fly back.",
+        activities: [
+          {
+            _key: "nak6a",
+            title: "Final Leg",
+            description: "Drive to Chandigarh airport.",
+            time: "09:00 AM",
+            type: "transport"
+          }
+        ]
+      }
+    ]
   }
 ];
