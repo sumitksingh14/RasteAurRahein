@@ -12,13 +12,49 @@ const TRAVEL_STATS = [
   { value: "200+", label: "Photos Published", Icon: Camera },
 ];
 
-const TIMELINE = [
-  { year: "2019", title: "First solo trip — Leh Ladakh", description: "Took a bus from Manali to Leh. Got altitude sickness. Loved every second of it." },
-  { year: "2020", title: "Started this blog", description: "Lockdown led to a lot of planning, a lot of writing about past trips, and eventually, Raste Aur Raahein." },
-  { year: "2021", title: "Rajasthan circuit — 21 days", description: "Jaisalmer, Jodhpur, Udaipur, Jaipur. The desert in winter is something else." },
-  { year: "2022", title: "Himachal Pradesh deep dive", description: "Spiti Valley, Kinnaur, Lahaul — 3 separate trips to understand one region properly." },
-  { year: "2023", title: "South India coastal drive", description: "Goa to Kanyakumari on two wheels. 1800 km, 14 days, infinite filter coffee." },
-  { year: "2024", title: "Still going…", description: "Next stop: Northeast India — Meghalaya, Arunachal Pradesh, Nagaland." },
+const JOURNEY_MILESTONES = [
+  {
+    step: "01",
+    tag: "The Spark",
+    title: "First Solo Trip — Leh Ladakh",
+    description:
+      "Took a bus from Manali to Leh across high Himalayan passes. Dealt with altitude sickness, rugged terrain, and loved every second of it.",
+  },
+  {
+    tag: "Inception",
+    step: "02",
+    title: "Founding Raste Aur Raahein",
+    description:
+      "Deliberate planning and documenting past journeys led to a realization: travelers need raw, unfiltered notes, honest budgets, and real stories over glossy itineraries.",
+  },
+  {
+    step: "03",
+    tag: "Desert Circuit",
+    title: "Rajasthan Circuit — 21 Days",
+    description:
+      "Jaisalmer, Jodhpur, Udaipur, and Jaipur. Navigating golden sand dunes, living forts, and remote desert outposts under vast winter skies.",
+  },
+  {
+    step: "04",
+    tag: "Trans-Himalayas",
+    title: "Himachal Pradesh Deep Dive",
+    description:
+      "Spiti Valley, Kinnaur, and Lahaul — 3 separate journeys across rugged terrain and high passes to deeply understand trans-Himalayan mountain life.",
+  },
+  {
+    step: "05",
+    tag: "Coastal Trails",
+    title: "South India Coastal Drive",
+    description:
+      "Goa to Kanyakumari on two wheels. 1,800 km along the Arabian Sea, 14 days, winding coastal hairpins, and endless local pit stops.",
+  },
+  {
+    step: "06",
+    tag: "Next Horizons",
+    title: "Frontier Roads & Untold Trails",
+    description:
+      "Heading deeper into Northeast India — Meghalaya, Arunachal Pradesh, Nagaland, and high-altitude frontier passes waiting to be documented.",
+  },
 ];
 
 export default function AboutPage() {
@@ -101,7 +137,7 @@ export default function AboutPage() {
                   lineHeight: 1.1,
                 }}
               >
-                {DEMO_AUTHOR.name}
+                Sumit Singh
               </h1>
               <p
                 style={{
@@ -109,9 +145,10 @@ export default function AboutPage() {
                   fontSize: "1rem",
                   marginBottom: "1.5rem",
                   fontWeight: 500,
+                  letterSpacing: "0.02em",
                 }}
               >
-                Travel Writer · Photographer · Engineer
+                Traveller · Photographer · IT Professional
               </p>
               <p
                 style={{
@@ -121,10 +158,27 @@ export default function AboutPage() {
                   fontSize: "1.05rem",
                 }}
               >
-                {DEMO_AUTHOR.bio}
+                Sumit Singh is a storyteller of roads and a builder of systems. As a travel writer and photographer, he captures the raw beauty of India’s untamed landscapes — from high-altitude deserts and forgotten monasteries to bustling bazaars and coastal trails. As an IT professional, he brings the same curiosity and problem-solving mindset to the digital world, navigating code and architecture with the precision of someone who has learned to read both maps and machines.
               </p>
-              <p style={{ color: "var(--text-muted)", lineHeight: 1.75, marginBottom: "2rem" }}>
-                I built this blog because I couldn&apos;t find the kind of travel content I wanted to read — honest, detailed, with real itineraries and real costs. Everything here is first-hand.
+              <p
+                style={{
+                  color: "var(--text-secondary)",
+                  lineHeight: 1.8,
+                  marginBottom: "1.25rem",
+                  fontSize: "1.05rem",
+                }}
+              >
+                Based in India and always en route somewhere, Sumit believes that journeys are not just about destinations but about the stories we collect along the way. His writing is rooted in honesty — detailed itineraries, real costs, and first-hand experiences that strip away the gloss of commercial travel.
+              </p>
+              <p
+                style={{
+                  color: "var(--text-secondary)",
+                  lineHeight: 1.8,
+                  marginBottom: "2rem",
+                  fontSize: "1.05rem",
+                }}
+              >
+                Raste Aur Raahein is his way of sharing those journeys: unfiltered, spontaneous, and deeply human. It’s a space for travelers who seek authenticity over luxury, connection over convenience, and the soul of India beyond the tourist trail.
               </p>
 
               {/* Social */}
@@ -265,19 +319,43 @@ export default function AboutPage() {
               paddingLeft: "1.5rem",
               marginBottom: "2rem",
               fontFamily: "var(--font-serif)",
-              fontSize: "1.4rem",
+              fontSize: "1.35rem",
               fontStyle: "italic",
               color: "var(--text-secondary)",
-              lineHeight: 1.5,
+              lineHeight: 1.6,
             }}
           >
             &ldquo;The best itinerary is the one you&apos;ll actually follow — specific enough to navigate, flexible enough to wander.&rdquo;
           </blockquote>
-          <p style={{ color: "var(--text-secondary)", lineHeight: 1.8, marginBottom: "1.25rem", fontSize: "1.05rem" }}>
-            I travel slow. I plan obsessively (you can see that from the itineraries here) but I build in room for detours, for bad weather, for conversations that take hours. I prefer local guesthouses to hotels, local buses to taxis where safety allows, and local food to anything designed for tourists.
+          <p
+            style={{
+              color: "var(--text-secondary)",
+              lineHeight: 1.85,
+              marginBottom: "1.35rem",
+              fontSize: "1.05rem",
+            }}
+          >
+            For me, travel is about balance: the discipline of planning and the freedom of detours. I travel slow, because the road deserves time. I plan obsessively — every route, every stay, every cost — but I always leave space for the unexpected: a sudden storm, a chance conversation, or a hidden trail that wasn&apos;t on the map.
           </p>
-          <p style={{ color: "var(--text-muted)", lineHeight: 1.75, fontSize: "0.95rem" }}>
-            This blog documents the planning as much as the travel itself — because I think the research and itinerary building is genuinely half the fun. Every trip here has a day-by-day breakdown, cost estimates, and honest notes on what worked and what didn&apos;t.
+          <p
+            style={{
+              color: "var(--text-secondary)",
+              lineHeight: 1.85,
+              marginBottom: "1.35rem",
+              fontSize: "1.05rem",
+            }}
+          >
+            I choose local guesthouses over polished hotels, buses over taxis when safety allows, and food that locals eat rather than menus designed for tourists. These choices aren&apos;t about saving money; they&apos;re about staying close to the rhythm of the place.
+          </p>
+          <p
+            style={{
+              color: "var(--text-secondary)",
+              lineHeight: 1.85,
+              marginBottom: "1rem",
+              fontSize: "1.05rem",
+            }}
+          >
+            This blog is as much about the planning as the journey. I believe research and itinerary-building are half the fun, and half the story. That&apos;s why every trip here comes with a day-by-day breakdown, cost estimates, and honest notes on what worked — and what didn&apos;t. Because real journeys aren&apos;t perfect, and that&apos;s what makes them worth sharing.
           </p>
         </div>
       </section>
@@ -306,11 +384,11 @@ export default function AboutPage() {
             ✦ Journey So Far
           </div>
           <h2 style={{ color: "var(--text-primary)", marginBottom: "3rem" }}>
-            The Timeline
+            Key Milestones & Expeditions
           </h2>
 
           <div style={{ position: "relative" }}>
-            {/* Vertical line */}
+            {/* Vertical trail line */}
             <div
               style={{
                 position: "absolute",
@@ -322,56 +400,73 @@ export default function AboutPage() {
               }}
             />
 
-            {TIMELINE.map((item, i) => (
+            {JOURNEY_MILESTONES.map((item, i) => (
               <div
-                key={i}
+                key={item.step}
                 style={{
                   display: "flex",
                   gap: "1.5rem",
-                  marginBottom: "2rem",
+                  marginBottom: i === JOURNEY_MILESTONES.length - 1 ? 0 : "2rem",
                   position: "relative",
                 }}
               >
-                {/* Year badge */}
+                {/* Step badge */}
                 <div
                   style={{
                     width: 44,
                     height: 44,
                     borderRadius: "50%",
-                    background: i === TIMELINE.length - 1 ? "var(--accent-gold)" : "var(--bg-card)",
-                    border: `1px solid ${i === TIMELINE.length - 1 ? "var(--accent-gold)" : "var(--border)"}`,
+                    background: i === JOURNEY_MILESTONES.length - 1 ? "var(--accent-gold)" : "var(--bg-card)",
+                    border: `1px solid ${i === JOURNEY_MILESTONES.length - 1 ? "var(--accent-gold)" : "var(--border)"}`,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     flexShrink: 0,
                     zIndex: 1,
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
                   }}
                 >
                   <span
                     style={{
-                      fontSize: "0.65rem",
+                      fontSize: "0.75rem",
                       fontWeight: 700,
-                      color: i === TIMELINE.length - 1 ? "var(--bg-primary)" : "var(--text-muted)",
+                      color: i === JOURNEY_MILESTONES.length - 1 ? "#FFFFFF" : "var(--accent-gold)",
                       lineHeight: 1,
                     }}
                   >
-                    {item.year}
+                    {item.step}
                   </span>
                 </div>
 
-                <div style={{ paddingTop: "0.6rem" }}>
-                  <h4
-                    style={{
-                      fontFamily: "var(--font-sans)",
-                      fontSize: "0.95rem",
-                      fontWeight: 600,
-                      color: "var(--text-primary)",
-                      marginBottom: "0.25rem",
-                    }}
-                  >
-                    {item.title}
-                  </h4>
-                  <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", lineHeight: 1.6 }}>
+                <div style={{ paddingTop: "0.35rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.25rem", flexWrap: "wrap" }}>
+                    <h4
+                      style={{
+                        fontFamily: "var(--font-sans)",
+                        fontSize: "1rem",
+                        fontWeight: 700,
+                        color: "var(--text-primary)",
+                        margin: 0,
+                      }}
+                    >
+                      {item.title}
+                    </h4>
+                    <span
+                      style={{
+                        fontSize: "0.65rem",
+                        fontWeight: 600,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.08em",
+                        padding: "0.15rem 0.5rem",
+                        borderRadius: "9999px",
+                        background: "var(--accent-gold-dim)",
+                        color: "var(--accent-gold)",
+                      }}
+                    >
+                      {item.tag}
+                    </span>
+                  </div>
+                  <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", lineHeight: 1.65, margin: 0 }}>
                     {item.description}
                   </p>
                 </div>

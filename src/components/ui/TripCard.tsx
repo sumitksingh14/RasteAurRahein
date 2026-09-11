@@ -14,10 +14,17 @@ interface TripCardProps {
   trip: Trip;
   featured?: boolean;
   priority?: boolean;
+  loading?: "eager" | "lazy";
   initialSaved?: boolean;
 }
 
-export default function TripCard({ trip, featured = false, priority = false, initialSaved = false }: TripCardProps) {
+export default function TripCard({
+  trip,
+  featured = false,
+  priority = false,
+  loading,
+  initialSaved = false,
+}: TripCardProps) {
   const imageSrc = getTripImage(trip.slug);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -75,6 +82,7 @@ export default function TripCard({ trip, featured = false, priority = false, ini
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           quality={80}
           priority={priority}
+          loading={priority ? "eager" : loading}
         />
 
         {/* Subtle bottom gradient for readability */}

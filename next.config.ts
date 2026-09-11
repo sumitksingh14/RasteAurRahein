@@ -35,6 +35,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "unpkg.com", // Leaflet marker icon PNGs
       },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com", // AI-generated travel images
+      },
     ],
   },
 };

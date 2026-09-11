@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { GeneratedTripsProvider } from "@/components/providers/GeneratedTripsProvider";
@@ -68,10 +67,17 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Raste Aur Raahein" />
         {/* ── iOS touch icon (shown when "Add to Home Screen") ── */}
-        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
         <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512.png" />
         <WebSiteSchema />
+        {/* Google AdSense — only load in production (or explicit flag) to avoid invalid traffic policy warnings and cross-origin iframe SecurityErrors on localhost */}
+        {(process.env.NODE_ENV === "production" || process.env.NEXT_PUBLIC_ENABLE_ADSENSE === "true") && (
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4406894064911133"
+            crossOrigin="anonymous"
+          />
+        )}
       </head>
       <body>
         <ThemeProvider>
@@ -86,14 +92,6 @@ export default function RootLayout({
         </ThemeProvider>
         {/* Google Analytics 4 — loads after page is interactive, no-ops if env var not set */}
         <GoogleAnalytics />
-        {/* Google AdSense — loads after interactive so it doesn't mutate head before React hydration */}
-        <Script
-          id="google-adsense"
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4406894064911133"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
       </body>
     </html>
   );

@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
   Sparkles, Loader2, AlertCircle, CheckCircle, ChevronRight,
   Clock, Utensils, Bus, Bed, Camera, Navigation,
   Calendar, Download, FileText, Map, LocateFixed, Trash2,
-  Mountain, Wallet, Users, User, LogIn,
+  Mountain, Wallet, Users, LogIn,
 } from "lucide-react";
 import LocationAutocomplete from "@/components/ui/LocationAutocomplete";
 import { buildGoogleMapsUrl } from "@/lib/googleMapsRoute";
@@ -148,13 +148,6 @@ const ACTIVITY_ICONS: Record<string, React.ElementType> = {
   activity:      Navigation,
   sightseeing:   Camera,
 };
-
-const DEMO_PINS: MapPin[] = [
-  { lat: 32.24, lng: 77.19, label: "Manali",       day: 1 },
-  { lat: 32.32, lng: 77.16, label: "Solang Valley", day: 2 },
-  { lat: 32.41, lng: 77.14, label: "Dhundi",        day: 3 },
-  { lat: 32.36, lng: 77.07, label: "Beas Kund",     day: 4 },
-];
 
 // ---------------------------------------------------------------------------
 // Topo background
@@ -361,14 +354,6 @@ function ExportDropdown({ itinerary, streamingDays, params }: {
 }
 
 // ---------------------------------------------------------------------------
-// ActivityIcon helper
-// ---------------------------------------------------------------------------
-function ActivityIcon({ type }: { type?: string }) {
-  const Icon = (type && ACTIVITY_ICONS[type]) || Camera;
-  return <Icon size={13} />;
-}
-
-// ---------------------------------------------------------------------------
 // Main AIPlanner component
 // ---------------------------------------------------------------------------
 export default function AIPlanner() {
@@ -399,13 +384,6 @@ export default function AIPlanner() {
   const [adventureLevel, setAdventureLevel] = useState(50);
   const [budgetLevel, setBudgetLevel] = useState(40);
 
-  // Keep params.pace in sync with adventureLevel slider
-  useEffect(() => {
-    const pace: TripParams["pace"] =
-      adventureLevel < 33 ? "relaxed" : adventureLevel < 66 ? "moderate" : "packed";
-    setParams((p) => ({ ...p, pace }));
-  }, [adventureLevel]);
-
   // ── Generation state ──────────────────────────────────────────────────────
   const [step, setStep] = useState<Step>("form");
   const [itinerary, setItinerary] = useState<GeneratedItinerary | null>(null);
@@ -418,7 +396,6 @@ export default function AIPlanner() {
   const [stageIdx, setStageIdx] = useState(0);
   const [expandedDays, setExpandedDays] = useState<Set<number>>(new Set([1]));
   const [progress, setProgress] = useState(0);
-  const [saved, setSaved] = useState(false);
   const [savedTitle, setSavedTitle] = useState("");
   // Geocoded pin for the destination — set when streaming finishes
   const [destinationPin, setDestinationPin] = useState<{ lat: number; lng: number } | null>(null);
@@ -437,7 +414,7 @@ export default function AIPlanner() {
       .then((d) => {
         if (d.models?.length) {
           setGroqModels(d.models);
-          const pref = d.models.find((m: any) => m.id === "openai/gpt-oss-20b");
+          const pref = d.models.find((m: { id: string }) => m.id === "openai/gpt-oss-20b");
           setParams((p) => ({ ...p, groqModel: pref?.id ?? d.models[0].id }));
         }
       })
@@ -447,7 +424,6 @@ export default function AIPlanner() {
   // Cycling stage labels during generation
   useEffect(() => {
     if (step === "generating") {
-      setStageIdx(0);
       stageTimer.current = setInterval(() => {
         setStageIdx((i) => Math.min(i + 1, GENERATING_STAGES.length - 1));
       }, 1400);
@@ -482,8 +458,10 @@ export default function AIPlanner() {
   // Derived map pins from streamed activities
   const mapPins: MapPin[] = streamingDays.flatMap((d) =>
     (d.activities ?? [])
-      .filter((a: any) => a.location?.lat && a.location?.lng)
-      .map((a: any) => ({
+      .filter((a): a is GeneratedActivity & { location: { name: string; lat: number; lng: number } } =>
+        Boolean(a.location?.lat && a.location?.lng)
+      )
+      .map((a) => ({
         lat: a.location.lat,
         lng: a.location.lng,
         label: a.location.name,
@@ -515,6 +493,7 @@ export default function AIPlanner() {
     abortRef.current = controller;
 
     setStep("generating");
+    setStageIdx(0);
     setError("");
     setFailedModel(null);
     setItinerary(null);
@@ -523,7 +502,6 @@ export default function AIPlanner() {
     setProgress(0);
     setIsStreaming(true);
     setExpandedDays(new Set([1]));
-    setSaved(false);
     setDestinationPin(null); // clear stale pin from previous trip
 
     if (progressTimer.current) clearInterval(progressTimer.current);
@@ -593,7 +571,7 @@ export default function AIPlanner() {
             });
             setStep("result");
           } else if (evt.type === "error") {
-            throw new Error((evt as any).message || "Generation failed.");
+            throw new Error(evt.message || "Generation failed.");
           }
         }
       }
@@ -638,14 +616,17 @@ export default function AIPlanner() {
       generatedAt: new Date().toISOString(),
     });
     setSavedTitle(itinerary.title);
-    setSaved(true);
     setStep("saved");
   };
 
   const toggleDay = (n: number) =>
     setExpandedDays((prev) => {
       const next = new Set(prev);
-      next.has(n) ? next.delete(n) : next.add(n);
+      if (next.has(n)) {
+        next.delete(n);
+      } else {
+        next.add(n);
+      }
       return next;
     });
 
@@ -812,7 +793,7 @@ export default function AIPlanner() {
                 <Navigation size={15} /> View All Itineraries
               </Link>
               <button
-                onClick={() => { setStep("form"); setItinerary(null); setStreamingDays([]); setSaved(false); setProgress(0); setError(""); setFailedModel(null); }}
+                onClick={() => { setStep("form"); setItinerary(null); setStreamingDays([]); setProgress(0); setError(""); setFailedModel(null); }}
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "6px",
                   padding: "0.75rem 1.25rem", borderRadius: 10,
@@ -961,7 +942,12 @@ export default function AIPlanner() {
                 <SmoothSlider
                   id="ai-adventure-level"
                   value={adventureLevel}
-                  onChange={setAdventureLevel}
+                  onChange={(val) => {
+                    setAdventureLevel(val);
+                    const pace: TripParams["pace"] =
+                      val < 33 ? "relaxed" : val < 66 ? "moderate" : "packed";
+                    setParams((p) => ({ ...p, pace }));
+                  }}
                   leftIcon={() => <span style={{ fontSize: 20 }}>🚶</span>}
                   rightIcon={() => <span style={{ fontSize: 20 }}>🧗</span>}
                 />

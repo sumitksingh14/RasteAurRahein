@@ -578,8 +578,13 @@ export default function TripsClient({
               Most Popular
             </div>
             <div className="trip-grid">
-              {mostPopular.map((trip) => (
-                <TripCard key={trip._id} trip={trip} />
+              {mostPopular.map((trip, idx) => (
+                <TripCard
+                  key={trip._id}
+                  trip={trip}
+                  priority={idx < 2}
+                  loading={idx < 2 ? "eager" : "lazy"}
+                />
               ))}
             </div>
           </div>
@@ -631,9 +636,17 @@ export default function TripsClient({
         {/* Trip Grid */}
         {filtered.length > 0 ? (
           <div className="trip-grid">
-            {filtered.map((trip) => (
-              <TripCard key={trip._id} trip={trip} />
-            ))}
+            {filtered.map((trip, idx) => {
+              const isAboveFold = hasActiveFilters && idx < 2;
+              return (
+                <TripCard
+                  key={trip._id}
+                  trip={trip}
+                  priority={isAboveFold}
+                  loading={isAboveFold ? "eager" : "lazy"}
+                />
+              );
+            })}
           </div>
         ) : (
           <div
