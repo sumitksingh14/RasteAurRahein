@@ -8,36 +8,7 @@ import { format } from "date-fns";
 import { useState } from "react";
 import BookmarkButton from "@/components/ui/BookmarkButton";
 
-// Curated cover images — one per trip slug
-const FALLBACK_IMAGES: Record<string, string> = {
-  // Leh Ladakh — Pangong Tso with prayer flags and Karakoram ranges
-  "leh-ladakh-9-days": "/images/leh-ladakh-pangong-lake.jpg",
-  "spiti-valley": "/images/spiti-ki-monastery.jpg",
-  "mysore-coorg-wayanad-ooty": "/images/mysore-palace.jpg",
-  "rajasthan-desert-kingdom":
-    "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=800&q=80",
-  "goa-beyond-beaches":
-    "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800&q=80",
-  "sikkim-7-days": "/images/sikkim-gurudongmar.jpg",
-  "meghalaya-5-days": "/images/meghalaya-dawki-river.jpg",
-  "kerala-7-days":
-    "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800&q=80",
-  "munsiyari-6-days": "/images/munsiyari-panchachuli.jpg",
-  "char-dham-yatra-uttarakhand":
-    "https://images.unsplash.com/photo-1712733900711-d0b929d0d7cc?w=800&q=80",
-  "panch-kedar-trek-10-days": "/images/panch-kedar-temple.png",
-  "pune-konkan-coast-raigad": "/images/konkan-coast.png",
-  // New trips — generated destination images
-  "haridwar-rishikesh-3-days": "/images/haridwar-rishikesh-ganga-aarti.jpg",
-  "nainital-jim-corbett-3-days": "/images/nainital-naini-lake.jpg",
-  "himachal-shimla-manali-dharamshala-dalhousie-5-days": "/images/himachal-manali-mountains.jpg",
-  "jammu-kashmir-5-days": "/images/kashmir-dal-lake.jpg",
-  "agra-mathura-3-days": "/images/agra-taj-mahal-sunrise.jpg",
-  "auli-nearby-3-days": "/images/auli-ski-nanda-devi.jpg",
-};
-
-const DEFAULT_IMAGE =
-  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=80";
+import { getTripImage } from "@/lib/data/tripImages";
 
 interface TripCardProps {
   trip: Trip;
@@ -47,7 +18,7 @@ interface TripCardProps {
 }
 
 export default function TripCard({ trip, featured = false, priority = false, initialSaved = false }: TripCardProps) {
-  const imageSrc = FALLBACK_IMAGES[trip.slug] || DEFAULT_IMAGE;
+  const imageSrc = getTripImage(trip.slug);
   const [isHovered, setIsHovered] = useState(false);
 
   const dateLabel =

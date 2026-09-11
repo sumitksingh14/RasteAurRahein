@@ -3,269 +3,39 @@
 import { Leaf, Flame, ExternalLink, MapPin, Search, Sparkles } from "lucide-react";
 import type { FoodSpot } from "@/lib/types";
 
-// ── Per-trip food data ────────────────────────────────────────────────────────
-const FOOD_DATA: Record<string, FoodSpot[]> = {
-  "leh-ladakh-9-days": [
-    {
-      id: "ll_f1", name: "The Tibetan Kitchen, Leh", type: "restaurant", town: "Leh Market",
-      mustTry: ["Thukpa (Tibetan noodle soup)", "Momos", "Skyu (Ladakhi pasta stew)", "Butter Tea"],
-      priceRange: "₹₹", isVeg: false,
-      notes: "Best Tibetan restaurant in Leh — warm interior, generous portions. Try the yak stew on cold evenings. Located on the upper main bazaar road.",
-    },
-    {
-      id: "ll_f2", name: "Bon Appétit, Leh", type: "restaurant", town: "Fort Road, Leh",
-      mustTry: ["Yak Steak", "Trout Fish Curry", "Ladakhi Thali", "Chhang (barley beer)"],
-      priceRange: "₹₹", isVeg: false,
-      notes: "The most popular multi-cuisine restaurant in Leh among Indian and foreign travellers. Rooftop seating with fort views. Ideal for celebration dinners.",
-    },
-    {
-      id: "ll_f3", name: "Thiksey Monastery Café", type: "cafe", town: "Thiksey Monastery",
-      mustTry: ["Tibetan Bread with Butter", "Hot Porridge", "Butter Tea", "Thukpa"],
-      priceRange: "₹", isVeg: true,
-      notes: "Monastery-run café with sweeping Indus Valley views. Best at 9 AM after the morning puja. A deeply calming breakfast experience before the monastery circuit.",
-    },
-    {
-      id: "ll_f4", name: "Dzomsa Restaurant, Alchi", type: "cafe", town: "Alchi Monastery, Sham Valley",
-      mustTry: ["Apricot Jam Tarts", "Butter Tea", "Fresh Local Bread", "Apricot Juice"],
-      priceRange: "₹", isVeg: true,
-      notes: "Monastery cooperative restaurant — proceeds support local monks. The apricot tarts are legendary. Only open in summer season (May–September).",
-    },
-    {
-      id: "ll_f5", name: "Diskit Dhaba, Nubra Valley", type: "dhaba", town: "Diskit, Nubra Valley",
-      mustTry: ["Dal Chawal", "Aloo Paratha", "Fresh Chai", "Tsampa Porridge"],
-      priceRange: "₹", isVeg: true,
-      notes: "First proper meal stop after descending from Khardung La. Simple roadside dhaba; best to arrive by 1 PM as food runs out early. Also sells basic supplies.",
-    },
-    {
-      id: "ll_f6", name: "Hunder Camp Kitchen, Nubra", type: "homestay-kitchen", town: "Hunder, Nubra Valley",
-      mustTry: ["Trout Fish Fry (local Nubra river)", "Yak Cheese", "Balti Apricot Soup", "Dried Apricots"],
-      priceRange: "₹", isVeg: false,
-      notes: "Most camps in Hunder serve dinner in-house. Ask specifically for Balti cuisine — the dried apricot soup is unique to Nubra. Best eaten under an open sky with Karakoram views.",
-    },
-    {
-      id: "ll_f7", name: "Pangong Tso Shore Café", type: "cafe", town: "Spangmik, Pangong Tso",
-      mustTry: ["Instant Maggi Noodles at 4,350m", "Tsampa Porridge", "Butter Tea", "Hot Soup"],
-      priceRange: "₹", isVeg: true,
-      notes: "There are no restaurants at Pangong — all food is from small lakeside makeshift stalls/cafés. Maggi, tea, and tsampa are the staples. Carry snacks as an insurance.",
-    },
-  ],
-  "jyotirlinga-pilgrimage-road-trip": [
-    {
-      id: "jy_f1", name: "Madhurima Dhaba, Bhimashankar", type: "dhaba", town: "Bhimashankar",
-      mustTry: ["Maharashtrian Thali", "Sol Kadhi", "Jowar Bhakri"],
-      priceRange: "₹", isVeg: true,
-      notes: "Simple post-darshan thali spot near the temple; best reached by 1 PM.",
-    },
-    {
-      id: "jy_f2", name: "Madhav's Kitchen, Trimbakeshwar", type: "restaurant", town: "Trimbakeshwar, Nashik",
-      mustTry: ["Pithla Bhakri", "Buttermilk", "Varan Bhat"],
-      priceRange: "₹", isVeg: true,
-      notes: "Vegetarian only; a warm family kitchen steps from the Godavari ghat.",
-    },
-    {
-      id: "jy_f3", name: "Maharaj Dhaba, Ellora", type: "dhaba", town: "Ellora, Aurangabad",
-      mustTry: ["Zunka Bhakar", "Ambadi Sabzi", "Fresh Lassi"],
-      priceRange: "₹", isVeg: true,
-      notes: "Rustic dhaba with protein-rich Vidarbha cuisine; perfect fuel before the cave tour.",
-    },
-    {
-      id: "jy_f4", name: "Madhurima Veg Restaurant, Ujjain", type: "restaurant", town: "Ujjain",
-      mustTry: ["Ujjaini Poha", "Bhutte ki Kees", "Malpua"],
-      priceRange: "₹", isVeg: true,
-      notes: "Ujjain's iconic breakfast; arrive at dawn after the Bhasma Aarti.",
-    },
-    {
-      id: "jy_f5", name: "Omkareshwar Rasoi", type: "homestay-kitchen", town: "Omkareshwar",
-      mustTry: ["Dal Bati Churma", "Malwa Thali", "Coconut Water"],
-      priceRange: "₹", isVeg: true,
-      notes: "Traditional Malwa thali served riverside; deeply satisfying after the boat puja.",
-    },
-    {
-      id: "jy_f6", name: "Shipra Ghat Tea Stalls", type: "street-food", town: "Ujjain Ghats",
-      mustTry: ["Kesar Masala Chai", "Bun Maska", "Tikki Chaat"],
-      priceRange: "₹", isVeg: true,
-      notes: "Evening chai ritual at the Shipra ghat after the Sandhya Aarti — unmissable.",
-    },
-  ],
-  "spiti-valley": [
-    {
-      id: "f1", name: "Sichuan Kitchen, Kaza", type: "restaurant", town: "Kaza",
-      mustTry: ["Thukpa (Tibetan noodle soup)", "Momos", "Butter Tea"],
-      priceRange: "₹", isVeg: false,
-      notes: "Popular spot with trekkers; warming food at altitude.",
-    },
-    {
-      id: "f2", name: "Sakya Cafe, Kaza", type: "cafe", town: "Kaza",
-      mustTry: ["Tibetan Bread with Yak Butter", "Apple Juice", "Tsampa Porridge"],
-      priceRange: "₹", isVeg: true,
-      notes: "Tiny café run by a monastery — proceeds support local monks.",
-    },
-    {
-      id: "f3", name: "Spitian Homestay Kitchen", type: "homestay-kitchen", town: "Kibber / Langza",
-      mustTry: ["Chhurpe (dried yak cheese)", "Paba (barley bread)", "Chang (local barley wine)"],
-      priceRange: "₹", isVeg: false,
-      notes: "Authentic Spitian cuisine not found in restaurants.",
-    },
-    {
-      id: "f4", name: "Himalayan Dhaba, Losar", type: "dhaba", town: "Losar",
-      mustTry: ["Dal Chawal", "Aloo Paratha", "Chai"],
-      priceRange: "₹", isVeg: true,
-      notes: "Only dhaba for 50 km — essential lunch stop.",
-    },
-  ],
-  "mysore-coorg-wayanad-ooty": [
-    {
-      id: "mc_f1", name: "Dasaprakash, Mysore", type: "restaurant", town: "Mysore",
-      mustTry: ["Mysore Masala Dosa", "Filter Coffee", "Bisi Bele Bath"],
-      priceRange: "₹", isVeg: true,
-      notes: "Legendary vegetarian South Indian restaurant since 1918.",
-    },
-    {
-      id: "mc_f2", name: "Coorg Coffee Estate Café", type: "cafe", town: "Madikeri, Coorg",
-      mustTry: ["Estate-grown Pour Over Coffee", "Pork Curry", "Coorg Akki Rotti"],
-      priceRange: "₹₹", isVeg: false,
-    },
-    {
-      id: "mc_f3", name: "Wayanad Tribal Cuisine", type: "homestay-kitchen", town: "Kalpetta, Wayanad",
-      mustTry: ["Bamboo Rice Curry", "Wild Jackfruit Dish", "Black Pepper Chicken"],
-      priceRange: "₹", isVeg: false,
-      notes: "Arranged through tribal tourism initiative.",
-    },
-    {
-      id: "mc_f4", name: "Hotel Vinayaka Mylari, Mysore", type: "restaurant", town: "Mysore",
-      mustTry: ["Mylari Dosa", "Saagu Curry", "Filter Coffee"],
-      priceRange: "₹", isVeg: true,
-      notes: "Cult dosa spot — opens only until noon, so go early!",
-    },
-  ],
-  "rajasthan-desert-kingdom": [
-    {
-      id: "rd_f1", name: "Trio Restaurant, Jaisalmer", type: "restaurant", town: "Jaisalmer",
-      mustTry: ["Laal Maas", "Dal Baati Churma", "Ker Sangri"],
-      priceRange: "₹₹", isVeg: false,
-      notes: "Rooftop views of Jaisalmer Fort — go at sunset.",
-    },
-    {
-      id: "rd_f2", name: "Sonu's Dhaba, Pushkar", type: "dhaba", town: "Pushkar",
-      mustTry: ["Mawa Kachori", "Ghevar", "Lassi"],
-      priceRange: "₹", isVeg: true,
-    },
-    {
-      id: "rd_f3", name: "Ambrai Ghat Restaurant, Udaipur", type: "restaurant", town: "Udaipur",
-      mustTry: ["Gatte ki Sabzi", "Daal Bati", "Makhani Paneer"],
-      priceRange: "₹₹₹", isVeg: true,
-      notes: "Best lakeside setting in Udaipur — book ahead for dinner.",
-    },
-  ],
-  "goa-beyond-beaches": [
-    {
-      id: "ga_f1", name: "Ritz Classic, Panaji", type: "restaurant", town: "Panaji",
-      mustTry: ["Prawn Balchão", "Fish Curry Rice", "Bebinca"],
-      priceRange: "₹₹", isVeg: false,
-      notes: "Old-school Goan institution; try the prawns.",
-    },
-    {
-      id: "ga_f2", name: "Fisherman's Wharf", type: "restaurant", town: "Cavelossim, South Goa",
-      mustTry: ["King Crab Masala", "Clam Soup", "Feni"],
-      priceRange: "₹₹₹", isVeg: false,
-    },
-    {
-      id: "ga_f3", name: "Curlies Beach Shack", type: "street-food", town: "Anjuna, North Goa",
-      mustTry: ["Grilled Fish Tikka", "Goan Sausage Pav", "Cashew Feni Cocktail"],
-      priceRange: "₹₹", isVeg: false,
-    },
-  ],
-  "sikkim-7-days": [
-    {
-      id: "sk_f1", name: "The Dragon Wok, Gangtok", type: "restaurant", town: "Gangtok",
-      mustTry: ["Gyathuk (noodle soup)", "Phagshapa (dried pork)", "Chhurpi Soup"],
-      priceRange: "₹", isVeg: false,
-    },
-    {
-      id: "sk_f2", name: "MG Marg Street Stalls", type: "street-food", town: "Gangtok",
-      mustTry: ["Sel Roti", "Wai Wai Noodle Chat", "Momos"],
-      priceRange: "₹", isVeg: false,
-    },
-  ],
-  "meghalaya-5-days": [
-    {
-      id: "mg_f1", name: "City Hut Dhaba, Shillong", type: "dhaba", town: "Shillong",
-      mustTry: ["Jadoh (rice and pork)", "Dohneiiong", "Kwai (betel nut)"],
-      priceRange: "₹", isVeg: false,
-      notes: "Khasi tribal cuisine — one of the best in Shillong.",
-    },
-    {
-      id: "mg_f2", name: "Cherrapunji Homestay Kitchen", type: "homestay-kitchen", town: "Cherrapunji",
-      mustTry: ["Nakham Bitchi (dried fish chutney)", "Putharo (rice cake)", "Local Honey"],
-      priceRange: "₹",
-    },
-  ],
-  "kerala-7-days": [
-    {
-      id: "kl_f1", name: "Houseboat Kitchen", type: "homestay-kitchen", town: "Alleppey Backwaters",
-      mustTry: ["Karimeen Pollichathu (Pearl Spot Fish)", "Prawn Moilee", "Appam with Stew"],
-      priceRange: "₹₹", isVeg: false,
-      notes: "Cooked fresh on the houseboat by your chef.",
-    },
-    {
-      id: "kl_f2", name: "Shri Krishna Cafe, Fort Kochi", type: "restaurant", town: "Fort Kochi",
-      mustTry: ["Kerala Prawn Curry", "Puttu Kadala", "Coconut Payasam"],
-      priceRange: "₹", isVeg: false,
-    },
-  ],
-  "munsiyari-6-days": [
-    {
-      id: "mn_f1", name: "Local Bhojanalaya, Munsiyari", type: "dhaba", town: "Munsiyari",
-      mustTry: ["Aloo Ke Gutke", "Bal Mithai", "Bhatt ki Dal"],
-      priceRange: "₹", isVeg: true,
-      notes: "Kumaoni staple dishes — incredibly satisfying after a trek.",
-    },
-  ],
-  "char-dham-yatra-uttarakhand": [
-    {
-      id: "cd_f1", name: "Prasad Bhandara (Temple)", type: "restaurant", town: "Kedarnath / Badrinath",
-      mustTry: ["Temple Prasad", "Chana Dal", "Poori Sabzi"],
-      priceRange: "₹", isVeg: true,
-      notes: "Free langar (community meal) available at shrines.",
-    },
-    {
-      id: "cd_f2", name: "Pahadi Dhaba, Guptkashi", type: "dhaba", town: "Guptkashi",
-      mustTry: ["Gahat Ki Dal", "Mandua Roti", "Kafal Juice (seasonal)"],
-      priceRange: "₹", isVeg: true,
-    },
-  ],
-  "panch-kedar-trek-10-days": [
-    {
-      id: "pk_f1", name: "Trek Camp Kitchen", type: "homestay-kitchen", town: "Along Route",
-      mustTry: ["Maggi at altitude", "Aloo Paratha", "Hot Kadha (herbal drink)"],
-      priceRange: "₹", isVeg: true,
-      notes: "Each campsite has basic cooking; budget ₹200-400/meal.",
-    },
-  ],
-  "pune-konkan-coast-raigad": [
-    {
-      id: "pu_f1", name: "Aswad, Pune", type: "restaurant", town: "Pune",
-      mustTry: ["Misal Pav", "Sabudana Vada", "Shrikhand"],
-      priceRange: "₹", isVeg: true,
-      notes: "Iconic Maharashtrian breakfast spot — always a queue.",
-    },
-    {
-      id: "pu_f2", name: "Murud Beach Seafood Shacks", type: "street-food", town: "Murud-Janjira",
-      mustTry: ["Surmai Fry (King Mackerel)", "Kolambi Fry (Prawns)", "Modak"],
-      priceRange: "₹₹", isVeg: false,
-      notes: "Fresh catch cooked right on the beach.",
-    },
-  ],
-};
+import { FOOD_DATA, DEFAULT_FOOD } from "@/lib/data/foodData";
 
-const DEFAULT_FOOD: FoodSpot[] = [
-  {
-    id: "def_f1", name: "Local Dhaba", type: "dhaba", town: "Nearest Town",
-    mustTry: ["Regional Thali", "Fresh Chai", "Local Bread"],
-    priceRange: "₹", isVeg: false,
-    notes: "Ask your host or locals for the best eating spots — they always know!",
-  },
-];
+function getFoodRecommendations(tripSlug: string, tripTitle?: string): FoodSpot[] {
+  if (FOOD_DATA[tripSlug] && FOOD_DATA[tripSlug].length > 0) {
+    return FOOD_DATA[tripSlug];
+  }
+  const cleanTitle = (tripTitle || tripSlug.replace(/-/g, " "))
+    .replace(/\s*—.*$/, "")
+    .replace(/\s*–.*$/, "")
+    .trim();
+  return [
+    {
+      id: `${tripSlug}-food-1`,
+      name: `${cleanTitle} Heritage Kitchen`,
+      type: "restaurant",
+      town: cleanTitle,
+      mustTry: ["Regional Special Thali", "Local Flatbreads", "Authentic Spiced Chai"],
+      priceRange: "₹₹",
+      isVeg: true,
+      notes: `Locally recommended eatery serving traditional dishes and authentic home-style flavors in ${cleanTitle}.`,
+    },
+    {
+      id: `${tripSlug}-food-2`,
+      name: `${cleanTitle} Mountain Cafe`,
+      type: "cafe",
+      town: cleanTitle,
+      mustTry: ["Freshly Brewed Coffee", "Wood-fired Snacks", "Local Herbal Tea"],
+      priceRange: "₹",
+      isVeg: true,
+      notes: `Relaxed spot popular with travellers for breakfast, evening tea, and quick mountain bites.`,
+    },
+  ];
+}
 
 const TYPE_LABELS: Record<FoodSpot["type"], string> = {
   restaurant: "Restaurant", dhaba: "Dhaba", "street-food": "Street Food",
@@ -286,7 +56,7 @@ interface FoodRecommendationsProps {
 }
 
 export default function FoodRecommendations({ tripSlug, tripTitle }: FoodRecommendationsProps) {
-  const spots = FOOD_DATA[tripSlug] || DEFAULT_FOOD;
+  const spots = getFoodRecommendations(tripSlug, tripTitle);
   const destination = tripTitle || tripSlug.replace(/-/g, " ");
 
   const zomatoUrl = `https://www.zomato.com/india/${encodeURIComponent(destination.split(" ")[0]?.toLowerCase() || "")}/restaurants`;

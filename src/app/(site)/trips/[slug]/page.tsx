@@ -28,39 +28,7 @@ import GPXDownloadButton from "@/components/ui/GPXDownloadButton";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 import NewsletterInline from "@/components/ui/NewsletterInline";
 
-// Fallback hero images by slug — 1920px for full-bleed hero banner
-const FALLBACK_IMAGES: Record<string, string> = {
-  // Leh Ladakh — Pangong Tso with prayer flags and Karakoram peaks (generated)
-  "leh-ladakh-9-days": "/images/leh-ladakh-pangong-lake.jpg",
-  // Spiti Valley — Ki Monastery with Spiti Valley and Himalayan peaks (user photo)
-  "spiti-valley": "/images/spiti-ki-monastery.jpg",
-  // Mysore · Coorg · Wayanad · Ooty — Mysore Palace (user photo)
-  "mysore-coorg-wayanad-ooty": "/images/mysore-palace.jpg",
-  // Rajasthan Desert Kingdom — camel dunes, Jaisalmer fort
-  "rajasthan-desert-kingdom":
-    "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=1920&q=85",
-  // Goa Beyond Beaches — turquoise coastline
-  "goa-beyond-beaches":
-    "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=1920&q=85",
-  // Sikkim 7 Days — Gurudongmar Lake with Kanchenjunga peaks (user photo)
-  "sikkim-7-days": "/images/sikkim-gurudongmar.jpg",
-  // Meghalaya 5 Days — Dawki/Umngot River, crystal-clear turquoise water (user photo)
-  "meghalaya-5-days": "/images/meghalaya-dawki-river.jpg",
-  // Kerala 7 Days — backwaters, houseboat
-  "kerala-7-days":
-    "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1920&q=85",
-  // Munsiyari 6 Days — Khaliya Top meadows with Panchachuli peaks (user photo)
-  "munsiyari-6-days": "/images/munsiyari-panchachuli.jpg",
-  // Char Dham Yatra — Kedarnath temple with Himalayan peaks and pilgrims
-  "char-dham-yatra-uttarakhand":
-    "https://images.unsplash.com/photo-1712733900711-d0b929d0d7cc?w=1920&q=85",
-  // Panch Kedar Trek 10 Days — high-altitude Kedar shrine above the clouds (user photo)
-  "panch-kedar-trek-10-days": "/images/panch-kedar-temple.png",
-  // Pune Konkan Coast Raigad — user-provided aerial Konkan coastline photo
-  "pune-konkan-coast-raigad": "/images/konkan-coast.png",
-};
-const DEFAULT_IMAGE =
-  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920&q=85";
+import { getTripImage } from "@/lib/data/tripImages";
 
 
 interface Props {
@@ -97,7 +65,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       authors: trip.author?.name ? [trip.author.name] : undefined,
       images: [
         {
-          url: FALLBACK_IMAGES[trip.slug] || DEFAULT_IMAGE,
+          url: getTripImage(trip.slug),
           width: 1200,
           height: 630,
           alt: trip.title,
@@ -132,7 +100,7 @@ export default async function TripDetailPage({ params }: Props) {
     ? await isTripSaved(session.userId, trip.slug)
     : false;
 
-  const imageSrc = FALLBACK_IMAGES[trip.slug] || DEFAULT_IMAGE;
+  const imageSrc = getTripImage(trip.slug);
 
   const relatedTrips = allTrips
     .filter(

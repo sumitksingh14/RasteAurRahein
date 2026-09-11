@@ -1,0 +1,1373 @@
+import type { HotelSuggestion } from "../types";
+
+export const STAY_DATA: Record<string, HotelSuggestion[]> = {
+  "leh-ladakh-9-days": [
+    {
+      id: "ll1", name: "The Grand Dragon Ladakh", type: "hotel", stars: 5,
+      avgPricePerNight: 12000, town: "Leh City", contact: "+91-1982-257786",
+      bookingUrl: "https://www.thegranddragonladakh.com/",
+      amenities: ["Mountain View", "Restaurant", "Wi-Fi", "Parking", "Oxygen Bar"],
+      notes: "Best luxury hotel in Leh with rooftop panoramic views of the Stok Kangri range. Altitude-friendly rooms with oxygen support. 5 min from Leh Market.",
+    },
+    {
+      id: "ll2", name: "Stok Palace Heritage Hotel", type: "hotel", stars: 4,
+      avgPricePerNight: 8500, town: "Stok Village, Leh", contact: "+91-1982-242336",
+      bookingUrl: "https://www.stokpalace.in/",
+      amenities: ["Heritage Property", "Restaurant", "Garden", "Mountain View", "Hot Water"],
+      notes: "11th-century royal palace of the Namgyal dynasty converted to a heritage hotel. Authentic royal Ladakhi décor; ask for rooms overlooking the Stok Kangri peak.",
+    },
+    {
+      id: "ll3", name: "Nimmu House", type: "homestay", stars: 4,
+      avgPricePerNight: 4500, town: "Nimmu Village, Leh", contact: "+91-94191-17666",
+      bookingUrl: "https://www.nimmuhouse.com/",
+      amenities: ["Traditional Ladakhi Rooms", "Meals Included", "River View", "Hot Water"],
+      notes: "Award-winning traditional Ladakhi house on the Indus river. Beautifully restored with Himalayan art and hand-woven textiles. Ideal base for monasteries.",
+    },
+    {
+      id: "ll4", name: "Mystic Meadows Camp, Hunder", type: "camp", stars: 4,
+      avgPricePerNight: 5500, town: "Hunder, Nubra Valley", contact: "+91-94191-67845",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Hunder+Nubra+Valley",
+      amenities: ["Swiss Tents", "Meals Included", "Bonfire", "Camel Dunes View", "Stargazing"],
+      notes: "Set amongst the famous Hunder sand dunes. Premium Swiss tents with attached bathrooms; wake up to Bactrian camels outside. Book 3–4 weeks ahead in July–Aug.",
+    },
+    {
+      id: "ll5", name: "Himalayan Ecotourism Camp, Hunder", type: "camp", stars: 3,
+      avgPricePerNight: 3500, town: "Hunder, Nubra Valley", contact: "+91-98169-40011",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Hunder+Nubra+Valley",
+      amenities: ["Tents", "Meals Included", "Bonfire", "Sand Dunes Nearby"],
+      notes: "Budget-friendly camp near the dunes. Basic but clean shared facilities. Great value for overnight in Nubra.",
+    },
+    {
+      id: "ll6", name: "The Pangong Retreat (Norbu Camps)", type: "camp", stars: 4,
+      avgPricePerNight: 6500, town: "Spangmik, Pangong Tso", contact: "+91-94191-23454",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Pangong+Tso",
+      amenities: ["Lake View Tents", "Meals Included", "Sunrise Views", "Photography Spot"],
+      notes: "Lakeside Swiss tents facing Pangong Tso's blue waters directly. The sunrise from your tent is unmissable. Book 4–6 weeks in advance for June–August.",
+    },
+    {
+      id: "ll7", name: "Lake View Camp, Spangmik", type: "camp", stars: 3,
+      avgPricePerNight: 4000, town: "Spangmik, Pangong Tso", contact: "+91-96228-07888",
+      bookingUrl: "https://www.airbnb.co.in/s/Pangong-Tso/homes",
+      amenities: ["Lake View", "Meals Included", "Sleeping Bags", "Generator Power"],
+      notes: "Budget lakeside camp with great views. Shared Western-style restrooms. Popular with backpackers for the classic Pangong overnight experience.",
+    },
+    {
+      id: "ll8", name: "Korzok Village Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 1500, town: "Korzok Village, Tso Moriri", contact: "+91-94192-01237",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Korzok+Tso+Moriri",
+      amenities: ["Traditional Stone House", "Home-Cooked Meals", "Yak Wool Blankets"],
+      notes: "Authentic Ladakhi stone homestay in the highest permanently inhabited village at 4,595 m. Warming family kitchen; the warmest and most memorable overnight of the entire trip.",
+    },
+  ],
+  "jyotirlinga-pilgrimage-road-trip": [
+    {
+      id: "jy1", name: "Bhimashankar Eco Resort", type: "resort", stars: 3,
+      avgPricePerNight: 2800, town: "Bhimashankar, Pune District", contact: "+91-94222-00101",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Bhimashankar",
+      amenities: ["Meals Included", "Forest View", "Hot Water"],
+      notes: "Only comfortable stay near the temple; book at least a week ahead in pilgrimage season.",
+    },
+    {
+      id: "jy2", name: "Trimbakeshwar Heritage Resort", type: "resort", stars: 3,
+      avgPricePerNight: 3200, town: "Trimbakeshwar, Nashik", contact: "+91-94234-00102",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Trimbakeshwar",
+      amenities: ["Garden View", "Restaurant", "Wi-Fi", "Hot Water"],
+      notes: "Heritage-styled property close to the Jyotirlinga. Walk to the temple ghats.",
+    },
+    {
+      id: "jy3", name: "Lemon Tree Hotel, Aurangabad", type: "hotel", stars: 4,
+      avgPricePerNight: 4500, town: "Aurangabad (Chhatrapati Sambhajinagar)",
+      bookingUrl: "https://www.lemontreehotels.com/lemon-tree-hotel/aurangabad/hotel-aurangabad.aspx",
+      amenities: ["Pool", "Restaurant", "Wi-Fi", "Parking"],
+      notes: "Best positioned hotel for Ellora & Grishneshwar visits; 10 km to caves.",
+    },
+    {
+      id: "jy4", name: "Ujjain Ramada by Wyndham", type: "hotel", stars: 4,
+      avgPricePerNight: 5500, town: "Ujjain, Madhya Pradesh",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Ujjain",
+      amenities: ["Shipra River View", "Restaurant", "Wi-Fi", "Parking"],
+      notes: "Close to Mahakaleshwar temple; ideal for attending the Bhasma Aarti at 4 AM.",
+    },
+    {
+      id: "jy5", name: "Narmada View Resort, Omkareshwar", type: "resort", stars: 3,
+      avgPricePerNight: 2500, town: "Omkareshwar, Madhya Pradesh", contact: "+91-94250-00105",
+      bookingUrl: "https://www.airbnb.co.in/s/Omkareshwar/homes",
+      amenities: ["Narmada View", "Meals Included", "Boat Jetty Access"],
+      notes: "Wake up to Narmada Aarti chants; a deeply spiritual stay.",
+    },
+  ],
+  "spiti-valley": [
+    {
+      id: "s1", name: "Getaway Stays Manali", type: "hotel", stars: 3,
+      avgPricePerNight: 2500, town: "Manali", contact: "+91-98050-00001",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Manali",
+      amenities: ["Wi-Fi", "Hot Water", "Parking"],
+      notes: "Good base for acclimatisation before crossing Rohtang.",
+    },
+    {
+      id: "s2", name: "Parasol Camps Chandratal", type: "camp", stars: 4,
+      avgPricePerNight: 4500, town: "Chandratal Lake", contact: "+91-94180-00002",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Chandratal",
+      amenities: ["Meals Included", "Sleeping Bags", "Bonfire"],
+      notes: "Book months in advance — only option near the lake at 4,300 m.",
+    },
+    {
+      id: "s3", name: "Sakya Abode, Kaza", type: "homestay", stars: 4,
+      avgPricePerNight: 1800, town: "Kaza", contact: "+91-94592-00003",
+      bookingUrl: "https://www.airbnb.co.in/s/Kaza--Himachal-Pradesh/homes",
+      amenities: ["Meals", "Hot Water", "Local Guide"],
+      notes: "Family-run Spitian homestay; incredible food and local insights.",
+    },
+    {
+      id: "s4", name: "Norling House, Kaza", type: "guesthouse", stars: 3,
+      avgPricePerNight: 1200, town: "Kaza", contact: "+91-98166-00004",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Kaza+Himachal",
+      amenities: ["Wi-Fi", "Meals Optional"],
+    },
+    {
+      id: "s5", name: "Rakcham Camps", type: "camp", stars: 3,
+      avgPricePerNight: 2800, town: "Rakcham / Sangla", contact: "+91-94185-00005",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Sangla",
+      amenities: ["Meals Included", "River View", "Bonfire"],
+      notes: "Gorgeous Baspa Valley riverside camp.",
+    },
+  ],
+  "mysore-coorg-wayanad-ooty": [
+    {
+      id: "mc1", name: "Coorg Misty Woods Resort", type: "resort", stars: 4,
+      avgPricePerNight: 6000, town: "Madikeri, Coorg", contact: "+91-82961-00010",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Madikeri+Coorg",
+      amenities: ["Pool", "Restaurant", "Spa", "Wi-Fi"],
+      notes: "Stunning misty jungle views; great coffee estate experience.",
+    },
+    {
+      id: "mc2", name: "Zostel Mysore", type: "guesthouse", stars: 3,
+      avgPricePerNight: 700, town: "Mysore",
+      bookingUrl: "https://www.zostel.com/zostel/mysore/",
+      amenities: ["Wi-Fi", "Common Kitchen", "Lockers"],
+      notes: "Budget-friendly; perfect base for palace visit.",
+    },
+    {
+      id: "mc3", name: "Wayanad Coffee Trail Homestay", type: "homestay", stars: 4,
+      avgPricePerNight: 3500, town: "Wayanad", contact: "+91-94972-00011",
+      bookingUrl: "https://www.airbnb.co.in/s/Wayanad--Kerala/homes",
+      amenities: ["Meals Included", "Farm Stay", "Nature Walks"],
+    },
+  ],
+  "rajasthan-desert-kingdom": [
+    {
+      id: "rd1", name: "Suryagarh Palace, Jaisalmer", type: "hotel", stars: 5,
+      avgPricePerNight: 12000, town: "Jaisalmer",
+      bookingUrl: "https://www.suryagarh.com",
+      amenities: ["Pool", "Spa", "Desert Safari", "Restaurant"],
+      notes: "Luxury heritage hotel in sandstone — splurge on at least one night.",
+    },
+    {
+      id: "rd2", name: "Sam Sand Dunes Camp", type: "camp", stars: 4,
+      avgPricePerNight: 5500, town: "Sam, Jaisalmer", contact: "+91-94141-00020",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Sam+Sand+Dunes",
+      amenities: ["Camel Safari", "Cultural Evening", "Meals Included"],
+    },
+    {
+      id: "rd3", name: "Jagat Niwas Palace, Udaipur", type: "hotel", stars: 4,
+      avgPricePerNight: 5000, town: "Udaipur",
+      bookingUrl: "https://www.jagatniwaspalace.com",
+      amenities: ["Lake View", "Restaurant", "Wi-Fi"],
+    },
+  ],
+  "goa-beyond-beaches": [
+    {
+      id: "ga1", name: "The Leela Goa", type: "resort", stars: 5,
+      avgPricePerNight: 15000, town: "Cavelossim, South Goa",
+      bookingUrl: "https://www.theleela.com/en_us/hotels-in-goa/the-leela-goa/",
+      amenities: ["Private Beach", "Pool", "Spa", "Restaurant", "Wi-Fi"],
+      notes: "Award-winning luxury resort on a pristine beach.",
+    },
+    {
+      id: "ga2", name: "Zostel Goa (Palolem)", type: "guesthouse", stars: 3,
+      avgPricePerNight: 900, town: "Palolem, South Goa",
+      bookingUrl: "https://www.zostel.com/zostel/goa/",
+      amenities: ["Wi-Fi", "Beach Walk", "Social Events"],
+      notes: "Perfect for solo travellers; steps from Palolem Beach.",
+    },
+    {
+      id: "ga3", name: "Airbnb Beachfront Villas", type: "resort", stars: 4,
+      avgPricePerNight: 5000, town: "Anjuna / Vagator",
+      bookingUrl: "https://www.airbnb.co.in/s/Goa/homes",
+      amenities: ["Pool", "Private Garden", "Sea View"],
+      notes: "Book early for peak season (Nov–Feb).",
+    },
+  ],
+  "sikkim-7-days": [
+    {
+      id: "sk1", name: "Elgin Mount Pandim, Pelling", type: "hotel", stars: 4,
+      avgPricePerNight: 7000, town: "Pelling",
+      bookingUrl: "https://www.elginhotels.com",
+      amenities: ["Kanchenjunga View", "Restaurant", "Wi-Fi"],
+      notes: "Colonial heritage hotel with stunning mountain panorama.",
+    },
+    {
+      id: "sk2", name: "Sikkim Homestay Network", type: "homestay", stars: 4,
+      avgPricePerNight: 2000, town: "Gangtok",
+      bookingUrl: "https://www.airbnb.co.in/s/Gangtok--Sikkim/homes",
+      amenities: ["Meals Included", "Local Guide", "Cultural Experience"],
+    },
+  ],
+  "meghalaya-5-days": [
+    {
+      id: "mg1", name: "Polo Orchid Resort", type: "resort", stars: 4,
+      avgPricePerNight: 5500, town: "Shillong",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Shillong",
+      amenities: ["Restaurant", "Wi-Fi", "Garden"],
+    },
+    {
+      id: "mg2", name: "Dawki River View Camp", type: "camp", stars: 3,
+      avgPricePerNight: 3000, town: "Dawki",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Dawki",
+      notes: "Wake up to the crystal-clear Umngot River.",
+      amenities: ["River View", "Meals Included"],
+    },
+  ],
+  "kerala-7-days": [
+    {
+      id: "kl1", name: "Houseboat — Alleppey", type: "resort", stars: 4,
+      avgPricePerNight: 9000, town: "Alleppey (Alappuzha)",
+      bookingUrl: "https://www.keralahouseboat.org",
+      amenities: ["Backwater Cruise", "Meals Included", "AC Bedrooms"],
+      notes: "Non-negotiable experience; book premium houseboat for best quality.",
+    },
+    {
+      id: "kl2", name: "Spice Garden Homestay, Munnar", type: "homestay", stars: 4,
+      avgPricePerNight: 3200, town: "Munnar",
+      bookingUrl: "https://www.airbnb.co.in/s/Munnar--Kerala/homes",
+      amenities: ["Tea Estate Walk", "Meals Included", "Mountain View"],
+    },
+  ],
+  "munsiyari-6-days": [
+    {
+      id: "mn1", name: "Himalayan Eco Lodge", type: "guesthouse", stars: 3,
+      avgPricePerNight: 1500, town: "Munsiyari", contact: "+91-94109-00030",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Munsiyari",
+      amenities: ["Panchachuli View", "Hot Water", "Meals"],
+    },
+    {
+      id: "mn2", name: "Khaliya Top Trek Camp", type: "camp", stars: 3,
+      avgPricePerNight: 2500, town: "Khaliya Top",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Munsiyari",
+      amenities: ["Meals Included", "Sleeping Bags", "Trek Guide"],
+    },
+  ],
+  "char-dham-yatra-uttarakhand": [
+    {
+      id: "cd1", name: "GMVN Guest House, Kedarnath", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1200, town: "Kedarnath",
+      bookingUrl: "https://www.gmvnl.in",
+      notes: "Book months ahead; government-run and reliable.",
+      amenities: ["Meals", "Hot Water"],
+    },
+    {
+      id: "cd2", name: "Hotel Mandakini View, Rudraprayag", type: "hotel", stars: 3,
+      avgPricePerNight: 2000, town: "Rudraprayag",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Rudraprayag",
+      amenities: ["River View", "Wi-Fi", "Restaurant"],
+    },
+  ],
+  "panch-kedar-trek-10-days": [
+    {
+      id: "pk1", name: "Forest Rest House, Tungnath", type: "guesthouse", stars: 2,
+      avgPricePerNight: 600, town: "Chopta", contact: "+91-94120-00040",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Chopta+Uttarakhand",
+      notes: "Permit required; book through forest dept.",
+      amenities: ["Basic Meals", "Blankets"],
+    },
+    {
+      id: "pk2", name: "Chopta Camp", type: "camp", stars: 3,
+      avgPricePerNight: 2000, town: "Chopta",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Chopta",
+      amenities: ["Meals Included", "Bonfire"],
+    },
+  ],
+  "pune-konkan-coast-raigad": [
+    {
+      id: "pu1", name: "MTDC Beach Resort, Diveagar", type: "resort", stars: 3,
+      avgPricePerNight: 3500, town: "Diveagar",
+      bookingUrl: "https://www.maharashtratourism.gov.in",
+      amenities: ["Beach Access", "AC Rooms", "Restaurant"],
+    },
+    {
+      id: "pu2", name: "Coastal Homestay, Murud", type: "homestay", stars: 4,
+      avgPricePerNight: 2200, town: "Murud",
+      bookingUrl: "https://www.airbnb.co.in/s/Murud--Maharashtra/homes",
+      amenities: ["Sea View", "Konkan Meals", "Rooftop"],
+    },
+  ],
+
+  // ── Batch 1 & 2 Destinations ──────────────────────────────────────────────
+  "haridwar-rishikesh-3-days": [
+    {
+      id: "hr1", name: "Aloha On The Ganges", type: "resort", stars: 4,
+      avgPricePerNight: 8500, town: "Tapovan, Rishikesh", contact: "+91-135-2426000",
+      bookingUrl: "https://www.alohaontheganges.com/",
+      amenities: ["River View", "Pool", "Spa", "Restaurant", "Wi-Fi"],
+      notes: "Luxury riverside resort overlooking the Ganga, close to Laxman Jhula. Features infinity pool and yoga sessions.",
+    },
+    {
+      id: "hr2", name: "Ganga Lahari by Leisure Hotels", type: "hotel", stars: 4,
+      avgPricePerNight: 6500, town: "Gau Ghat, Haridwar", contact: "+91-1334-227546",
+      bookingUrl: "https://www.leisurehotels.co.in/ganga-lahari-haridwar/",
+      amenities: ["Ghat Access", "Pure Veg Restaurant", "Wi-Fi", "Hot Water"],
+      notes: "Right on the banks of Ganga near Har Ki Pauri. Private ghat access for evening aarti darshan.",
+    },
+    {
+      id: "hr3", name: "Zostel Rishikesh (Tapovan)", type: "guesthouse", stars: 3,
+      avgPricePerNight: 1200, town: "Tapovan, Rishikesh", contact: "+91-11-40845115",
+      bookingUrl: "https://www.zostel.com/zostel/rishikesh/",
+      amenities: ["Wi-Fi", "Cafe", "Rooftop Common Area", "Lockers"],
+      notes: "Vibrant backpacker hub with terrace cafe, yoga spaces, and daily community walks.",
+    },
+  ],
+
+  "nainital-jim-corbett-3-days": [
+    {
+      id: "nc1", name: "The Naini Retreat by Leisure Hotels", type: "hotel", stars: 4,
+      avgPricePerNight: 7500, town: "Ayarpatta Slopes, Nainital", contact: "+91-5942-235105",
+      bookingUrl: "https://www.leisurehotels.co.in/the-naini-retreat-nainital/",
+      amenities: ["Lake View", "Heritage Property", "Restaurant", "Wi-Fi", "Bonfire"],
+      notes: "Tudor-style former royal residence of the Maharaja of Pilibhit, overlooking Naini Lake amidst pine woods.",
+    },
+    {
+      id: "nc2", name: "Jim's Jungle Retreat", type: "resort", stars: 4,
+      avgPricePerNight: 9500, town: "Dhela Zone, Jim Corbett", contact: "+91-11-43516376",
+      bookingUrl: "https://www.jimsjungleretreat.com/",
+      amenities: ["Safari Desk", "Pool", "Eco-Lodge", "Naturalist Walks", "Meals Included"],
+      notes: "Eco-luxury wildlife resort bordering the southern boundary of Corbett National Park with expert naturalists.",
+    },
+    {
+      id: "nc3", name: "Corbett Riverside Resort", type: "resort", stars: 4,
+      avgPricePerNight: 5500, town: "Garjia, Ramnagar", contact: "+91-5947-287860",
+      bookingUrl: "https://www.corbettriverside.com/",
+      amenities: ["Kosi Riverfront", "Pool", "Restaurant", "Wi-Fi", "Parking"],
+      notes: "Sprawling riverfront property on the banks of Kosi with private pebble beach and open lawns.",
+    },
+  ],
+
+  "himachal-shimla-manali-dharamshala-dalhousie-5-days": [
+    {
+      id: "hp1", name: "The Oberoi Cecil", type: "hotel", stars: 5,
+      avgPricePerNight: 16000, town: "Chaura Maidan, Shimla", contact: "+91-177-2804848",
+      bookingUrl: "https://www.oberoihotels.com/hotels-in-shimla-cecil/",
+      amenities: ["Heritage Property", "Indoor Heated Pool", "Spa", "Fine Dining", "Valley View"],
+      notes: "Historic 130-year-old colonial grand hotel with classic chandeliers and cedar-scented lounges.",
+    },
+    {
+      id: "hp2", name: "Solang Valley Resort", type: "resort", stars: 4,
+      avgPricePerNight: 6500, town: "Solang, Manali", contact: "+91-1902-256038",
+      bookingUrl: "https://www.solangvalleyresorts.com/",
+      amenities: ["Riverside", "Snow Peak Views", "Restaurant", "Bonfire", "Wi-Fi"],
+      notes: "Set on the banks of Beas River facing snow-clad glaciers, right at the start of Solang adventure activities.",
+    },
+    {
+      id: "hp3", name: "Fortune Park Moksha", type: "hotel", stars: 4,
+      avgPricePerNight: 5800, town: "McLeod Ganj, Dharamshala", contact: "+91-1892-242424",
+      bookingUrl: "https://www.fortunehotels.in/",
+      amenities: ["Dhauladhar Views", "Pool", "Spa", "Wi-Fi", "Restaurant"],
+      notes: "Strawberry Hills sanctuary location with 360-degree views of pine forests and the snow-capped Dhauladhars.",
+    },
+    {
+      id: "hp4", name: "Grand View Hotel", type: "hotel", stars: 4,
+      avgPricePerNight: 4200, town: "Near Dalhousie Club, Dalhousie", contact: "+91-1899-240760",
+      bookingUrl: "https://www.grandviewdalhousie.com/",
+      amenities: ["Colonial Heritage", "Terrace Garden", "Restaurant", "Wi-Fi"],
+      notes: "British-era hill property with unobstructed panoramas of the Pir Panjal ranges.",
+    },
+  ],
+
+  "jammu-kashmir-5-days": [
+    {
+      id: "jk1", name: "The Lalit Grand Palace Srinagar", type: "hotel", stars: 5,
+      avgPricePerNight: 18000, town: "Gupkar Road, Srinagar", contact: "+91-194-2501001",
+      bookingUrl: "https://www.thelalit.com/the-lalit-srinagar/",
+      amenities: ["Dal Lake View", "Heritage Palace", "Chinar Lawns", "Spa", "Indoor Pool"],
+      notes: "Former palace of the Maharaja of Jammu & Kashmir ringed by the Zabarwan mountains overlooking Dal Lake.",
+    },
+    {
+      id: "jk2", name: "Khyber Himalayan Resort & Spa", type: "resort", stars: 5,
+      avgPricePerNight: 24000, town: "Gulmarg", contact: "+91-1954-350666",
+      bookingUrl: "https://www.khyberhotels.com/",
+      amenities: ["Ski Resort", "Gondola Nearby", "Heated Pool", "Luxury Spa", "Snow Views"],
+      notes: "World-class ski resort at 8,825 ft; step out directly to pine woods and the Gulmarg Gondola.",
+    },
+    {
+      id: "jk3", name: "Kolahoi Green Resort", type: "resort", stars: 4,
+      avgPricePerNight: 6500, town: "KP Road, Pahalgam", contact: "+91-1936-243222",
+      bookingUrl: "https://www.kolahoigreen.com/",
+      amenities: ["Lidder River Proximity", "Pine Garden", "Restaurant", "Wi-Fi", "Heated Rooms"],
+      notes: "Nestled in pine woods near the Lidder River, ideal base for Betaab Valley and Aru explorations.",
+    },
+    {
+      id: "jk4", name: "Sukoon Luxury Houseboat", type: "resort", stars: 4,
+      avgPricePerNight: 11000, town: "Dal Lake (Ghat 21), Srinagar", contact: "+91-194-2422002",
+      bookingUrl: "https://www.sukoonhouseboat.com/",
+      amenities: ["Hand-Carved Cedar", "Rooftop Deck", "Shikara Transfers", "Traditional Wazwan"],
+      notes: "Eco-friendly luxury pinewood houseboat on the tranquil open waters of Dal Lake.",
+    },
+  ],
+
+  "agra-mathura-3-days": [
+    {
+      id: "am1", name: "The Oberoi Amarvilas", type: "hotel", stars: 5,
+      avgPricePerNight: 28000, town: "Taj East Gate Road, Agra", contact: "+91-562-2231515",
+      bookingUrl: "https://www.oberoihotels.com/hotels-in-agra-amarvilas/",
+      amenities: ["Taj Mahal Views", "Mughal Architecture", "Pool", "Spa", "Fine Dining"],
+      notes: "Every single room and terrace has an uninterrupted direct view of the Taj Mahal, just 600m away.",
+    },
+    {
+      id: "am2", name: "ITC Mughal, A Luxury Collection Resort", type: "hotel", stars: 5,
+      avgPricePerNight: 9500, town: "Fatehabad Road, Agra", contact: "+91-562-4021700",
+      bookingUrl: "https://www.itchotels.com/in/en/itcmughal-agra",
+      amenities: ["Mughal Gardens", "Kaya Kalp Spa", "Pool", "Wi-Fi", "Restaurants"],
+      notes: "Sprawling 35-acre landscaped resort celebrating Mughal heritage and architecture.",
+    },
+    {
+      id: "am3", name: "Nidhivan Sarovar Portico", type: "hotel", stars: 4,
+      avgPricePerNight: 3800, town: "Vrindavan, Mathura", contact: "+91-565-3037000",
+      bookingUrl: "https://www.sarovarhotels.com/nidhivan-sarovar-portico-vrindavan/",
+      amenities: ["Pure Vegetarian", "Temple Shuttle", "Wi-Fi", "Hot Water", "Parking"],
+      notes: "Contemporary pure vegetarian hotel near ISKCON and Banke Bihari temple in Vrindavan.",
+    },
+  ],
+
+  "auli-nearby-3-days": [
+    {
+      id: "au1", name: "Cliff Top Club Auli", type: "resort", stars: 4,
+      avgPricePerNight: 8500, town: "Auli Ski Slopes", contact: "+91-1389-223217",
+      bookingUrl: "https://www.clifftopclubauli.com/",
+      amenities: ["Ski-in/Ski-out", "Nanda Devi View", "Restaurant", "Bonfire", "Heating"],
+      notes: "High-altitude resort at 10,000 ft directly on the ski slopes, offering 270-degree snow peak vistas.",
+    },
+    {
+      id: "au2", name: "The Royal Village Auli", type: "resort", stars: 3,
+      avgPricePerNight: 5500, town: "Auli Road, Joshimath", contact: "+91-94120-00109",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Auli",
+      amenities: ["Log Chalets", "Mountain View", "Meals Included", "Bonfire"],
+      notes: "Swiss log chalets with front-row views of Nanda Devi and Hathi Ghodi Parvat.",
+    },
+    {
+      id: "au3", name: "GMVN Ski Resort Auli", type: "guesthouse", stars: 3,
+      avgPricePerNight: 2800, town: "Auli Ski Base", contact: "+91-1389-223208",
+      bookingUrl: "https://www.gmvnl.in/",
+      amenities: ["Chairlift Access", "Basic Meals", "Hot Water", "Ski Equipment Rental"],
+      notes: "Government tourism lodge conveniently located right next to the chairlift and ski school.",
+    },
+  ],
+
+  "velas-turtle-festival-konkan": [
+    {
+      id: "vt1", name: "Mohan Upadhye Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 1200, town: "Velas Village, Mandangad", contact: "+91-94238-31718",
+      bookingUrl: "https://www.airbnb.co.in/s/Velas--Maharashtra/homes",
+      amenities: ["Home Cooked Meals", "Konkani Courtyard", "Turtle Walk Guides", "Hot Water"],
+      notes: "Pioneering homestay family of the Sahyadri Nisarga Mitra turtle conservation program.",
+    },
+    {
+      id: "vt2", name: "Omkar Homestay Velas", type: "homestay", stars: 3,
+      avgPricePerNight: 1100, town: "Beach Road, Velas", contact: "+91-94035-71954",
+      bookingUrl: "https://www.airbnb.co.in/s/Velas--Maharashtra/homes",
+      amenities: ["Traditional Konkani Food", "Village Ambiance", "Walking Distance to Beach"],
+      notes: "Quiet red-soil courtyard home 10 minutes walk from the Olive Ridley hatching sanctuary.",
+    },
+    {
+      id: "vt3", name: "Shri Ganesh Kripa Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 1000, town: "Velas Village", contact: "+91-94211-45678",
+      bookingUrl: "https://www.airbnb.co.in/s/Velas--Maharashtra/homes",
+      amenities: ["Ukadiche Modak", "Solkadhi", "Clean Rooms"],
+      notes: "Authentic village home where hot meals and bedding are provided with genuine Konkan warmth.",
+    },
+  ],
+
+  "tarkarli-sindhudurg-beach": [
+    {
+      id: "tk1", name: "MTDC Resort Tarkarli", type: "resort", stars: 3,
+      avgPricePerNight: 3600, town: "Tarkarli Beach, Malvan", contact: "+91-2365-252390",
+      bookingUrl: "https://www.maharashtratourism.gov.in/",
+      amenities: ["Beachfront", "AC Houseboats", "Restaurant", "Water Sports Desk", "Wi-Fi"],
+      notes: "Government beachfront resort with cottages nestled in coconut palms right on the white sands.",
+    },
+    {
+      id: "tk2", name: "Blue Sea Resort", type: "resort", stars: 3,
+      avgPricePerNight: 2800, town: "Devbagh Road, Tarkarli", contact: "+91-94224-34567",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Tarkarli",
+      amenities: ["Scuba Diving Desk", "Sea View", "Malvani Food", "Hot Water"],
+      notes: "Close to Karli backwaters and scuba diving launch points. Very hospitable local staff.",
+    },
+    {
+      id: "tk3", name: "Siddhivinayak Beach Resort", type: "homestay", stars: 3,
+      avgPricePerNight: 2200, town: "Devbagh Sangam, Malvan", contact: "+91-94041-89765",
+      bookingUrl: "https://www.airbnb.co.in/s/Tarkarli/homes",
+      amenities: ["Backwater Confluence", "Homemade Seafood", "Boat Rides"],
+      notes: "Located at the quiet Devbagh Sangam where the Karli river empties into the Arabian Sea.",
+    },
+  ],
+
+  "panhala-kolhapur-hill-fort": [
+    {
+      id: "pn1", name: "MTDC Resort Panhala", type: "resort", stars: 3,
+      avgPricePerNight: 2600, town: "Panhala Fort Plateau", contact: "+91-2328-235048",
+      bookingUrl: "https://www.maharashtratourism.gov.in/",
+      amenities: ["Valley View", "Historic Fort Location", "Restaurant", "Garden"],
+      notes: "Situated right inside the historic hill fort complex with sweeping Sahyadri valley views.",
+    },
+    {
+      id: "pn2", name: "Valley View Grand", type: "hotel", stars: 3,
+      avgPricePerNight: 2900, town: "Tabak Baug, Panhala", contact: "+91-2328-235372",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Panhala",
+      amenities: ["Mountain View", "Restaurant", "Wi-Fi", "Parking"],
+      notes: "Serene hill station property surrounded by red soil gardens and cool mountain breezes.",
+    },
+    {
+      id: "pn3", name: "Sayaji Hotel Kolhapur", type: "hotel", stars: 5,
+      avgPricePerNight: 4800, town: "Old Pune-Bangalore Rd, Kolhapur", contact: "+91-231-2555999",
+      bookingUrl: "https://sayajihotels.com/sayaji-kolhapur",
+      amenities: ["Luxury Rooms", "Pool", "Multiple Restaurants", "Spa"],
+      notes: "Premier 5-star hotel in Kolhapur, 20 km from Panhala Fort. Ideal for royal palace & temple tour.",
+    },
+  ],
+
+  "amboli-sahyadri-waterfalls": [
+    {
+      id: "ab1", name: "Whistling Woods Amboli", type: "resort", stars: 3,
+      avgPricePerNight: 2800, town: "Amboli Main Road, Sindhudurg", contact: "+91-94220-55444",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Amboli",
+      amenities: ["Rainforest View", "Naturalist Guides", "Restaurant", "Herpetology Walks"],
+      notes: "Top choice for wildlife photographers and nature lovers visiting Amboli's mist-covered rainforests.",
+    },
+    {
+      id: "ab2", name: "MTDC Green Valley Resort", type: "resort", stars: 3,
+      avgPricePerNight: 2400, town: "Amboli Ghats", contact: "+91-2363-276239",
+      bookingUrl: "https://www.maharashtratourism.gov.in/",
+      amenities: ["Stone Cottages", "Garden", "Malvani Kitchen", "Hot Water"],
+      notes: "Spacious government resort near Amboli waterfall and Sunset Point, enveloped in monsoon clouds.",
+    },
+  ],
+
+  "toranmal-satpura-hill-station": [
+    {
+      id: "tm1", name: "Toranmal Hill Resort (Forest Lodge)", type: "resort", stars: 3,
+      avgPricePerNight: 1800, town: "Yashwant Lake, Toranmal", contact: "+91-2567-224410",
+      bookingUrl: "https://www.maharashtratourism.gov.in/",
+      amenities: ["Lake View", "Teak Forest", "Home-style Food", "Parking"],
+      notes: "Quiet retreat overlooking Yashwant Lake in the Satpura Ranges of Nandurbar district.",
+    },
+    {
+      id: "tm2", name: "Forest Rest House Toranmal", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1200, town: "Toranmal Plateau", contact: "+91-2567-224400",
+      bookingUrl: "https://www.google.com/travel/hotels/s/Toranmal",
+      amenities: ["Forest Dept Property", "Basic Meals", "Fireplace"],
+      notes: "British-era stone rest house with views over Sita Khai gorge and deep teak valleys.",
+    },
+  ],
+
+  "chorla-ghat-western-ghats": [
+    {
+      id: "cg1", name: "Wildernest Nature Resort", type: "resort", stars: 4,
+      avgPricePerNight: 7500, town: "Swapnagandha Valley, Chorla Ghat", contact: "+91-831-2407300",
+      bookingUrl: "https://www.wildernestgoa.com/",
+      amenities: ["Infinity Pool", "Vazra Falls View", "Machan Cottages", "Meals Included", "Guided Treks"],
+      notes: "Acclaimed eco-resort perched at 800m on the Goa-Karnataka border overlooking the Swapnagandha valley.",
+    },
+    {
+      id: "cg2", name: "Swapnagandha Resort", type: "resort", stars: 4,
+      avgPricePerNight: 6500, town: "Chorla Ghats", contact: "+91-832-2438888",
+      bookingUrl: "https://www.swapnagandha.com/",
+      amenities: ["Valley View", "Eco-architecture", "Forest Walks", "Birdwatching"],
+      notes: "Sister property to Wildernest with cliffside eco-cottages facing cascading seasonal waterfalls.",
+    },
+  ],
+
+  "cotigao-wildlife-sanctuary-goa": [
+    {
+      id: "co1", name: "Cotigao Forest Rest House", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1200, town: "Cotigao Sanctuary Gate, South Goa", contact: "+91-832-2229701",
+      bookingUrl: "https://www.forest.goa.gov.in/",
+      amenities: ["Forest Canopy", "Basic Amenities", "Wildlife Trails"],
+      notes: "Government forest department rest house inside the core sanctuary. Must book via Forest Department.",
+    },
+    {
+      id: "co2", name: "The Tubki Resort", type: "resort", stars: 3,
+      avgPricePerNight: 2800, town: "Chaudi, Canacona", contact: "+91-832-2643500",
+      bookingUrl: "https://www.thetubkiresort.com/",
+      amenities: ["Swimming Pool", "Restaurant", "Wi-Fi", "Proximity to Sanctuary"],
+      notes: "Comfortable base hotel in Canacona town, just 15 minutes drive from Cotigao Wildlife Sanctuary.",
+    },
+  ],
+
+  "gorakhgad-fort-trek-mumbai": [
+    {
+      id: "gg1", name: "Dehane Village Homestay", type: "homestay", stars: 2,
+      avgPricePerNight: 800, town: "Dehane Village, Murbad", contact: "+91-98200-11223",
+      bookingUrl: "https://www.google.com/search?q=Dehane+Village+Gorakhgad+homestay",
+      amenities: ["Traditional Konkani Meals", "Base of Pinnacle", "Guide Service"],
+      notes: "Rustic village home at the direct trek base. Local hosts provide hot Pithla Bhakri and parking.",
+    },
+    {
+      id: "gg2", name: "Malshej Ghat MTDC Resort", type: "resort", stars: 3,
+      avgPricePerNight: 3200, town: "Malshej Ghat Plateau", contact: "+91-2132-242010",
+      bookingUrl: "https://www.maharashtratourism.gov.in/",
+      amenities: ["Cliffside Views", "Waterfalls", "Restaurant", "Wi-Fi"],
+      notes: "Conveniently located 35 minutes up the ghat from Gorakhgad base, with cliff views and monsoon waterfalls.",
+    },
+  ],
+
+  "orchha-bundelkhand-heritage": [
+    {
+      id: "or1", name: "Sheesh Mahal Heritage Hotel", type: "hotel", stars: 4,
+      avgPricePerNight: 5500, town: "Orchha Fort Complex", contact: "+91-7680-252624",
+      bookingUrl: "https://www.mptourism.com/",
+      amenities: ["Royal Fort Courtyard", "Heritage Suites", "Restaurant", "Historic Ambiance"],
+      notes: "A real palace converted to hotel inside Raja Mahal courtyard with royal Bundelkhand heritage.",
+    },
+    {
+      id: "or2", name: "Bundelkhand Riverside Resort", type: "resort", stars: 4,
+      avgPricePerNight: 4800, town: "Kanchana Ghat, Betwa River, Orchha", contact: "+91-7680-252612",
+      bookingUrl: "https://www.bundelkhandriverside.com/",
+      amenities: ["Betwa Riverfront", "Cenotaph Views", "Swimming Pool", "Gardens"],
+      notes: "Heritage property along the Betwa River with panoramic views of the famous Orchha Chattris.",
+    },
+    {
+      id: "or3", name: "Amar Mahal Orchha", type: "hotel", stars: 4,
+      avgPricePerNight: 5200, town: "Bypass Road, Orchha", contact: "+91-7680-252102",
+      bookingUrl: "https://www.amarmahal.com/",
+      amenities: ["Bundela Architecture", "Pool", "Spa", "Monument Views"],
+      notes: "Exquisite Bundela style architecture overlooking the cenotaphs and lush green sanctuary.",
+    },
+  ],
+
+  "mandu-afghan-ruins-plateau": [
+    {
+      id: "md1", name: "MPT Malwa Resort Mandu", type: "resort", stars: 3,
+      avgPricePerNight: 3200, town: "Jahaz Mahal Road, Mandu", contact: "+91-7292-263235",
+      bookingUrl: "https://www.mptourism.com/",
+      amenities: ["Lakefront", "Gardens", "Restaurant", "Wi-Fi", "Parking"],
+      notes: "State tourism resort set around a serene natural lake near Jahaz Mahal and Hindola Mahal.",
+    },
+    {
+      id: "md2", name: "MPT Malwa Retreat", type: "hotel", stars: 3,
+      avgPricePerNight: 2400, town: "Main Road, Mandu", contact: "+91-7292-263221",
+      bookingUrl: "https://www.mptourism.com/",
+      amenities: ["Garden View", "Restaurant", "Hot Water", "Clean Cottages"],
+      notes: "Peaceful budget-friendly property surrounded by trees, close to Baz Bahadur's Palace.",
+    },
+  ],
+
+  "chitrakoot-mp-pilgrimage": [
+    {
+      id: "ck1", name: "MPT Tourist Bungalow Chitrakoot", type: "hotel", stars: 3,
+      avgPricePerNight: 2200, town: "Near Ramghat, Chitrakoot", contact: "+91-7670-265326",
+      bookingUrl: "https://www.mptourism.com/",
+      amenities: ["Mandakini Riverfront", "Garden", "Pure Veg Restaurant", "Parking"],
+      notes: "Spacious MP Tourism hotel on the banks of Mandakini River, 10 min walk to Ramghat.",
+    },
+    {
+      id: "ck2", name: "MPT Mandakini Resort", type: "resort", stars: 3,
+      avgPricePerNight: 2600, town: "Chitrakoot", contact: "+91-7670-265384",
+      bookingUrl: "https://www.mptourism.com/",
+      amenities: ["River View", "Hot Water", "Satvik Food", "Temple Access"],
+      notes: "Comfortable cottages overlooking the gentle waters of the Mandakini River.",
+    },
+  ],
+
+  "bhimbetka-rock-shelters": [
+    {
+      id: "bb1", name: "MPT Highway Treat Bhimbetka", type: "guesthouse", stars: 3,
+      avgPricePerNight: 2400, town: "NH-46, Bhimbetka Bypass", contact: "+91-7480-265222",
+      bookingUrl: "https://www.mptourism.com/",
+      amenities: ["Proximity to Rock Shelters", "Restaurant", "Parking", "Wi-Fi"],
+      notes: "Strategic highway retreat situated right at the approach turnoff to the UNESCO rock art caves.",
+    },
+    {
+      id: "bb2", name: "Jehan Numa Palace Hotel", type: "hotel", stars: 5,
+      avgPricePerNight: 8500, town: "Shamla Hills, Bhopal", contact: "+91-755-2661100",
+      bookingUrl: "https://www.jehannuma.com/palace-bhopal/",
+      amenities: ["Royal Heritage", "Pool", "Spa", "World-class Dining", "Horse Riding"],
+      notes: "Splendid 19th-century Nawabi residence in Bhopal, 40 km from Bhimbetka & Bhojpur.",
+    },
+  ],
+
+  "amarkantak-narmada-source": [
+    {
+      id: "ak1", name: "MPT Holiday Homes Amarkantak", type: "hotel", stars: 3,
+      avgPricePerNight: 2500, town: "Amarkantak, Anuppur", contact: "+91-7659-269416",
+      bookingUrl: "https://www.mptourism.com/",
+      amenities: ["Sal Forest Surroundings", "Restaurant", "Garden", "Hot Water"],
+      notes: "Set in tranquil pine and sal forests close to Narmada Udgam and ancient Kalachuri temples.",
+    },
+    {
+      id: "ak2", name: "Sarvodaya Vishram Griha", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1200, town: "Temple Complex, Amarkantak", contact: "+91-7659-269430",
+      bookingUrl: "https://www.google.com/travel/hotels/s/Amarkantak",
+      amenities: ["Temple Proximity", "Satvik Food", "Clean Rooms"],
+      notes: "Peaceful pilgrim guesthouse just minutes from the sacred Narmada temple pond.",
+    },
+  ],
+
+  "patalkot-valley-tribal": [
+    {
+      id: "pt1", name: "MPT Motel Tamia", type: "hotel", stars: 3,
+      avgPricePerNight: 2400, town: "Tamia Hills, Chhindwara", contact: "+91-7161-278225",
+      bookingUrl: "https://www.mptourism.com/",
+      amenities: ["Cliff Edge Panorama", "Valley View", "Restaurant", "Parking"],
+      notes: "Perched on the cliff rim of the Satpura range with breathtaking views over the hidden Patalkot horseshoe valley.",
+    },
+    {
+      id: "pt2", name: "Tamia Eco Forest Rest House", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1500, town: "Chimhipur / Tamia", contact: "+91-7161-278200",
+      bookingUrl: "https://www.google.com/travel/hotels/s/Tamia",
+      amenities: ["Forest Setting", "Local Guides", "Basic Amenities"],
+      notes: "Surrounded by medicinal herb reserves and dense sal forests on the valley rim.",
+    },
+  ],
+
+  "panna-tiger-reserve-safari": [
+    {
+      id: "pr1", name: "Ken River Lodge", type: "resort", stars: 4,
+      avgPricePerNight: 8500, town: "Madla Gate, Panna", contact: "+91-11-41517722",
+      bookingUrl: "https://www.kenriverlodge.com/",
+      amenities: ["Treehouse Machans", "Ken Riverfront", "Safari Desk", "Meals Included"],
+      notes: "Pioneering wildlife lodge set on 50 acres of riverside forest along the Ken River near Madla Gate.",
+    },
+    {
+      id: "pr2", name: "MPT Jungle Camp Madla", type: "resort", stars: 3,
+      avgPricePerNight: 3800, town: "Madla, Panna National Park", contact: "+91-7732-275275",
+      bookingUrl: "https://www.mptourism.com/",
+      amenities: ["Gate Proximity", "Cottages", "Restaurant", "Safari Jeep Desk"],
+      notes: "Located just 500 meters from Panna's primary safari entrance gate in Madla.",
+    },
+  ],
+
+  "tirathgarh-kanger-valley-chhattisgarh": [
+    {
+      id: "tg1", name: "Dandami Luxury Resort", type: "resort", stars: 3,
+      avgPricePerNight: 3500, town: "Chitrakote / Jagdalpur, Bastar", contact: "+91-7782-229210",
+      bookingUrl: "https://www.chhattisgarhtourism.co.in/",
+      amenities: ["Bastar Architecture", "Restaurant", "Garden", "Cottages"],
+      notes: "State-run resort with tribal terracotta design, convenient base for Kanger Valley National Park.",
+    },
+    {
+      id: "tg2", name: "Naman Bastar Resort", type: "resort", stars: 3,
+      avgPricePerNight: 3800, town: "Chitrakote Road, Jagdalpur", contact: "+91-7782-229555",
+      bookingUrl: "https://www.namanbastar.com/",
+      amenities: ["Cultural Shows", "Swimming Pool", "Bastar Craft Studio", "Wi-Fi"],
+      notes: "Boutique eco-resort themed around tribal Dhokra art and bell-metal crafts.",
+    },
+  ],
+
+  "chitrakoot-waterfall-bastar": [
+    {
+      id: "cw1", name: "Dandami Luxury Resort Chitrakote", type: "resort", stars: 3,
+      avgPricePerNight: 3800, town: "Chitrakoot Falls Rim, Bastar", contact: "+91-7782-229211",
+      bookingUrl: "https://www.chhattisgarhtourism.co.in/",
+      amenities: ["Waterfall Front View", "Wooden Cottages", "Restaurant", "Lawn"],
+      notes: "Cottages positioned right along the cliff rim directly facing India's widest waterfall.",
+    },
+    {
+      id: "cw2", name: "Bastar Jungle Resort", type: "resort", stars: 3,
+      avgPricePerNight: 3200, town: "Jagdalpur Outskirts", contact: "+91-94252-58110",
+      bookingUrl: "https://www.bastarjungleresort.com/",
+      amenities: ["Sal Forest", "Tribal Hospitality", "Bonfire", "Authentic Meals"],
+      notes: "Quiet jungle resort immersed in nature, 30 minutes drive from Chitrakoot Falls.",
+    },
+  ],
+
+  "bastar-tribal-culture-haat": [
+    {
+      id: "bt1", name: "Bastar Homestay Tokapal", type: "homestay", stars: 3,
+      avgPricePerNight: 1800, town: "Tokapal, Bastar", contact: "+91-94252-12345",
+      bookingUrl: "https://www.airbnb.co.in/s/Jagdalpur--Chhattisgarh/homes",
+      amenities: ["Maria Tribal Hosts", "Village Meals", "Haat Guide", "Local Culture"],
+      notes: "Stay with local families and experience weekly tribal haats, rooster fights, and Dhokra foundry visits.",
+    },
+    {
+      id: "bt2", name: "Naman Bastar Jagdalpur", type: "resort", stars: 3,
+      avgPricePerNight: 3800, town: "Jagdalpur", contact: "+91-7782-229555",
+      bookingUrl: "https://www.namanbastar.com/",
+      amenities: ["Pool", "Restaurant", "Wi-Fi", "Artisan Workshops"],
+      notes: "Comfortable heritage resort within easy reach of Jagdalpur palace and craft villages.",
+    },
+  ],
+
+  "ziro-valley-apatani": [
+    {
+      id: "zv1", name: "Ziro Valley Resort", type: "resort", stars: 3,
+      avgPricePerNight: 3800, town: "Biiri Village, Ziro", contact: "+91-94360-45678",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Ziro+Arunachal",
+      amenities: ["Pine Woods View", "Local Cuisine", "Wi-Fi", "Bonfire"],
+      notes: "Nestled amidst blue pine forests with panoramic views over lush Apatani rice paddies.",
+    },
+    {
+      id: "zv2", name: "Siiro Resort", type: "resort", stars: 3,
+      avgPricePerNight: 3200, town: "Siiro, Old Ziro", contact: "+91-94022-78901",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Ziro",
+      amenities: ["Kiwi Orchard", "Wooden Cottages", "Mountain View"],
+      notes: "Charming wooden chalets surrounded by kiwi plantations and terraced fields.",
+    },
+    {
+      id: "zv3", name: "Abasa Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 2000, town: "Siiro Village, Ziro", contact: "+91-94360-49663",
+      bookingUrl: "https://www.airbnb.co.in/s/Ziro/homes",
+      amenities: ["Apatani Family", "Hearth Cooking", "Organic Farming Tour", "Hot Water"],
+      notes: "Acclaimed indigenous Apatani homestay where you sit around the family hearth and learn tribal customs.",
+    },
+  ],
+
+  "dzukou-valley-trek-nagaland": [
+    {
+      id: "dz1", name: "Dzukou Valley Rest House", type: "guesthouse", stars: 2,
+      avgPricePerNight: 800, town: "Dzukou Valley Rim", contact: "+91-98622-45678",
+      bookingUrl: "https://www.google.com/search?q=Dzukou+Valley+rest+house+booking",
+      amenities: ["Valley View", "Campground", "Basic Mattresses", "Fireplace"],
+      notes: "The only rest house perched right on the rim above Dzukou Valley. Bring warm sleeping bag and thermals.",
+    },
+    {
+      id: "dz2", name: "Viswema Base Camp & Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 1500, town: "Viswema Village, Kohima", contact: "+91-94360-12344",
+      bookingUrl: "https://www.airbnb.co.in/s/Kohima/homes",
+      amenities: ["Naga Thali", "Trailhead Access", "Hot Water", "Local Trek Guide"],
+      notes: "Traditional Angami Naga homestay at the Viswema trail entrance before starting the trek.",
+    },
+    {
+      id: "dz3", name: "Hotel Japfu Kohima", type: "hotel", stars: 3,
+      avgPricePerNight: 3500, town: "PR Hill, Kohima", contact: "+91-370-2240211",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Kohima",
+      amenities: ["Heritage Hotel", "Restaurant", "Wi-Fi", "Valley View"],
+      notes: "Centrally located government hotel in Kohima with views of Mount Japfu.",
+    },
+  ],
+
+  "mawlynnong-cleanest-village": [
+    {
+      id: "mw1", name: "Mawlynnong Village Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 1800, town: "Mawlynnong Village, East Khasi Hills", contact: "+91-96120-78901",
+      bookingUrl: "https://www.airbnb.co.in/s/Mawlynnong/homes",
+      amenities: ["Bamboo Stilt Hut", "Orchid Gardens", "Khasi Meals", "Cleanest Village Tour"],
+      notes: "Traditional eco-friendly bamboo hut maintained by local Khasi villagers with spotless courtyards.",
+    },
+    {
+      id: "mw2", name: "Hala Tyngkong Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 2000, town: "Mawlynnong", contact: "+91-98560-23456",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Mawlynnong",
+      amenities: ["Garden View", "Home Cooking", "Hot Water"],
+      notes: "Surrounded by betel nut trees and pitcher plants near the famous Sky Walk bamboo tower.",
+    },
+  ],
+
+  "nongriat-double-decker-trek": [
+    {
+      id: "nr1", name: "Serene Homestay Nongriat", type: "homestay", stars: 3,
+      avgPricePerNight: 1200, town: "Nongriat Village", contact: "+91-96150-12345",
+      bookingUrl: "https://www.airbnb.co.in/s/Nongriat/homes",
+      amenities: ["Beside Root Bridge", "Natural Pool Access", "Home Food", "Backpacker Community"],
+      notes: "Legendary homestay situated right in Nongriat village, 2 minutes walk from the Double Decker Living Root Bridge.",
+    },
+    {
+      id: "nr2", name: "Cherrapunjee Holiday Resort", type: "resort", stars: 3,
+      avgPricePerNight: 4200, town: "Laitkynsew, Cherrapunji", contact: "+91-94361-15925",
+      bookingUrl: "https://www.cherrapunjee.com/",
+      amenities: ["Trek Trailhead", "Khasi Heritage", "Restaurant", "Trek Guides"],
+      notes: "Pioneering eco-resort that first documented the living root bridges for travellers; perched on the canyon rim.",
+    },
+  ],
+
+  "dawki-umngot-river-meghalaya": [
+    {
+      id: "dw1", name: "Shnongpdeng River Camps", type: "camp", stars: 3,
+      avgPricePerNight: 2200, town: "Shnongpdeng Beach, Dawki", contact: "+91-98630-11223",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Dawki",
+      amenities: ["Riverside Tents", "Kayaking", "Cliff Jumping", "Bonfire", "Meals Included"],
+      notes: "Pebble beach camping directly on the crystal-clear turquoise waters of the Umngot River.",
+    },
+    {
+      id: "dw2", name: "Betelnut Eco Resort Dawki", type: "resort", stars: 3,
+      avgPricePerNight: 3200, town: "Darrang, Dawki", contact: "+91-94361-88990",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Dawki",
+      amenities: ["Cottages", "River View", "Restaurant", "Boating"],
+      notes: "Thatched eco-cottages overlooking lush river bends near the Bangladesh border.",
+    },
+  ],
+
+  "mawsynram-wettest-place-earth": [
+    {
+      id: "mr1", name: "Sookha Homestay Mawsynram", type: "homestay", stars: 3,
+      avgPricePerNight: 1600, town: "Mawsynram Village", contact: "+91-98620-33445",
+      bookingUrl: "https://www.airbnb.co.in/s/Mawsynram/homes",
+      amenities: ["Fireplace Hearth", "Warm Khasi Hospitality", "Hot Water", "Local Meals"],
+      notes: "Cozy home with warming hearths, essential for the rainy mist-shrouded plateau of Mawsynram.",
+    },
+    {
+      id: "mr2", name: "Polo Orchid Resort Cherrapunjee", type: "resort", stars: 4,
+      avgPricePerNight: 6500, town: "Mawkdok, Sohra / Mawsynram Road", contact: "+91-3637-235000",
+      bookingUrl: "https://www.polohotels.com/",
+      amenities: ["Infinity Pool", "Waterfall View", "Luxury Villas", "Restaurant"],
+      notes: "Luxury cliff-hanging resort offering panoramic views of the deepest gorges in the Khasi Hills.",
+    },
+  ],
+
+  "majuli-brahmaputra-assam": [
+    {
+      id: "mj1", name: "La Maison de Ananda", type: "homestay", stars: 3,
+      avgPricePerNight: 1800, town: "Garamur, Majuli Island", contact: "+91-94352-03482",
+      bookingUrl: "https://www.airbnb.co.in/s/Majuli/homes",
+      amenities: ["Mishing Bamboo Architecture", "River Breeze", "Home Food", "Bicycle Rental"],
+      notes: "Iconic bamboo stilt cottage designed by a French architect, immersing you in Mishing tribal heritage.",
+    },
+    {
+      id: "mj2", name: "Prashanti Eco Tourism Resort", type: "resort", stars: 3,
+      avgPricePerNight: 2400, town: "Kamalabari, Majuli", contact: "+91-3775-274443",
+      bookingUrl: "https://tourism.assam.gov.in/",
+      amenities: ["Assam Tourism Property", "Cottages", "Assamese Food", "Satra Proximity"],
+      notes: "Conveniently located near Kamalabari Ghat and centuries-old neo-Vaishnavite Satras.",
+    },
+  ],
+
+  "khonoma-green-village-nagaland": [
+    {
+      id: "kh1", name: "Meru's Homestay Khonoma", type: "homestay", stars: 3,
+      avgPricePerNight: 1800, town: "Khonoma Village, Kohima", contact: "+91-94362-15890",
+      bookingUrl: "https://www.airbnb.co.in/s/Khonoma/homes",
+      amenities: ["Terraced Paddy Views", "Angami Naga Culture", "Organic Food", "Village Walks"],
+      notes: "Authentic stone and timber house with sweeping views of the centuries-old terraced valley.",
+    },
+    {
+      id: "kh2", name: "Dovipie Inn", type: "guesthouse", stars: 3,
+      avgPricePerNight: 2200, town: "Khonoma Hills", contact: "+91-94364-00123",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Khonoma",
+      amenities: ["Terrace View", "Naga Kitchen", "Hot Water", "Clean Rooms"],
+      notes: "Panoramic terrace overlooking the historic village forts and the green Blyth's tragopan sanctuary.",
+    },
+  ],
+
+  "ukhrul-tangkhul-manipur": [
+    {
+      id: "uk1", name: "Shirui Lily Cottage", type: "homestay", stars: 3,
+      avgPricePerNight: 1600, town: "Shirui Village, Ukhrul", contact: "+91-98621-34567",
+      bookingUrl: "https://www.airbnb.co.in/s/Ukhrul/homes",
+      amenities: ["Mountain Base", "Tangkhul Food", "Trail Guides", "Fireplace"],
+      notes: "Set at the foot of the Shirui Kashong peak, home to the rare Shirui Lily.",
+    },
+    {
+      id: "uk2", name: "25 Degree North Hotel", type: "hotel", stars: 3,
+      avgPricePerNight: 2500, town: "Viewland, Ukhrul Town", contact: "+91-3870-265111",
+      bookingUrl: "https://www.google.com/travel/hotels/s/Ukhrul",
+      amenities: ["Valley View", "Restaurant", "Wi-Fi", "Hot Water"],
+      notes: "Modern hill town hotel with commanding views of the Tangkhul highland ridges.",
+    },
+  ],
+
+  "loktak-lake-floating-islands": [
+    {
+      id: "lt1", name: "Sendra Park & Resort by Classic", type: "resort", stars: 4,
+      avgPricePerNight: 4500, town: "Sendra Island, Loktak Lake, Moirang", contact: "+91-385-2443969",
+      bookingUrl: "https://www.theclassichotel.in/sendra-park-resort/",
+      amenities: ["360 Lake View", "Phumdi Panorama", "Restaurant", "Boating Jetty"],
+      notes: "Perched atop an elevated island with panoramic views of the floating biomass phumdis and Keibul Lamjao.",
+    },
+    {
+      id: "lt2", name: "Loktak Floating Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 2200, town: "Thanga Island, Loktak Lake", contact: "+91-87878-12345",
+      bookingUrl: "https://www.airbnb.co.in/s/Loktak-Lake/homes",
+      amenities: ["Stay on a Phumdi", "Canoe Ride", "Fresh Lake Fish", "Stargazing"],
+      notes: "World's most unique lodging: an authentic cottage built directly on a floating island of soil and vegetation.",
+    },
+  ],
+
+  "reiek-hill-mizoram": [
+    {
+      id: "re1", name: "Reiek Tourist Resort (Mizoram Tourism)", type: "resort", stars: 3,
+      avgPricePerNight: 1800, town: "Reiek Tlang, Aizawl District", contact: "+91-389-2333475",
+      bookingUrl: "https://tourism.mizoram.gov.in/",
+      amenities: ["Mizo Heritage Village", "Cottages", "Mizo Kitchen", "Peak Trailhead"],
+      notes: "Stone cottages located right next to the model Mizo chieftain village and the Reiek peak cliff trail.",
+    },
+    {
+      id: "re2", name: "David's Hotel Clover", type: "hotel", stars: 3,
+      avgPricePerNight: 3200, town: "Chanmari, Aizawl", contact: "+91-389-2341541",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Aizawl",
+      amenities: ["City Panorama", "Restaurant", "Wi-Fi", "Clean Modern Rooms"],
+      notes: "Comfortable boutique base in Aizawl city, 30 km from Reiek peak.",
+    },
+  ],
+
+  "vantawng-waterfall-thenzawl": [
+    {
+      id: "vtg1", name: "Thenzawl Golf Resort & Wellness", type: "resort", stars: 3,
+      avgPricePerNight: 2800, town: "Thenzawl, Serchhip District", contact: "+91-389-2333475",
+      bookingUrl: "https://tourism.mizoram.gov.in/",
+      amenities: ["18-Hole Golf Course", "Log Chalets", "Restaurant", "Lush Meadows"],
+      notes: "State-of-the-art eco chalets situated in an expansive green plateau near Mizoram's highest waterfalls.",
+    },
+    {
+      id: "vtg2", name: "Thenzawl Tourist Lodge", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1400, town: "Handloom Village, Thenzawl", contact: "+91-389-2333400",
+      bookingUrl: "https://tourism.mizoram.gov.in/",
+      amenities: ["Handloom Center", "Basic Meals", "Hot Water"],
+      notes: "Clean government rest house close to traditional Mizo Puan handloom weaving workshops.",
+    },
+  ],
+
+  "unakoti-rock-carvings-tripura": [
+    {
+      id: "un1", name: "Unakoti Tourist Lodge", type: "guesthouse", stars: 3,
+      avgPricePerNight: 1600, town: "Kailashahar, Unakoti District", contact: "+91-3824-222340",
+      bookingUrl: "https://tripuratourism.gov.in/",
+      amenities: ["Tripura Tourism", "Restaurant", "Garden", "Proximity to Bas-Reliefs"],
+      notes: "State lodge located 8 km from the ancient rock-carved Shiva heads nestled in dense forest.",
+    },
+    {
+      id: "un2", name: "Royal Guest House Dharmanagar", type: "hotel", stars: 2,
+      avgPricePerNight: 1200, town: "Dharmanagar", contact: "+91-3822-220111",
+      bookingUrl: "https://www.google.com/travel/hotels/s/Dharmanagar",
+      amenities: ["Railway Station Access", "Clean Rooms", "Food on Order"],
+      notes: "Convenient railhead base hotel 25 km from Unakoti.",
+    },
+  ],
+
+  "namdapha-national-park-safari": [
+    {
+      id: "np1", name: "Deban Forest Inspection Bungalow", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1200, town: "Deban, Namdapha Core", contact: "+91-3786-222249",
+      bookingUrl: "https://www.google.com/search?q=Namdapha+Deban+forest+rest+house",
+      amenities: ["Noa-Dihing River View", "Core Jungle", "Campfire", "Forest Dept Permits"],
+      notes: "Iconic colonial-era forest bungalow inside the core tiger reserve, overlooking the crystal river.",
+    },
+    {
+      id: "np2", name: "Namdapha Jungle Camp Miao", type: "camp", stars: 3,
+      avgPricePerNight: 2500, town: "Miao, Changlang", contact: "+91-94360-12399",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Miao+Arunachal",
+      amenities: ["Singpho Bamboo Huts", "Naturalist Guides", "Bonfire", "Local Meals"],
+      notes: "Eco-camp run by local indigenous Singpho tribe members near the park entrance gate.",
+    },
+  ],
+
+  "bomdila-monastery-arunachal": [
+    {
+      id: "bm1", name: "Hotel Elysium Bomdila", type: "hotel", stars: 3,
+      avgPricePerNight: 3200, town: "Cona Road, Bomdila", contact: "+91-94360-66778",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Bomdila",
+      amenities: ["Himalayan Panorama", "Restaurant", "Wi-Fi", "Heated Rooms"],
+      notes: "Modern mountain hotel with unobstructed views of the snow-clad Kangto and Gorichen peaks.",
+    },
+    {
+      id: "bm2", name: "Tsepal Yangjom Hotel", type: "hotel", stars: 3,
+      avgPricePerNight: 2600, town: "Bomdila Main Market", contact: "+91-3782-222347",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Bomdila",
+      amenities: ["Tibetan Décor", "Restaurant", "Hot Water", "Monastery Proximity"],
+      notes: "Warm Buddhist-style boutique stay walking distance from Lower and Middle Gompa.",
+    },
+  ],
+
+  "neil-island-6-days": [
+    {
+      id: "ni1", name: "Sea Shell Samssara Neil", type: "resort", stars: 4,
+      avgPricePerNight: 8500, town: "Laxmanpur Beach, Neil Island", contact: "+91-3192-234453",
+      bookingUrl: "https://www.seashellhotels.net/neil-island/",
+      amenities: ["Private Beach Access", "Swimming Pool", "Restaurant", "Spa", "Wi-Fi"],
+      notes: "Luxury beachfront villas set amidst lush coconut groves near the sunset beach and natural bridge.",
+    },
+    {
+      id: "ni2", name: "Summer Sands Beach Resort", type: "resort", stars: 4,
+      avgPricePerNight: 6500, town: "Ramnagar Beach, Neil Island", contact: "+91-3192-282430",
+      bookingUrl: "https://www.summersands.in/",
+      amenities: ["Courtyard Pool", "Sea View", "Bar & Restaurant", "Bicycle Rental"],
+      notes: "Tranquil property with spacious pool villas located on the quiet eastern coast of Neil Island.",
+    },
+    {
+      id: "ni3", name: "TSG Aura", type: "resort", stars: 3,
+      avgPricePerNight: 4200, town: "Sitapur Beach, Neil Island", contact: "+91-3192-282600",
+      bookingUrl: "https://www.tsghotels.in/tsg-aura-neil-island/",
+      amenities: ["Sunrise Beach", "Wooden Cabins", "Restaurant", "Wi-Fi"],
+      notes: "Charming wooden cottages just steps from Sitapur Beach, famous for spectacular sunrise views.",
+    },
+  ],
+
+  "diglipur-7-days": [
+    {
+      id: "dg1", name: "Pristine Beach Resort", type: "resort", stars: 3,
+      avgPricePerNight: 3500, town: "Kalipur Beach, Diglipur", contact: "+91-3192-272532",
+      bookingUrl: "https://www.hotelpristinebeachresort.com/",
+      amenities: ["Turtle Nesting Beach", "Bamboo Cottages", "Seafood Restaurant", "Saddle Peak Base"],
+      notes: "Top eco-resort on Kalipur Beach, steps away from turtle hatching points and Ross & Smith boat jetty.",
+    },
+    {
+      id: "dg2", name: "Saddle Peak View Resort", type: "resort", stars: 3,
+      avgPricePerNight: 2800, town: "Kalipur, North Andaman", contact: "+91-94742-12345",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Diglipur",
+      amenities: ["Peak View", "Garden Cottages", "Fresh Seafood"],
+      notes: "Quiet family-run cottages offering views of the highest mountain peak in the Andaman archipelago.",
+    },
+    {
+      id: "dg3", name: "Turtle Resort (APTDC)", type: "resort", stars: 2,
+      avgPricePerNight: 1800, town: "Kalipur, Diglipur", contact: "+91-3192-272648",
+      bookingUrl: "https://www.andamantourism.gov.in/",
+      amenities: ["Government Property", "Clean Rooms", "Canteen", "Beach Proximity"],
+      notes: "Government tourism lodge perched on a hillock overlooking Kalipur Beach.",
+    },
+  ],
+
+  "chitkul-5-days": [
+    {
+      id: "ckl1", name: "Samaa Resorts Chitkul", type: "resort", stars: 4,
+      avgPricePerNight: 5500, town: "Chitkul, Baspa Valley, Kinnaur", contact: "+91-98160-55443",
+      bookingUrl: "https://www.samaaresorts.com/",
+      amenities: ["Baspa Riverfront", "Snow Peak Views", "Restaurant", "Bonfire", "Heating"],
+      notes: "Luxury alpine retreat overlooking snow peaks on the banks of Baspa River in India's last village.",
+    },
+    {
+      id: "ckl2", name: "Zostel Chitkul", type: "guesthouse", stars: 3,
+      avgPricePerNight: 1400, town: "Chitkul Village", contact: "+91-11-40845115",
+      bookingUrl: "https://www.zostel.com/zostel/chitkul/",
+      amenities: ["Terrace Cafe", "Wi-Fi", "Common Room", "Mountain Views"],
+      notes: "World's highest backpacker hostel with wood-and-stone rooms facing the Kinnauri mountain ridges.",
+    },
+    {
+      id: "ckl3", name: "Wanderers Nest Chitkul", type: "homestay", stars: 3,
+      avgPricePerNight: 2200, town: "Chitkul Village", contact: "+91-98160-12345",
+      bookingUrl: "https://www.airbnb.co.in/s/Chitkul/homes",
+      amenities: ["Slate Roof Architecture", "Kinnauri Food", "Heated Beds"],
+      notes: "Traditional Kathkuni wooden homestay run by friendly village locals with home-cooked meals.",
+    },
+  ],
+
+  "kalpa-5-days": [
+    {
+      id: "klp1", name: "The Grand Shamba-La", type: "hotel", stars: 4,
+      avgPricePerNight: 4800, town: "Kalpa, Kinnaur", contact: "+91-1786-226001",
+      bookingUrl: "https://www.thegrandshambala.com/",
+      amenities: ["180 Kinnaur Kailash View", "Rooftop Restaurant", "Wi-Fi", "Heating"],
+      notes: "Premier boutique hotel in Kalpa with uninterrupted panoramas of the 6,050m Kinnaur Kailash Shivling.",
+    },
+    {
+      id: "klp2", name: "Hotel Kinner Kailash (HPTDC)", type: "resort", stars: 3,
+      avgPricePerNight: 3500, town: "Apple Orchards, Kalpa", contact: "+91-1786-226159",
+      bookingUrl: "https://hptdc.in/",
+      amenities: ["Himachal Tourism", "Apple Orchard", "Bar & Restaurant", "Huge Balconies"],
+      notes: "Perched high above Reckong Peo amidst apple orchards, famous for sunrise mountain views.",
+    },
+    {
+      id: "klp3", name: "Blue Lotus Hotel", type: "hotel", stars: 3,
+      avgPricePerNight: 2200, town: "Kalpa Village", contact: "+91-94180-23456",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Kalpa",
+      amenities: ["Wooden Balcony", "Hot Water", "Local Cuisine"],
+      notes: "Cozy rooms with traditional Kinnauri wooden carvings overlooking the sacred Kailash peak.",
+    },
+  ],
+
+  "tirthan-valley-6-days": [
+    {
+      id: "tv1", name: "Raju Bharti's Guesthouse", type: "homestay", stars: 4,
+      avgPricePerNight: 3800, town: "Gushaini, Tirthan Valley", contact: "+91-94181-49808",
+      bookingUrl: "https://www.google.com/search?q=Raju+Bharti+Guesthouse+Tirthan",
+      amenities: ["River Pulley Crossing", "Home-Cooked Trout", "Orchard Setting", "Meals Included"],
+      notes: "Legendary pioneer homestay accessed via an iconic hand-pulled cable car over the roaring river.",
+    },
+    {
+      id: "tv2", name: "The Himalayan Trout House", type: "resort", stars: 3,
+      avgPricePerNight: 4200, town: "Nagini, Tirthan Valley", contact: "+91-98160-11100",
+      bookingUrl: "https://www.trouthouse.com/",
+      amenities: ["Stone Mud Cottages", "Angling Guides", "Wood-fired Oven Cafe", "River Access"],
+      notes: "Rustic-chic mud-and-stone lodge famous for brown trout fishing and GHNP trek expeditions.",
+    },
+    {
+      id: "tv3", name: "Tirthan River View Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 2000, town: "Sai Ropa, Tirthan", contact: "+91-98164-56789",
+      bookingUrl: "https://www.airbnb.co.in/s/Tirthan-Valley/homes",
+      amenities: ["Riverside Lawn", "Wi-Fi", "Bonfire", "Himachali Food"],
+      notes: "Peaceful riverside stay located right near the Great Himalayan National Park information office.",
+    },
+  ],
+
+  "malana-4-days": [
+    {
+      id: "ml1", name: "Dragon Guesthouse & Cafe", type: "guesthouse", stars: 3,
+      avgPricePerNight: 1800, town: "Malana Base / Magic Valley", contact: "+91-98160-77665",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Malana+Himachal",
+      amenities: ["Valley View", "Cafe", "Bonfire", "Trailhead Access"],
+      notes: "Comfortable lodge situated just outside the sacred village boundaries to respect local customs.",
+    },
+    {
+      id: "ml2", name: "Waichin Valley Camps", type: "camp", stars: 3,
+      avgPricePerNight: 2500, town: "Waichin / Magic Valley, Malana", contact: "+91-98055-12345",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Waichin+Valley",
+      amenities: ["High Altitude Tents", "Alpine Meadows", "Meals Included", "Stargazing"],
+      notes: "Glamping tents located in the pristine Waichin Valley above Malana with panoramic Himalayan views.",
+    },
+    {
+      id: "ml3", name: "The Himalayan Village", type: "resort", stars: 5,
+      avgPricePerNight: 14000, town: "Kailash Nagar, Kasol / Jari", contact: "+91-1902-276266",
+      bookingUrl: "https://www.thehimalayanvillage.com/",
+      amenities: ["Kathkuni Architecture", "Spa", "Private Jacuzzi", "Luxury Dining"],
+      notes: "Ultra-luxury traditional wooden machans located 12 km from the Malana trek starting point.",
+    },
+  ],
+
+  "barot-valley-4-days": [
+    {
+      id: "bv1", name: "Barot River View Camp", type: "camp", stars: 3,
+      avgPricePerNight: 2200, town: "Uhl Riverbank, Barot Valley", contact: "+91-98160-98765",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Barot",
+      amenities: ["Riverside Tents", "Trout Angling", "Bonfire", "Meals Included"],
+      notes: "Alpine camping right along the gushing waters of the Uhl River, minutes from the trout breeding center.",
+    },
+    {
+      id: "bv2", name: "Negi Homestay Multhan", type: "homestay", stars: 3,
+      avgPricePerNight: 1500, town: "Multhan, Barot", contact: "+91-94180-87654",
+      bookingUrl: "https://www.airbnb.co.in/s/Barot--Himachal/homes",
+      amenities: ["Home Cooked Meals", "Himachali Wooden Rooms", "Hot Water"],
+      notes: "Warm and cozy family homestay in Multhan across the wooden bridge from Barot market.",
+    },
+    {
+      id: "bv3", name: "Wild Highs Forest Camp", type: "camp", stars: 3,
+      avgPricePerNight: 2600, town: "Barot Reservoir Woods", contact: "+91-98165-43210",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Barot",
+      amenities: ["Cedar Forest", "Alpine Glamping", "Trek Guides", "Stargazing"],
+      notes: "Surrounded by cedar and deodar forests near the British-era funicular trolley and reservoir.",
+    },
+  ],
+
+  "rakchham-5-days": [
+    {
+      id: "rk1", name: "Rupin River View Hotel", type: "hotel", stars: 3,
+      avgPricePerNight: 3500, town: "Rakchham, Baspa Valley", contact: "+91-94180-34567",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Rakchham",
+      amenities: ["Baspa River View", "Wooden Interior", "Restaurant", "Balcony"],
+      notes: "Charming Swiss-style wooden lodge directly facing the turquoise glacial Baspa River.",
+    },
+    {
+      id: "rk2", name: "Apple Pie Resort Rakchham", type: "resort", stars: 3,
+      avgPricePerNight: 3800, town: "Sangla-Chitkul Road, Rakchham", contact: "+91-98160-65432",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Rakchham",
+      amenities: ["Mountain Panorama", "Apple Grove", "Heating", "Hot Water"],
+      notes: "Midway between Sangla and Chitkul in the tranquil pink-stone village of Rakchham.",
+    },
+    {
+      id: "rk3", name: "Igloo Nature Camp Rakchham", type: "camp", stars: 3,
+      avgPricePerNight: 2500, town: "Riverside, Rakchham", contact: "+91-94182-12340",
+      bookingUrl: "https://www.airbnb.co.in/s/Rakchham/homes",
+      amenities: ["Riverside Dome Tents", "Bonfire", "Stargazing", "Meals Included"],
+      notes: "Glamping domes set right beside the Baspa River under towering granite peaks.",
+    },
+  ],
+
+  "nako-6-days": [
+    {
+      id: "nk1", name: "Lake View Hotel & Resort Nako", type: "hotel", stars: 3,
+      avgPricePerNight: 2800, town: "Nako Lake, Kinnaur-Spiti Border", contact: "+91-94180-99887",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Nako+Himachal",
+      amenities: ["Lake View", "Rooftop Cafe", "Hot Water", "Local Food"],
+      notes: "Directly overlooks the high-altitude willow-fringed sacred Nako Lake at 3,662 m.",
+    },
+    {
+      id: "nk2", name: "Knaygoh Kinner Camp", type: "camp", stars: 3,
+      avgPricePerNight: 3200, town: "Nako Village", contact: "+91-94184-77665",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Nako",
+      amenities: ["Deluxe Swiss Tents", "Meals Included", "Bonfire", "Mountain Panorama"],
+      notes: "Comfortable Swiss tents nestled in poplar groves with views towards Reo Purgil peak.",
+    },
+    {
+      id: "nk3", name: "Reo Purgil Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 1600, town: "Ancient Village, Nako", contact: "+91-94188-33221",
+      bookingUrl: "https://www.airbnb.co.in/s/Nako/homes",
+      amenities: ["Mud-Brick House", "Traditional Tibetan Hearth", "Monastery Access"],
+      notes: "Authentic mud-brick homestay in the 1,000-year-old historic village near Nako Monastery.",
+    },
+  ],
+
+  "pangi-valley-6-days": [
+    {
+      id: "pg1", name: "PWD Rest House Killar", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1200, town: "Killar, Pangi Valley, Chamba", contact: "+91-1895-222222",
+      bookingUrl: "https://www.google.com/search?q=PWD+Rest+House+Killar+Pangi",
+      amenities: ["Chenab Gorge View", "Basic Meals", "Fireplace", "Cliff Edge"],
+      notes: "High on the cliff overlooking the wild roaring Chenab river gorge; essential overnight after Sach Pass.",
+    },
+    {
+      id: "pg2", name: "Chamunda Homestay Killar", type: "homestay", stars: 2,
+      avgPricePerNight: 1400, town: "Killar Town, Pangi", contact: "+91-94180-11223",
+      bookingUrl: "https://www.airbnb.co.in/s/Pangi-Valley/homes",
+      amenities: ["Traditional Wooden Rooms", "Pangwala Meals", "Hot Water", "Local Host"],
+      notes: "Warm Pangwala indigenous hospitality with firewood tandoor heating and home-cooked meals.",
+    },
+  ],
+
+  "tosh-3-days": [
+    {
+      id: "ts1", name: "Pink Floyd Cafe & Guesthouse", type: "guesthouse", stars: 3,
+      avgPricePerNight: 1600, town: "Top of Tosh Village, Parvati Valley", contact: "+91-98160-44332",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Tosh+Himachal",
+      amenities: ["Glacier View", "Psychedelic Cafe", "Balcony Hammocks", "Wi-Fi"],
+      notes: "Legendary hilltop guesthouse offering 360-degree views of the Tosh glacier and snowy ridges.",
+    },
+    {
+      id: "ts2", name: "Stoned Cow Cafe & Stays", type: "guesthouse", stars: 3,
+      avgPricePerNight: 1400, town: "Tosh Village", contact: "+91-98050-88776",
+      bookingUrl: "https://www.airbnb.co.in/s/Tosh--Himachal/homes",
+      amenities: ["Wooden Architecture", "Wood Tandoor", "Cafe", "Valley Views"],
+      notes: "Popular with backpackers for cozy timber-paneled rooms and wood-fired oven Israeli cuisine.",
+    },
+    {
+      id: "ts3", name: "Boom Shiva Guesthouse", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1000, town: "Upper Ridge, Tosh", contact: "+91-98165-22334",
+      bookingUrl: "https://www.google.com/travel/hotels/s/Tosh",
+      amenities: ["Waterfalls View", "Budget Rooms", "Cafe"],
+      notes: "Quiet alpine stay right on the trail heading towards Kutla and the glacier viewpoint.",
+    },
+  ],
+
+  "sach-pass-5-days": [
+    {
+      id: "sp1", name: "PWD Rest House Killar", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1200, town: "Killar, Pangi Valley", contact: "+91-1895-222222",
+      bookingUrl: "https://www.google.com/search?q=PWD+Rest+House+Killar",
+      amenities: ["Cliffside Setting", "Basic Food", "Secure Parking"],
+      notes: "Primary refuge after navigating the treacherous 14,500 ft Sach Pass descent into Pangi.",
+    },
+    {
+      id: "sp2", name: "Bairagarh Forest Lodge", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1000, town: "Bairagarh, Chamba", contact: "+91-1896-224411",
+      bookingUrl: "https://www.google.com/travel/hotels/s/Bairagarh",
+      amenities: ["Base Camp Setting", "Forest Surroundings", "Hot Tea"],
+      notes: "Strategic base camp stay on the Chamba side before the morning assault on Sach Pass.",
+    },
+  ],
+
+  "chopta-4-days": [
+    {
+      id: "ch1", name: "Meadows Chopta Resort", type: "resort", stars: 3,
+      avgPricePerNight: 3500, town: "Duggalbitta, Chopta", contact: "+91-94120-88990",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Chopta",
+      amenities: ["Swiss Tents", "Alpine Bugyal View", "Restaurant", "Bonfire", "Tungnath Guide"],
+      notes: "Eco-friendly Swiss tents and stone cottages in Duggalbitta, right at the gateway to Chopta meadows.",
+    },
+    {
+      id: "ch2", name: "Magpie Jungle Camp Chopta", type: "camp", stars: 3,
+      avgPricePerNight: 2800, town: "Chopta Ridge", contact: "+91-94120-77665",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Chopta",
+      amenities: ["Rhododendron Woods", "Delicious Garhwali Food", "Campfire", "Stargazing"],
+      notes: "Surrounded by deodar and rhododendron forests with direct trail access to Tungnath and Chandrashila.",
+    },
+    {
+      id: "ch3", name: "Forest Rest House Chopta", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1200, town: "Chopta Meadow", contact: "+91-1364-268220",
+      bookingUrl: "https://www.google.com/search?q=Forest+Rest+House+Chopta",
+      amenities: ["Bugyal View", "Historic Lodge", "Basic Meals"],
+      notes: "British-era forest bungalow overlooking the sprawling alpine bugyals and Himalayan peaks.",
+    },
+  ],
+};
+
+export const DEFAULT_STAYS: HotelSuggestion[] = [
+  {
+    id: "def1", name: "Heritage Homestay & Resort", type: "homestay", stars: 3,
+    avgPricePerNight: 2500, town: "Destination Center",
+    notes: "Locally recommended accommodation with scenic views and authentic regional hospitality.",
+    amenities: ["Wi-Fi", "Hot Water", "Home-Cooked Meals", "Parking"],
+  },
+];

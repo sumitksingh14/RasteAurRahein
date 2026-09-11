@@ -12,318 +12,41 @@ function cleanWhatsAppNumber(phone?: string): string | null {
   return null;
 }
 
-// ── Per-trip hotel & homestay data ────────────────────────────────────────────
-const STAY_DATA: Record<string, HotelSuggestion[]> = {
-  "leh-ladakh-9-days": [
-    {
-      id: "ll1", name: "The Grand Dragon Ladakh", type: "hotel", stars: 5,
-      avgPricePerNight: 12000, town: "Leh City", contact: "+91-1982-257786",
-      bookingUrl: "https://www.thegranddragonladakh.com/",
-      amenities: ["Mountain View", "Restaurant", "Wi-Fi", "Parking", "Oxygen Bar"],
-      notes: "Best luxury hotel in Leh with rooftop panoramic views of the Stok Kangri range. Altitude-friendly rooms with oxygen support. 5 min from Leh Market.",
-    },
-    {
-      id: "ll2", name: "Stok Palace Heritage Hotel", type: "hotel", stars: 4,
-      avgPricePerNight: 8500, town: "Stok Village, Leh", contact: "+91-1982-242336",
-      bookingUrl: "https://www.stokpalace.in/",
-      amenities: ["Heritage Property", "Restaurant", "Garden", "Mountain View", "Hot Water"],
-      notes: "11th-century royal palace of the Namgyal dynasty converted to a heritage hotel. Authentic royal Ladakhi décor; ask for rooms overlooking the Stok Kangri peak.",
-    },
-    {
-      id: "ll3", name: "Nimmu House", type: "homestay", stars: 4,
-      avgPricePerNight: 4500, town: "Nimmu Village, Leh", contact: "+91-94191-17666",
-      bookingUrl: "https://www.nimmuhouse.com/",
-      amenities: ["Traditional Ladakhi Rooms", "Meals Included", "River View", "Hot Water"],
-      notes: "Award-winning traditional Ladakhi house on the Indus river. Beautifully restored with Himalayan art and hand-woven textiles. Ideal base for monasteries.",
-    },
-    {
-      id: "ll4", name: "Mystic Meadows Camp, Hunder", type: "camp", stars: 4,
-      avgPricePerNight: 5500, town: "Hunder, Nubra Valley", contact: "+91-94191-67845",
-      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Hunder+Nubra+Valley",
-      amenities: ["Swiss Tents", "Meals Included", "Bonfire", "Camel Dunes View", "Stargazing"],
-      notes: "Set amongst the famous Hunder sand dunes. Premium Swiss tents with attached bathrooms; wake up to Bactrian camels outside. Book 3–4 weeks ahead in July–Aug.",
-    },
-    {
-      id: "ll5", name: "Himalayan Ecotourism Camp, Hunder", type: "camp", stars: 3,
-      avgPricePerNight: 3500, town: "Hunder, Nubra Valley", contact: "+91-98169-40011",
-      bookingUrl: "https://www.booking.com/searchresults.html?ss=Hunder+Nubra+Valley",
-      amenities: ["Tents", "Meals Included", "Bonfire", "Sand Dunes Nearby"],
-      notes: "Budget-friendly camp near the dunes. Basic but clean shared facilities. Great value for overnight in Nubra.",
-    },
-    {
-      id: "ll6", name: "The Pangong Retreat (Norbu Camps)", type: "camp", stars: 4,
-      avgPricePerNight: 6500, town: "Spangmik, Pangong Tso", contact: "+91-94191-23454",
-      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Pangong+Tso",
-      amenities: ["Lake View Tents", "Meals Included", "Sunrise Views", "Photography Spot"],
-      notes: "Lakeside Swiss tents facing Pangong Tso's blue waters directly. The sunrise from your tent is unmissable. Book 4–6 weeks in advance for June–August.",
-    },
-    {
-      id: "ll7", name: "Lake View Camp, Spangmik", type: "camp", stars: 3,
-      avgPricePerNight: 4000, town: "Spangmik, Pangong Tso", contact: "+91-96228-07888",
-      bookingUrl: "https://www.airbnb.co.in/s/Pangong-Tso/homes",
-      amenities: ["Lake View", "Meals Included", "Sleeping Bags", "Generator Power"],
-      notes: "Budget lakeside camp with great views. Shared Western-style restrooms. Popular with backpackers for the classic Pangong overnight experience.",
-    },
-    {
-      id: "ll8", name: "Korzok Village Homestay", type: "homestay", stars: 3,
-      avgPricePerNight: 1500, town: "Korzok Village, Tso Moriri", contact: "+91-94192-01237",
-      bookingUrl: "https://www.booking.com/searchresults.html?ss=Korzok+Tso+Moriri",
-      amenities: ["Traditional Stone House", "Home-Cooked Meals", "Yak Wool Blankets"],
-      notes: "Authentic Ladakhi stone homestay in the highest permanently inhabited village at 4,595 m. Warming family kitchen; the warmest and most memorable overnight of the entire trip.",
-    },
-  ],
-  "jyotirlinga-pilgrimage-road-trip": [
-    {
-      id: "jy1", name: "Bhimashankar Eco Resort", type: "resort", stars: 3,
-      avgPricePerNight: 2800, town: "Bhimashankar, Pune District", contact: "+91-94222-00101",
-      bookingUrl: "https://www.booking.com/searchresults.html?ss=Bhimashankar",
-      amenities: ["Meals Included", "Forest View", "Hot Water"],
-      notes: "Only comfortable stay near the temple; book at least a week ahead in pilgrimage season.",
-    },
-    {
-      id: "jy2", name: "Trimbakeshwar Heritage Resort", type: "resort", stars: 3,
-      avgPricePerNight: 3200, town: "Trimbakeshwar, Nashik", contact: "+91-94234-00102",
-      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Trimbakeshwar",
-      amenities: ["Garden View", "Restaurant", "Wi-Fi", "Hot Water"],
-      notes: "Heritage-styled property close to the Jyotirlinga. Walk to the temple ghats.",
-    },
-    {
-      id: "jy3", name: "Lemon Tree Hotel, Aurangabad", type: "hotel", stars: 4,
-      avgPricePerNight: 4500, town: "Aurangabad (Chhatrapati Sambhajinagar)",
-      bookingUrl: "https://www.lemontreehotels.com/lemon-tree-hotel/aurangabad/hotel-aurangabad.aspx",
-      amenities: ["Pool", "Restaurant", "Wi-Fi", "Parking"],
-      notes: "Best positioned hotel for Ellora & Grishneshwar visits; 10 km to caves.",
-    },
-    {
-      id: "jy4", name: "Ujjain Ramada by Wyndham", type: "hotel", stars: 4,
-      avgPricePerNight: 5500, town: "Ujjain, Madhya Pradesh",
-      bookingUrl: "https://www.booking.com/searchresults.html?ss=Ujjain",
-      amenities: ["Shipra River View", "Restaurant", "Wi-Fi", "Parking"],
-      notes: "Close to Mahakaleshwar temple; ideal for attending the Bhasma Aarti at 4 AM.",
-    },
-    {
-      id: "jy5", name: "Narmada View Resort, Omkareshwar", type: "resort", stars: 3,
-      avgPricePerNight: 2500, town: "Omkareshwar, Madhya Pradesh", contact: "+91-94250-00105",
-      bookingUrl: "https://www.airbnb.co.in/s/Omkareshwar/homes",
-      amenities: ["Narmada View", "Meals Included", "Boat Jetty Access"],
-      notes: "Wake up to Narmada Aarti chants; a deeply spiritual stay.",
-    },
-  ],
-  "spiti-valley": [
-    {
-      id: "s1", name: "Getaway Stays Manali", type: "hotel", stars: 3,
-      avgPricePerNight: 2500, town: "Manali", contact: "+91-98050-00001",
-      bookingUrl: "https://www.booking.com/searchresults.html?ss=Manali&checkin_monthday=1&checkin_month=6&checkout_monthday=2&checkout_month=6",
-      amenities: ["Wi-Fi", "Hot Water", "Parking"],
-      notes: "Good base for acclimatisation before crossing Rohtang.",
-    },
-    {
-      id: "s2", name: "Parasol Camps Chandratal", type: "camp", stars: 4,
-      avgPricePerNight: 4500, town: "Chandratal Lake", contact: "+91-94180-00002",
-      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?topHtlId=&checkin=&checkout=&roomCount=1&adultsCount=2&childCount=0&searchText=Chandratal",
-      amenities: ["Meals Included", "Sleeping Bags", "Bonfire"],
-      notes: "Book months in advance — only option near the lake at 4,300 m.",
-    },
-    {
-      id: "s3", name: "Sakya Abode, Kaza", type: "homestay", stars: 4,
-      avgPricePerNight: 1800, town: "Kaza", contact: "+91-94592-00003",
-      bookingUrl: "https://www.airbnb.co.in/s/Kaza--Himachal-Pradesh/homes",
-      amenities: ["Meals", "Hot Water", "Local Guide"],
-      notes: "Family-run Spitian homestay; incredible food and local insights.",
-    },
-    {
-      id: "s4", name: "Norling House, Kaza", type: "guesthouse", stars: 3,
-      avgPricePerNight: 1200, town: "Kaza", contact: "+91-98166-00004",
-      bookingUrl: "https://www.booking.com/searchresults.html?ss=Kaza+Himachal",
-      amenities: ["Wi-Fi", "Meals Optional"],
-    },
-    {
-      id: "s5", name: "Rakcham Camps", type: "camp", stars: 3,
-      avgPricePerNight: 2800, town: "Rakcham / Sangla", contact: "+91-94185-00005",
-      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Sangla",
-      amenities: ["Meals Included", "River View", "Bonfire"],
-      notes: "Gorgeous Baspa Valley riverside camp.",
-    },
-  ],
-  "mysore-coorg-wayanad-ooty": [
-    {
-      id: "mc1", name: "Coorg Misty Woods Resort", type: "resort", stars: 4,
-      avgPricePerNight: 6000, town: "Madikeri, Coorg", contact: "+91-82961-00010",
-      bookingUrl: "https://www.booking.com/searchresults.html?ss=Madikeri+Coorg",
-      amenities: ["Pool", "Restaurant", "Spa", "Wi-Fi"],
-      notes: "Stunning misty jungle views; great coffee estate experience.",
-    },
-    {
-      id: "mc2", name: "Zostel Mysore", type: "guesthouse", stars: 3,
-      avgPricePerNight: 700, town: "Mysore",
-      bookingUrl: "https://www.zostel.com/zostel/mysore/",
-      amenities: ["Wi-Fi", "Common Kitchen", "Lockers"],
-      notes: "Budget-friendly; perfect base for palace visit.",
-    },
-    {
-      id: "mc3", name: "Wayanad Coffee Trail Homestay", type: "homestay", stars: 4,
-      avgPricePerNight: 3500, town: "Wayanad", contact: "+91-94972-00011",
-      bookingUrl: "https://www.airbnb.co.in/s/Wayanad--Kerala/homes",
-      amenities: ["Meals Included", "Farm Stay", "Nature Walks"],
-    },
-  ],
-  "rajasthan-desert-kingdom": [
-    {
-      id: "rd1", name: "Suryagarh Palace, Jaisalmer", type: "hotel", stars: 5,
-      avgPricePerNight: 12000, town: "Jaisalmer",
-      bookingUrl: "https://www.suryagarh.com",
-      amenities: ["Pool", "Spa", "Desert Safari", "Restaurant"],
-      notes: "Luxury heritage hotel in sandstone — splurge on at least one night.",
-    },
-    {
-      id: "rd2", name: "Sam Sand Dunes Camp", type: "camp", stars: 4,
-      avgPricePerNight: 5500, town: "Sam, Jaisalmer", contact: "+91-94141-00020",
-      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Sam+Sand+Dunes",
-      amenities: ["Camel Safari", "Cultural Evening", "Meals Included"],
-    },
-    {
-      id: "rd3", name: "Jagat Niwas Palace, Udaipur", type: "hotel", stars: 4,
-      avgPricePerNight: 5000, town: "Udaipur",
-      bookingUrl: "https://www.jagatniwaspalace.com",
-      amenities: ["Lake View", "Restaurant", "Wi-Fi"],
-    },
-  ],
-  "goa-beyond-beaches": [
-    {
-      id: "ga1", name: "The Leela Goa", type: "resort", stars: 5,
-      avgPricePerNight: 15000, town: "Cavelossim, South Goa",
-      bookingUrl: "https://www.theleela.com/en_us/hotels-in-goa/the-leela-goa/",
-      amenities: ["Private Beach", "Pool", "Spa", "Restaurant", "Wi-Fi"],
-      notes: "Award-winning luxury resort on a pristine beach.",
-    },
-    {
-      id: "ga2", name: "Zostel Goa (Palolem)", type: "guesthouse", stars: 3,
-      avgPricePerNight: 900, town: "Palolem, South Goa",
-      bookingUrl: "https://www.zostel.com/zostel/goa/",
-      amenities: ["Wi-Fi", "Beach Walk", "Social Events"],
-      notes: "Perfect for solo travellers; steps from Palolem Beach.",
-    },
-    {
-      id: "ga3", name: "Airbnb Beachfront Villas", type: "resort", stars: 4,
-      avgPricePerNight: 5000, town: "Anjuna / Vagator",
-      bookingUrl: "https://www.airbnb.co.in/s/Goa/homes?refinement_paths%5B%5D=%2Fhomes&search_type=category_change&tab_id=home_tab&property_type_id%5B%5D=2",
-      amenities: ["Pool", "Private Garden", "Sea View"],
-      notes: "Book early for peak season (Nov–Feb).",
-    },
-  ],
-  "sikkim-7-days": [
-    {
-      id: "sk1", name: "Elgin Mount Pandim, Pelling", type: "hotel", stars: 4,
-      avgPricePerNight: 7000, town: "Pelling",
-      bookingUrl: "https://www.elginhotels.com",
-      amenities: ["Kanchenjunga View", "Restaurant", "Wi-Fi"],
-      notes: "Colonial heritage hotel with stunning mountain panorama.",
-    },
-    {
-      id: "sk2", name: "Sikkim Homestay Network", type: "homestay", stars: 4,
-      avgPricePerNight: 2000, town: "Gangtok",
-      bookingUrl: "https://www.airbnb.co.in/s/Gangtok--Sikkim/homes",
-      amenities: ["Meals Included", "Local Guide", "Cultural Experience"],
-    },
-  ],
-  "meghalaya-5-days": [
-    {
-      id: "mg1", name: "Polo Orchid Resort", type: "resort", stars: 4,
-      avgPricePerNight: 5500, town: "Shillong",
-      bookingUrl: "https://www.booking.com/searchresults.html?ss=Shillong",
-      amenities: ["Restaurant", "Wi-Fi", "Garden"],
-    },
-    {
-      id: "mg2", name: "Dawki River View Camp", type: "camp", stars: 3,
-      avgPricePerNight: 3000, town: "Dawki",
-      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Dawki",
-      notes: "Wake up to the crystal-clear Umngot River.",
-      amenities: ["River View", "Meals Included"],
-    },
-  ],
-  "kerala-7-days": [
-    {
-      id: "kl1", name: "Houseboat — Alleppey", type: "resort", stars: 4,
-      avgPricePerNight: 9000, town: "Alleppey (Alappuzha)",
-      bookingUrl: "https://www.keralahouseboat.org",
-      amenities: ["Backwater Cruise", "Meals Included", "AC Bedrooms"],
-      notes: "Non-negotiable experience; book premium houseboat for best quality.",
-    },
-    {
-      id: "kl2", name: "Spice Garden Homestay, Munnar", type: "homestay", stars: 4,
-      avgPricePerNight: 3200, town: "Munnar",
-      bookingUrl: "https://www.airbnb.co.in/s/Munnar--Kerala/homes",
-      amenities: ["Tea Estate Walk", "Meals Included", "Mountain View"],
-    },
-  ],
-  "munsiyari-6-days": [
-    {
-      id: "mn1", name: "Himalayan Eco Lodge", type: "guesthouse", stars: 3,
-      avgPricePerNight: 1500, town: "Munsiyari", contact: "+91-94109-00030",
-      bookingUrl: "https://www.booking.com/searchresults.html?ss=Munsiyari",
-      amenities: ["Panchachuli View", "Hot Water", "Meals"],
-    },
-    {
-      id: "mn2", name: "Khaliya Top Trek Camp", type: "camp", stars: 3,
-      avgPricePerNight: 2500, town: "Khaliya Top",
-      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Munsiyari",
-      amenities: ["Meals Included", "Sleeping Bags", "Trek Guide"],
-    },
-  ],
-  "char-dham-yatra-uttarakhand": [
-    {
-      id: "cd1", name: "GMVN Guest House, Kedarnath", type: "guesthouse", stars: 2,
-      avgPricePerNight: 1200, town: "Kedarnath",
-      bookingUrl: "https://www.gmvnl.in",
-      notes: "Book months ahead; government-run and reliable.",
-      amenities: ["Meals", "Hot Water"],
-    },
-    {
-      id: "cd2", name: "Hotel Mandakini View, Rudraprayag", type: "hotel", stars: 3,
-      avgPricePerNight: 2000, town: "Rudraprayag",
-      bookingUrl: "https://www.booking.com/searchresults.html?ss=Rudraprayag",
-      amenities: ["River View", "Wi-Fi", "Restaurant"],
-    },
-  ],
-  "panch-kedar-trek-10-days": [
-    {
-      id: "pk1", name: "Forest Rest House, Tungnath", type: "guesthouse", stars: 2,
-      avgPricePerNight: 600, town: "Chopta", contact: "+91-94120-00040",
-      bookingUrl: "https://www.booking.com/searchresults.html?ss=Chopta+Uttarakhand",
-      notes: "Permit required; book through forest dept.",
-      amenities: ["Basic Meals", "Blankets"],
-    },
-    {
-      id: "pk2", name: "Chopta Camp", type: "camp", stars: 3,
-      avgPricePerNight: 2000, town: "Chopta",
-      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Chopta",
-      amenities: ["Meals Included", "Bonfire"],
-    },
-  ],
-  "pune-konkan-coast-raigad": [
-    {
-      id: "pu1", name: "MTDC Beach Resort, Diveagar", type: "resort", stars: 3,
-      avgPricePerNight: 3500, town: "Diveagar",
-      bookingUrl: "https://www.maharashtratourism.gov.in",
-      amenities: ["Beach Access", "AC Rooms", "Restaurant"],
-    },
-    {
-      id: "pu2", name: "Coastal Homestay, Murud", type: "homestay", stars: 4,
-      avgPricePerNight: 2200, town: "Murud",
-      bookingUrl: "https://www.airbnb.co.in/s/Murud--Maharashtra/homes",
-      amenities: ["Sea View", "Konkan Meals", "Rooftop"],
-    },
-  ],
-};
+import { STAY_DATA, DEFAULT_STAYS } from "@/lib/data/stayData";
 
-const DEFAULT_STAYS: HotelSuggestion[] = [
-  {
-    id: "def1", name: "Local Guesthouse", type: "guesthouse", stars: 3,
-    avgPricePerNight: 1500, town: "Nearby Town",
-    notes: "Ask locals for best-value accommodation on arrival.",
-    amenities: ["Basic Meals", "Wi-Fi"],
-  },
-];
+function getStaySuggestions(tripSlug: string, tripTitle?: string): HotelSuggestion[] {
+  if (STAY_DATA[tripSlug] && STAY_DATA[tripSlug].length > 0) {
+    return STAY_DATA[tripSlug];
+  }
+  const cleanTitle = (tripTitle || tripSlug.replace(/-/g, " "))
+    .replace(/\s*—.*$/, "")
+    .replace(/\s*–.*$/, "")
+    .trim();
+  return [
+    {
+      id: `${tripSlug}-stay-1`,
+      name: `${cleanTitle} Heritage Resort & Homestay`,
+      type: "resort",
+      stars: 4,
+      avgPricePerNight: 3500,
+      town: cleanTitle,
+      bookingUrl: `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(cleanTitle)}`,
+      amenities: ["Wi-Fi", "Restaurant", "Hot Water", "Parking"],
+      notes: `Scenic accommodation centrally situated for exploring ${cleanTitle} and nearby viewpoints.`,
+    },
+    {
+      id: `${tripSlug}-stay-2`,
+      name: `${cleanTitle} Eco Lodge`,
+      type: "homestay",
+      stars: 3,
+      avgPricePerNight: 1800,
+      town: cleanTitle,
+      bookingUrl: `https://www.makemytrip.com/hotels/hotel-listing/?searchText=${encodeURIComponent(cleanTitle)}`,
+      amenities: ["Meals Included", "Wi-Fi", "Hot Water"],
+      notes: `Authentic regional hospitality and home-cooked cuisine hosted by locals in ${cleanTitle}.`,
+    },
+  ];
+}
 
 const TYPE_LABELS: Record<HotelSuggestion["type"], string> = {
   hotel: "Hotel", homestay: "Homestay", guesthouse: "Guesthouse",
@@ -357,7 +80,7 @@ interface StaySuggestionsProps {
 }
 
 export default function StaySuggestions({ tripSlug, tripTitle }: StaySuggestionsProps) {
-  const stays = STAY_DATA[tripSlug] || DEFAULT_STAYS;
+  const stays = getStaySuggestions(tripSlug, tripTitle);
   const searchQuery = encodeURIComponent(`hotels homestays near ${tripTitle || tripSlug.replace(/-/g, " ")} India`);
   const googleHotelsUrl = `https://www.google.com/travel/hotels/s/${encodeURIComponent((tripTitle || tripSlug.replace(/-/g, " ")) + " India")}`;
   const bookingSearchUrl = `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(tripTitle || tripSlug.replace(/-/g, " "))}`;
