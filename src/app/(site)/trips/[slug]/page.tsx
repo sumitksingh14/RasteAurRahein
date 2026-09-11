@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             new Date(trip.startDate).getTime()) /
             (1000 * 60 * 60 * 24)
         ) + 1
-      : null;
+      : trip.itinerary?.length || null;
 
   return {
     title: trip.title,
@@ -117,7 +117,7 @@ export default async function TripDetailPage({ params }: Props) {
             new Date(trip.startDate).getTime()) /
             (1000 * 60 * 60 * 24)
         ) + 1
-      : null;
+      : trip.itinerary?.length || null;
 
   return (
     <article>

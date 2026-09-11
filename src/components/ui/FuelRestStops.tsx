@@ -126,6 +126,37 @@ const FUEL_DATA: Record<string, FuelStop[]> = {
     { id: "pu4", name: "BPCL, Diveagar", type: "fuel", town: "Diveagar", distanceFromPrev: 55, notes: "Small pump — may close early." },
     { id: "pu5", name: "Shrivardhan Beach Cafe", type: "food", town: "Shrivardhan", distanceFromPrev: 30, notes: "Fresh coconut and seafood right on the beach." },
   ],
+  "khaliya-top-5-days": [
+    { id: "kht_st1", name: "IOC Pump, Haldwani / Kathgodam", type: "fuel", town: "Haldwani", distanceFromPrev: 0, notes: "Fill fuel before heading into Kumaon mountain highway." },
+    { id: "kht_st2", name: "Almora Shikhar Rest Stop", type: "food", town: "Almora", distanceFromPrev: 90, notes: "Famous for Almora Bal Mithai and hot pahadi ginger tea." },
+    { id: "kht_st3", name: "Bageshwar River Confluence", type: "rest", town: "Bageshwar", distanceFromPrev: 75, altitude: 1004, notes: "Bagnath Temple riverside rest; last major ATM hub." },
+    { id: "kht_st4", name: "Thal Fuel Station", type: "fuel", town: "Thal", distanceFromPrev: 55, notes: "Last reliable petrol pump before Munsiyari and Khaliya Top." },
+    { id: "kht_st5", name: "Birthi Waterfall Viewpoint", type: "viewpoint", town: "Birthi Falls", distanceFromPrev: 38, altitude: 2000, notes: "126 m cascade crashing down beside the road." },
+    { id: "kht_st6", name: "Balanti Bend Trailhead", type: "rest", town: "Munsiyari / Balanti", distanceFromPrev: 32, altitude: 2450, notes: "Trailhead parking for Khaliya Bugyal hike." },
+  ],
+  "chakrata-4-days": [
+    { id: "ckt_st1", name: "HP Fuel Station, Vikasnagar", type: "fuel", town: "Vikasnagar", distanceFromPrev: 0, notes: "Fill up before the steep 50 km mountain climb to Chakrata." },
+    { id: "ckt_st2", name: "Kalsi Yamuna Bridge", type: "rest", town: "Kalsi", distanceFromPrev: 15, altitude: 520, notes: "Rest stop near Ashokan 250 BC rock edicts." },
+    { id: "ckt_st3", name: "Sahiya Mountain Bazaar", type: "food", town: "Sahiya", distanceFromPrev: 25, altitude: 1100, notes: "Mid-way tea stall and fresh mountain pakoras." },
+    { id: "ckt_st4", name: "Chakrata Sadar Bazaar", type: "rest", town: "Chakrata", distanceFromPrev: 28, altitude: 2118, notes: "Quiet cantonment market; ATMs and cafes." },
+    { id: "ckt_st5", name: "Tiger Falls Trail Entry", type: "viewpoint", town: "Tiger Falls Road", distanceFromPrev: 18, altitude: 1750, notes: "Vehicle drop point for 5 km nature hike to the 312 ft falls." },
+    { id: "ckt_st6", name: "Deoban Forest Gate", type: "rest", town: "Deoban", distanceFromPrev: 14, altitude: 2870, notes: "4x4 entry gate for God's Own Forest (9,400 ft)." },
+  ],
+  "kanatal-4-days": [
+    { id: "knt_st1", name: "BPCL, Rishikesh Bypass / Narendra Nagar", type: "fuel", town: "Narendra Nagar", distanceFromPrev: 0, notes: "Top up fuel before entering the Chamba-Kanatal ridge." },
+    { id: "knt_st2", name: "Chamba Main Junction", type: "food", town: "Chamba (Garhwal)", distanceFromPrev: 55, altitude: 1600, notes: "Hub town with ATMs, bakeries, and route bifurcation to Tehri Dam." },
+    { id: "knt_st3", name: "Kaddukhal Surkhanda Base", type: "rest", town: "Kaddukhal", distanceFromPrev: 16, altitude: 2560, notes: "Parking and ropeway ticket counter for Surkhanda Devi Temple." },
+    { id: "knt_st4", name: "Kanatal Pine Ridge Rest", type: "viewpoint", town: "Kanatal", distanceFromPrev: 8, altitude: 2590, notes: "Panoramic view deck facing Chaukhamba and Bandarpunch peaks." },
+    { id: "knt_st5", name: "Kaudia Forest Trailhead", type: "rest", town: "Kaudia Forest", distanceFromPrev: 6, altitude: 2650, notes: "Entry gate for tranquil 6 km pine and deodar forest nature walk." },
+  ],
+  "chaukori-5-days": [
+    { id: "chk_st1", name: "HP Pump, Kathgodam", type: "fuel", town: "Kathgodam", distanceFromPrev: 0, notes: "Fill tank before embarking on the Kumaon highway." },
+    { id: "chk_st2", name: "Bhimtal Lake Rest Stop", type: "rest", town: "Bhimtal", distanceFromPrev: 22, altitude: 1370, notes: "Lakeside tea and breakfast before the mountain ascent." },
+    { id: "chk_st3", name: "Almora Bypass Fuel Pump", type: "fuel", town: "Almora", distanceFromPrev: 68, altitude: 1638, notes: "Reliable fuel and ATM point." },
+    { id: "chk_st4", name: "Danya Ghat Rest Point", type: "food", town: "Danya", distanceFromPrev: 45, notes: "Riverside snack point with fresh Pahadi fruit stalls." },
+    { id: "chk_st5", name: "Chaukori Tea Estate Viewpoint", type: "viewpoint", town: "Chaukori", distanceFromPrev: 50, altitude: 2010, notes: "Front-row watchtower facing Nanda Devi and Trishul." },
+    { id: "chk_st6", name: "Patal Bhuvaneshwar Complex", type: "rest", town: "Patal Bhuvaneshwar", distanceFromPrev: 35, altitude: 1350, notes: "Underground limestone cave counter and shoe stall." },
+  ],
 };
 
 const DEFAULT_STOPS: FuelStop[] = [

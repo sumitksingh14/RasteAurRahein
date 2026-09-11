@@ -9,6 +9,8 @@ import FoodRecommendations from "@/components/ui/FoodRecommendations";
 import FuelRestStops from "@/components/ui/FuelRestStops";
 import WeatherPanel from "@/components/ui/WeatherPanel";
 import GPXDownloadButton from "@/components/ui/GPXDownloadButton";
+import GoogleMapsRouteButton from "@/components/ui/GoogleMapsRouteButton";
+import { extractWaypointsFromItinerary, type ItineraryActivity, type ItineraryDay as RouteDay } from "@/lib/googleMapsRoute";
 import BudgetEstimator from "@/components/ui/BudgetEstimator";
 import ElevationProfile from "@/components/ui/ElevationProfile";
 import PermitVault from "@/components/ui/PermitVault";
@@ -232,6 +234,30 @@ const AI_BUDGET_ESTIMATES: Record<string, {
     source: "Based on Konkan coast traveller reports (2024–25)",
     searchQuery: "Pune Konkan trip budget per day 2024",
   },
+  "khaliya-top-5-days": {
+    accommodation: [1200, 3500], food: [300, 800], transport: [700, 1500],
+    activities: [300, 1000], misc: [200, 500], currency: "INR",
+    source: "Based on Munsiyari & Khaliya Bugyal trek reports (2024–26)",
+    searchQuery: "Khaliya Top Munsiyari trek budget per day 2024",
+  },
+  "chakrata-4-days": {
+    accommodation: [1500, 4500], food: [300, 900], transport: [600, 1400],
+    activities: [200, 600], misc: [200, 400], currency: "INR",
+    source: "Based on Chakrata Jaunsar Bawar traveller reports (2024–26)",
+    searchQuery: "Chakrata Uttarakhand trip budget per day 2024",
+  },
+  "kanatal-4-days": {
+    accommodation: [1800, 6500], food: [350, 1000], transport: [500, 1200],
+    activities: [200, 800], misc: [200, 400], currency: "INR",
+    source: "Based on Kanatal Dhanaulti weekend reports (2024–26)",
+    searchQuery: "Kanatal Dhanaulti trip budget per day 2024",
+  },
+  "chaukori-5-days": {
+    accommodation: [1400, 4000], food: [250, 800], transport: [700, 1400],
+    activities: [200, 600], misc: [200, 400], currency: "INR",
+    source: "Based on Chaukori Kumaon tea estate reports (2024–26)",
+    searchQuery: "Chaukori Patal Bhuvaneshwar trip budget per day 2024",
+  },
 };
 
 const DEFAULT_BUDGET = {
@@ -401,7 +427,28 @@ export default function TripTabs({ trip }: TripTabsProps) {
                 ? `${mapPins.length} location${mapPins.length !== 1 ? "s" : ""} pinned along this route`
                 : "Route overview — Spiti Valley circuit"}
             </p>
-            <GPXDownloadButton trip={trip} variant="pill" />
+            <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "wrap" }}>
+              <GoogleMapsRouteButton
+                origin={
+                  trip.itinerary?.[0]?.activities?.find((a) => a.type === "transport")?.location?.name ||
+                  (trip.title.includes("Mumbai") ? "Mumbai" : "Pune")
+                }
+                destination={TRIP_WEATHER_COORDS[trip.slug]?.name || trip.title}
+                waypoints={extractWaypointsFromItinerary(
+                  (trip.itinerary || []).map((d) => ({
+                    activities: (d.activities ?? []).map((a) => ({
+                      title: a.title,
+                      type: a.type,
+                      location: a.location
+                        ? { name: a.location.name, lat: a.location.lat, lng: a.location.lng }
+                        : undefined,
+                    })),
+                  }))
+                )}
+                compact
+              />
+              <GPXDownloadButton trip={trip} variant="pill" />
+            </div>
           </div>
 
           <MapView

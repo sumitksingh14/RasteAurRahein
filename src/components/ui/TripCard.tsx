@@ -35,7 +35,7 @@ export default function TripCard({ trip, featured = false, priority = false, ini
             new Date(trip.startDate).getTime()) /
             (1000 * 60 * 60 * 24)
         ) + 1
-      : null;
+      : trip.itinerary?.length || null;
 
   return (
     <div

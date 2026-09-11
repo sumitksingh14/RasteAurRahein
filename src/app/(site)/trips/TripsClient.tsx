@@ -120,13 +120,15 @@ function tripMatchesSeason(trip: Trip, targetSeason: string): boolean {
 }
 
 function computeDuration(trip: Trip): number | null {
-  if (!trip.startDate || !trip.endDate) return null;
-  return (
-    Math.ceil(
-      (new Date(trip.endDate).getTime() - new Date(trip.startDate).getTime()) /
-        (1000 * 60 * 60 * 24)
-    ) + 1
-  );
+  if (trip.startDate && trip.endDate) {
+    return (
+      Math.ceil(
+        (new Date(trip.endDate).getTime() - new Date(trip.startDate).getTime()) /
+          (1000 * 60 * 60 * 24)
+      ) + 1
+    );
+  }
+  return trip.itinerary?.length || null;
 }
 
 interface TripsClientProps {

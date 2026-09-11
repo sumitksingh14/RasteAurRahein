@@ -2,12 +2,6 @@
 
 A region-wise list of lesser-known, non-touristy destinations across India — skipping the usual Goa/Manali/Shimla circuit.
 
-## Himachal Pradesh & Uttarakhand (Himalayan West)
-12. **Munsiyari** – Panchachuli peak views, Johar valley base
-13. **Khaliya Top** – meadow trek near Munsiyari
-14. **Chakrata** – cantonment town with Tiger Falls
-15. **Kanatal** – quiet pine-forest getaway near Dhanaulti
-16. **Munsyari's neighbor Chaukori** – Kumaon tea gardens with Himalayan views
 
 ## Jammu, Kashmir & Ladakh
 17. **Gurez Valley** – remote valley near the LoC, Dard-Shin culture
