@@ -256,6 +256,12 @@ export const STAY_DATA: Record<string, HotelSuggestion[]> = {
       bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Munsiyari",
       amenities: ["Meals Included", "Sleeping Bags", "Trek Guide"],
     },
+    {
+      id: "mn3", name: "Milam Inn Munsiyari", type: "hotel", stars: 3,
+      avgPricePerNight: 2800, town: "Munsiyari", contact: "+91-94120-18456",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Munsiyari",
+      amenities: ["Direct Panchachuli View", "Heated Blankets", "In-house Kumaoni Restaurant", "Balcony Rooms"],
+    },
   ],
   "char-dham-yatra-uttarakhand": [
     {
@@ -1359,6 +1365,98 @@ export const STAY_DATA: Record<string, HotelSuggestion[]> = {
       bookingUrl: "https://www.google.com/search?q=Forest+Rest+House+Chopta",
       amenities: ["Bugyal View", "Historic Lodge", "Basic Meals"],
       notes: "British-era forest bungalow overlooking the sprawling alpine bugyals and Himalayan peaks.",
+    },
+  ],
+  "khaliya-top-5-days": [
+    {
+      id: "kht1", name: "Khaliya Top Alpine Campsite", type: "camp", stars: 3,
+      avgPricePerNight: 2200, town: "Khaliya Bugyal Ridge (11,500 ft)", contact: "+91-94111-87291",
+      bookingUrl: "https://www.google.com/search?q=Khaliya+Top+Alpine+Campsite+Munsiyari",
+      amenities: ["Panchachuli Sunrise View", "Thermal Tents", "Hot Meals Included", "Campfire", "Stargazing"],
+      notes: "Perched right on the high alpine meadow of Khaliya Bugyal with 360-degree views of Panchachuli, Nanda Devi, and Hardeol peaks.",
+    },
+    {
+      id: "kht2", name: "KMVN Tourist Rest House Khaliya", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1500, town: "Khaliya Meadow Trail", contact: "+91-5961-222334",
+      bookingUrl: "https://kmvn.in",
+      amenities: ["Basic Solar Power", "Hot Water", "Local Kumaoni Dining", "Mountain Views"],
+      notes: "Government high-altitude shelter located mid-way on the Khaliya ridge, ideal for acclimatization before summiting Zero Point.",
+    },
+    {
+      id: "kht3", name: "Bilju Homestay & Trek Base", type: "homestay", stars: 3,
+      avgPricePerNight: 1800, town: "Balanti Forest Gate, Munsiyari", contact: "+91-98712-44390",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Munsiyari",
+      amenities: ["Traditional Wooden Rooms", "Home-Cooked Kumaoni Thali", "Local Trek Guides", "Geyser"],
+      notes: "Warm local Bhotiya family homestay situated right at the trailhead of the Khaliya Top hike in Balanti potato farm village.",
+    },
+  ],
+  "chakrata-4-days": [
+    {
+      id: "ckt1", name: "Himalayan Eco Lodges Chakrata", type: "resort", stars: 4,
+      avgPricePerNight: 4200, town: "Virhatkhai, Chakrata", contact: "+91-97177-03355",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Chakrata",
+      amenities: ["Panoramic Mountain Valley View", "Luxury Cottages", "Multi-Cuisine Restaurant", "Bonfire", "Trekking Guides"],
+      notes: "Secluded mountain eco-lodge set amid pine forests overlooking the Mussoorie hills and Great Himalayan range.",
+    },
+    {
+      id: "ckt2", name: "Deoban Forest Rest House", type: "guesthouse", stars: 3,
+      avgPricePerNight: 1600, town: "Deoban Forest Reserve (9,400 ft)", contact: "+91-1360-272210",
+      bookingUrl: "https://forest.uk.gov.in",
+      amenities: ["Virgin Deodar Woods", "Historic British Architecture", "Pahadi Cooking", "Wildlife Sighting"],
+      notes: "Century-old British colonial forest bungalow deep in the virgin deodar groves of Deoban, offering clear views of 55 Himalayan peaks.",
+    },
+    {
+      id: "ckt3", name: "Hotel Snow View Chakrata", type: "hotel", stars: 3,
+      avgPricePerNight: 2400, town: "Chakrata Cantonment", contact: "+91-98972-66120",
+      bookingUrl: "https://www.google.com/search?q=Hotel+Snow+View+Chakrata",
+      amenities: ["Terrace Viewpoint", "Room Service", "Free Parking", "Wi-Fi"],
+      notes: "Centrally positioned in the quiet cantonment ridge with uninterrupted views of Chilmiri Neck and evening sunsets.",
+    },
+  ],
+  "kanatal-4-days": [
+    {
+      id: "knt1", name: "The Terraces Spa Resort Kanatal", type: "resort", stars: 4,
+      avgPricePerNight: 7500, town: "Chamba-Mussoorie Highway, Kanatal", contact: "+91-1376-283180",
+      bookingUrl: "https://theterraces.biz",
+      amenities: ["Luxury Spa & Wellness", "Fireplace Cottages", "Fine Dining Italian & Indian", "Balcony Mountain Views"],
+      notes: "Award-winning boutique mountain resort set inside 5 acres of terraced apple and pine orchards facing snow-clad peaks.",
+    },
+    {
+      id: "knt2", name: "Whispering Pines Himalayan Camp", type: "camp", stars: 3,
+      avgPricePerNight: 3000, town: "Kaudia Forest Trail, Kanatal", contact: "+91-98101-57887",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Kanatal",
+      amenities: ["Swiss Canvas Tents", "Buffet Meals Included", "Rappelling & Zipline", "Campfire Nights"],
+      notes: "Adventure campsite tucked in dense oak and pine woods near Kaudia forest, famous for star-filled Himalayan night skies.",
+    },
+    {
+      id: "knt3", name: "Kanatal Heights Wooden Cottages", type: "homestay", stars: 3,
+      avgPricePerNight: 2200, town: "Surkhanda Foothills, Kanatal", contact: "+91-94115-33902",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Kanatal",
+      amenities: ["Handcrafted Pine Interiors", "Home Cooked Meals", "Valley Sunset Deck", "Electric Blankets"],
+      notes: "Rustic and warm wooden cottages directly overlooking the Tehri reservoir hills and rolling pine ridges.",
+    },
+  ],
+  "chaukori-5-days": [
+    {
+      id: "chk1", name: "KMVN Tourist Rest House Chaukori", type: "resort", stars: 3,
+      avgPricePerNight: 2200, town: "Chaukori Tea Estate", contact: "+91-5964-258028",
+      bookingUrl: "https://kmvn.in",
+      amenities: ["180-Degree Himalayan View", "Historic Tea Garden", "In-House Restaurant", "Watch Tower", "Spacious Lawns"],
+      notes: "Sprawled across the historic British tea garden with an open watchtower providing one of India's grandest views of Nanda Devi, Nanda Kot, and Panchachuli.",
+    },
+    {
+      id: "chk2", name: "The Mist Mountain Resort Chaukori", type: "hotel", stars: 3,
+      avgPricePerNight: 3200, town: "Berinag-Chaukori Road", contact: "+91-94111-09887",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Chaukori",
+      amenities: ["Private Balconies", "Bonfire Garden", "Multi-Cuisine Dining", "Wi-Fi", "Orchard Walks"],
+      notes: "Peaceful boutique mountain hotel perched above tea plantations with unobstructed sunrise views of the eastern Himalayan ramparts.",
+    },
+    {
+      id: "chk3", name: "Hardik Resort & Cottages", type: "guesthouse", stars: 3,
+      avgPricePerNight: 1900, town: "Udiyari Band, Chaukori", contact: "+91-94129-87612",
+      bookingUrl: "https://www.google.com/search?q=Hardik+Resort+Chaukori",
+      amenities: ["Pine Forest Surroundings", "Authentic Kumaoni Kitchen", "Garden Cafe", "Hot Water"],
+      notes: "Charming family-run retreat nestled among cedar groves, celebrated for fresh Bhatt ki Churkani and warm mountain hospitality.",
     },
   ],
 };

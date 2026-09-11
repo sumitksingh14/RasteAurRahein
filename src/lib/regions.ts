@@ -147,6 +147,10 @@ export const TRIP_REGION_MAP: Record<string, string[]> = {
   "tosh-3-days": ["himalayas"],
   "sach-pass-5-days": ["himalayas"],
   "chopta-4-days": ["himalayas"],
+  "khaliya-top-5-days": ["himalayas"],
+  "chakrata-4-days": ["himalayas"],
+  "kanatal-4-days": ["himalayas"],
+  "chaukori-5-days": ["himalayas"],
 
   // ── 2. Northeast India & Seven Sisters (17 trips) ──
   "sikkim-7-days": ["northeast-india"],

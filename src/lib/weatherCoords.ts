@@ -29,6 +29,10 @@ export const TRIP_WEATHER_COORDS: Record<string, WeatherLocation> = {
   "char-dham-yatra-uttarakhand": { name: "Kedarnath", lat: 30.7352, lon: 79.0669 },
   "panch-kedar-trek-10-days": { name: "Rudraprayag", lat: 30.2840, lon: 78.9810 },
   "pune-konkan-coast-raigad": { name: "Alibaug, Raigad", lat: 18.6414, lon: 72.8722 },
+  "khaliya-top-5-days": { name: "Khaliya Top, Munsiyari", lat: 30.0785, lon: 80.2215 },
+  "chakrata-4-days": { name: "Chakrata", lat: 30.7016, lon: 77.8698 },
+  "kanatal-4-days": { name: "Kanatal", lat: 30.4184, lon: 78.3444 },
+  "chaukori-5-days": { name: "Chaukori", lat: 29.8710, lon: 80.0210 },
 };
 
 // ---------------------------------------------------------------------------

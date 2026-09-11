@@ -216,6 +216,18 @@ export const FOOD_DATA: Record<string, FoodSpot[]> = {
       priceRange: "₹", isVeg: true,
       notes: "Kumaoni staple dishes — incredibly satisfying after a trek.",
     },
+    {
+      id: "mn_f2", name: "Pandey Restaurant & Sweet Centre", type: "restaurant", town: "Munsiyari Main Bazaar",
+      mustTry: ["Bhatt Ki Churkani", "Fresh Jhangora Kheer", "Piping Hot Thukpa"],
+      priceRange: "₹", isVeg: true,
+      notes: "Beloved local kitchen serving authentic Himalayan comfort food and fresh Bal Mithai.",
+    },
+    {
+      id: "mn_f3", name: "Milan Dhaba & Himalayan Cafe", type: "dhaba", town: "Munsiyari",
+      mustTry: ["Madua (Finger Millet) Roti", "Pahadi Rajma", "Bhang Ki Chutney"],
+      priceRange: "₹", isVeg: true,
+      notes: "Hearty traditional Kumaoni thali with magnificent Panchachuli peak vistas.",
+    },
   ],
   "char-dham-yatra-uttarakhand": [
     {
@@ -1127,6 +1139,90 @@ export const FOOD_DATA: Record<string, FoodSpot[]> = {
       mustTry: ["Ginger Lemon Honey Tea", "Hot Tomato Soup", "Energy Chocolate Bites"],
       priceRange: "₹", isVeg: true,
       notes: "The world's highest tea stall beside the highest Shiva temple on Earth.",
+    },
+  ],
+
+  "khaliya-top-5-days": [
+    {
+      id: "kht_f1", name: "Khaliya Campfire Kitchen", type: "dhaba", town: "Khaliya Bugyal Ridge, 11,500 ft",
+      mustTry: ["Steaming Kumaoni Dal & Rice", "Desi Ghee Rotis", "Adrak-Tulsi Kadha", "Pahadi Maggi with Mountain Herbs"],
+      priceRange: "₹", isVeg: true,
+      notes: "High altitude camp kitchen serving piping hot home meals around an evening bonfire under the Panchachuli stars.",
+    },
+    {
+      id: "kht_f2", name: "Sarmoli Village Kitchen", type: "restaurant", town: "Sarmoli Homestay Cluster, Munsiyari",
+      mustTry: ["Bhatt ki Churkani (black soybean curry)", "Mandua (finger millet) Rotis", "Jhangore ki Kheer", "Bhang ki Chutney"],
+      priceRange: "₹", isVeg: true,
+      notes: "Community kitchen managed by Bhotiya women serving authentic seasonal Kumaoni farm-to-table recipes.",
+    },
+    {
+      id: "kht_f3", name: "Monal Cafe & Bakery", type: "cafe", town: "Main Market, Munsiyari",
+      mustTry: ["Tibetan Steamed Momos", "Fresh Filter Coffee", "Wild Mountain Honey Pancakes", "Apple Crumble"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Cozy trekker cafe with floor seating, book exchange shelves, and stunning glass window views of Panchachuli III and IV.",
+    },
+  ],
+
+  "chakrata-4-days": [
+    {
+      id: "ckt_f1", name: "Chaupal Jaunsari Rasoi", type: "restaurant", town: "Chakrata Bazaar",
+      mustTry: ["Jaunsari Gahat ki Dal", "Red Rice with Mountain Ghee", "Cholu ki Roti", "Aloo ke Gutke with Pahadi Raita"],
+      priceRange: "₹", isVeg: true,
+      notes: "Traditional Jaunsari family dining serving time-honored tribal recipes cooked over slow wood fire in earthenware pots.",
+    },
+    {
+      id: "ckt_f2", name: "Tiger Falls Waterfall Dhaba", type: "dhaba", town: "Tiger Falls Gorge",
+      mustTry: ["Mountain Butter Maggi", "Spicy Onion-Potato Parathas", "Fresh Mint Chutney", "Gur Chai (Jaggery Tea)"],
+      priceRange: "₹", isVeg: true,
+      notes: "Picturesque rustic dhaba perched right beside the misty spray of Tiger Falls (India's highest direct waterfall cascade).",
+    },
+    {
+      id: "ckt_f3", name: "Kalsi Riverfront Junction", type: "restaurant", town: "Kalsi Yamuna Bank",
+      mustTry: ["Yamuna Valley Kadhi Chawal", "Roasted Mountain Corn", "Fresh Pahadi Cucumber Salad", "Sweet Lassi"],
+      priceRange: "₹", isVeg: true,
+      notes: "Riverside highway stop near the historic 3rd-century BC Ashokan Rock Edicts, famous for refreshing yogurt and buttermilk.",
+    },
+  ],
+
+  "kanatal-4-days": [
+    {
+      id: "knt_f1", name: "Milan Mountain Dhaba", type: "dhaba", town: "Chamba-Mussoorie Highway, Kanatal",
+      mustTry: ["Garhwali Chainsoo (black gram stew)", "Urad Dal Pakoras", "Fresh Tawa Rotis with White Butter", "Buransh (Rhododendron) Juice"],
+      priceRange: "₹", isVeg: true,
+      notes: "Popular highway dhaba known for hearty portions and authentic Garhwali home-cooked mountain lentils.",
+    },
+    {
+      id: "knt_f2", name: "Kaudia Forest Nature Cafe", type: "cafe", town: "Kaudia Forest Entrance",
+      mustTry: ["Wood-Fired Thin Crust Pizza", "Himalayan Herbal Lemon Tea", "Fresh Wild Mint Toast", "Warm Apple Walnut Pie"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Eco-cafe situated at the start of the Kaudia pine forest trek, sourcing all herbs and fruit from neighboring terraced orchards.",
+    },
+    {
+      id: "knt_f3", name: "Surkhanda View Point Eatery", type: "street-food", town: "Surkhanda Devi Base, Kaddukhal",
+      mustTry: ["Piping Hot Poori-Sabzi", "Steamed Pahadi Momos", "Masala Chai with Green Cardamom", "Besan Ladoo Prasad"],
+      priceRange: "₹", isVeg: true,
+      notes: "Bustling trail base eatery serving quick pilgrimage snacks and steaming mountain beverages before the steep temple ropeway.",
+    },
+  ],
+
+  "chaukori-5-days": [
+    {
+      id: "chk_f1", name: "Chaukori Tea Garden Kitchen", type: "restaurant", town: "KMVN Tea Estate, Chaukori",
+      mustTry: ["Bhatt ki Dal with Basmati Rice", "Singori Sweet wrapped in Malu leaf", "Kumaoni Raita with Yellow Mustard", "Fresh CTC Chaukori Green Tea"],
+      priceRange: "₹", isVeg: true,
+      notes: "Historic British tea bungalow dining hall offering classic Kumaoni comfort food and estate-grown tea with panoramic peak views.",
+    },
+    {
+      id: "chk_f2", name: "Gaurav Pahadi Rasoi", type: "dhaba", town: "Berinag Road, Chaukori",
+      mustTry: ["Traditional Pahadi Mutton Curry", "Spiced Aloo Gutke with Roasted Coriander", "Madira (Hemp seed) Chutney", "Mandua Roti"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Renowned local eatery famous for slow-cooked tender mountain goat curry and spicy Kumaoni condiments.",
+    },
+    {
+      id: "chk_f3", name: "Patal Bhuvaneshwar Caves Dhaba", type: "street-food", town: "Patal Bhuvaneshwar Village",
+      mustTry: ["Dubuk (ground lentil paste soup)", "Crisp Onion Pakoras", "Ginger Masala Chai", "Fresh Mawa Gujiya"],
+      priceRange: "₹", isVeg: true,
+      notes: "Welcoming mountain refreshment stall outside the ancient subterranean limestone cave temples.",
     },
   ],
 };

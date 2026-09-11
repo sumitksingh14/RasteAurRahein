@@ -80,6 +80,12 @@ export const TRIP_IMAGES: Record<string, string> = {
   "tosh-3-days": "/images/tosh.jpg",
   "sach-pass-5-days": "/images/sach-pass.jpg",
   "chopta-4-days": "/images/chopta.jpg",
+
+  // Uttarakhand Offbeat Destinations (from Mumbai/Pune)
+  "khaliya-top-5-days": "/images/khaliya-top.jpg",
+  "chakrata-4-days": "/images/chakrata.jpg",
+  "kanatal-4-days": "/images/kanatal.jpg",
+  "chaukori-5-days": "/images/chaukori.jpg",
 };
 
 export const DEFAULT_TRIP_IMAGE = "/images/leh-ladakh-pangong-lake.jpg";
