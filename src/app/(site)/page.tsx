@@ -282,11 +282,12 @@ export default async function HomePage() {
                 borderRadius: "20px",
                 overflow: "hidden",
                 aspectRatio: "4/3",
+                boxShadow: "0 12px 32px rgba(0,0,0,0.1)",
               }}
             >
               <Image
-                src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80"
-                alt="Beautiful travel destination"
+                src="/images/munsiyari-panchachuli.jpg"
+                alt="Panchachuli peaks viewed from Munsyari, Uttarakhand"
                 fill
                 style={{ objectFit: "cover" }}
                 sizes="(max-width: 768px) 100vw, 50vw"

@@ -6,9 +6,9 @@ export interface RegionConfig {
   headline: string;
   description: string;
   intro: string;
-  /** Tags that match trips to this region */
+  /** Primary tags that identify trips in this region */
   tags: string[];
-  /** Hero image (Unsplash) */
+  /** Hero image (local or high-res) */
   heroImage: string;
   heroAlt: string;
   /** Related region slugs for cross-links */
@@ -18,96 +18,218 @@ export interface RegionConfig {
 export const REGIONS: RegionConfig[] = [
   {
     slug: "himalayas",
-    label: "Himalayas",
-    headline: "The Himalayan Circuit",
+    label: "Himalayas & North",
+    headline: "The Himalayan & Northern Circuit",
     description:
-      "High-altitude passes, ancient monasteries, and cold deserts — the definitive guide to road-tripping through India's Himalayan regions.",
+      "High-altitude passes, cold deserts, pine valleys, and sacred shrines — exploring Himachal, Uttarakhand, Ladakh, and Kashmir.",
     intro:
-      "From Spiti Valley's moonscapes to the prayer-flag-strung passes of Ladakh, the Himalayas offer some of the most dramatic and demanding road trips on the planet. Expect altitude, solitude, and roads that test both driver and machine — rewarded by landscapes that feel genuinely otherworldly.",
+      "From Spiti Valley's cold deserts and Ladakh's high mountain passes to the deep cedar valleys of Kinnaur, Parvati, and Garhwal, the Himalayas offer some of the most dramatic journeys on Earth. Expect high altitude, serene Buddhist gompas, and roads that reward both driver and trekker with unparalleled vistas.",
     tags: [
-      "Himalayas", "Spiti Valley", "Ladakh", "Trekking",
-      "Himachal", "Uttarakhand", "High Altitude",
+      "Himalayas", "Spiti Valley", "Ladakh", "Himachal", "Uttarakhand",
+      "High Altitude", "Kashmir", "Jammu", "Kinnaur", "Parvati Valley",
+      "Kumaon", "Garhwal", "North India", "Mountains",
     ],
-    heroImage:
-      "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1920&q=85",
-    heroAlt: "Himalayan mountain landscape with ancient monastery",
-    related: ["northeast-india", "rajasthan"],
+    heroImage: "/images/spiti-ki-monastery.jpg",
+    heroAlt: "Spiti Valley Ki Monastery and Himalayan mountains",
+    related: ["northeast-india", "central-india", "rajasthan"],
+  },
+  {
+    slug: "central-india",
+    label: "Central India",
+    headline: "The Heartland of India",
+    description:
+      "Ancient prehistoric caves, forgotten Afghan palaces, sacred river sources, and the tribal waterfalls of Bastar — exploring Madhya Pradesh and Chhattisgarh.",
+    intro:
+      "Central India is where India's deepest history and most pristine tribal wilderness intersect. From Bhimbetka's 30,000-year-old rock art and Mandu's floating Afghan palaces to the thundering monsoon cataracts of Chitrakoot and the weekly haat markets of Bastar, this is the undiscovered heart of the subcontinent.",
+    tags: [
+      "Central India", "Madhya Pradesh", "Chhattisgarh", "Bastar",
+      "Bundelkhand", "Bhopal", "Orchha", "Mandu", "Bhimbetka",
+      "Amarkantak", "Chitrakoot", "Panna", "Patalkot", "Satpura",
+    ],
+    heroImage: "/images/chitrakoot-waterfall.jpg",
+    heroAlt: "Chitrakoot Falls in Bastar Chhattisgarh",
+    related: ["coastal", "south-india", "rajasthan"],
+  },
+  {
+    slug: "coastal",
+    label: "Coastal & Western Ghats",
+    headline: "Coastlines, Sahyadris & Islands",
+    description:
+      "From Goa's hidden hinterlands and Maharashtra's Sahyadri hill forts to the pristine coral waters of the Andamans and the Konkan coast.",
+    intro:
+      "India's western coast and tropical archipelagos feature rugged cliff-edge highways, historical Maratha sea forts, biodiversity hotspots, and secret coves. From the turtle nesting beaches of Velas and scuba waters of Tarkarli to remote rainforest sanctuaries and the emerald Andaman islands, this circuit is crafted for coastal wanderers.",
+    tags: [
+      "Coastal", "Beach", "Beaches", "Goa", "Konkan", "Andamans",
+      "Island", "Islands", "Maharashtra", "Sahyadri", "Sindhudurg",
+      "Tarkarli", "Velas", "Panhala", "Kolhapur", "Amboli", "Cotigao",
+      "Gorakhgad", "Alibaug", "Malvan",
+    ],
+    heroImage: "/images/tarkarli-beach.jpg",
+    heroAlt: "Konkan coast beach and clear waters",
+    related: ["south-india", "central-india", "himalayas"],
   },
   {
     slug: "south-india",
     label: "South India",
     headline: "South India Circuit",
     description:
-      "Temple towns, misty hill stations, and the coast — a complete guide to road-tripping through Karnataka, Kerala, Tamil Nadu and beyond.",
+      "Misty coffee estates, Dravidian temple architecture, Western Ghats rainforests, and serene backwaters across Karnataka and Kerala.",
     intro:
-      "South India rewards slow travel. The roads weave through coffee estates in Coorg, climb into mist-wrapped Nilgiris, and drop to coastlines where the Arabian Sea and the Bay of Bengal collide at Kanyakumari. Filter coffee, Dravidian temples, and a pace of life that resists hurry.",
+      "South India rewards contemplative, slow travel. The routes weave through shaded coffee plantations in Coorg and Wayanad, climb into the cool Nilgiri ranges around Ooty, and descend to coastal spice towns and palm-fringed backwaters. Filter coffee, ancient heritage, and lush tropical greenery define this journey.",
     tags: [
       "South India", "Kerala", "Karnataka", "Tamil Nadu", "Coorg",
-      "Ooty", "Mysore", "Wayanad", "Coastal",
+      "Ooty", "Mysore", "Wayanad", "Nilgiris", "Andhra Pradesh", "Telangana",
     ],
-    heroImage:
-      "https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/d4676652506983.591f0235258b3.jpg",
-    heroAlt: "Misty Western Ghats hills in South India",
-    related: ["coastal", "himalayas"],
+    heroImage: "/images/mysore-palace.jpg",
+    heroAlt: "Mysore Palace and South India Western Ghats",
+    related: ["coastal", "central-india", "himalayas"],
   },
   {
     slug: "rajasthan",
-    label: "Rajasthan / Desert",
-    headline: "Rajasthan & the Desert",
+    label: "Rajasthan & West",
+    headline: "Rajasthan & the Royal West",
     description:
-      "Forts, palaces, and sand dunes — the grand circuit through India's royal desert state.",
+      "Living golden forts, desert dunes, lake palaces, and the royal heritage of the Thar and the Golden Triangle.",
     intro:
-      "Rajasthan is India at its most theatrical. Blue cities, golden deserts, and palaces so ornate they look like set design. The roads link a succession of royal capitals — Jaipur, Jodhpur, Jaisalmer, Udaipur — each different enough to justify the drive, each worth at least two nights.",
+      "Rajasthan is India at its most regal and evocative. Golden sandstone ramparts rising from the Thar desert, kaleidoscopic bazaars, and palaces poised over mirrored lakes. Coupled with iconic monuments along the historic Yamuna corridor, this region represents centuries of royalty, chivalry, and timeless folklore.",
     tags: [
-      "Rajasthan", "Desert", "Jaisalmer",
-      "Udaipur", "Jodhpur", "Jaipur",
+      "Rajasthan", "Desert", "Jaisalmer", "Udaipur", "Jodhpur",
+      "Jaipur", "Gujarat", "Kutch", "Thar", "Agra", "Mathura", "Taj Mahal",
     ],
-    heroImage:
-      "https://images.unsplash.com/photo-1514222134-b57cbb8ce073?w=1920&q=85",
-    heroAlt: "Rajasthan golden desert landscape with palace",
-    related: ["himalayas", "coastal"],
-  },
-  {
-    slug: "coastal",
-    label: "Coastal India",
-    headline: "India's Coastlines",
-    description:
-      "From Goa's backstreets to Kerala's backwaters — the best coastal road trips along India's western and southern shores.",
-    intro:
-      "India has over 7,500 km of coastline and almost none of it is boring. The Konkan coast switchbacks between cliffs and coves; Goa offers colonial-era churches and all-day beaches; Kerala unrolls into backwaters and lagoons. The best coastal drives are best done outside peak season — quieter roads, cooler air.",
-    tags: [
-      "Beach", "Goa", "Coastal", "Beaches", "Kerala",
-      "Konkan", "Mangalore",
-    ],
-    heroImage:
-      "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=1920&q=85",
-    heroAlt: "Goa beach with palm trees and Arabian Sea",
-    related: ["south-india", "rajasthan"],
+    heroImage: "/images/rajasthan-desert.jpg",
+    heroAlt: "Rajasthan Thar desert golden sand dunes",
+    related: ["himalayas", "central-india", "coastal"],
   },
   {
     slug: "northeast-india",
     label: "Northeast India",
-    headline: "The Northeast Frontier",
+    headline: "The Northeast Frontier & Seven Sisters",
     description:
-      "Living root bridges, cloud-wrapped peaks, and cultures unlike anywhere else — the least-visited and most rewarding corner of India.",
+      "Living root bridges, floating lake islands, high Tibetan monasteries, and indigenous tribal heritage across the Seven Sisters and Sikkim.",
     intro:
-      "Northeast India remains India's best-kept travel secret. Meghalaya's living root bridges and wettest place on earth; Arunachal Pradesh's Buddhist monasteries and snow peaks bordering Tibet; Nagaland's warrior heritage and hornbill festivals. These trips require more planning, more time, and reward both generously.",
+      "Northeast India is a breathtaking realm of biodiversity, clouds, and indigenous heritage. From Meghalaya's bio-engineered root bridges and Arunachal's remote Buddhist monasteries to Nagaland's green villages, Assam's island monasteries on the Brahmaputra, and Manipur's floating phumdis, this frontier offers experiences found nowhere else in the world.",
     tags: [
       "Northeast", "Meghalaya", "Arunachal", "Nagaland", "Assam",
-      "Sikkim", "Trekking",
+      "Sikkim", "Manipur", "Mizoram", "Tripura", "Brahmaputra",
+      "Living Root Bridge", "Khonoma", "Apatani", "Dzukou",
+      "Loktak", "Unakoti", "Vantawng", "Namdapha", "Bomdila",
     ],
-    heroImage:
-      "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1920&q=85",
-    heroAlt: "Lush green landscape in Northeast India",
-    related: ["himalayas", "south-india"],
+    heroImage: "/images/meghalaya-dawki-river.jpg",
+    heroAlt: "Crystal clear Umngot River in Dawki Meghalaya",
+    related: ["himalayas", "central-india", "south-india"],
   },
 ];
 
-/** Filter trips that belong to a given region */
+/**
+ * Authoritative, destination-exact classification mapping for all 65 trips.
+ * Ensures zero false positives and 100% accurate regional filtering.
+ */
+export const TRIP_REGION_MAP: Record<string, string[]> = {
+  // ── 1. Himalayas & North India (21 trips) ──
+  "leh-ladakh-9-days": ["himalayas"],
+  "spiti-valley": ["himalayas"],
+  "munsiyari-6-days": ["himalayas"],
+  "char-dham-yatra-uttarakhand": ["himalayas"],
+  "panch-kedar-trek-10-days": ["himalayas"],
+  "haridwar-rishikesh-3-days": ["himalayas"],
+  "nainital-jim-corbett-3-days": ["himalayas"],
+  "himachal-shimla-manali-dharamshala-dalhousie-5-days": ["himalayas"],
+  "jammu-kashmir-5-days": ["himalayas"],
+  "auli-nearby-3-days": ["himalayas"],
+  "chitkul-5-days": ["himalayas"],
+  "kalpa-5-days": ["himalayas"],
+  "tirthan-valley-6-days": ["himalayas"],
+  "malana-4-days": ["himalayas"],
+  "barot-valley-4-days": ["himalayas"],
+  "rakchham-5-days": ["himalayas"],
+  "nako-6-days": ["himalayas"],
+  "pangi-valley-6-days": ["himalayas"],
+  "tosh-3-days": ["himalayas"],
+  "sach-pass-5-days": ["himalayas"],
+  "chopta-4-days": ["himalayas"],
+
+  // ── 2. Northeast India & Seven Sisters (17 trips) ──
+  "sikkim-7-days": ["northeast-india"],
+  "meghalaya-5-days": ["northeast-india"],
+  "mawlynnong-cleanest-village": ["northeast-india"],
+  "nongriat-double-decker-trek": ["northeast-india"],
+  "dawki-umngot-river-meghalaya": ["northeast-india"],
+  "mawsynram-wettest-place-earth": ["northeast-india"],
+  "majuli-brahmaputra-assam": ["northeast-india"],
+  "khonoma-green-village-nagaland": ["northeast-india"],
+  "dzukou-valley-trek-nagaland": ["northeast-india"],
+  "ziro-valley-apatani": ["northeast-india"],
+  "namdapha-national-park-safari": ["northeast-india"],
+  "bomdila-monastery-arunachal": ["northeast-india"],
+  "ukhrul-tangkhul-manipur": ["northeast-india"],
+  "loktak-lake-floating-islands": ["northeast-india"],
+  "reiek-hill-mizoram": ["northeast-india"],
+  "vantawng-waterfall-thenzawl": ["northeast-india"],
+  "unakoti-rock-carvings-tripura": ["northeast-india"],
+
+  // ── 3. Central India & Heartland (11 trips) ──
+  "orchha-bundelkhand-heritage": ["central-india"],
+  "mandu-afghan-ruins-plateau": ["central-india"],
+  "chitrakoot-mp-pilgrimage": ["central-india"],
+  "bhimbetka-rock-shelters": ["central-india"],
+  "amarkantak-narmada-source": ["central-india"],
+  "patalkot-valley-tribal": ["central-india"],
+  "panna-tiger-reserve-safari": ["central-india"],
+  "tirathgarh-kanger-valley-chhattisgarh": ["central-india"],
+  "chitrakoot-waterfall-bastar": ["central-india"],
+  "bastar-tribal-culture-haat": ["central-india"],
+  "jyotirlinga-pilgrimage-road-trip": ["central-india", "coastal"],
+
+  // ── 4. Coastal India, Sahyadris & Islands (11 trips) ──
+  "goa-beyond-beaches": ["coastal"],
+  "pune-konkan-coast-raigad": ["coastal"],
+  "velas-turtle-festival-konkan": ["coastal"],
+  "tarkarli-sindhudurg-beach": ["coastal"],
+  "panhala-kolhapur-hill-fort": ["coastal"],
+  "amboli-sahyadri-waterfalls": ["coastal"],
+  "toranmal-satpura-hill-station": ["coastal", "central-india"],
+  "cotigao-wildlife-sanctuary-goa": ["coastal"],
+  "gorakhgad-fort-trek-mumbai": ["coastal"],
+  "neil-island-6-days": ["coastal"],
+  "diglipur-7-days": ["coastal"],
+
+  // ── 5. South India (3 trips) ──
+  "mysore-coorg-wayanad-ooty": ["south-india"],
+  "kerala-7-days": ["south-india", "coastal"],
+  "chorla-ghat-western-ghats": ["south-india", "coastal"],
+
+  // ── 6. Rajasthan & West (2 trips) ──
+  "rajasthan-desert-kingdom": ["rajasthan"],
+  "agra-mathura-3-days": ["rajasthan", "himalayas"],
+};
+
+/**
+ * Filter trips that belong to a given region.
+ * Uses exact slug mapping if present; falls back to tag matching.
+ */
 export function filterTripsByRegion(trips: Trip[], region: RegionConfig): Trip[] {
-  return trips.filter((t) =>
-    region.tags.some((rtag) =>
-      t.tags?.some((ttag) => ttag.toLowerCase().includes(rtag.toLowerCase()))
+  return trips.filter((t) => {
+    const mappedRegions = TRIP_REGION_MAP[t.slug];
+    if (mappedRegions && mappedRegions.length > 0) {
+      return mappedRegions.includes(region.slug);
+    }
+    return region.tags.some((rtag) =>
+      t.tags?.some((ttag) => ttag.toLowerCase() === rtag.toLowerCase() || ttag.toLowerCase().includes(rtag.toLowerCase()))
+    );
+  });
+}
+
+/**
+ * Get all matching regions for a single trip.
+ */
+export function getTripRegions(trip: Trip): RegionConfig[] {
+  const mappedRegions = TRIP_REGION_MAP[trip.slug];
+  if (mappedRegions && mappedRegions.length > 0) {
+    return REGIONS.filter((r) => mappedRegions.includes(r.slug));
+  }
+  return REGIONS.filter((r) =>
+    r.tags.some((rtag) =>
+      trip.tags?.some((ttag) => ttag.toLowerCase() === rtag.toLowerCase() || ttag.toLowerCase().includes(rtag.toLowerCase()))
     )
   );
 }

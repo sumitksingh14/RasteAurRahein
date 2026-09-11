@@ -128,24 +128,40 @@ export default function NewsletterInline({
               disabled={status === "loading"}
               aria-label="Subscribe to newsletter"
               style={{
-                padding: "0.55rem 0.9rem",
-                borderRadius: "var(--radius-sm)",
-                background: "var(--accent-gold)",
+                padding: "0.6rem 1.1rem",
+                borderRadius: "var(--radius-sm, 8px)",
+                background: "#006CE4",
                 border: "none",
-                color: "#0a0a0f",
-                cursor: "pointer",
+                color: "#FFFFFF",
+                cursor: status === "loading" ? "not-allowed" : "pointer",
                 display: "flex",
                 alignItems: "center",
-                gap: "4px",
+                gap: "6px",
                 fontWeight: 600,
-                fontSize: "0.82rem",
+                fontSize: "0.85rem",
                 whiteSpace: "nowrap",
+                transition: "all 0.2s ease",
+                boxShadow: "0 2px 8px rgba(0, 108, 228, 0.25)",
+              }}
+              onMouseEnter={(e) => {
+                if (status !== "loading") {
+                  e.currentTarget.style.background = "#0057B8";
+                  e.currentTarget.style.boxShadow = "0 4px 12px rgba(0, 108, 228, 0.35)";
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (status !== "loading") {
+                  e.currentTarget.style.background = "#006CE4";
+                  e.currentTarget.style.boxShadow = "0 2px 8px rgba(0, 108, 228, 0.25)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                }
               }}
             >
               {status === "loading" ? (
                 <Loader2 size={14} style={{ animation: "spin 1s linear infinite" }} />
               ) : (
-                <>Subscribe <ArrowRight size={13} /></>
+                <>Subscribe <ArrowRight size={14} /></>
               )}
             </button>
           </form>
@@ -179,26 +195,27 @@ export default function NewsletterInline({
       >
         <div
           style={{
-            width: 36,
-            height: 36,
+            width: 40,
+            height: 40,
             borderRadius: "50%",
-            background: "linear-gradient(135deg, var(--accent-gold), var(--accent-rose))",
+            background: "rgba(0, 108, 228, 0.1)",
+            border: "1.5px solid rgba(0, 108, 228, 0.25)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             flexShrink: 0,
           }}
         >
-          <Mail size={16} color="#0a0a0f" />
+          <Mail size={18} color="#006CE4" />
         </div>
         <div>
           <div
             style={{
-              fontSize: "0.7rem",
+              fontSize: "0.72rem",
               fontWeight: 700,
               textTransform: "uppercase",
               letterSpacing: "0.1em",
-              color: "var(--accent-gold)",
+              color: "#006CE4",
             }}
           >
             ✦ Stay in the Loop
@@ -206,7 +223,7 @@ export default function NewsletterInline({
           <h3
             style={{
               fontFamily: "var(--font-serif)",
-              fontSize: "1.15rem",
+              fontSize: "1.2rem",
               color: "var(--text-primary)",
               margin: 0,
             }}
@@ -218,7 +235,7 @@ export default function NewsletterInline({
 
       <p
         style={{
-          fontSize: "0.9rem",
+          fontSize: "0.92rem",
           color: "var(--text-secondary)",
           lineHeight: 1.7,
           marginBottom: "1.25rem",
@@ -260,13 +277,13 @@ export default function NewsletterInline({
             required
             aria-label="Email address for newsletter"
             style={{
-              flex: "1 1 200px",
-              padding: "0.7rem 1rem",
-              borderRadius: "var(--radius-md)",
+              flex: "1 1 220px",
+              padding: "0.75rem 1rem",
+              borderRadius: "var(--radius-md, 12px)",
               border: "1px solid var(--border)",
               background: "var(--bg-primary)",
               color: "var(--text-primary)",
-              fontSize: "0.9rem",
+              fontSize: "0.92rem",
               outline: "none",
             }}
           />
@@ -275,18 +292,34 @@ export default function NewsletterInline({
             id="newsletter-subscribe-btn"
             disabled={status === "loading"}
             style={{
-              padding: "0.7rem 1.5rem",
-              borderRadius: "var(--radius-md)",
-              background: "linear-gradient(135deg, var(--accent-gold), var(--accent-rose))",
+              padding: "0.75rem 1.6rem",
+              borderRadius: "var(--radius-md, 12px)",
+              background: "#006CE4",
               border: "none",
-              color: "#0a0a0f",
+              color: "#FFFFFF",
               fontWeight: 700,
-              fontSize: "0.9rem",
-              cursor: "pointer",
+              fontSize: "0.92rem",
+              cursor: status === "loading" ? "not-allowed" : "pointer",
               display: "flex",
               alignItems: "center",
-              gap: "6px",
+              gap: "8px",
               whiteSpace: "nowrap",
+              transition: "all 0.2s ease",
+              boxShadow: "0 4px 14px rgba(0, 108, 228, 0.28)",
+            }}
+            onMouseEnter={(e) => {
+              if (status !== "loading") {
+                e.currentTarget.style.background = "#0057B8";
+                e.currentTarget.style.boxShadow = "0 6px 20px rgba(0, 108, 228, 0.38)";
+                e.currentTarget.style.transform = "translateY(-1px)";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (status !== "loading") {
+                e.currentTarget.style.background = "#006CE4";
+                e.currentTarget.style.boxShadow = "0 4px 14px rgba(0, 108, 228, 0.28)";
+                e.currentTarget.style.transform = "translateY(0)";
+              }
             }}
           >
             {status === "loading" ? (

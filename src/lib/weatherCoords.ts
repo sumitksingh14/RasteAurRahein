@@ -70,6 +70,13 @@ export const REGION_WEATHER_COORDS: Record<string, RegionWeatherConfig> = {
       { name: "Guwahati", lat: 26.1445, lon: 91.7362 },
     ],
   },
+  "central-india": {
+    hubTowns: [
+      { name: "Bhopal", lat: 23.2599, lon: 77.4126 },
+      { name: "Orchha / Jhansi", lat: 25.3524, lon: 78.6433 },
+      { name: "Jagdalpur (Bastar)", lat: 19.0740, lon: 82.0080 },
+    ],
+  },
 };
 
 // ---------------------------------------------------------------------------

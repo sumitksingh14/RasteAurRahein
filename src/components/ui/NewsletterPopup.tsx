@@ -274,23 +274,39 @@ export default function NewsletterPopup() {
                 disabled={status === "loading"}
                 style={{
                   padding: "0.85rem 1.5rem",
-                  borderRadius: "var(--radius-md)",
-                  background: "linear-gradient(135deg, var(--accent-gold), var(--accent-rose))",
+                  borderRadius: "var(--radius-md, 12px)",
+                  background: "#006CE4",
                   border: "none",
-                  color: "#0a0a0f",
+                  color: "#FFFFFF",
                   fontWeight: 700,
                   fontSize: "0.95rem",
-                  cursor: "pointer",
+                  cursor: status === "loading" ? "not-allowed" : "pointer",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   gap: "8px",
+                  transition: "all 0.2s ease",
+                  boxShadow: "0 4px 14px rgba(0, 108, 228, 0.28)",
+                }}
+                onMouseEnter={(e) => {
+                  if (status !== "loading") {
+                    e.currentTarget.style.background = "#0057B8";
+                    e.currentTarget.style.boxShadow = "0 6px 20px rgba(0, 108, 228, 0.38)";
+                    e.currentTarget.style.transform = "translateY(-1px)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (status !== "loading") {
+                    e.currentTarget.style.background = "#006CE4";
+                    e.currentTarget.style.boxShadow = "0 4px 14px rgba(0, 108, 228, 0.28)";
+                    e.currentTarget.style.transform = "translateY(0)";
+                  }
                 }}
               >
                 {status === "loading" ? (
                   <Loader2 size={17} style={{ animation: "spin 1s linear infinite" }} />
                 ) : (
-                  <>Count me in <ArrowRight size={16} /></>
+                  <>Subscribe Free <ArrowRight size={16} /></>
                 )}
               </button>
             </form>

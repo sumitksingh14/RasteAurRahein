@@ -5,18 +5,11 @@ import { useRouter } from "next/navigation";
 import { Search, SlidersHorizontal, X, TrendingUp, Clock } from "lucide-react";
 import TripCard from "@/components/ui/TripCard";
 import type { Trip } from "@/lib/types";
+import { REGIONS, filterTripsByRegion } from "@/lib/regions";
 
 const ALL_TAGS = [
   "Adventure", "Budget", "Solo", "Culture", "Food",
   "Trekking", "Beach", "Mountains", "Heritage", "Family",
-];
-
-const REGIONS: { label: string; tags: string[]; countries?: string[] }[] = [
-  { label: "Himalayas", tags: ["Himalayas", "Spiti Valley", "Ladakh", "Himachal", "Uttarakhand", "High Altitude"] },
-  { label: "South India", tags: ["South India", "Kerala", "Karnataka", "Tamil Nadu", "Mysore", "Ooty", "Coorg", "Wayanad"], countries: ["India"] },
-  { label: "Rajasthan / Desert", tags: ["Rajasthan", "Desert", "Jaisalmer", "Udaipur", "Jodhpur", "Jaipur"] },
-  { label: "Coastal", tags: ["Beach", "Goa", "Coastal", "Beaches", "Konkan", "Mangalore"] },
-  { label: "Northeast India", tags: ["Northeast", "Meghalaya", "Arunachal", "Nagaland", "Assam", "Sikkim"] },
 ];
 
 const DURATION_OPTIONS: { label: string; min: number; max: number }[] = [
@@ -257,13 +250,7 @@ export default function TripsClient({
     if (regionLabel !== "Any") {
       const region = REGIONS.find((r) => r.label === regionLabel);
       if (region) {
-        result = result.filter((t) =>
-          region.tags.some((rtag) =>
-            t.tags?.some((ttag) =>
-              ttag.toLowerCase().includes(rtag.toLowerCase())
-            )
-          )
-        );
+        result = filterTripsByRegion(result, region);
       }
     }
 
