@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { GeneratedTripsProvider } from "@/components/providers/GeneratedTripsProvider";
@@ -70,12 +71,6 @@ export default function RootLayout({
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
         <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512.png" />
-        {/* ── Google AdSense ── */}
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4406894064911133"
-          crossOrigin="anonymous"
-        />
         <WebSiteSchema />
       </head>
       <body>
@@ -91,6 +86,14 @@ export default function RootLayout({
         </ThemeProvider>
         {/* Google Analytics 4 — loads after page is interactive, no-ops if env var not set */}
         <GoogleAnalytics />
+        {/* Google AdSense — loads after interactive so it doesn't mutate head before React hydration */}
+        <Script
+          id="google-adsense"
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4406894064911133"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

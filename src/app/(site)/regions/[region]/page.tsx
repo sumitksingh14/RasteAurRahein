@@ -66,7 +66,9 @@ export default async function RegionHubPage({ params }: Props) {
     <div>
       {/* JSON-LD */}
       <script
+        id="region-schema"
         type="application/ld+json"
+        suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
       />
 

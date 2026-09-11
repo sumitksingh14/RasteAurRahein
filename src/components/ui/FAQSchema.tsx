@@ -37,7 +37,9 @@ export default function FAQSchema({ items, showAccordion = true }: FAQSchemaProp
     <>
       {/* JSON-LD */}
       <script
+        id="faq-schema"
         type="application/ld+json"
+        suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
 

@@ -37,7 +37,9 @@ export default function AuthorSchema({ author, url = "https://rasteaurrahein.com
 
   return (
     <script
+      id="author-schema"
       type="application/ld+json"
+      suppressHydrationWarning
       dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
     />
   );
@@ -79,7 +81,9 @@ export function WebSiteSchema() {
 
   return (
     <script
+      id="website-schema"
       type="application/ld+json"
+      suppressHydrationWarning
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />
   );
