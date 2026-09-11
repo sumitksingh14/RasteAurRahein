@@ -1225,6 +1225,153 @@ export const FOOD_DATA: Record<string, FoodSpot[]> = {
       notes: "Welcoming mountain refreshment stall outside the ancient subterranean limestone cave temples.",
     },
   ],
+
+  "gurez-valley-5-days": [
+    {
+      id: "grz_f1", name: "Dawar Riverfront Cafe & Trout Dhaba", type: "restaurant", town: "Dawar Main Market, Gurez",
+      mustTry: ["Fresh Kishanganga Fried Trout", "Kashmiri Nadru Yakhni (lotus stem)", "Noon Chai with Girda", "Baghali Mutton Curry"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Riverside open dining with views of Habba Khatoon peak. The freshwater trout is fished daily from the Kishanganga.",
+    },
+    {
+      id: "grz_f2", name: "Shin Dard Cultural Kitchen", type: "homestay-kitchen", town: "Markoot Village, Gurez",
+      mustTry: ["Dardi Buckwheat Bread (Bres)", "Wild Herb Walnut Chutney", "Salted Butter Tea", "Local Dried Vegetable Stew"],
+      priceRange: "₹", isVeg: true,
+      notes: "Traditional Shina home-kitchen preserving age-old Dardic mountain recipes and warm wooden floor seating.",
+    },
+    {
+      id: "grz_f3", name: "Habba Khatoon Viewpoint Dhaba", type: "dhaba", town: "Achura River Bend, Gurez",
+      mustTry: ["Kehwa with Crushed Almonds", "Pahadi Maggi with Mountain Spices", "Kashmiri Rogan Josh", "Tandoori Lavasa Bread"],
+      priceRange: "₹", isVeg: false,
+      notes: "Popular stop directly across the river facing the pyramid-shaped Habba Khatoon mountain peak reflection.",
+    },
+  ],
+
+  "aru-valley-4-days": [
+    {
+      id: "aru_f1", name: "Milky Way Restaurant & Trout Corner", type: "restaurant", town: "Aru Village Center",
+      mustTry: ["Lidder River Brown Trout", "Mutton Rogan Josh", "Haak Saag (collard greens)", "Steamed Kashmiri Rice"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Celebrated trekker eatery overlooking the meadows, known for freshly caught trout cooked in butter and herbs.",
+    },
+    {
+      id: "aru_f2", name: "Friends Cafe & Bakery Aru", type: "cafe", town: "Lidderwat Trailhead, Aru",
+      mustTry: ["Warm Apple Cinnamon Pie", "Sheermal with Saffron Kehwa", "Kashmiri Dum Aloo", "Wood-fired Tandoori Roti"],
+      priceRange: "₹", isVeg: true,
+      notes: "Cozy pine-wood cottage cafe filled with hiking maps, novels, and hot aromatic saffron tea.",
+    },
+    {
+      id: "aru_f3", name: "Pahalgam Pine Valley Wazwan", type: "restaurant", town: "Pahalgam-Aru Road",
+      mustTry: ["Rista (spiced meatballs in saffron gravy)", "Gushtaba", "Tabak Maaz", "Phirni in clay bowls"],
+      priceRange: "₹₹₹", isVeg: false,
+      notes: "Traditional master-chef waza preparing multi-course royal Wazwan feasts with copper trammi presentation.",
+    },
+  ],
+
+  "yusmarg-4-days": [
+    {
+      id: "yus_f1", name: "Doodhganga Alpine Bhojanalaya", type: "restaurant", town: "Yusmarg Meadow Entry",
+      mustTry: ["Kashmiri Gushtaba", "Nadru Palak", "Rajma Chawal with Walnut Chutney", "Kashmiri Pulao"],
+      priceRange: "₹", isVeg: false,
+      notes: "Family-run meadow eatery with outdoor charpai seating facing snow-capped Pir Panjal peaks.",
+    },
+    {
+      id: "yus_f2", name: "Charar-i-Sharief Sufi Rasoi", type: "street-food", town: "Charar-i-Sharief (near Yusmarg)",
+      mustTry: ["Famous Charar Halwa Paratha", "Seekh Tujji (grilled skewers)", "Noon Chai", "Zafrani Chai"],
+      priceRange: "₹", isVeg: true,
+      notes: "Renowned pilgrimage bazaar stall famous for massive golden parathas served with sweet halwa.",
+    },
+    {
+      id: "yus_f3", name: "Pine Shade Cafe Yusmarg", type: "dhaba", town: "Nilnag Forest Trail Base",
+      mustTry: ["Hot Saffron Kehwa", "Crisp Vegetable Pakoras", "Kashmiri Harissa (seasonal)", "Bakarkhani Bread"],
+      priceRange: "₹", isVeg: true,
+      notes: "Rustic tea hut set beside the deodar canopy on the walking trail to Doodhganga river rapids.",
+    },
+  ],
+
+  "turtuk-5-days": [
+    {
+      id: "tur_f1", name: "Balti Kitchen Turtuk", type: "restaurant", town: "Youl Village, Turtuk",
+      mustTry: ["Balti Kissir (buckwheat pancakes) with Muskat (walnut paste)", "Apricot Curry", "Mantu (steamed dumplings)", "Pahadi Butter Tea"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Pioneer authentic Balti ethnic restaurant hosted in a 200-year-old stone farmhouse with apricot garden seating.",
+    },
+    {
+      id: "tur_f2", name: "Friends Bakery & Cafe Turtuk", type: "cafe", town: "Farol, Turtuk",
+      mustTry: ["Fresh Turtuk Apricot Tart", "Walnut Bread", "Yak Cheese Pizza", "Local Herbal Mint Infusion"],
+      priceRange: "₹", isVeg: true,
+      notes: "Charming stone garden bakery managed by local youth using sundried apricots and orchard walnuts.",
+    },
+    {
+      id: "tur_f3", name: "Karakoram View Dhaba", type: "dhaba", town: "Turtuk Bridge, Shyok River",
+      mustTry: ["Steaming Thukpa", "Fried Momos", "Aloo Jeera with Tandoori Roti", "Masala Chai"],
+      priceRange: "₹", isVeg: false,
+      notes: "Riverside wooden deck offering direct panoramas of the jagged Karakoram foothills across the Shyok.",
+    },
+  ],
+
+  "basgo-4-days": [
+    {
+      id: "bas_f1", name: "Sham Valley Heritage Kitchen", type: "homestay-kitchen", town: "Basgo Village",
+      mustTry: ["Ladakhi Skyu (hand-rolled pasta stew)", "Chhurpe (dried yak cheese salad)", "Gur Gur Chai (butter tea)", "Khambir (sourdough bread)"],
+      priceRange: "₹", isVeg: true,
+      notes: "Authentic village homestay kitchen run by Sham Valley farmers using organic barley and sun-ripened garden vegetables.",
+    },
+    {
+      id: "bas_f2", name: "Nimmu Confluence Garden Cafe", type: "restaurant", town: "Nimmu Sangam (near Basgo)",
+      mustTry: ["Trout Curry with Rice", "Apricot Blossom Shake", "Thukpa with Tibetan Herbs", "Vegetable Momos"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Riverside garden dining near the confluence of Indus and Zanskar rivers.",
+    },
+    {
+      id: "bas_f3", name: "Basgo Gompa Viewpoint Dhaba", type: "dhaba", town: "Basgo Citadel Base",
+      mustTry: ["Ginger Lemon Honey Tea", "Maggi with Fried Egg & Herbs", "Hot Dal-Bhaat", "Local Seabuckthorn Juice"],
+      priceRange: "₹", isVeg: true,
+      notes: "Perched right below the clay fortress ruins with sweeping views of the historic Silk Route trade trail.",
+    },
+  ],
+
+  "chumathang-4-days": [
+    {
+      id: "chu_f1", name: "Hot Spring Thermal Cafe", type: "dhaba", town: "Chumathang Riverfront",
+      mustTry: ["Thermal Spring Boiled Eggs", "Tibetan Thenthuk (pulled noodle soup)", "Chhurpe Soup", "Hot Ginger Tea"],
+      priceRange: "₹", isVeg: true,
+      notes: "Iconic dhaba where food and eggs are gently boiled using the natural bubbling 87°C geothermal hot spring waters.",
+    },
+    {
+      id: "chu_f2", name: "Indus River Eco Dhaba", type: "restaurant", town: "Chumathang Village",
+      mustTry: ["Ladakhi Mok-Mok (meat & veg momos)", "Tingmo with spicy Aloo curry", "Butter Tea with Tsampa", "Local Salted Lassi"],
+      priceRange: "₹", isVeg: false,
+      notes: "Warm stone-and-glass dining room sheltering travelers against cold Changthang winds.",
+    },
+    {
+      id: "chu_f3", name: "Upshi Highway Junction Restaurant", type: "dhaba", town: "Upshi (Leh-Chumathang fork)",
+      mustTry: ["Hearty Rajma Chawal", "Egg Parathas", "Sweet Milk Tea", "Fresh Vegetable Chowmein"],
+      priceRange: "₹", isVeg: false,
+      notes: "Vital highway junction stop before ascending toward the remote eastern Changthang plateau.",
+    },
+  ],
+
+  "hanle-5-days": [
+    {
+      id: "han_f1", name: "Stargazer Dark Sky Cafe", type: "cafe", town: "Hanle Village (near Observatory)",
+      mustTry: ["Steaming Hot Thukpa", "Khambir with Yak Butter", "Pahadi Maggi with Local Dried Herbs", "Saffron Honey Kehwa"],
+      priceRange: "₹", isVeg: true,
+      notes: "Warm solar-heated lounge popular with astronomers and astrophotographers waiting for the night sky.",
+    },
+    {
+      id: "han_f2", name: "Padma Homestay Dining Hall", type: "homestay-kitchen", town: "Hanle Khaldo",
+      mustTry: ["Home-style Ladakhi Skyu", "Chhurpe Gravy with Rice", "Fresh Hot Chapattis with Desi Ghee", "Butter Tea"],
+      priceRange: "₹", isVeg: true,
+      notes: "Cozy bukhari-warmed communal dining room run by a welcoming Changpa family sharing nomadic mountain stories.",
+    },
+    {
+      id: "han_f3", name: "Nyoma Military Rest Dhaba", type: "dhaba", town: "Nyoma (on way to Hanle)",
+      mustTry: ["Tawa Parathas with Pickle & Curd", "Dal Tadka with Basmati Rice", "Adrak Chai", "Mutton Korma"],
+      priceRange: "₹", isVeg: false,
+      notes: "Last major town settlement before Hanle with reliable hot meals and ATM access.",
+    },
+  ],
 };
 
 export const DEFAULT_FOOD: FoodSpot[] = [

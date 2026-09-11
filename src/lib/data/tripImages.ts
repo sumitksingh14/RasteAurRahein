@@ -86,6 +86,15 @@ export const TRIP_IMAGES: Record<string, string> = {
   "chakrata-4-days": "/images/chakrata.jpg",
   "kanatal-4-days": "/images/kanatal.jpg",
   "chaukori-5-days": "/images/chaukori.jpg",
+
+  // Jammu, Kashmir & Ladakh Offbeat Destinations (from Mumbai/Pune)
+  "gurez-valley-5-days": "/images/gurez-valley.jpg",
+  "aru-valley-4-days": "/images/aru-valley.jpg",
+  "yusmarg-4-days": "/images/yusmarg.jpg",
+  "turtuk-5-days": "/images/turtuk.jpg",
+  "basgo-4-days": "/images/basgo.jpg",
+  "chumathang-4-days": "/images/chumathang.jpg",
+  "hanle-5-days": "/images/hanle.jpg",
 };
 
 export const DEFAULT_TRIP_IMAGE = "/images/leh-ladakh-pangong-lake.jpg";

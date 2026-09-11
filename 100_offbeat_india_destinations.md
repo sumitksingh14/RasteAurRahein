@@ -2,16 +2,6 @@
 
 A region-wise list of lesser-known, non-touristy destinations across India — skipping the usual Goa/Manali/Shimla circuit.
 
-
-## Jammu, Kashmir & Ladakh
-17. **Gurez Valley** – remote valley near the LoC, Dard-Shin culture
-18. **Aru Valley** – meadow base camp near Pahalgam
-19. **Yusmarg** – "meadow of Jesus," alpine pastures
-20. **Turtuk** – Balti village opened to tourists only in 2010
-21. **Basgo** – ruined royal fort and monastery near Leh
-22. **Chumathang** – hot springs on the Indus, near Tso Moriri route
-23. **Hanle** – dark-sky reserve and remote monastery
-
 ## Rajasthan & Gujarat (West)
 24. **Kuldhara** – abandoned "ghost village" near Jaisalmer
 25. **Narlai** – small heritage village below a granite monolith

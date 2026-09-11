@@ -33,6 +33,13 @@ export const TRIP_WEATHER_COORDS: Record<string, WeatherLocation> = {
   "chakrata-4-days": { name: "Chakrata", lat: 30.7016, lon: 77.8698 },
   "kanatal-4-days": { name: "Kanatal", lat: 30.4184, lon: 78.3444 },
   "chaukori-5-days": { name: "Chaukori", lat: 29.8710, lon: 80.0210 },
+  "gurez-valley-5-days": { name: "Dawar, Gurez Valley", lat: 34.6333, lon: 74.7667 },
+  "aru-valley-4-days": { name: "Aru Valley, Pahalgam", lat: 34.0933, lon: 75.2633 },
+  "yusmarg-4-days": { name: "Yusmarg", lat: 33.8290, lon: 74.6640 },
+  "turtuk-5-days": { name: "Turtuk, Nubra Valley", lat: 34.8464, lon: 76.8397 },
+  "basgo-4-days": { name: "Basgo, Sham Valley", lat: 34.2250, lon: 77.2880 },
+  "chumathang-4-days": { name: "Chumathang", lat: 33.3590, lon: 78.3240 },
+  "hanle-5-days": { name: "Hanle Dark Sky Reserve", lat: 32.7660, lon: 78.9660 },
 };
 
 // ---------------------------------------------------------------------------

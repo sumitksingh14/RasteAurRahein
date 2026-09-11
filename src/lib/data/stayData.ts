@@ -1459,6 +1459,174 @@ export const STAY_DATA: Record<string, HotelSuggestion[]> = {
       notes: "Charming family-run retreat nestled among cedar groves, celebrated for fresh Bhatt ki Churkani and warm mountain hospitality.",
     },
   ],
+
+  "gurez-valley-5-days": [
+    {
+      id: "grz_s1", name: "Kaka Palace Guest House Dawar", type: "hotel", stars: 3,
+      avgPricePerNight: 2800, town: "Dawar, Gurez Valley", contact: "+91-94190-28190",
+      bookingUrl: "https://www.google.com/search?q=Kaka+Palace+Gurez",
+      amenities: ["Habba Khatoon View", "Geyser Water", "In-House Wazwan", "Power Backup"],
+      notes: "The most established hotel in Dawar offering panoramic river views facing Habba Khatoon peak.",
+    },
+    {
+      id: "grz_s2", name: "JKTDC Alpine Huts Gurez", type: "resort", stars: 3,
+      avgPricePerNight: 2200, town: "Dawar Riverbank, Gurez", contact: "+91-1942-502279",
+      bookingUrl: "https://jktdc.co.in",
+      amenities: ["Wooden Log Cabins", "Kishanganga Riverfront", "Garden Lawn", "Heated Blankets"],
+      notes: "Charming government pine cabins nestled along the turquoise Kishanganga river.",
+    },
+    {
+      id: "grz_s3", name: "Dard Shin Heritage Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 1500, town: "Markoot Village, Gurez", contact: "+91-95968-33102",
+      bookingUrl: "https://www.google.com/search?q=Dard+Homestay+Gurez",
+      amenities: ["Traditional Wooden Interiors", "Home Cooked Meals", "Cultural Storytelling", "Warm Bedding"],
+      notes: "Authentic Dardic village homestay where host families share centuries-old folklore and home-cooked Shina dishes.",
+    },
+  ],
+
+  "aru-valley-4-days": [
+    {
+      id: "aru_s1", name: "Aru Eco Resort & Cottages", type: "resort", stars: 4,
+      avgPricePerNight: 4200, town: "Aru Valley, Pahalgam", contact: "+91-99066-88120",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Pahalgam",
+      amenities: ["Meadow Facing Balconies", "Bonfire Garden", "Central Heating", "Horse Riding Assistance"],
+      notes: "Wooden chalets set amidst the main Aru meadow overlooking pine ridges and grazing pastures.",
+    },
+    {
+      id: "aru_s2", name: "Milky Way Guest House & Camps", type: "guesthouse", stars: 3,
+      avgPricePerNight: 1800, town: "Aru Village", contact: "+91-94195-43090",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Pahalgam",
+      amenities: ["Trekker Friendly", "Trout Dining", "Hot Water", "Local Guides"],
+      notes: "Popular hub for trekkers departing to Lidderwat and Tarsar Marsar lakes.",
+    },
+    {
+      id: "aru_s3", name: "JKTDC Alpine Tourist Hut Aru", type: "guesthouse", stars: 3,
+      avgPricePerNight: 2000, town: "Aru Meadow", contact: "+91-1936-243224",
+      bookingUrl: "https://jktdc.co.in",
+      amenities: ["Scenic Lawn", "Spacious Suites", "Mountain Stream", "Kitchen Facility"],
+      notes: "Peaceful government rest huts positioned on an elevated terrace with uninterrupted 360-degree views of the valley.",
+    },
+  ],
+
+  "yusmarg-4-days": [
+    {
+      id: "yus_s1", name: "JKTDC Kongposh Tourist Complex Yusmarg", type: "resort", stars: 3,
+      avgPricePerNight: 2400, town: "Yusmarg Central Meadow", contact: "+91-1942-502280",
+      bookingUrl: "https://jktdc.co.in",
+      amenities: ["Meadow View Chalets", "Restaurant", "Horse Riding Desk", "Geysers"],
+      notes: "Set right in the heart of the rolling green grasslands of Yusmarg facing the Pir Panjal range.",
+    },
+    {
+      id: "yus_s2", name: "Yusmarg Pine Forest Huts", type: "homestay", stars: 3,
+      avgPricePerNight: 1800, town: "Yusmarg Ridge", contact: "+91-94191-77823",
+      bookingUrl: "https://www.google.com/search?q=Yusmarg+Huts",
+      amenities: ["Pine Forest Setting", "Warm Bukhari Heating", "Local Kashmiri Food", "Parking"],
+      notes: "Tranquil wooden cottages sheltered under towering firs, ideal for quiet retreats away from tourist crowds.",
+    },
+    {
+      id: "yus_s3", name: "Nilnag Lake Eco Camp", type: "camp", stars: 3,
+      avgPricePerNight: 2000, town: "Nilnag Forest Trail", contact: "+91-98711-45601",
+      bookingUrl: "https://www.google.com/search?q=Nilnag+Camp+Yusmarg",
+      amenities: ["Safari Tents", "Bonfire Nights", "Stargazing", "Nature Treks"],
+      notes: "Lakeside wilderness campsite beside the turquoise waters of pine-rimmed Nilnag lake.",
+    },
+  ],
+
+  "turtuk-5-days": [
+    {
+      id: "tur_s1", name: "Maha Guest House Turtuk", type: "guesthouse", stars: 3,
+      avgPricePerNight: 2200, town: "Youl, Turtuk", contact: "+91-94691-76110",
+      bookingUrl: "https://www.google.com/search?q=Maha+Guest+House+Turtuk",
+      amenities: ["Apricot Garden Terrace", "Traditional Balti Food", "Solar Hot Water", "Wi-Fi"],
+      notes: "Famed stone heritage guesthouse set inside lush apricot groves in historic Youl hamlet.",
+    },
+    {
+      id: "tur_s2", name: "Turtuk Holiday Resort", type: "camp", stars: 4,
+      avgPricePerNight: 3800, town: "Farol, Turtuk", contact: "+91-94198-15400",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Turtuk",
+      amenities: ["Luxury Swiss Tents", "Karakoram View Deck", "Buffet Meals Included", "Campfire"],
+      notes: "Comfortable glamping retreat with wooden verandas looking toward the Karakoram mountain crest.",
+    },
+    {
+      id: "tur_s3", name: "Balti Heritage Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 1600, town: "Farol, Turtuk", contact: "+91-94193-45210",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Turtuk",
+      amenities: ["Carved Wood Rooms", "Home Cooked Kissir", "Village Walks", "Organic Fruits"],
+      notes: "Stay with a local Balti family in a 150-year-old stone farmhouse with terrace drying beds for sweet apricots.",
+    },
+  ],
+
+  "basgo-4-days": [
+    {
+      id: "bas_s1", name: "Nimmu House Ladakh (Heritage Hotel)", type: "resort", stars: 5,
+      avgPricePerNight: 9500, town: "Nimmu (near Basgo)", contact: "+91-98108-98444",
+      bookingUrl: "https://www.nimmu-house.com",
+      amenities: ["Restored Royal Ladakhi House", "Organic Orchard Garden", "Luxury Tents", "Yoga Deck", "Gourmet Dining"],
+      notes: "Stunning 100-year-old heritage boutique hotel set in a 1-acre apricot and walnut orchard, 8 km from Basgo Gompa.",
+    },
+    {
+      id: "bas_s2", name: "Basgo Heritage Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 1800, town: "Basgo Village", contact: "+91-94198-02319",
+      bookingUrl: "https://www.google.com/search?q=Basgo+Homestay",
+      amenities: ["Traditional Ladakhi Kitchen", "Bukhari Heating", "Citadel View Rooftop", "Hot Water"],
+      notes: "Centuries-old mud-brick village home situated right beneath the Basgo citadel fortress.",
+    },
+    {
+      id: "bas_s3", name: "Sham Valley Camp & Cottages", type: "camp", stars: 3,
+      avgPricePerNight: 2600, town: "Saspol / Basgo Road", contact: "+91-94191-78901",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Ladakh",
+      amenities: ["Valley River Views", "Swiss Tents", "Buffet Breakfast", "Free Parking"],
+      notes: "Riverside camp located along the Indus highway, ideal base for exploring Basgo, Likir, and Alchi.",
+    },
+  ],
+
+  "chumathang-4-days": [
+    {
+      id: "chu_s1", name: "Chumathang Hot Spring Resort", type: "resort", stars: 3,
+      avgPricePerNight: 2800, town: "Chumathang Riverbank", contact: "+91-94191-78220",
+      bookingUrl: "https://www.google.com/search?q=Chumathang+Hot+Spring+Resort",
+      amenities: ["Natural Geothermal Bathrooms", "Geothermally Heated Rooms", "Indus View", "In-House Restaurant"],
+      notes: "Direct access to private piping-hot sulfur spring baths pumped straight from the riverbank springs into guest rooms.",
+    },
+    {
+      id: "chu_s2", name: "Indus Valley Tourist Guest House", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1500, town: "Chumathang Village", contact: "+91-94198-33410",
+      bookingUrl: "https://www.google.com/search?q=Chumathang+Guest+House",
+      amenities: ["Hot Spring Water", "Basic Ladakhi Dining", "Blankets", "Bicycle Rental"],
+      notes: "Budget friendly stopover along the Changthang highway, heavily favored by photographers and motorbikers.",
+    },
+    {
+      id: "chu_s3", name: "Mahe Eco Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 1800, town: "Mahe Bridge (near Chumathang)", contact: "+91-94692-10874",
+      bookingUrl: "https://www.google.com/search?q=Mahe+Homestay+Ladakh",
+      amenities: ["Riverside Orchard", "Home Cooked Thukpa", "Solar Hot Water", "Stargazing"],
+      notes: "Warm Changpa family retreat near the scenic Mahe bridge gateway to Tso Moriri and Hanle.",
+    },
+  ],
+
+  "hanle-5-days": [
+    {
+      id: "han_s1", name: "Padma Homestay & Observatory Lodge", type: "homestay", stars: 3,
+      avgPricePerNight: 2200, town: "Hanle Khaldo", contact: "+91-94692-24302",
+      bookingUrl: "https://www.google.com/search?q=Padma+Homestay+Hanle",
+      amenities: ["Observatory View", "Telescope Deck", "Warm Bukhari Heating", "Home Cooked Meals", "Solar Battery Power"],
+      notes: "Legendary pioneer homestay of Hanle, hosted by Padma and his family who assist astrophotographers and telescope crews.",
+    },
+    {
+      id: "han_s2", name: "Siddharth Homestay & Stargazer Camp", type: "homestay", stars: 3,
+      avgPricePerNight: 2400, town: "Hanle Village", contact: "+91-94198-90123",
+      bookingUrl: "https://www.google.com/search?q=Siddharth+Homestay+Hanle",
+      amenities: ["Clear Dark Sky Horizon", "Electric Blankets", "24hr Hot Water", "Oxygen Cylinder On Request"],
+      notes: "Positioned directly on the vast Hanle plain with 360-degree unobstructed horizon view for Milky Way shooting.",
+    },
+    {
+      id: "han_s3", name: "Hanle Astro-Resort & Swiss Tents", type: "camp", stars: 4,
+      avgPricePerNight: 4200, town: "Hanle Plains", contact: "+91-98711-22900",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Hanle",
+      amenities: ["Insulated Geodesic Domes", "Astro-Telescope Sessions", "Buffet Dining", "Oxygen Concentrators"],
+      notes: "Modern dark-sky glamping domes with skylight windows allowing you to watch the stars right from your bed.",
+    },
+  ],
 };
 
 export const DEFAULT_STAYS: HotelSuggestion[] = [

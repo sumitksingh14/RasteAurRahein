@@ -151,6 +151,13 @@ export const TRIP_REGION_MAP: Record<string, string[]> = {
   "chakrata-4-days": ["himalayas"],
   "kanatal-4-days": ["himalayas"],
   "chaukori-5-days": ["himalayas"],
+  "gurez-valley-5-days": ["himalayas"],
+  "aru-valley-4-days": ["himalayas"],
+  "yusmarg-4-days": ["himalayas"],
+  "turtuk-5-days": ["himalayas"],
+  "basgo-4-days": ["himalayas"],
+  "chumathang-4-days": ["himalayas"],
+  "hanle-5-days": ["himalayas"],
 
   // ── 2. Northeast India & Seven Sisters (17 trips) ──
   "sikkim-7-days": ["northeast-india"],

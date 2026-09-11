@@ -157,6 +157,53 @@ const FUEL_DATA: Record<string, FuelStop[]> = {
     { id: "chk_st5", name: "Chaukori Tea Estate Viewpoint", type: "viewpoint", town: "Chaukori", distanceFromPrev: 50, altitude: 2010, notes: "Front-row watchtower facing Nanda Devi and Trishul." },
     { id: "chk_st6", name: "Patal Bhuvaneshwar Complex", type: "rest", town: "Patal Bhuvaneshwar", distanceFromPrev: 35, altitude: 1350, notes: "Underground limestone cave counter and shoe stall." },
   ],
+  "gurez-valley-5-days": [
+    { id: "gur_st1", name: "Indian Oil Pump, Bandipora", type: "fuel", town: "Bandipora", distanceFromPrev: 0, altitude: 1580, notes: "MANDATORY REFUEL. Last reliable commercial fuel station before crossing Razdan Pass into Gurez." },
+    { id: "gur_st2", name: "Tragbal Viewpoint", type: "viewpoint", town: "Tragbal", distanceFromPrev: 18, altitude: 2750, notes: "Stunning panorama over Wular Lake and Pir Panjal mountains before the pass ascent." },
+    { id: "gur_st3", name: "Razdan Pass Summit", type: "viewpoint", town: "Razdan Pass", distanceFromPrev: 24, altitude: 3557, notes: "Highest point of the pass at 11,672 ft. Photo stop; Army checkpost clearance." },
+    { id: "gur_st4", name: "Dawar Army Checkpost & Town Entry", type: "rest", town: "Dawar, Gurez", distanceFromPrev: 42, altitude: 2370, notes: "Entry checkpoint for Gurez Valley. Present ID proofs. Small local diesel pump in town." },
+    { id: "gur_st5", name: "Tulail Road Junction", type: "rest", town: "Kanzalwan / Tulail Fork", distanceFromPrev: 15, altitude: 2420, notes: "Bridge over Kishanganga towards Sheikhpora and Badugam." },
+  ],
+  "aru-valley-4-days": [
+    { id: "aru_st1", name: "Srinagar Highway HPCL Fuel Station", type: "fuel", town: "Pampore / Awantipora", distanceFromPrev: 0, altitude: 1590, notes: "Top up fuel before entering Lidder Valley." },
+    { id: "aru_st2", name: "Awantipora Ruins Rest Stop", type: "rest", town: "Awantipora", distanceFromPrev: 30, altitude: 1600, notes: "Tea stall, restrooms, and 9th-century temple ruins along NH-44." },
+    { id: "aru_st3", name: "Pahalgam Taxi Stand & IOC Petrol Pump", type: "fuel", town: "Pahalgam Main Town", distanceFromPrev: 55, altitude: 2130, notes: "Last official petrol pump before Aru Valley (12 km ahead). Taxi union transfers." },
+    { id: "aru_st4", name: "Aru Eco Trailhead Parking", type: "rest", town: "Aru Valley", distanceFromPrev: 12, altitude: 2414, notes: "Meadow parking, trail guides, pony stand, and hot chai shacks." },
+  ],
+  "yusmarg-4-days": [
+    { id: "yus_st1", name: "Bharat Petroleum, Budgam Bypass", type: "fuel", town: "Budgam", distanceFromPrev: 0, altitude: 1610, notes: "Primary fuel station on the Srinagar–Yusmarg road." },
+    { id: "yus_st2", name: "Charar-i-Sharief Shrine Plaza", type: "rest", town: "Charar-i-Sharief", distanceFromPrev: 28, altitude: 1980, notes: "Historic Sufi shrine, ATM, and local bakeries with crisp girda bread." },
+    { id: "yus_st3", name: "Nagam Junction Rest Point", type: "food", town: "Nagam", distanceFromPrev: 8, altitude: 1850, notes: "Fruit stalls selling fresh Kashmiri apples and walnuts in season." },
+    { id: "yus_st4", name: "Yusmarg Meadow Gate & Tourist Center", type: "rest", town: "Yusmarg", distanceFromPrev: 11, altitude: 2396, notes: "Main parking lot, JKTDC information desk, pony stand, and cafe." },
+  ],
+  "turtuk-5-days": [
+    { id: "tur_st1", name: "HPCL Pump, Leh Main Town", type: "fuel", town: "Leh", distanceFromPrev: 0, altitude: 3524, notes: "MANDATORY FULL REFUEL before Khardung La ascent. Next fuel is 115 km away in Diskit." },
+    { id: "tur_st2", name: "South Pullu Army Checkpost", type: "rest", town: "Khardung La South", distanceFromPrev: 24, altitude: 4600, notes: "Permit inspection and medical emergency post." },
+    { id: "tur_st3", name: "Khardung La Pass Summit", type: "viewpoint", town: "Khardung La Pass", distanceFromPrev: 15, altitude: 5359, notes: "World's highest motorable pass at 17,982 ft. 15-min limit; Indian Army tea canteen." },
+    { id: "tur_st4", name: "Diskit Petrol Pump", type: "fuel", town: "Diskit, Nubra Valley", distanceFromPrev: 76, altitude: 3144, notes: "The ONLY operating petrol pump in Nubra Valley. Must fill up before Turtuk (90 km round-trip has zero fuel)." },
+    { id: "tur_st5", name: "Bogdang Village Army Checkpost", type: "rest", town: "Bogdang", distanceFromPrev: 65, altitude: 2950, notes: "Frontier checkpost transitioning from Buddhist Nubra into Balti Muslim region." },
+    { id: "tur_st6", name: "Turtuk Wooden Bridge Parking", type: "rest", town: "Turtuk Farol", distanceFromPrev: 25, altitude: 2900, notes: "Vehicle terminal. Walk across wooden suspension bridge into vehicle-free village paths." },
+  ],
+  "basgo-4-days": [
+    { id: "bas_st1", name: "Indian Oil Pump, Spituk", type: "fuel", town: "Spituk, Leh Bypass", distanceFromPrev: 0, altitude: 3300, notes: "First fuel station on the Leh-Srinagar Highway heading west." },
+    { id: "bas_st2", name: "Magnetic Hill Lay-by", type: "viewpoint", town: "Magnetic Hill", distanceFromPrev: 25, altitude: 3350, notes: "Marked yellow vehicle box demonstrating gravity anomaly." },
+    { id: "bas_st3", name: "Nimmu Indus-Zanskar Sangam Viewpoint", type: "viewpoint", town: "Nimmu", distanceFromPrev: 7, altitude: 3100, notes: "Panoramic cliffside rest stop with juice stalls and clean restrooms." },
+    { id: "bas_st4", name: "Basgo Citadel Access Gate", type: "rest", town: "Basgo Village", distanceFromPrev: 8, altitude: 3292, notes: "Foot of the mud-brick fortress; ticket counter and tea shop." },
+  ],
+  "chumathang-4-days": [
+    { id: "chu_st1", name: "Indian Oil Pump, Karu", type: "fuel", town: "Karu Junction", distanceFromPrev: 0, altitude: 3400, notes: "CRITICAL REFUEL. Last guaranteed fuel station on the Indus Highway towards Changthang." },
+    { id: "chu_st2", name: "Upshi Police & Army Checkpost", type: "rest", town: "Upshi", distanceFromPrev: 14, altitude: 3450, notes: "Permit checking station. River confluence dhaba serving thukpa and momos." },
+    { id: "chu_st3", name: "Kiari Village Rest Stop", type: "food", town: "Kiari", distanceFromPrev: 55, altitude: 3650, notes: "Tibetan resettlement village with roadside tea stalls and snack shops." },
+    { id: "chu_st4", name: "Chumathang Hot Springs Complex", type: "rest", town: "Chumathang", distanceFromPrev: 71, altitude: 3950, notes: "Riverbank natural steam vents, public/private thermal baths, and roadside dhabas." },
+  ],
+  "hanle-5-days": [
+    { id: "han_st1", name: "Karu Indian Oil Highway Pump", type: "fuel", town: "Karu", distanceFromPrev: 0, altitude: 3400, notes: "FULL TANK REFUEL. Carry extra fuel in jerrycans if possible; Hanle round-trip is ~550 km." },
+    { id: "han_st2", name: "Chumathang Hot Springs Dhaba", type: "food", town: "Chumathang", distanceFromPrev: 140, altitude: 3950, notes: "Midway breakfast and rest stop en route to Loma." },
+    { id: "han_st3", name: "Mahe Bridge Military Checkpost", type: "rest", town: "Mahe", distanceFromPrev: 25, altitude: 4100, notes: "Present Inner Line / Protected Area Permits to ITBP / Army." },
+    { id: "han_st4", name: "Nyoma Town IOC Fuel Pump", type: "fuel", town: "Nyoma", distanceFromPrev: 22, altitude: 4180, notes: "Small high-altitude pump — stock can be irregular; always top up if open." },
+    { id: "han_st5", name: "Loma Bridge Army Checkpoint", type: "rest", town: "Loma", distanceFromPrev: 18, altitude: 4200, notes: "Last military control post before entering the Hanle dark sky sanctuary basin." },
+    { id: "han_st6", name: "Hanle Observatory Base & Stargazing Point", type: "viewpoint", town: "Hanle / Mt. Saraswati", distanceFromPrev: 50, altitude: 4500, notes: "Foot of Mt. Saraswati. Use red-light headlamps only after dark to preserve dark-sky reserve." },
+  ],
 };
 
 const DEFAULT_STOPS: FuelStop[] = [

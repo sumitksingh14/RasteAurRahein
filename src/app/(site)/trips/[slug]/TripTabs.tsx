@@ -258,6 +258,48 @@ const AI_BUDGET_ESTIMATES: Record<string, {
     source: "Based on Chaukori Kumaon tea estate reports (2024–26)",
     searchQuery: "Chaukori Patal Bhuvaneshwar trip budget per day 2024",
   },
+  "gurez-valley-5-days": {
+    accommodation: [1500, 4500], food: [350, 900], transport: [1200, 2500],
+    activities: [200, 600], misc: [300, 600], currency: "INR",
+    source: "Based on Gurez Valley Kashmir borderlands reports (2024–26)",
+    searchQuery: "Gurez Valley trip budget per day 2024",
+  },
+  "aru-valley-4-days": {
+    accommodation: [1400, 5000], food: [300, 850], transport: [800, 1800],
+    activities: [250, 800], misc: [200, 500], currency: "INR",
+    source: "Based on Aru Valley Pahalgam reports (2024–26)",
+    searchQuery: "Aru Valley Pahalgam trip budget per day 2024",
+  },
+  "yusmarg-4-days": {
+    accommodation: [1200, 4200], food: [250, 800], transport: [700, 1600],
+    activities: [200, 600], misc: [200, 450], currency: "INR",
+    source: "Based on Yusmarg meadow retreat reports (2024–26)",
+    searchQuery: "Yusmarg Kashmir trip budget per day 2024",
+  },
+  "turtuk-5-days": {
+    accommodation: [1800, 6500], food: [350, 950], transport: [1400, 2800],
+    activities: [300, 900], misc: [400, 800], currency: "INR",
+    source: "Based on Turtuk Nubra Valley Baltistan reports (2024–26)",
+    searchQuery: "Turtuk Nubra Valley trip budget per day 2024",
+  },
+  "basgo-4-days": {
+    accommodation: [1500, 5500], food: [300, 900], transport: [900, 2000],
+    activities: [250, 700], misc: [250, 500], currency: "INR",
+    source: "Based on Sham Valley Basgo monastery reports (2024–26)",
+    searchQuery: "Basgo Sham Valley Ladakh trip budget per day 2024",
+  },
+  "chumathang-4-days": {
+    accommodation: [1400, 4800], food: [300, 850], transport: [1100, 2400],
+    activities: [200, 500], misc: [300, 600], currency: "INR",
+    source: "Based on Chumathang Indus hot spring reports (2024–26)",
+    searchQuery: "Chumathang hot springs Ladakh trip budget per day 2024",
+  },
+  "hanle-5-days": {
+    accommodation: [1800, 5500], food: [350, 900], transport: [1600, 3200],
+    activities: [400, 1200], misc: [400, 800], currency: "INR",
+    source: "Based on Hanle Dark Sky Reserve astrophotography reports (2024–26)",
+    searchQuery: "Hanle dark sky reserve Ladakh trip budget per day 2024",
+  },
 };
 
 const DEFAULT_BUDGET = {

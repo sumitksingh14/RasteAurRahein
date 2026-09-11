@@ -9047,4 +9047,2278 @@ export const DEMO_TRIPS: Trip[] = [
       },
     ],
   },
+  {
+    "_id": "trip-gurez-valley-5-days",
+    "title": "Gurez Valley & Dard-Shin Frontier — 5 Days from Mumbai / Pune (via Srinagar & Razdan Pass)",
+    "slug": "gurez-valley-5-days",
+    "excerpt": "Journey from Mumbai or Pune deep into northern Kashmir's most pristine frontier — crossing the dramatic Razdan Pass at 11,672 ft to reach the turquoise Kishanganga River, the iconic pyramid of Habba Khatoon peak, and the ancient Dard-Shin wooden villages of Dawar and Tulail bordering the LoC.",
+    "tags": [
+      "Himalayas",
+      "Kashmir",
+      "Offbeat",
+      "Culture",
+      "Borderlands",
+      "Mountains",
+      "Nature",
+      "India"
+    ],
+    "country": "India",
+    "startDate": "2026-06-15",
+    "endDate": "2026-06-19",
+    "bestSuggestedMonth": "May – October (Pass closed in winter)",
+    "status": "published",
+    "viewCount": 0,
+    "totalBudget": 22000,
+    "currency": "INR",
+    "tripType": "Offbeat Valley & Cultural Expedition",
+    "readingTime": 9,
+    "_createdAt": "2026-08-28T00:00:00Z",
+    "_updatedAt": "2026-08-28T00:00:00Z",
+    "itinerary": [
+      {
+        "_key": "gur-day1",
+        "dayNumber": 1,
+        "title": "Mumbai/Pune → Srinagar Airport → Razdan Pass (11,672 ft) → Dawar (Gurez)",
+        "date": "2026-06-15",
+        "summary": "Board an early morning flight from Mumbai (BOM) or Pune (PNQ) to Srinagar (SXR). Meet your 4x4 mountain cab and drive through the scenic northern shores of Wular Lake and Bandipora, ascending the hairpin turns of Razdan Pass before descending into the hidden Shangri-La of Dawar valley.",
+        "activities": [
+          {
+            "_key": "gur1a",
+            "title": "Morning Flight Mumbai / Pune to Srinagar Airport (~2.5 hrs)",
+            "description": "Direct morning flight landing in Srinagar by 9:30 AM. Clear baggage and meet your driver with pre-arranged army permit passes.",
+            "location": {
+              "name": "Srinagar International Airport",
+              "lat": 34.008,
+              "lng": 74.7741
+            },
+            "time": "09:30 AM",
+            "type": "transport",
+            "cost": 6800,
+            "currency": "INR",
+            "notes": "Keep physical copies of Aadhaar card / ID for border checkposts."
+          },
+          {
+            "_key": "gur1b",
+            "title": "Scenic Drive through Bandipora & Wular Lake Viewpoint",
+            "description": "Traverse apple orchards of north Kashmir and catch panoramic vistas of Wular Lake, India's largest freshwater lake.",
+            "location": {
+              "name": "Bandipora Wular Road",
+              "lat": 34.4225,
+              "lng": 74.6441
+            },
+            "time": "11:30 AM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Stop for hot Nadru pakoras and spiced Kahwa at Bandipora town."
+          },
+          {
+            "_key": "gur1c",
+            "title": "Razdan Pass Summit (3,557 m / 11,672 ft)",
+            "description": "The high-altitude gateway between Kashmir Valley and Gurez with breath-taking views of Harmukh peak and rolling alpine meadows.",
+            "location": {
+              "name": "Razdan Pass Top",
+              "lat": 34.5422,
+              "lng": 74.6548
+            },
+            "time": "01:30 PM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Army checkpost requires registration. Temperature drops noticeably by 10°C."
+          },
+          {
+            "_key": "gur1d",
+            "title": "Arrival in Dawar & Check-in at Riverside Lodge",
+            "description": "Descend into the emerald Kishanganga valley. Settle into your wooden log lodge facing the towering Habba Khatoon peak.",
+            "location": {
+              "name": "Dawar Main Town, Gurez",
+              "lat": 34.6375,
+              "lng": 74.7661
+            },
+            "time": "04:30 PM",
+            "type": "accommodation",
+            "cost": 2500,
+            "currency": "INR",
+            "notes": "Evening tea beside the turquoise Kishanganga river."
+          }
+        ]
+      },
+      {
+        "_key": "gur-day2",
+        "dayNumber": 2,
+        "title": "Habba Khatoon Pyramid Peak & Dard-Shin Village Heritage",
+        "date": "2026-06-16",
+        "summary": "Spend a mesmerizing day discovering the legend of Kashmiri poetess-queen Habba Khatoon, tasting crystal glacial water from her sacred spring, and exploring traditional logwood hamlet life with the indigenous Dard-Shin community.",
+        "activities": [
+          {
+            "_key": "gur2a",
+            "title": "Habba Khatoon Peak Golden Hour Viewpoint",
+            "description": "Watch dawn sunlight illuminate the sharp triangular limestone pyramid peak named after Kashmir's nightingale poetess.",
+            "location": {
+              "name": "Habba Khatoon Peak",
+              "lat": 34.6492,
+              "lng": 74.789
+            },
+            "time": "06:30 AM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "The peak dominates the Gurez skyline with sheer vertical limestone cliffs."
+          },
+          {
+            "_key": "gur2b",
+            "title": "Spring of Habba Khatoon & Riverside Trail",
+            "description": "Visit the natural freshwater spring bubbling from the rock face where the queen once composed mournful verses for King Yusuf Shah Chak.",
+            "location": {
+              "name": "Habba Khatoon Spring",
+              "lat": 34.648,
+              "lng": 74.785
+            },
+            "time": "09:30 AM",
+            "type": "activity",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "The spring water is pristine, ice-cold, and renowned for therapeutic minerals."
+          },
+          {
+            "_key": "gur2c",
+            "title": "Dard-Shin Cultural Heritage Walk in Dawar",
+            "description": "Stroll through traditional multi-storey cedar-log homes, interacting with the Dardic Shin-speaking locals wearing embroidered caps and silver jewelry.",
+            "location": {
+              "name": "Dawar Heritage Village",
+              "lat": 34.639,
+              "lng": 74.765
+            },
+            "time": "02:00 PM",
+            "type": "activity",
+            "cost": 200,
+            "currency": "INR",
+            "notes": "The Dards are an ancient Indo-Aryan ethnic group with rich oral folklore traditions."
+          },
+          {
+            "_key": "gur2d",
+            "title": "Fresh Himalayan Trout Dinner at River View",
+            "description": "Savor freshly caught pan-fried Kishanganga river trout served with warm walnut chutney and Kashmiri rice.",
+            "location": {
+              "name": "Dawar Riverfront",
+              "lat": 34.636,
+              "lng": 74.768
+            },
+            "time": "07:30 PM",
+            "type": "food",
+            "cost": 650,
+            "currency": "INR",
+            "notes": "Gurez is famous across Jammu & Kashmir for its crystal-clear rainbow trout waters."
+          }
+        ]
+      },
+      {
+        "_key": "gur-day3",
+        "dayNumber": 3,
+        "title": "Dawar to Tulail Valley Expedition (Sheikhpora & Badugam)",
+        "date": "2026-06-17",
+        "summary": "Embark on an off-road day expedition along the upper Kishanganga River to remote Tulail Valley — exploring untouched wooden villages like Barnoi, Sheikhpora, and Badugam nestled right against snow-clad mountain passes.",
+        "activities": [
+          {
+            "_key": "gur3a",
+            "title": "Drive into Tulail Valley along Kishanganga (45 km)",
+            "description": "Scenic 4WD drive passing narrow gorges, cascading waterfalls, and lush alpine pasture slopes towards the Dras frontier.",
+            "location": {
+              "name": "Tulail Valley Highway",
+              "lat": 34.5714,
+              "lng": 75.0519
+            },
+            "time": "08:30 AM",
+            "type": "transport",
+            "cost": 1200,
+            "currency": "INR",
+            "notes": "Road is unpaved in sections; high clearance 4WD SUV required."
+          },
+          {
+            "_key": "gur3b",
+            "title": "Traditional Wooden Log Architecture in Badugam",
+            "description": "Discover entirely hand-carved cedarwood settlements with mud-insulated flat roofs and hanging corn cobs.",
+            "location": {
+              "name": "Badugam Village, Tulail",
+              "lat": 34.582,
+              "lng": 75.07
+            },
+            "time": "11:30 AM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Zero modern cement construction preserves the authentic 19th-century frontier look."
+          },
+          {
+            "_key": "gur3c",
+            "title": "Picnic Lunch at Sheikhpora Alpine Meadows",
+            "description": "Unpack packed picnic lunch alongside blooming wild irises and grazing horses with snowfields towering above.",
+            "location": {
+              "name": "Sheikhpora Meadow",
+              "lat": 34.568,
+              "lng": 75.035
+            },
+            "time": "01:30 PM",
+            "type": "food",
+            "cost": 350,
+            "currency": "INR",
+            "notes": "Carry all trash back; leave zero trace in this delicate ecosystem."
+          },
+          {
+            "_key": "gur3d",
+            "title": "Evening Campfire & Dardic Storytelling Session",
+            "description": "Gather around crackling cedar bonfire under starlit skies listening to village elders recount historical Silk Route legends.",
+            "location": {
+              "name": "Dawar Camp Ground",
+              "lat": 34.6375,
+              "lng": 74.7661
+            },
+            "time": "07:30 PM",
+            "type": "activity",
+            "cost": 500,
+            "currency": "INR",
+            "notes": "Warm down jackets essential as night temperature plummets."
+          }
+        ]
+      },
+      {
+        "_key": "gur-day4",
+        "dayNumber": 4,
+        "title": "Kanzalwan Silk Route Crossing & Chorwan Borderlands",
+        "date": "2026-06-18",
+        "summary": "Visit Kanzalwan — the historic crossway where the ancient Silk Route bifurcated towards Gilgit and Central Asia — followed by the panoramic border viewpoints around Chorwan overlooking the Line of Control.",
+        "activities": [
+          {
+            "_key": "gur4a",
+            "title": "Drive to Kanzalwan Village & River Confluence",
+            "description": "Explore the quiet outpost where Sir Aurel Stein and ancient Buddhist pilgrims crossed on their way to Gilgit and China.",
+            "location": {
+              "name": "Kanzalwan Village",
+              "lat": 34.652,
+              "lng": 74.698
+            },
+            "time": "09:00 AM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Surrounded by steep deodar forests and sheer cliffs."
+          },
+          {
+            "_key": "gur4b",
+            "title": "Chorwan LoC Border Viewpoint",
+            "description": "Accompanied by Indian Army permissions, observe the peaceful frontier ridgeline dividing Jammu & Kashmir from Pakistan-administered Gilgit-Baltistan.",
+            "location": {
+              "name": "Chorwan Border Viewpoint",
+              "lat": 34.675,
+              "lng": 74.835
+            },
+            "time": "11:30 AM",
+            "type": "activity",
+            "cost": 100,
+            "currency": "INR",
+            "notes": "Strict photography restrictions apply towards defensive military installations."
+          },
+          {
+            "_key": "gur4c",
+            "title": "Traditional Noon Chai & Tsot Bread with Host Family",
+            "description": "Sip salted pink noon chai brewed with baking soda and milk, paired with fresh oven-baked tandoori girda and lavas bread.",
+            "location": {
+              "name": "Dawar Homestay Kitchen",
+              "lat": 34.6375,
+              "lng": 74.7661
+            },
+            "time": "03:30 PM",
+            "type": "food",
+            "cost": 200,
+            "currency": "INR",
+            "notes": "Hearty traditional Kashmiri high tea hospitality."
+          },
+          {
+            "_key": "gur4d",
+            "title": "Night Astrophotography by Kishanganga River",
+            "description": "With virtually zero light pollution, capture the Milky Way core arching above the silhouette of Habba Khatoon peak.",
+            "location": {
+              "name": "Kishanganga Riverbank",
+              "lat": 34.637,
+              "lng": 74.77
+            },
+            "time": "09:30 PM",
+            "type": "activity",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Bortle Class 1 dark skies ideal for star trail photography."
+          }
+        ]
+      },
+      {
+        "_key": "gur-day5",
+        "dayNumber": 5,
+        "title": "Dawar → Razdan Pass → Srinagar Shikara → Mumbai / Pune",
+        "date": "2026-06-19",
+        "summary": "Early morning farewell drive over Razdan Pass back into Kashmir Valley, enjoying an afternoon Shikara ride on Dal Lake and a traditional Wazwan feast before your return flight home.",
+        "activities": [
+          {
+            "_key": "gur5a",
+            "title": "Descent over Razdan Pass to Srinagar Valley (135 km, 4.5 hrs)",
+            "description": "Bid farewell to Gurez and wind down through the pine-scented peaks to Srinagar.",
+            "location": {
+              "name": "Razdan Pass Descent",
+              "lat": 34.5422,
+              "lng": 74.6548
+            },
+            "time": "07:00 AM",
+            "type": "transport",
+            "cost": 2500,
+            "currency": "INR",
+            "notes": "Early start ensures reaching Srinagar with comfortable flight buffer."
+          },
+          {
+            "_key": "gur5b",
+            "title": "Dal Lake Shikara Ride & Floating Market",
+            "description": "Glide silently along the water lilies and wooden houseboats of Dal Lake before lunch.",
+            "location": {
+              "name": "Dal Lake Ghat, Srinagar",
+              "lat": 34.0837,
+              "lng": 74.834
+            },
+            "time": "12:00 PM",
+            "type": "activity",
+            "cost": 600,
+            "currency": "INR",
+            "notes": "Relaxing contrast to the rugged mountain passes of the past 4 days."
+          },
+          {
+            "_key": "gur5c",
+            "title": "Authentic Kashmiri Wazwan Lunch at Ahdoos",
+            "description": "Savor Gushtaba, Rista, Rogan Josh, and Tabak Maaz served over fragrant saffron rice.",
+            "location": {
+              "name": "Residency Road, Srinagar",
+              "lat": 34.072,
+              "lng": 74.816
+            },
+            "time": "01:30 PM",
+            "type": "food",
+            "cost": 950,
+            "currency": "INR",
+            "notes": "Historic 1918 culinary institution on the banks of Jhelum River."
+          },
+          {
+            "_key": "gur5d",
+            "title": "Return Flight to Mumbai (BOM) / Pune (PNQ)",
+            "description": "Transfer to Srinagar Airport for evening direct flight back home.",
+            "location": {
+              "name": "Srinagar International Airport",
+              "lat": 34.008,
+              "lng": 74.7741
+            },
+            "time": "05:00 PM",
+            "type": "transport",
+            "cost": 7200,
+            "currency": "INR",
+            "notes": "Arrive at airport 2.5 hours early due to multi-tier security checks."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "trip-aru-valley-4-days",
+    "title": "Aru Valley Meadow Sanctuary — 4 Days from Mumbai / Pune (via Srinagar & Pahalgam)",
+    "slug": "aru-valley-4-days",
+    "excerpt": "Escape Mumbai or Pune for Kashmir's most idyllic alpine meadow retreat — nestled 12 km past Pahalgam at 7,920 ft. Walk along the gushing Lidder River, hike towards Lidderwat pine glades, explore Gujjar shepherd hamlets, and unwind surrounded by silver firs and towering Himalayan peaks.",
+    "tags": [
+      "Himalayas",
+      "Kashmir",
+      "Meadows",
+      "Trekking",
+      "Nature",
+      "Relaxation",
+      "Offbeat",
+      "India"
+    ],
+    "country": "India",
+    "startDate": "2026-06-22",
+    "endDate": "2026-06-25",
+    "bestSuggestedMonth": "April – October & Dec – Feb for snow",
+    "status": "published",
+    "viewCount": 0,
+    "totalBudget": 16500,
+    "currency": "INR",
+    "tripType": "Alpine Meadow & Nature Trek",
+    "readingTime": 8,
+    "_createdAt": "2026-08-28T00:00:00Z",
+    "_updatedAt": "2026-08-28T00:00:00Z",
+    "itinerary": [
+      {
+        "_key": "aru-day1",
+        "dayNumber": 1,
+        "title": "Mumbai/Pune → Srinagar Airport → Pahalgam → Aru Valley (7,920 ft)",
+        "date": "2026-06-22",
+        "summary": "Take a morning flight from Mumbai (BOM) or Pune (PNQ) to Srinagar (SXR). Drive south past the saffron fields of Pampore and 9th-century Avantipur ruins to Pahalgam, then ascend the winding 12 km single-lane forest road into the serene pine-ringed bowl of Aru Valley.",
+        "activities": [
+          {
+            "_key": "aru1a",
+            "title": "Morning Flight BOM/PNQ to Srinagar Airport",
+            "description": "Direct flight to Srinagar. Meet private cab outside terminal for the transfer to Lidder Valley.",
+            "location": {
+              "name": "Srinagar International Airport",
+              "lat": 34.008,
+              "lng": 74.7741
+            },
+            "time": "09:30 AM",
+            "type": "transport",
+            "cost": 6500,
+            "currency": "INR",
+            "notes": "Grab a bottle of fresh saffron kehwa from the airport lounge."
+          },
+          {
+            "_key": "aru1b",
+            "title": "Pampore Saffron Fields & Awantipora Hindu Temple Ruins",
+            "description": "Stop at the 9th-century Avantiswami temple built by King Avantivarman dedicated to Lord Vishnu with intricate basalt stone carvings.",
+            "location": {
+              "name": "Awantipora Ruins",
+              "lat": 33.9238,
+              "lng": 75.0152
+            },
+            "time": "11:30 AM",
+            "type": "sightseeing",
+            "cost": 25,
+            "currency": "INR",
+            "notes": "ASI protected site; buy certified saffron from nearby farmers' co-op."
+          },
+          {
+            "_key": "aru1c",
+            "title": "Ascent past Pahalgam into Aru Valley (12 km, 30 min)",
+            "description": "Bypass tourist crowds in Pahalgam and drive through dense deodar forests alongside gushing Aru Nallah stream.",
+            "location": {
+              "name": "Aru Valley Trailhead",
+              "lat": 34.09,
+              "lng": 75.26
+            },
+            "time": "02:30 PM",
+            "type": "transport",
+            "cost": 800,
+            "currency": "INR",
+            "notes": "Local Pahalgam taxi union regulates transfers; pre-booked vehicle arranged."
+          },
+          {
+            "_key": "aru1d",
+            "title": "Check-in at Aru Wooden Eco-Lodge & Golden Hour Stroll",
+            "description": "Settle into your cottage surrounded by terraced meadows and grazing ponies with Mt. Kolahoi visible in the distance.",
+            "location": {
+              "name": "Aru Eco Village",
+              "lat": 34.091,
+              "lng": 75.261
+            },
+            "time": "04:30 PM",
+            "type": "accommodation",
+            "cost": 2200,
+            "currency": "INR",
+            "notes": "Unwind with steaming cup of cinnamon-spiced Kashmiri Kehwa."
+          }
+        ]
+      },
+      {
+        "_key": "aru-day2",
+        "dayNumber": 2,
+        "title": "Day Hike towards Lidderwat & Gujjar Shepherd Settlements",
+        "date": "2026-06-23",
+        "summary": "Trek the legendary first leg of the Kolahoi Glacier & Tarsar Marsar trail — ascending through aromatic pine forests, crossing wooden log bridges over glacial torrents, and picnicking in the alpine glades of Lidderwat base.",
+        "activities": [
+          {
+            "_key": "aru2a",
+            "title": "Morning Trek to Lidderwat Trail (10 km round trip)",
+            "description": "Gentle 3-to-4 hour walk along Lidder River through dense silver firs, maple groves, and open riverside boulder fields.",
+            "location": {
+              "name": "Lidderwat Trailhead",
+              "lat": 34.15,
+              "lng": 75.25
+            },
+            "time": "08:30 AM",
+            "type": "activity",
+            "cost": 800,
+            "currency": "INR",
+            "notes": "Local trekking guide included. Ponies available for those preferring to ride."
+          },
+          {
+            "_key": "aru2b",
+            "title": "Visit Nomadic Gujjar Log Cabins & Noon Chai Tasting",
+            "description": "Interact with seasonal pastoralist shepherds, observing traditional buffalo butter churning and woodcraft in authentic dhoks.",
+            "location": {
+              "name": "Lidder Glade Shepherds",
+              "lat": 34.14,
+              "lng": 75.252
+            },
+            "time": "11:30 AM",
+            "type": "activity",
+            "cost": 150,
+            "currency": "INR",
+            "notes": "Warm hospitality; gift of biscuits or stationery appreciated by children."
+          },
+          {
+            "_key": "aru2c",
+            "title": "Riverside Picnic Lunch along Aru Nallah",
+            "description": "Enjoy fresh boiled eggs, parathas, and local apple jam beside the foaming glacial river.",
+            "location": {
+              "name": "Lidder River Bank",
+              "lat": 34.12,
+              "lng": 75.256
+            },
+            "time": "01:00 PM",
+            "type": "food",
+            "cost": 300,
+            "currency": "INR",
+            "notes": "The water is ice-cold straight from the Kolahoi Glacier."
+          },
+          {
+            "_key": "aru2d",
+            "title": "Traditional Kashmiri Wazwan Feast at Aru",
+            "description": "Relish Rista (meatballs in saffron-red gravy), Rogan Josh, and Haakh greens cooked by local chef.",
+            "location": {
+              "name": "Aru Village Restaurant",
+              "lat": 34.09,
+              "lng": 75.26
+            },
+            "time": "07:30 PM",
+            "type": "food",
+            "cost": 650,
+            "currency": "INR",
+            "notes": "Vegetarian options like Nadru Yakhni and Dum Aloo also served."
+          }
+        ]
+      },
+      {
+        "_key": "aru-day3",
+        "dayNumber": 3,
+        "title": "Green Top & Kootpathri Wildflower Meadows Ridge Trek",
+        "date": "2026-06-24",
+        "summary": "A moderate 4 km uphill hike to Green Top ridge viewpoint providing a 360-degree panorama of Aru Valley, Katrinag peak, and distant snow peaks, followed by an afternoon of wildflower spotting in Kootpathri pasture.",
+        "activities": [
+          {
+            "_key": "aru3a",
+            "title": "Hike to Green Top Viewpoint (2,850 m)",
+            "description": "Scenic climb through oak and birch woods opening out onto a lush green plateau overlooking the entire valley amphitheatre.",
+            "location": {
+              "name": "Green Top Viewpoint",
+              "lat": 34.105,
+              "lng": 75.275
+            },
+            "time": "09:00 AM",
+            "type": "activity",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Carry binoculars to spot Himalayan monal pheasants and golden eagles."
+          },
+          {
+            "_key": "aru3b",
+            "title": "Kootpathri Alpine Meadow Walk & Wildflowers",
+            "description": "Stroll across rolling alpine pastures carpeted in wild anemones, primulas, and forget-me-nots in early summer.",
+            "location": {
+              "name": "Kootpathri Meadow",
+              "lat": 34.1,
+              "lng": 75.27
+            },
+            "time": "12:00 PM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Peaceful off-the-beaten-path meadow with barely any tourists."
+          },
+          {
+            "_key": "aru3c",
+            "title": "Trout Angling or Riverside Reading by Aru Stream",
+            "description": "Try catch-and-release brown trout fly-fishing with permit or read quietly listening to rushing glacial waters.",
+            "location": {
+              "name": "Aru Stream Banks",
+              "lat": 34.089,
+              "lng": 75.259
+            },
+            "time": "03:30 PM",
+            "type": "activity",
+            "cost": 500,
+            "currency": "INR",
+            "notes": "Angling permits can be obtained via J&K Fisheries department."
+          },
+          {
+            "_key": "aru3d",
+            "title": "Starlit Campfire Evening in Aru Meadow",
+            "description": "Bonfire in the courtyard under star-studded Himalayan skies with hot walnut brownies and kahwa.",
+            "location": {
+              "name": "Aru Eco Cottage Lawn",
+              "lat": 34.091,
+              "lng": 75.261
+            },
+            "time": "08:00 PM",
+            "type": "accommodation",
+            "cost": 400,
+            "currency": "INR",
+            "notes": "Crisp night air with temperatures hovering around 8–12°C in summer."
+          }
+        ]
+      },
+      {
+        "_key": "aru-day4",
+        "dayNumber": 4,
+        "title": "Aru Valley → Betaab Valley Confluence → Srinagar Airport → Mumbai / Pune",
+        "date": "2026-06-25",
+        "summary": "Enjoy early dawn photography across mist-shrouded Aru meadows, visit the scenic Betaab Valley confluence near Pahalgam, and drive back along National Highway 44 to Srinagar for your return flight.",
+        "activities": [
+          {
+            "_key": "aru4a",
+            "title": "Morning Sunrise Photography in Aru Meadow",
+            "description": "Witness golden sunlight piercing through the pines onto mist hanging over the valley floor.",
+            "location": {
+              "name": "Aru Central Meadow",
+              "lat": 34.09,
+              "lng": 75.26
+            },
+            "time": "06:30 AM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Best lighting of the trip for landscape photography."
+          },
+          {
+            "_key": "aru4b",
+            "title": "Brief Visit to Betaab Valley (Hajan Valley)",
+            "description": "Famous movie shooting location with crystal-clear turquoise stream waters and manicured willow gardens.",
+            "location": {
+              "name": "Betaab Valley, Pahalgam",
+              "lat": 34.03,
+              "lng": 75.35
+            },
+            "time": "09:30 AM",
+            "type": "sightseeing",
+            "cost": 100,
+            "currency": "INR",
+            "notes": "Entry ticket ₹100 per person; 45-min stroll."
+          },
+          {
+            "_key": "aru4c",
+            "title": "Drive to Srinagar Airport (95 km, 2.5 hrs)",
+            "description": "Smooth highway drive through saffron country to Srinagar terminal.",
+            "location": {
+              "name": "Srinagar International Airport",
+              "lat": 34.008,
+              "lng": 74.7741
+            },
+            "time": "01:30 PM",
+            "type": "transport",
+            "cost": 2200,
+            "currency": "INR",
+            "notes": "Allow plenty of time for Srinagar highway traffic."
+          },
+          {
+            "_key": "aru4d",
+            "title": "Return Flight to Mumbai (BOM) / Pune (PNQ)",
+            "description": "Board late afternoon flight home carrying memories of Kashmir's most peaceful mountain meadow.",
+            "location": {
+              "name": "Srinagar International Airport",
+              "lat": 34.008,
+              "lng": 74.7741
+            },
+            "time": "04:30 PM",
+            "type": "transport",
+            "cost": 6800,
+            "currency": "INR",
+            "notes": "Direct or one-stop connection back to Mumbai or Pune."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "trip-yusmarg-4-days",
+    "title": "Yusmarg 'Meadow of Jesus' & Doodhganga River — 4 Days from Mumbai / Pune",
+    "slug": "yusmarg-4-days",
+    "excerpt": "A serene 4-day mountain sojourn from Mumbai or Pune to Yusmarg — the legendary 'Meadow of Jesus' tucked away in the Pir Panjal range just 47 km from Srinagar. Wander through rolling green carpets, trek to the frothing waters of Doodhganga river, visit turquoise Nilnag Lake, and experience untouched Kashmiri serenity.",
+    "tags": [
+      "Himalayas",
+      "Kashmir",
+      "Meadows",
+      "Peaceful",
+      "Trekking",
+      "Offbeat",
+      "Nature",
+      "India"
+    ],
+    "country": "India",
+    "startDate": "2026-06-27",
+    "endDate": "2026-06-30",
+    "bestSuggestedMonth": "April – October & Jan – Feb for snow",
+    "status": "published",
+    "viewCount": 0,
+    "totalBudget": 15500,
+    "currency": "INR",
+    "tripType": "Alpine Pastures & River Trek",
+    "readingTime": 8,
+    "_createdAt": "2026-08-28T00:00:00Z",
+    "_updatedAt": "2026-08-28T00:00:00Z",
+    "itinerary": [
+      {
+        "_key": "yus-day1",
+        "dayNumber": 1,
+        "title": "Mumbai/Pune → Srinagar Airport → Charar-i-Sharief → Yusmarg (7,861 ft)",
+        "date": "2026-06-27",
+        "summary": "Take an early morning flight from Mumbai (BOM) or Pune (PNQ) to Srinagar (SXR). Drive southwest through the apple orchards of Budgam, pausing at the historic 600-year-old wooden shrine of Sheikh Noor-ud-Din Wali in Charar-i-Sharief, before arriving at the sweeping alpine meadows of Yusmarg.",
+        "activities": [
+          {
+            "_key": "yus1a",
+            "title": "Morning Flight Mumbai / Pune to Srinagar Airport",
+            "description": "Direct morning arrival in Srinagar. Board waiting private taxi for the scenic 47 km drive southwest.",
+            "location": {
+              "name": "Srinagar International Airport",
+              "lat": 34.008,
+              "lng": 74.7741
+            },
+            "time": "09:30 AM",
+            "type": "transport",
+            "cost": 6500,
+            "currency": "INR",
+            "notes": "Yusmarg is the closest major alpine meadow to Srinagar airport (under 2 hours drive)."
+          },
+          {
+            "_key": "yus1b",
+            "title": "Heritage Visit to Charar-i-Sharief Sufi Shrine",
+            "description": "Visit the revered shrine dedicated to Kashmir's patron Sufi saint Sheikh Noor-ud-Din Noorani (Nund Rishi), famous for traditional woodwork and peaceful ambiance.",
+            "location": {
+              "name": "Charar-i-Sharief Shrine",
+              "lat": 33.8642,
+              "lng": 74.7678
+            },
+            "time": "11:30 AM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Dress respectfully; head covering required for both men and women."
+          },
+          {
+            "_key": "yus1c",
+            "title": "Arrival at Yusmarg Meadow (2,396 m) & JKTDC Cottage Check-in",
+            "description": "Emerge from pine forest into vast rolling emerald grasslands framed by the snow-capped Pir Panjal range and Tatakoti peak.",
+            "location": {
+              "name": "Yusmarg Alpine Meadow",
+              "lat": 33.83,
+              "lng": 74.66
+            },
+            "time": "02:00 PM",
+            "type": "accommodation",
+            "cost": 2000,
+            "currency": "INR",
+            "notes": "Check into cozy JKTDC tourist huts or pine view alpine resort."
+          },
+          {
+            "_key": "yus1d",
+            "title": "Golden Hour Stroll across Central Pastures",
+            "description": "Walk across the springy turf where legend says Jesus once walked. Watch grazing sheep and horses against the setting sun.",
+            "location": {
+              "name": "Yusmarg Central Pastures",
+              "lat": 33.828,
+              "lng": 74.658
+            },
+            "time": "05:00 PM",
+            "type": "activity",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Yusmarg is blessed with zero commercial clutter or loud crowds."
+          }
+        ]
+      },
+      {
+        "_key": "yus-day2",
+        "dayNumber": 2,
+        "title": "Doodhganga River Trek & Sang-e-Safed Valley Foothills",
+        "date": "2026-06-28",
+        "summary": "Descend through aromatic blue pine forests to the foaming, milky torrent of Doodhganga River, continuing on foot or horseback along the boulder-strewn glacial valley towards the snowbound amphitheatre of Sang-e-Safed.",
+        "activities": [
+          {
+            "_key": "yus2a",
+            "title": "Pine Forest Descent to Doodhganga Gorge (2 km, 45 min)",
+            "description": "Walk down through towering fir and pine woods to the roaring river, named 'Milk River' because its frothing white waters resemble milk.",
+            "location": {
+              "name": "Doodhganga River Trail",
+              "lat": 33.815,
+              "lng": 74.648
+            },
+            "time": "09:00 AM",
+            "type": "activity",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Gentle descent; pony hire available for ₹400 if preferred."
+          },
+          {
+            "_key": "yus2b",
+            "title": "Riverside Relaxation & Pebble Skipping by Doodhganga",
+            "description": "Sit on giant sun-warmed river boulders, dipping feet in ice-cold glacial meltwater and listening to the mountain roar.",
+            "location": {
+              "name": "Doodhganga River Banks",
+              "lat": 33.812,
+              "lng": 74.645
+            },
+            "time": "11:00 AM",
+            "type": "activity",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Take care near fast-flowing currents."
+          },
+          {
+            "_key": "yus2c",
+            "title": "Picnic Trek towards Sang-e-Safed (White Rock) Valley",
+            "description": "Follow the upstream trail towards the oval-shaped glacial valley of Sang-e-Safed (10 km one-way) surrounded by perpetual snowfields.",
+            "location": {
+              "name": "Sang-e-Safed Valley Trail",
+              "lat": 33.785,
+              "lng": 74.62
+            },
+            "time": "01:00 PM",
+            "type": "activity",
+            "cost": 700,
+            "currency": "INR",
+            "notes": "Trek as far as comfort allows; packed lunch provided by lodge."
+          },
+          {
+            "_key": "yus2d",
+            "title": "Traditional Kashmiri Dinner with Rogan Josh & Haakh",
+            "description": "Warm up in the wooden dining hall with slow-cooked mutton rogan josh, collard haakh greens, and steaming Kashmiri rice.",
+            "location": {
+              "name": "Yusmarg Tourist Complex",
+              "lat": 33.83,
+              "lng": 74.66
+            },
+            "time": "07:30 PM",
+            "type": "food",
+            "cost": 600,
+            "currency": "INR",
+            "notes": "Finish with a cup of soothing cardamom and almond kahwa."
+          }
+        ]
+      },
+      {
+        "_key": "yus-day3",
+        "dayNumber": 3,
+        "title": "Nilnag Alpine Blue Lake Forest Expedition",
+        "date": "2026-06-29",
+        "summary": "Trek or take a short off-road cab through thick deodar forest to Nilnag — an exquisite, secluded freshwater lake famous for its deep aquamarine color, water lilies, and tranquil pine-clad banks.",
+        "activities": [
+          {
+            "_key": "yus3a",
+            "title": "Trek through Blue Pine Forest to Nilnag Lake (4 km, 1.5 hrs)",
+            "description": "A scenic bridle path winding through chir and blue pine ridges down into the hidden lake basin.",
+            "location": {
+              "name": "Nilnag Lake Trail",
+              "lat": 33.842,
+              "lng": 74.698
+            },
+            "time": "09:30 AM",
+            "type": "activity",
+            "cost": 300,
+            "currency": "INR",
+            "notes": "Can also be reached via rough 4x4 road from Nagam village."
+          },
+          {
+            "_key": "yus3b",
+            "title": "Nilnag Lake Exploration & Photography",
+            "description": "Surrounded by pine-blanketed hills, the lake gets its name ('Blue Lake') from its brilliant teal hue reflecting the mountain sky.",
+            "location": {
+              "name": "Nilnag Lake, Yusmarg",
+              "lat": 33.842,
+              "lng": 74.698
+            },
+            "time": "11:30 AM",
+            "type": "sightseeing",
+            "cost": 50,
+            "currency": "INR",
+            "notes": "Historical lake noted in the Rajatarangini chronicles of Kashmir."
+          },
+          {
+            "_key": "yus3c",
+            "title": "Lakeside Village Dhaba Lunch",
+            "description": "Taste piping hot Rajma chawal, aloo jeera, and crisp tandoori roti at a family-run wooden shack.",
+            "location": {
+              "name": "Nilnag Village Dhaba",
+              "lat": 33.843,
+              "lng": 74.695
+            },
+            "time": "01:30 PM",
+            "type": "food",
+            "cost": 250,
+            "currency": "INR",
+            "notes": "Simple, honest, and comforting mountain meal."
+          },
+          {
+            "_key": "yus3d",
+            "title": "Sunset Viewpoint over Tatakoti & Sunset Peaks",
+            "description": "Watch dusk turn the Pir Panjal snows to burnt orange from the high western rim of Yusmarg.",
+            "location": {
+              "name": "Yusmarg Ridge Viewpoint",
+              "lat": 33.832,
+              "lng": 74.655
+            },
+            "time": "06:30 PM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Tatakoti Peak (4,725 m) stands majestic in the southern horizon."
+          }
+        ]
+      },
+      {
+        "_key": "yus-day4",
+        "dayNumber": 4,
+        "title": "Yusmarg → Srinagar Old City Heritage → Mumbai / Pune",
+        "date": "2026-06-30",
+        "summary": "Enjoy a final morning walk across the tranquil meadows, drive down to Srinagar for a quick exploration of the historic 14th-century Jamia Masjid in Old City, before boarding your flight back to Mumbai or Pune.",
+        "activities": [
+          {
+            "_key": "yus4a",
+            "title": "Dawn Walk in the Dew-Soaked Meadows",
+            "description": "Take deep breaths of crisp Himalayan mountain air scented with pine resin and wild herbs.",
+            "location": {
+              "name": "Yusmarg Meadows",
+              "lat": 33.83,
+              "lng": 74.66
+            },
+            "time": "07:00 AM",
+            "type": "activity",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Horses run freely across the mist-covered slopes at sunrise."
+          },
+          {
+            "_key": "yus4b",
+            "title": "Scenic Drive Yusmarg to Srinagar (47 km, 1.5 hrs)",
+            "description": "Descend from the highlands through terraced mustard and apple fields into Srinagar city.",
+            "location": {
+              "name": "Yusmarg to Srinagar Highway",
+              "lat": 33.95,
+              "lng": 74.75
+            },
+            "time": "09:30 AM",
+            "type": "transport",
+            "cost": 1500,
+            "currency": "INR",
+            "notes": "Smooth paved road with panoramic views of Srinagar basin."
+          },
+          {
+            "_key": "yus4c",
+            "title": "Historic Jamia Masjid Srinagar & Spicemarket Walk",
+            "description": "Visit the magnificent 600-year-old Indo-Saracenic wooden mosque featuring 378 majestic deodar pillars and courtyard fountain.",
+            "location": {
+              "name": "Jamia Masjid, Nowhatta",
+              "lat": 34.1011,
+              "lng": 74.815
+            },
+            "time": "11:30 AM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Pick up pure Kashmiri walnuts, dried morels (guchhi), and saffron."
+          },
+          {
+            "_key": "yus4d",
+            "title": "Transfer to Srinagar Airport & Return Flight to BOM / PNQ",
+            "description": "Check in for late afternoon direct flight back to Mumbai or Pune.",
+            "location": {
+              "name": "Srinagar International Airport",
+              "lat": 34.008,
+              "lng": 74.7741
+            },
+            "time": "03:30 PM",
+            "type": "transport",
+            "cost": 6500,
+            "currency": "INR",
+            "notes": "Arrive 2.5 hours prior to departure for security screening."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "trip-turtuk-5-days",
+    "title": "Turtuk Balti Frontier & Nubra Valley — 5 Days from Mumbai / Pune (via Leh & Khardung La)",
+    "slug": "turtuk-5-days",
+    "excerpt": "Venture from Mumbai or Pune across the legendary Khardung La Pass (17,982 ft) into Nubra Valley and further to Turtuk — the northernmost Balti settlement in India, opened to travellers only in 2010. Experience stone-and-wood Balti architecture, lush apricot orchards, organic walnut farming, and century-old Tibetan-Persian heritage on the edge of the Karakoram.",
+    "tags": [
+      "Himalayas",
+      "Ladakh",
+      "Balti",
+      "Borderlands",
+      "High Altitude",
+      "Culture",
+      "Adventure",
+      "India"
+    ],
+    "country": "India",
+    "startDate": "2026-07-05",
+    "endDate": "2026-07-09",
+    "bestSuggestedMonth": "May – October",
+    "status": "published",
+    "viewCount": 0,
+    "totalBudget": 26000,
+    "currency": "INR",
+    "tripType": "Karakoram Frontier Cultural Road Trip",
+    "readingTime": 10,
+    "_createdAt": "2026-08-28T00:00:00Z",
+    "_updatedAt": "2026-08-28T00:00:00Z",
+    "itinerary": [
+      {
+        "_key": "tur-day1",
+        "dayNumber": 1,
+        "title": "Mumbai/Pune → Leh Airport (11,500 ft) — Mandatory Acclimatisation",
+        "date": "2026-07-05",
+        "summary": "Catch an early morning flight from Mumbai (BOM) or Pune (PNQ) to Leh (IXL) over the snow-bound Himalayas. Dedicate the entire first day to strict high-altitude acclimatisation — resting, hydrating, and taking a gentle evening walk around the historic Leh Main Bazaar.",
+        "activities": [
+          {
+            "_key": "tur1a",
+            "title": "Morning Flight BOM/PNQ to Leh Kushok Bakula Rimpochee Airport",
+            "description": "Spectacular aerial landing over the Stok Kangri and Zanskar ranges. Arrive at 3,524 m altitude.",
+            "location": {
+              "name": "Leh Kushok Bakula Rimpochee Airport",
+              "lat": 34.1359,
+              "lng": 77.5465
+            },
+            "time": "08:30 AM",
+            "type": "transport",
+            "cost": 8500,
+            "currency": "INR",
+            "notes": "Diamox (as per doctor advice) and immediate rest are crucial for altitude acclimatisation."
+          },
+          {
+            "_key": "tur1b",
+            "title": "Check-in at Hotel & Mandatory Full Day Rest",
+            "description": "Lie down, sip hot water, garlic soup, or ginger lemon tea. Do not shower or rush around on Day 1.",
+            "location": {
+              "name": "Leh Main Town Hotel",
+              "lat": 34.1642,
+              "lng": 77.584
+            },
+            "time": "10:00 AM",
+            "type": "accommodation",
+            "cost": 3200,
+            "currency": "INR",
+            "notes": "Keep pulse oximeter handy; target SpO2 above 85%."
+          },
+          {
+            "_key": "tur1c",
+            "title": "Gentle Evening Stroll in Leh Main Bazaar & Shanti Stupa View",
+            "description": "A relaxed flat walk through the pedestrianized stone market lined with Tibetan handicraft stores and organic cafes.",
+            "location": {
+              "name": "Leh Main Bazaar",
+              "lat": 34.1645,
+              "lng": 77.585
+            },
+            "time": "05:30 PM",
+            "type": "activity",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Collect Inner Line Permits (ILP) / Protected Area Permits for Nubra & Turtuk from travel agent."
+          },
+          {
+            "_key": "tur1d",
+            "title": "Warm Ladakhi Thukpa Dinner at Tibetan Kitchen",
+            "description": "Comforting handmade pulled noodle soup with mountain greens and momos.",
+            "location": {
+              "name": "Fort Road, Leh",
+              "lat": 34.162,
+              "lng": 77.583
+            },
+            "time": "07:30 PM",
+            "type": "food",
+            "cost": 450,
+            "currency": "INR",
+            "notes": "Light, easily digestible meal recommended during acclimatisation."
+          }
+        ]
+      },
+      {
+        "_key": "tur-day2",
+        "dayNumber": 2,
+        "title": "Leh → Khardung La Pass (17,982 ft) → Diskit → Turtuk (205 km)",
+        "date": "2026-07-06",
+        "summary": "Drive across the famed Khardung La pass into the Shyok river gorge of Nubra Valley, driving past the Diskit Monastery and military settlements of Thoise to reach Turtuk — nestled right beneath the soaring peaks of Karakoram.",
+        "activities": [
+          {
+            "_key": "tur2a",
+            "title": "Ascent to Khardung La Pass Summit (5,359 m / 17,982 ft)",
+            "description": "Cross one of the highest motorable mountain passes in the world with breathtaking views of the Karakoram range to the north.",
+            "location": {
+              "name": "Khardung La Pass Summit",
+              "lat": 34.2789,
+              "lng": 77.6045
+            },
+            "time": "08:30 AM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Do NOT stay longer than 15-20 minutes at the top to avoid Acute Mountain Sickness (AMS)."
+          },
+          {
+            "_key": "tur2b",
+            "title": "Diskit Giant Maitreya Buddha & Monastery Stop",
+            "description": "Behold the 106-foot tall colorful statue of Maitreya Buddha overlooking the Nubra-Shyok confluence.",
+            "location": {
+              "name": "Diskit Monastery",
+              "lat": 34.5429,
+              "lng": 77.5594
+            },
+            "time": "11:30 AM",
+            "type": "sightseeing",
+            "cost": 50,
+            "currency": "INR",
+            "notes": "Nubra's oldest monastery dating back to the 14th century."
+          },
+          {
+            "_key": "tur2c",
+            "title": "Drive through Shyok Gorge & Bogdang Checkpost",
+            "description": "Follow the turquoise Shyok River into the Baltistan frontier, crossing through the traditional village of Bogdang.",
+            "location": {
+              "name": "Bogdang Frontier Checkpost",
+              "lat": 34.6715,
+              "lng": 77.2185
+            },
+            "time": "02:00 PM",
+            "type": "transport",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Army permit verification; checkpost manned by Ladakh Scouts."
+          },
+          {
+            "_key": "tur2d",
+            "title": "Arrive Turtuk (2,900 m) & Check-in at Wooden Balti Homestay",
+            "description": "Cross the wooden footbridge into Turtuk Farol, greeted by lush apricot orchards and friendly Balti villagers.",
+            "location": {
+              "name": "Turtuk Farol Village",
+              "lat": 34.8467,
+              "lng": 76.8286
+            },
+            "time": "05:00 PM",
+            "type": "accommodation",
+            "cost": 2500,
+            "currency": "INR",
+            "notes": "At 2,900 m, Turtuk is noticeably warmer and richer in oxygen than Leh."
+          }
+        ]
+      },
+      {
+        "_key": "tur-day3",
+        "dayNumber": 3,
+        "title": "Turtuk Heritage: Yabgo Royal Palace, Natural Cold Storage & Orchards",
+        "date": "2026-07-07",
+        "summary": "Spend a magical day exploring the twin villages of Turtuk Farol and Youl — visiting the Yabgo Royal Dynasty Palace Museum, inspecting ancient natural rock refrigerators, wandering through stone-walled apricot groves, and savoring authentic Balti cuisine.",
+        "activities": [
+          {
+            "_key": "tur3a",
+            "title": "Yabgo Royal Heritage Palace Museum Tour",
+            "description": "Guided tour by the reigning descendant of the Yabgo dynasty that ruled Baltistan for over 1,000 years, viewing weapons, armor, and royal robes.",
+            "location": {
+              "name": "Yabgo Royal Palace, Turtuk",
+              "lat": 34.848,
+              "lng": 76.8305
+            },
+            "time": "09:30 AM",
+            "type": "sightseeing",
+            "cost": 150,
+            "currency": "INR",
+            "notes": "The royal house features traditional Tibetan-Persian woodwork and ancestral artifacts."
+          },
+          {
+            "_key": "tur3b",
+            "title": "Ancient Natural Cold Storage (Nangchung)",
+            "description": "Inspect ingenious hollow stone chambers cooled by subterranean glacial air currents where villagers preserve butter and meat all summer.",
+            "location": {
+              "name": "Turtuk Farol Cold Chambers",
+              "lat": 34.847,
+              "lng": 76.827
+            },
+            "time": "11:30 AM",
+            "type": "activity",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Natural geological refrigeration functioning flawlessly for centuries."
+          },
+          {
+            "_key": "tur3c",
+            "title": "Balti Feast: Kissir Buckwheat Pancakes & Muskat Walnut Paste",
+            "description": "Delight in regional Balti delicacies: fresh Kissir with spicy mint-walnut sauce, dried apricot stew, and homemade herbal tea.",
+            "location": {
+              "name": "Balti Kitchen, Turtuk Youl",
+              "lat": 34.846,
+              "lng": 76.829
+            },
+            "time": "01:30 PM",
+            "type": "food",
+            "cost": 450,
+            "currency": "INR",
+            "notes": "Distinct from Ladakhi food; heavily influenced by Central Asian and Persian culinary roots."
+          },
+          {
+            "_key": "tur3d",
+            "title": "Hike to Turtuk Gompa Viewpoint for Sunset over K2 Foothills",
+            "description": "Climb through barley terraces to the solitary Buddhist monastery perched on a cliff edge with panoramic views into northern Karakoram.",
+            "location": {
+              "name": "Turtuk Gompa",
+              "lat": 34.8495,
+              "lng": 76.832
+            },
+            "time": "05:30 PM",
+            "type": "sightseeing",
+            "cost": 50,
+            "currency": "INR",
+            "notes": "Spectacular golden hour light over the Shyok river canyon."
+          }
+        ]
+      },
+      {
+        "_key": "tur-day4",
+        "dayNumber": 4,
+        "title": "Tyakshi LoC Border Village → Hunder Sand Dunes Camel Safari",
+        "date": "2026-07-08",
+        "summary": "Visit Tyakshi and Thang — the absolute last Indian villages on the Line of Control with Pakistan — before driving back to Hunder to experience double-humped Bactrian camel rides amongst the rolling white sand dunes.",
+        "activities": [
+          {
+            "_key": "tur4a",
+            "title": "Excursion to Tyakshi & Thang Border Viewpoint (10 km)",
+            "description": "The northernmost point accessible to tourists in India; stand at the border marker overlooking the village of Phobrang across the LoC.",
+            "location": {
+              "name": "Thang Border Post",
+              "lat": 34.872,
+              "lng": 76.795
+            },
+            "time": "09:00 AM",
+            "type": "sightseeing",
+            "cost": 50,
+            "currency": "INR",
+            "notes": "Indian Army post with small canteen serving tea; carry original Aadhaar/passport."
+          },
+          {
+            "_key": "tur4b",
+            "title": "Drive Turtuk to Hunder Desert Oasis (85 km, 2.5 hrs)",
+            "description": "Retrace the scenic Shyok river valley back towards the white sand dunes of central Nubra.",
+            "location": {
+              "name": "Shyok River Road",
+              "lat": 34.6,
+              "lng": 77.4
+            },
+            "time": "12:00 PM",
+            "type": "transport",
+            "cost": 1500,
+            "currency": "INR",
+            "notes": "Stop for quick lunch and fresh seabuckthorn juice at Diskit."
+          },
+          {
+            "_key": "tur4c",
+            "title": "Bactrian Double-Humped Camel Safari at Hunder Dunes",
+            "description": "Ride shaggy two-humped Bactrian camels — descendants of the ancient Silk Route caravans — across undulating cold desert dunes.",
+            "location": {
+              "name": "Hunder Sand Dunes",
+              "lat": 34.5775,
+              "lng": 77.4728
+            },
+            "time": "05:00 PM",
+            "type": "activity",
+            "cost": 350,
+            "currency": "INR",
+            "notes": "Stunning contrast of white sand, green sea-buckthorn bushes, and snow-capped peaks."
+          },
+          {
+            "_key": "tur4d",
+            "title": "Overnight in Luxury Desert Glamping Camp at Hunder",
+            "description": "Sleep under the stars in deluxe Swiss cottage tents with attached bath and hot water.",
+            "location": {
+              "name": "Hunder Valley Camps",
+              "lat": 34.58,
+              "lng": 77.47
+            },
+            "time": "07:30 PM",
+            "type": "accommodation",
+            "cost": 3500,
+            "currency": "INR",
+            "notes": "Buffet dinner with Ladakhi cultural dance performance."
+          }
+        ]
+      },
+      {
+        "_key": "tur-day5",
+        "dayNumber": 5,
+        "title": "Hunder → Khardung La → Leh Airport → Mumbai / Pune",
+        "date": "2026-07-09",
+        "summary": "Early morning crossing over Khardung La Pass descending directly to Leh Kushok Bakula Rimpochee Airport for your afternoon flight back to Mumbai or Pune.",
+        "activities": [
+          {
+            "_key": "tur5a",
+            "title": "Drive Hunder to Khardung La to Leh (125 km, 4.5 hrs)",
+            "description": "Early 5:30 AM departure to beat pass traffic and ascend over the Karakoram ridge into Leh valley.",
+            "location": {
+              "name": "Khardung La Highway",
+              "lat": 34.2789,
+              "lng": 77.6045
+            },
+            "time": "05:30 AM",
+            "type": "transport",
+            "cost": 2800,
+            "currency": "INR",
+            "notes": "Packed breakfast provided by Hunder camp."
+          },
+          {
+            "_key": "tur5b",
+            "title": "Quick Souvenir Stop at Leh Tibetan Market",
+            "description": "Pick up hand-spun Ladakhi pashmina, organic dried apricots, and turquoise jewelry.",
+            "location": {
+              "name": "Leh Tibetan Refugee Market",
+              "lat": 34.163,
+              "lng": 77.582
+            },
+            "time": "10:30 AM",
+            "type": "activity",
+            "cost": 500,
+            "currency": "INR",
+            "notes": "Ensure pashmina has official government GI tag."
+          },
+          {
+            "_key": "tur5c",
+            "title": "Transfer to Leh Kushok Bakula Rimpochee Airport (IXL)",
+            "description": "Drop at airport terminal for departure.",
+            "location": {
+              "name": "Leh Kushok Bakula Rimpochee Airport",
+              "lat": 34.1359,
+              "lng": 77.5465
+            },
+            "time": "11:30 AM",
+            "type": "transport",
+            "cost": 400,
+            "currency": "INR",
+            "notes": "Strict powerbank and battery check rules apply in baggage."
+          },
+          {
+            "_key": "tur5d",
+            "title": "Return Flight to Mumbai (BOM) / Pune (PNQ)",
+            "description": "Board afternoon connecting flight back to Mumbai or Pune carrying memories of Baltistan.",
+            "location": {
+              "name": "Leh Kushok Bakula Rimpochee Airport",
+              "lat": 34.1359,
+              "lng": 77.5465
+            },
+            "time": "01:00 PM",
+            "type": "transport",
+            "cost": 8800,
+            "currency": "INR",
+            "notes": "Window seats on the right side offer panoramic Himalayan views."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "trip-basgo-4-days",
+    "title": "Basgo Royal Citadel & Sham Valley Heritage — 4 Days from Mumbai / Pune (via Leh)",
+    "slug": "basgo-4-days",
+    "excerpt": "Discover Ladakh's medieval history on a 4-day trip from Mumbai or Pune centered around the dramatic mud-brick citadel and 16th-century golden Maitreya Buddha of Basgo Gompa. Combine ancient cliffside ruins with Sham Valley highlights: the Indus-Zanskar confluence at Nimmu, Magnetic Hill, and the 1,000-year-old murals of Likir and Alchi.",
+    "tags": [
+      "Himalayas",
+      "Ladakh",
+      "Heritage",
+      "Monasteries",
+      "Culture",
+      "History",
+      "Offbeat",
+      "India"
+    ],
+    "country": "India",
+    "startDate": "2026-07-12",
+    "endDate": "2026-07-15",
+    "bestSuggestedMonth": "April – November",
+    "status": "published",
+    "viewCount": 0,
+    "totalBudget": 17500,
+    "currency": "INR",
+    "tripType": "Historic Citadel & Monastery Circuit",
+    "readingTime": 8,
+    "_createdAt": "2026-08-28T00:00:00Z",
+    "_updatedAt": "2026-08-28T00:00:00Z",
+    "itinerary": [
+      {
+        "_key": "bas-day1",
+        "dayNumber": 1,
+        "title": "Mumbai/Pune → Leh Airport → Acclimatisation & Spituk Gompa",
+        "date": "2026-07-12",
+        "summary": "Arrive in Leh from Mumbai or Pune. Spend the day gently acclimatising to the thin mountain air at 11,500 ft, followed by a relaxed late-afternoon visit to the 11th-century cliff-top Spituk Monastery overlooking the Indus River.",
+        "activities": [
+          {
+            "_key": "bas1a",
+            "title": "Morning Flight BOM/PNQ to Leh Airport",
+            "description": "Scenic trans-Himalayan flight landing in Leh. Transfer to hotel for mandatory acclimatisation rest.",
+            "location": {
+              "name": "Leh Kushok Bakula Rimpochee Airport",
+              "lat": 34.1359,
+              "lng": 77.5465
+            },
+            "time": "08:30 AM",
+            "type": "transport",
+            "cost": 8200,
+            "currency": "INR",
+            "notes": "Rest completely for first 6 hours; drink plenty of water with ORS."
+          },
+          {
+            "_key": "bas1b",
+            "title": "Spituk Gompa (Maryul Monastery) & Kali Mata Temple",
+            "description": "Visit the Gelugpa monastery founded by Od-de in the 11th century, perched dramatically atop an isolated hillock.",
+            "location": {
+              "name": "Spituk Monastery",
+              "lat": 34.1294,
+              "lng": 77.5258
+            },
+            "time": "04:30 PM",
+            "type": "sightseeing",
+            "cost": 50,
+            "currency": "INR",
+            "notes": "Houses ancient thangkas and an iconic temple dedicated to Goddess Mahakali."
+          },
+          {
+            "_key": "bas1c",
+            "title": "Twilight View from Shanti Stupa",
+            "description": "Watch the sun sink behind the Zanskar range, illuminating the Leh Valley and Stok Kangri peak in golden light.",
+            "location": {
+              "name": "Shanti Stupa, Leh",
+              "lat": 34.167,
+              "lng": 77.575
+            },
+            "time": "06:30 PM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Drive directly up to the top car park to avoid climbing steps on Day 1."
+          },
+          {
+            "_key": "bas1d",
+            "title": "Traditional Ladakhi Skyu & Mok-Mok Dinner",
+            "description": "Savor Skyu (traditional pasta stew cooked with root vegetables and dried yak cheese) at a heritage restaurant.",
+            "location": {
+              "name": "Leh Heritage Kitchen",
+              "lat": 34.164,
+              "lng": 77.584
+            },
+            "time": "07:30 PM",
+            "type": "food",
+            "cost": 400,
+            "currency": "INR",
+            "notes": "Wholesome, slow-cooked indigenous comfort food."
+          }
+        ]
+      },
+      {
+        "_key": "bas-day2",
+        "dayNumber": 2,
+        "title": "Magnetic Hill → Sangam Confluence → Basgo Royal Citadel & Maitreya Temples",
+        "date": "2026-07-13",
+        "summary": "Drive west down the Indus Highway past the optical illusion of Magnetic Hill and the dramatic confluence of the Indus and Zanskar rivers, ascending to the medieval royal mud-brick citadel and 16th-century golden Maitreya Buddha temples of Basgo.",
+        "activities": [
+          {
+            "_key": "bas2a",
+            "title": "Magnetic Hill Gravity Phenomenon Stop",
+            "description": "Witness vehicles appearing to roll uphill against gravity on this famous stretch of the Leh-Srinagar Highway.",
+            "location": {
+              "name": "Magnetic Hill",
+              "lat": 34.1844,
+              "lng": 77.3512
+            },
+            "time": "09:30 AM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Natural optical illusion created by the surrounding horizon topography."
+          },
+          {
+            "_key": "bas2b",
+            "title": "Indus & Zanskar River Confluence (Sangam) at Nimmu",
+            "description": "Stand atop the cliff overlooking the breathtaking meeting of emerald green Indus and mud-brown Zanskar waters.",
+            "location": {
+              "name": "Indus-Zanskar Sangam, Nimmu",
+              "lat": 34.1648,
+              "lng": 77.3298
+            },
+            "time": "10:30 AM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "World Famous river viewpoint; optional flat-water rafting launch site."
+          },
+          {
+            "_key": "bas2c",
+            "title": "Basgo Citadel & Chamba Lhakhang (Maitreya Temple)",
+            "description": "Explore the UNESCO World Monuments Watch-listed 15th-century mud-brick ruins perched precariously on sheer red clay cliffs.",
+            "location": {
+              "name": "Basgo Citadel & Gompa",
+              "lat": 34.2183,
+              "lng": 77.2844
+            },
+            "time": "12:00 PM",
+            "type": "sightseeing",
+            "cost": 100,
+            "currency": "INR",
+            "notes": "Marvel at the giant two-storey gilded copper statue of Maitreya Buddha built in 1553 AD by King Tsewang Namgyal."
+          },
+          {
+            "_key": "bas2d",
+            "title": "Heritage Farmstay Check-in & Apricot Garden Walk at Basgo",
+            "description": "Unwind at a tranquil rural farmstay surrounded by organic barley terraces, apple orchards, and irrigation channels.",
+            "location": {
+              "name": "Basgo Village Farmstay",
+              "lat": 34.217,
+              "lng": 77.283
+            },
+            "time": "03:30 PM",
+            "type": "accommodation",
+            "cost": 2200,
+            "currency": "INR",
+            "notes": "Experience village life far away from commercial tourist circuits."
+          }
+        ]
+      },
+      {
+        "_key": "bas-day3",
+        "dayNumber": 3,
+        "title": "Basgo → Likir Monastery Giant Buddha → 11th-Century Alchi Choskor",
+        "date": "2026-07-14",
+        "summary": "Continue through the Lower Sham Valley to Likir Gompa to view its 75-foot outdoor Maitreya Buddha statue, before visiting the legendary Alchi Choskor — Ladakh's oldest monastic jewel renowned for world-famous Kashmiri-style Buddhist frescoes from the 11th century.",
+        "activities": [
+          {
+            "_key": "bas3a",
+            "title": "Likir Gompa & 75-Foot Outdoor Maitreya Buddha",
+            "description": "Explore the picturesque 11th-century monastery housing valuable manuscripts, thangkas, and a prominent open-air Buddha statue.",
+            "location": {
+              "name": "Likir Monastery",
+              "lat": 34.2933,
+              "lng": 77.215
+            },
+            "time": "09:30 AM",
+            "type": "sightseeing",
+            "cost": 50,
+            "currency": "INR",
+            "notes": "Founded by Lama Duwang Ngawang under King Lhachen Gyalpo."
+          },
+          {
+            "_key": "bas3b",
+            "title": "Alchi Choskor Monastic Complex (10th-11th Century)",
+            "description": "Unlike high mountain monasteries, Alchi is built on flat ground by the Indus and houses the greatest surviving Kashmiri Buddhist wood carvings and wall frescoes.",
+            "location": {
+              "name": "Alchi Monastery",
+              "lat": 34.2239,
+              "lng": 77.175
+            },
+            "time": "12:00 PM",
+            "type": "sightseeing",
+            "cost": 100,
+            "currency": "INR",
+            "notes": "Photography strictly forbidden inside temples to preserve delicate natural pigments."
+          },
+          {
+            "_key": "bas3c",
+            "title": "Garden Lunch at Alchi Apricot Tree Courtyard",
+            "description": "Dine under shaded apricot trees enjoying hot momos, tingmo steamed bread, and mint tea.",
+            "location": {
+              "name": "Alchi Garden Restaurant",
+              "lat": 34.223,
+              "lng": 77.174
+            },
+            "time": "01:30 PM",
+            "type": "food",
+            "cost": 350,
+            "currency": "INR",
+            "notes": "Organic salad and fresh mountain juices."
+          },
+          {
+            "_key": "bas3d",
+            "title": "Return Drive to Leh & Farewell Dinner",
+            "description": "Smooth 65 km drive back to Leh along the Indus river; evening souvenir shopping.",
+            "location": {
+              "name": "Leh City Centre",
+              "lat": 34.1642,
+              "lng": 77.584
+            },
+            "time": "05:30 PM",
+            "type": "accommodation",
+            "cost": 2800,
+            "currency": "INR",
+            "notes": "Overnight in Leh ahead of early morning flight."
+          }
+        ]
+      },
+      {
+        "_key": "bas-day4",
+        "dayNumber": 4,
+        "title": "Leh Market Souvenirs → Leh Airport → Mumbai / Pune",
+        "date": "2026-07-15",
+        "summary": "Pick up hand-carved prayer wheels, butter tea cups, and roasted barley tsampa in Leh market before transferring to the airport for your flight home to Mumbai or Pune.",
+        "activities": [
+          {
+            "_key": "bas4a",
+            "title": "Morning Visit to Central Asian Museum, Leh",
+            "description": "A 4-storey stone-and-wood tower museum tracing the historical Silk Route caravans connecting Yarkand, Tibet, and Kashmir.",
+            "location": {
+              "name": "Central Asian Museum",
+              "lat": 34.164,
+              "lng": 77.586
+            },
+            "time": "08:30 AM",
+            "type": "sightseeing",
+            "cost": 50,
+            "currency": "INR",
+            "notes": "Located behind the historic Jama Masjid in Old Leh."
+          },
+          {
+            "_key": "bas4b",
+            "title": "Transfer to Leh Kushok Bakula Rimpochee Airport (IXL)",
+            "description": "Short 15-minute drive to the departure terminal.",
+            "location": {
+              "name": "Leh Kushok Bakula Rimpochee Airport",
+              "lat": 34.1359,
+              "lng": 77.5465
+            },
+            "time": "10:30 AM",
+            "type": "transport",
+            "cost": 400,
+            "currency": "INR",
+            "notes": "Ensure checked baggage conforms to airline weight limits."
+          },
+          {
+            "_key": "bas4c",
+            "title": "Return Flight to Mumbai (BOM) / Pune (PNQ)",
+            "description": "Board direct or one-stop flight home with memories of ancient Ladakhi fortresses.",
+            "location": {
+              "name": "Leh Kushok Bakula Rimpochee Airport",
+              "lat": 34.1359,
+              "lng": 77.5465
+            },
+            "time": "12:30 PM",
+            "type": "transport",
+            "cost": 8200,
+            "currency": "INR",
+            "notes": "Fly over the magnificent Pir Panjal and Shivalik ranges."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "trip-chumathang-4-days",
+    "title": "Chumathang Geothermal Hot Springs & Indus Valley — 4 Days from Mumbai / Pune",
+    "slug": "chumathang-4-days",
+    "excerpt": "Journey from Mumbai or Pune into the wild southeastern Indus gorge to Chumathang — famed for its bubbling geothermal sulfur hot springs steaming right on the icy riverbanks at 13,000 ft. A gateway to the high Changthang plateau, Chumathang offers natural healing thermal baths, ancient Tibetan settlements, and unforgettable stargazing.",
+    "tags": [
+      "Himalayas",
+      "Ladakh",
+      "Hot Springs",
+      "Offbeat",
+      "Nature",
+      "High Altitude",
+      "River",
+      "India"
+    ],
+    "country": "India",
+    "startDate": "2026-07-18",
+    "endDate": "2026-07-21",
+    "bestSuggestedMonth": "May – October",
+    "status": "published",
+    "viewCount": 0,
+    "totalBudget": 18500,
+    "currency": "INR",
+    "tripType": "Geothermal Springs & Frontier Expedition",
+    "readingTime": 8,
+    "_createdAt": "2026-08-28T00:00:00Z",
+    "_updatedAt": "2026-08-28T00:00:00Z",
+    "itinerary": [
+      {
+        "_key": "chu-day1",
+        "dayNumber": 1,
+        "title": "Mumbai/Pune → Leh Airport → Acclimatisation & Thiksey Monastery",
+        "date": "2026-07-18",
+        "summary": "Arrive at Leh Airport from Mumbai or Pune. Rest during the morning for essential altitude adaptation, then enjoy a serene late afternoon visit to Thiksey Monastery, styled after Lhasa's Potala Palace.",
+        "activities": [
+          {
+            "_key": "chu1a",
+            "title": "Morning Flight BOM/PNQ to Leh Kushok Bakula Rimpochee Airport",
+            "description": "Morning touchdown in Ladakh at 3,524 m. Transfer to hotel for mandatory acclimatisation.",
+            "location": {
+              "name": "Leh Kushok Bakula Rimpochee Airport",
+              "lat": 34.1359,
+              "lng": 77.5465
+            },
+            "time": "08:30 AM",
+            "type": "transport",
+            "cost": 8200,
+            "currency": "INR",
+            "notes": "Avoid alcohol, smoking, and sudden exertion on Day 1."
+          },
+          {
+            "_key": "chu1b",
+            "title": "Afternoon Excursion to Thiksey Monastery (19 km)",
+            "description": "Visit the 12-storey whitewashed Gompa complex featuring the revered 49-foot Maitreya Buddha statue installed by the 14th Dalai Lama.",
+            "location": {
+              "name": "Thiksey Monastery",
+              "lat": 34.0583,
+              "lng": 77.6667
+            },
+            "time": "03:30 PM",
+            "type": "sightseeing",
+            "cost": 50,
+            "currency": "INR",
+            "notes": "Catch the monks blowing traditional conch shells and Dungchen brass horns."
+          },
+          {
+            "_key": "chu1c",
+            "title": "Evening Acclimatisation Rest & Garlic Broth Dinner",
+            "description": "Warm homemade garlic soup and steamed vegetable momos to promote blood oxygenation.",
+            "location": {
+              "name": "Leh Town Restaurant",
+              "lat": 34.164,
+              "lng": 77.584
+            },
+            "time": "07:30 PM",
+            "type": "food",
+            "cost": 380,
+            "currency": "INR",
+            "notes": "Early sleep recommended before heading into Changthang."
+          }
+        ]
+      },
+      {
+        "_key": "chu-day2",
+        "dayNumber": 2,
+        "title": "Leh → Upshi → Kiari → Chumathang Geothermal Hot Springs (140 km)",
+        "date": "2026-07-19",
+        "summary": "Embark on an extraordinary road journey following the turquoise Indus River through deep multicolored granite canyons, passing Upshi and Kiari Tibetan settlement to reach the steaming riverbanks of Chumathang at 3,950 m (13,000 ft).",
+        "activities": [
+          {
+            "_key": "chu2a",
+            "title": "Drive Leh along the Indus to Upshi & Kiari (100 km)",
+            "description": "Spectacular highway carving through sheer canyon walls of purple, orange, and emerald slate along the Indus.",
+            "location": {
+              "name": "Upshi Indus Gorge",
+              "lat": 33.8306,
+              "lng": 77.8183
+            },
+            "time": "08:30 AM",
+            "type": "transport",
+            "cost": 2000,
+            "currency": "INR",
+            "notes": "Checkpost at Upshi; foreign nationals require Inner Line Permit (ILP)."
+          },
+          {
+            "_key": "chu2b",
+            "title": "Chumathang Geothermal Vents & River Steam Phenomenon",
+            "description": "Arrive at Chumathang where boiling sulfur springs (over 85°C) bubble vigorously from cracks along the freezing Indus riverbed.",
+            "location": {
+              "name": "Chumathang Geothermal Hot Springs",
+              "lat": 33.3592,
+              "lng": 78.3458
+            },
+            "time": "12:30 PM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "The stark contrast of boiling volcanic steam and ice-cold river waters is unique in the Himalayas."
+          },
+          {
+            "_key": "chu2c",
+            "title": "Natural Geothermal Mineral Bath & Relaxing Soak",
+            "description": "Immerse in private indoor thermal spring baths fed directly by the mineral-rich sulfur waters, known for curing joint pain and fatigue.",
+            "location": {
+              "name": "Chumathang Hot Spring Resort Baths",
+              "lat": 33.36,
+              "lng": 78.346
+            },
+            "time": "03:00 PM",
+            "type": "activity",
+            "cost": 250,
+            "currency": "INR",
+            "notes": "Water is naturally heated by deep tectonic faults."
+          },
+          {
+            "_key": "chu2d",
+            "title": "Geothermally Cooked Eggs & Ladakhi Dinner",
+            "description": "Watch locals boil eggs and potatoes in small mesh bags directly dipped into the boiling roadside steam vent.",
+            "location": {
+              "name": "Chumathang Springs Dhaba",
+              "lat": 33.359,
+              "lng": 78.3455
+            },
+            "time": "07:30 PM",
+            "type": "food",
+            "cost": 300,
+            "currency": "INR",
+            "notes": "Eggs boil perfectly in 7 minutes in the natural boiling spring!"
+          }
+        ]
+      },
+      {
+        "_key": "chu-day3",
+        "dayNumber": 3,
+        "title": "Chumathang Village Walk & Mahe Gorge Gateway Excursion",
+        "date": "2026-07-20",
+        "summary": "Walk through the high-altitude barley terraces of Chumathang village, visit the hilltop Gompa, take an excursion to the sheer cliffs of Mahe Bridge (gateway to Tso Moriri), before enjoying an evening of stargazing under Bortle Class 1 dark skies.",
+        "activities": [
+          {
+            "_key": "chu3a",
+            "title": "Chumathang Hilltop Gompa & Village Trail",
+            "description": "Climb the rocky promontory above the village to visit the peaceful Buddhist shrine adorned with wind-whipped prayer flags.",
+            "location": {
+              "name": "Chumathang Gompa",
+              "lat": 33.362,
+              "lng": 78.348
+            },
+            "time": "09:00 AM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Offers a sweeping panoramic vista of the steaming Indus river bend."
+          },
+          {
+            "_key": "chu3b",
+            "title": "Excursion to Mahe Bridge & Indus Canyon (25 km)",
+            "description": "Drive down to the military checkpoint at Mahe Bridge, where roads branch south toward Tso Moriri and east toward Nyoma and Hanle.",
+            "location": {
+              "name": "Mahe Bridge, Ladakh",
+              "lat": 33.275,
+              "lng": 78.508
+            },
+            "time": "11:30 AM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Dramatic geological strata formations and soaring golden eagle nesting cliffs."
+          },
+          {
+            "_key": "chu3c",
+            "title": "Riverside Dhaba Lunch with Butter Tea & Tingmo",
+            "description": "Enjoy hot steamed tingmo bread served with spicy vegetable curry and churned salty butter tea (gur-gur chai).",
+            "location": {
+              "name": "Kiari Tibetan Roadside Eatery",
+              "lat": 33.682,
+              "lng": 78.105
+            },
+            "time": "02:00 PM",
+            "type": "food",
+            "cost": 250,
+            "currency": "INR",
+            "notes": "Warm, hearty nomadic staple foods."
+          },
+          {
+            "_key": "chu3d",
+            "title": "Dark Sky Stargazing over the Steaming Indus",
+            "description": "Observe the glowing arc of the Milky Way reflected on steam plumes rising from the river under crystal black skies.",
+            "location": {
+              "name": "Chumathang River Ridge",
+              "lat": 33.3592,
+              "lng": 78.3458
+            },
+            "time": "09:30 PM",
+            "type": "activity",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Uninhibited cosmic views free of city light pollution."
+          }
+        ]
+      },
+      {
+        "_key": "chu-day4",
+        "dayNumber": 4,
+        "title": "Chumathang → Indus Valley Return → Leh Airport → Mumbai / Pune",
+        "date": "2026-07-21",
+        "summary": "Early morning scenic return drive following the Indus downstream to Leh Kushok Bakula Rimpochee Airport for your return flight back to Mumbai or Pune.",
+        "activities": [
+          {
+            "_key": "chu4a",
+            "title": "Early Morning Return Drive along Indus Gorge (140 km, 3.5 hrs)",
+            "description": "Watch morning shadows play across the towering canyon walls as you head back towards Leh.",
+            "location": {
+              "name": "Indus Highway",
+              "lat": 33.8306,
+              "lng": 77.8183
+            },
+            "time": "06:00 AM",
+            "type": "transport",
+            "cost": 2200,
+            "currency": "INR",
+            "notes": "Early start ensures comfortable check-in at Leh Airport."
+          },
+          {
+            "_key": "chu4b",
+            "title": "Quick Breakfast & Chai Stop at Karu Junction",
+            "description": "Fuel up on hot aloo parathas and ginger chai at the major highway junction connecting Pangong and Manali roads.",
+            "location": {
+              "name": "Karu Junction",
+              "lat": 33.9214,
+              "lng": 77.7472
+            },
+            "time": "08:30 AM",
+            "type": "food",
+            "cost": 150,
+            "currency": "INR",
+            "notes": "Convenient rest stop with ATM and restrooms."
+          },
+          {
+            "_key": "chu4c",
+            "title": "Drop at Leh Airport & Return Flight to BOM / PNQ",
+            "description": "Board afternoon connecting flight back to Mumbai or Pune carrying memories of high-altitude hot springs.",
+            "location": {
+              "name": "Leh Kushok Bakula Rimpochee Airport",
+              "lat": 34.1359,
+              "lng": 77.5465
+            },
+            "time": "10:30 AM",
+            "type": "transport",
+            "cost": 8500,
+            "currency": "INR",
+            "notes": "Window seats provide dramatic aerial views of the Ladakh range."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "trip-hanle-5-days",
+    "title": "Hanle Dark-Sky Reserve & Astronomical Observatory — 5 Days from Mumbai / Pune",
+    "slug": "hanle-5-days",
+    "excerpt": "The ultimate celestial pilgrimage from Mumbai or Pune to India's first designated Dark-Sky Reserve at Hanle (14,760 ft) in the remote Changthang plateau. Stand under the clearest night skies on Earth, visit the world's highest optical observatory on Mt. Saraswati, explore the 17th-century Hanle Gompa, and encounter Tibetan wild asses (Kiang) roaming across infinite Himalayan plains.",
+    "tags": [
+      "Himalayas",
+      "Ladakh",
+      "Dark Sky",
+      "Astrophotography",
+      "High Altitude",
+      "Remote",
+      "Wildlife",
+      "India"
+    ],
+    "country": "India",
+    "startDate": "2026-07-25",
+    "endDate": "2026-07-29",
+    "bestSuggestedMonth": "May – October (New Moon week best for astronomy)",
+    "status": "published",
+    "viewCount": 0,
+    "totalBudget": 28500,
+    "currency": "INR",
+    "tripType": "Dark-Sky Astronomy & High-Altitude Safari",
+    "readingTime": 10,
+    "_createdAt": "2026-08-28T00:00:00Z",
+    "_updatedAt": "2026-08-28T00:00:00Z",
+    "itinerary": [
+      {
+        "_key": "han-day1",
+        "dayNumber": 1,
+        "title": "Mumbai/Pune → Leh Airport (11,500 ft) — Mandatory Acclimatisation & Permits",
+        "date": "2026-07-25",
+        "summary": "Take an early morning flight from Mumbai (BOM) or Pune (PNQ) to Leh (IXL). Spend the day strictly resting to acclimatise to the altitude, while collecting your mandatory Protected Area Permits (PAP) for Hanle and the remote Changthang frontier.",
+        "activities": [
+          {
+            "_key": "han1a",
+            "title": "Morning Flight BOM/PNQ to Leh Kushok Bakula Rimpochee Airport",
+            "description": "Touch down in Ladakh at 3,524 m. Check in to your hotel for mandatory full-day rest.",
+            "location": {
+              "name": "Leh Kushok Bakula Rimpochee Airport",
+              "lat": 34.1359,
+              "lng": 77.5465
+            },
+            "time": "08:30 AM",
+            "type": "transport",
+            "cost": 8500,
+            "currency": "INR",
+            "notes": "Hanle sits at 4,500 m (14,760 ft); adequate acclimatisation in Leh is vital."
+          },
+          {
+            "_key": "han1b",
+            "title": "Inner Line Permit & Hanle Protected Area Endorsement",
+            "description": "Collect your official DC Office permit endorsing Hanle, Loma, and Nyoma sectors.",
+            "location": {
+              "name": "DC Office, Leh",
+              "lat": 34.161,
+              "lng": 77.58
+            },
+            "time": "11:30 AM",
+            "type": "activity",
+            "cost": 650,
+            "currency": "INR",
+            "notes": "Carry 5 physical photocopies of permit and Aadhaar/passport for army checkposts."
+          },
+          {
+            "_key": "han1c",
+            "title": "Leh Market Sunset Walk & Battery Gear Check",
+            "description": "Test your camera gear, tripods, extra lithium batteries (cold drains batteries fast), and red-light headlamps required for Dark Sky Reserve.",
+            "location": {
+              "name": "Leh Main Bazaar",
+              "lat": 34.1645,
+              "lng": 77.585
+            },
+            "time": "05:30 PM",
+            "type": "activity",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Red light headlamps preserve night vision and are strictly required in Hanle."
+          },
+          {
+            "_key": "han1d",
+            "title": "High-Protein Ladakhi Dinner",
+            "description": "Warm bowl of vegetable and cheese thenthuk with steamed momos.",
+            "location": {
+              "name": "Leh Tibetan Kitchen",
+              "lat": 34.164,
+              "lng": 77.584
+            },
+            "time": "07:30 PM",
+            "type": "food",
+            "cost": 450,
+            "currency": "INR",
+            "notes": "Hydrate with at least 3-4 litres of water throughout the day."
+          }
+        ]
+      },
+      {
+        "_key": "han-day2",
+        "dayNumber": 2,
+        "title": "Leh → Chumathang → Loma Bridge Checkpost → Hanle (255 km, 7–8 hrs)",
+        "date": "2026-07-26",
+        "summary": "An epic high-altitude drive tracing the Indus upstream through Chumathang to the military bridge at Loma, entering the sprawling Changthang plateau basin to reach Hanle (14,760 ft) before sunset for your first night of naked-eye cosmic stargazing.",
+        "activities": [
+          {
+            "_key": "han2a",
+            "title": "Early Departure via Upshi & Chumathang (140 km)",
+            "description": "Scenic drive through Indus canyons; quick morning stop at the steaming hot springs of Chumathang.",
+            "location": {
+              "name": "Chumathang Hot Springs",
+              "lat": 33.3592,
+              "lng": 78.3458
+            },
+            "time": "06:30 AM",
+            "type": "transport",
+            "cost": 3500,
+            "currency": "INR",
+            "notes": "Stop for hot tea and aloo paratha at Chumathang."
+          },
+          {
+            "_key": "han2b",
+            "title": "Loma Checkpost Border Registration & Nyoma",
+            "description": "Present Hanle permits at Loma Bridge, crossing into the restricted Changthang military zone.",
+            "location": {
+              "name": "Loma Bridge Checkpost",
+              "lat": 33.161,
+              "lng": 78.825
+            },
+            "time": "12:30 PM",
+            "type": "transport",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Indian Army strictly inspects IDs; foreign tourists need special approvals."
+          },
+          {
+            "_key": "han2c",
+            "title": "Arrival at Hanle (4,500 m / 14,760 ft) & Homestay Check-in",
+            "description": "Enter the vast, golden Hanle marshland plain ringed by barren mountain crags. Settle into a local Ladakhi homestay.",
+            "location": {
+              "name": "Hanle Village Homestay",
+              "lat": 32.775,
+              "lng": 78.97
+            },
+            "time": "03:30 PM",
+            "type": "accommodation",
+            "cost": 2600,
+            "currency": "INR",
+            "notes": "Bukhari wood/gas heating in rooms; oxygen cylinder available at homestay if required."
+          },
+          {
+            "_key": "han2d",
+            "title": "Night 1: Dark-Sky Observation & Milky Way Core Alignment",
+            "description": "Step out under India's darkest skies (Bortle Class 1). Witness billions of stars, the sprawling Milky Way arm, and the Andromeda Galaxy visible with the naked eye.",
+            "location": {
+              "name": "Hanle Dark Sky Reserve Plains",
+              "lat": 32.7794,
+              "lng": 78.9642
+            },
+            "time": "09:30 PM",
+            "type": "activity",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Night temperatures frequently dip below 0°C even in summer; thermal layers, windcheater, and gloves mandatory."
+          }
+        ]
+      },
+      {
+        "_key": "han-day3",
+        "dayNumber": 3,
+        "title": "Indian Astronomical Observatory (Mt. Saraswati) & 17th-Century Hanle Gompa",
+        "date": "2026-07-27",
+        "summary": "Ascend Mt. Saraswati to visit the Indian Astronomical Observatory — the world's highest optical observatory operated by the Indian Institute of Astrophysics — followed by the historic 17th-century Hanle Monastery perched atop a solitary rocky hill.",
+        "activities": [
+          {
+            "_key": "han3a",
+            "title": "Indian Astronomical Observatory (IAO) Tour (Mt. Saraswati)",
+            "description": "Ascend the winding peak to 4,500 m to view the 2-metre optical-infrared Himalayan Chandra Telescope (HCT) remotely controlled from Bengaluru.",
+            "location": {
+              "name": "Indian Astronomical Observatory, Hanle",
+              "lat": 32.7794,
+              "lng": 78.9642
+            },
+            "time": "10:00 AM",
+            "type": "sightseeing",
+            "cost": 100,
+            "currency": "INR",
+            "notes": "Learn about MACE (Major Atmospheric Cherenkov Experiment) gamma ray telescope installed nearby."
+          },
+          {
+            "_key": "han3b",
+            "title": "Traditional Nomadic Lunch at Hanle Homestay",
+            "description": "Home-cooked meal of fresh Khambir bread, barley soup, potato sabzi, and hot butter tea prepared by the host family.",
+            "location": {
+              "name": "Hanle Homestay Kitchen",
+              "lat": 32.775,
+              "lng": 78.97
+            },
+            "time": "01:30 PM",
+            "type": "food",
+            "cost": 350,
+            "currency": "INR",
+            "notes": "Warm Changpa hospitality in a traditional carpeted dining room."
+          },
+          {
+            "_key": "han3c",
+            "title": "Hanle Gompa (17th-Century Drukpa Kagyu Monastery)",
+            "description": "Explore the historic monastery built under King Sengge Namgyal in the 17th century, commanding a panoramic view of the entire Hanle basin.",
+            "location": {
+              "name": "Hanle Monastery",
+              "lat": 32.7725,
+              "lng": 78.9767
+            },
+            "time": "04:00 PM",
+            "type": "sightseeing",
+            "cost": 50,
+            "currency": "INR",
+            "notes": "Houses ancient scriptures, thangkas, and a serene inner sanctum."
+          },
+          {
+            "_key": "han3d",
+            "title": "Night 2: Deep-Sky Astrophotography & Stargazing Workshop",
+            "description": "Set up tripods for long-exposure wide-field astrophotography of the Galactic Centre, Airglow, and Zodiacal Light.",
+            "location": {
+              "name": "Mt. Saraswati Base",
+              "lat": 32.778,
+              "lng": 78.963
+            },
+            "time": "10:00 PM",
+            "type": "activity",
+            "cost": 500,
+            "currency": "INR",
+            "notes": "Use fast f/1.8–f/2.8 wide lenses with ISO 3200–6400 for stunning 20-second exposures."
+          }
+        ]
+      },
+      {
+        "_key": "han-day4",
+        "dayNumber": 4,
+        "title": "Hanle Basin Wildlife Safari (Kiang & Cranes) → Nyoma → Leh Return",
+        "date": "2026-07-28",
+        "summary": "Take a sunrise wildlife drive across the wetlands spotting wild Tibetan Ass (Kiang) and rare Black-necked Cranes, before embarking on the scenic return drive via Nyoma and Upshi back to Leh.",
+        "activities": [
+          {
+            "_key": "han4a",
+            "title": "Dawn Safari across Hanle Plains & Wetlands",
+            "description": "Spot herds of Kiang (Equus kiang) galloping across the steppe, migratory Black-necked Cranes, and bar-headed geese in the marshes.",
+            "location": {
+              "name": "Hanle Wetlands",
+              "lat": 32.79,
+              "lng": 78.95
+            },
+            "time": "06:00 AM",
+            "type": "activity",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "The Black-necked Crane is the revered state bird of Ladakh."
+          },
+          {
+            "_key": "han4b",
+            "title": "Scenic Return Drive: Hanle → Loma → Nyoma → Upshi (255 km)",
+            "description": "Follow the Indus valley back towards central Ladakh, stopping for tea along the riverbank.",
+            "location": {
+              "name": "Nyoma Indus Highway",
+              "lat": 33.195,
+              "lng": 78.67
+            },
+            "time": "08:30 AM",
+            "type": "transport",
+            "cost": 3500,
+            "currency": "INR",
+            "notes": "Road is predominantly well-paved Border Roads Organisation (BRO) highway."
+          },
+          {
+            "_key": "han4c",
+            "title": "Lunch Stop at Chumathang Hot Springs Dhaba",
+            "description": "Warm bowl of Thukpa and momos by the riverside before the final leg into Leh.",
+            "location": {
+              "name": "Chumathang Springs",
+              "lat": 33.3592,
+              "lng": 78.3458
+            },
+            "time": "01:00 PM",
+            "type": "food",
+            "cost": 300,
+            "currency": "INR",
+            "notes": "Quick mineral leg soak available during lunch break."
+          },
+          {
+            "_key": "han4d",
+            "title": "Arrive in Leh & Celebration Dinner",
+            "description": "Check in to Leh hotel and celebrate completing one of India's most remote expeditions with Kashmiri Wazwan or continental pizza.",
+            "location": {
+              "name": "Bon Appetit, Leh",
+              "lat": 34.1615,
+              "lng": 77.581
+            },
+            "time": "07:30 PM",
+            "type": "food",
+            "cost": 750,
+            "currency": "INR",
+            "notes": "Charming apple orchard setting with outdoor terrace."
+          }
+        ]
+      },
+      {
+        "_key": "han-day5",
+        "dayNumber": 5,
+        "title": "Leh Airport → Return Flight to Mumbai / Pune",
+        "date": "2026-07-29",
+        "summary": "Transfer to Leh Kushok Bakula Rimpochee Airport for your morning return flight back to Mumbai or Pune carrying extraordinary cosmic memories of India's highest starry frontier.",
+        "activities": [
+          {
+            "_key": "han5a",
+            "title": "Transfer to Leh Kushok Bakula Rimpochee Airport (IXL)",
+            "description": "Short 15-minute cab ride to the terminal for check-in.",
+            "location": {
+              "name": "Leh Kushok Bakula Rimpochee Airport",
+              "lat": 34.1359,
+              "lng": 77.5465
+            },
+            "time": "08:30 AM",
+            "type": "transport",
+            "cost": 400,
+            "currency": "INR",
+            "notes": "Arrive 2 hours prior to scheduled departure."
+          },
+          {
+            "_key": "han5b",
+            "title": "Return Flight to Mumbai (BOM) / Pune (PNQ)",
+            "description": "Fly back home over the majestic Greater Himalayas, carrying memories of the starlit skies of Hanle.",
+            "location": {
+              "name": "Leh Kushok Bakula Rimpochee Airport",
+              "lat": 34.1359,
+              "lng": 77.5465
+            },
+            "time": "10:30 AM",
+            "type": "transport",
+            "cost": 8500,
+            "currency": "INR",
+            "notes": "Direct or connecting flight back to Mumbai or Pune."
+          }
+        ]
+      }
+    ]
+  },
 ];
