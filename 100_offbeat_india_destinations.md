@@ -79,18 +79,15 @@ A region-wise list of lesser-known, non-touristy destinations across India — s
 97. **Rishyap** – tiny Himalayan hamlet near Lava, West Bengal
 98. **Jhargram** – forest palace town, West Bengal
 
-## Islands
-99. **Neil Island (Shaheed Dweep)** – laid-back alternative to Havelock, Andamans
-100. **Diglipur** – North Andaman's turtle beaches and mangrove creeks
 
 ---
 *Tip: many of these places have limited connectivity, homestays rather than hotels, and are best visited with some flexibility in your itinerary — that's part of what keeps them offbeat.*
 Prompt:
-add separate detail trip itineraries for below places with suggested details including below mentioned details:
+Add separate detail trip itineraries in all trips section of webapp for below places with suggested details including below mentioned details:
 - No of days from Mumbai/Pune
 - Best Restaurants
 -  Best Places to stay
 - Weather Details
 - Route Map
 - Trip Thumbnail image
-Locations:
+Locations: Chitkul, Kalpa, Tirthan Valley, Malana, Barot Valley, Rakchham, Nako, Pangi Valley, Tosh, Sach Pass, Chopta, Munsiyari, Khaliya Top, Chakrata, Kanatal, Chaukori, Gurez Valley, Aru Valley, Yusmarg, Turtuk, Basgo, Chumathang, Hanle, Kuldhara, Narlai, Khimsar, Bhangarh, Bishnoi Villages, Dholavira, Mandvi, Poshina, Champaner-Pavagadh, Palitana, Anegundi, Yana Rocks, Agumbe, Chelavara Falls, Gopalaswamy Betta, Sirsi, Gandikota, Araku Valley, Papikondalu, Talakona, Horsley Hills, Yaganti, Vagamon, Gavi, Chembra Peak, Silent Valley National Park, Poovar Island, Vazhachal Falls, Marari Beach, Hogenakkal Falls, Yercaud, Kolli Hills, Chettinad, Dhanushkodi, Valparai, Chandipur, Gopalpur-on-Sea, Netarhat, Betla National Park, Kalimpong, Rishyap, Jhargram

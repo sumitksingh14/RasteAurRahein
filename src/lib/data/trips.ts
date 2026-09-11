@@ -6979,5 +6979,375 @@ export const DEMO_TRIPS: Trip[] = [
         ]
       }
     ]
+  },
+  {
+    _id: "trip-chitkul-5-days",
+    title: "Chitkul — The Last Indian Village",
+    slug: "chitkul-5-days",
+    excerpt: "Journey to the last inhabited village near the Indo-Tibetan border. Experience the pristine Baspa River, wooden houses, and snow-capped Kinnaur Himalayas.",
+    tags: ["Mountains", "Road Trip", "Himalayas", "Kinnaur", "Offbeat"],
+    country: "India",
+    startDate: "2026-05-10",
+    endDate: "2026-05-14",
+    bestSuggestedMonth: "May – October",
+    status: "published",
+    viewCount: 0,
+    totalBudget: 35000,
+    currency: "INR",
+    tripType: "Adventure",
+    readingTime: 8,
+    _createdAt: "2026-09-11T00:00:00Z",
+    _updatedAt: "2026-09-11T00:00:00Z",
+    coverImage: { _type: "image", asset: { _type: "reference", _ref: "/images/chitkul.jpg" } } as any,
+    itinerary: [
+      {
+        _key: "chit-day1",
+        dayNumber: 1,
+        title: "Chandigarh to Narkanda",
+        date: "2026-05-10",
+        summary: "Drive from Chandigarh (accessible via flight from Mumbai/Pune) to Narkanda for the night.",
+        activities: [
+          {
+            _key: "chit1a",
+            title: "Drive to Narkanda",
+            description: "A scenic 6-hour drive through the lower Himalayas.",
+            location: { name: "Narkanda", lat: 31.2581, lng: 77.4601 },
+            time: "10:00 AM",
+            type: "transport"
+          }
+        ]
+      },
+      {
+        _key: "chit-day2",
+        dayNumber: 2,
+        title: "Narkanda to Chitkul via Sangla",
+        date: "2026-05-11",
+        summary: "Enter the Kinnaur Valley and drive alongside the Baspa river to reach Chitkul.",
+        activities: [
+          {
+            _key: "chit2a",
+            title: "Drive to Chitkul",
+            description: "The road gets rugged and extremely beautiful.",
+            location: { name: "Chitkul", lat: 31.3524, lng: 78.4354 },
+            time: "08:00 AM",
+            type: "transport"
+          },
+          {
+            _key: "chit2b",
+            title: "Check-in at Samaa Resorts",
+            description: "Settle into a cozy stay overlooking the valley.",
+            time: "03:00 PM",
+            type: "accommodation",
+            notes: "Zostel Chitkul is also a great option."
+          },
+          {
+            _key: "chit2c",
+            title: "Hindustan Ka Aakhri Dhaba",
+            description: "Have Maggi and tea at the famous 'Last Dhaba of India'.",
+            time: "05:00 PM",
+            type: "food"
+          }
+        ]
+      },
+      {
+        _key: "chit-day3",
+        dayNumber: 3,
+        title: "Explore the Baspa River",
+        date: "2026-05-12",
+        summary: "Walk through the village and sit by the freezing but crystal-clear river.",
+        activities: [
+          {
+            _key: "chit3a",
+            title: "Village Walk",
+            description: "Admire the traditional Kinnauri wooden architecture and the Mathi Goddess Temple.",
+            time: "09:00 AM",
+            type: "sightseeing"
+          }
+        ]
+      },
+      {
+        _key: "chit-day4",
+        dayNumber: 4,
+        title: "Return to Shimla",
+        date: "2026-05-13",
+        summary: "Start the journey back, stopping at Shimla.",
+        activities: [
+          {
+            _key: "chit4a",
+            title: "Drive to Shimla",
+            description: "Long drive back to the capital of Himachal.",
+            time: "07:00 AM",
+            type: "transport"
+          }
+        ]
+      },
+      {
+        _key: "chit-day5",
+        dayNumber: 5,
+        title: "Departure",
+        date: "2026-05-14",
+        summary: "Drive to Chandigarh and fly back.",
+        activities: [
+          {
+            _key: "chit5a",
+            title: "Flight from Chandigarh",
+            description: "Fly back to Mumbai/Pune.",
+            time: "02:00 PM",
+            type: "transport"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    _id: "trip-kalpa-5-days",
+    title: "Kalpa — Kinnaur Kailash Views",
+    slug: "kalpa-5-days",
+    excerpt: "Witness the majestic Kinnaur Kailash range turning gold at sunrise. Explore apple orchards and ancient Buddhist-Hindu temples.",
+    tags: ["Mountains", "Road Trip", "Himalayas", "Kinnaur", "Nature"],
+    country: "India",
+    startDate: "2026-09-10",
+    endDate: "2026-09-14",
+    bestSuggestedMonth: "September – October",
+    status: "published",
+    viewCount: 0,
+    totalBudget: 32000,
+    currency: "INR",
+    tripType: "Relaxation",
+    readingTime: 8,
+    _createdAt: "2026-09-11T00:00:00Z",
+    _updatedAt: "2026-09-11T00:00:00Z",
+    coverImage: { _type: "image", asset: { _type: "reference", _ref: "/images/kalpa.jpg" } } as any,
+    itinerary: [
+      {
+        _key: "kalpa-day1",
+        dayNumber: 1,
+        title: "Chandigarh to Narkanda",
+        date: "2026-09-10",
+        summary: "Fly from Mumbai to Chandigarh, drive to Narkanda.",
+        activities: [
+          {
+            _key: "kalpa1a",
+            title: "Arrival and Drive",
+            description: "Start the scenic journey up the mountains.",
+            location: { name: "Narkanda", lat: 31.2581, lng: 77.4601 },
+            time: "12:00 PM",
+            type: "transport"
+          }
+        ]
+      },
+      {
+        _key: "kalpa-day2",
+        dayNumber: 2,
+        title: "Narkanda to Kalpa",
+        date: "2026-09-11",
+        summary: "Drive to Kalpa via Reckong Peo.",
+        activities: [
+          {
+            _key: "kalpa2a",
+            title: "Drive to Kalpa",
+            description: "The road offers dramatic views of deep gorges.",
+            location: { name: "Kalpa", lat: 31.5379, lng: 78.2753 },
+            time: "09:00 AM",
+            type: "transport"
+          },
+          {
+            _key: "kalpa2b",
+            title: "Check-in at The Grand Shamba-La",
+            description: "Stay with an uninterrupted view of the Kinnaur Kailash.",
+            time: "03:00 PM",
+            type: "accommodation"
+          }
+        ]
+      },
+      {
+        _key: "kalpa-day3",
+        dayNumber: 3,
+        title: "Suicide Point and Roghi Village",
+        date: "2026-09-12",
+        summary: "Explore the nearby villages and steep cliffs.",
+        activities: [
+          {
+            _key: "kalpa3a",
+            title: "Suicide Point",
+            description: "Walk to this famous viewpoint with a vertical drop.",
+            time: "10:00 AM",
+            type: "sightseeing"
+          },
+          {
+            _key: "kalpa3b",
+            title: "Roghi Village Walk",
+            description: "Experience authentic Himachali village life and apple orchards.",
+            time: "12:00 PM",
+            type: "activity"
+          }
+        ]
+      },
+      {
+        _key: "kalpa-day4",
+        dayNumber: 4,
+        title: "Return to Shimla",
+        date: "2026-09-13",
+        summary: "Start the return journey.",
+        activities: [
+          {
+            _key: "kalpa4a",
+            title: "Drive to Shimla",
+            description: "Overnight stay in Shimla before departure.",
+            time: "08:00 AM",
+            type: "transport"
+          }
+        ]
+      },
+      {
+        _key: "kalpa-day5",
+        dayNumber: 5,
+        title: "Departure",
+        date: "2026-09-14",
+        summary: "Fly back from Chandigarh.",
+        activities: [
+          {
+            _key: "kalpa5a",
+            title: "Flight Home",
+            description: "Drive to Chandigarh airport and fly back.",
+            time: "03:00 PM",
+            type: "transport"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    _id: "trip-tirthan-valley-6-days",
+    title: "Tirthan Valley — Gateway to GHNP",
+    slug: "tirthan-valley-6-days",
+    excerpt: "Escape to the tranquil Tirthan Valley, fish for trout, and explore the pristine Great Himalayan National Park.",
+    tags: ["Mountains", "Nature", "Wildlife", "Himachal", "Offbeat"],
+    country: "India",
+    startDate: "2026-04-10",
+    endDate: "2026-04-15",
+    bestSuggestedMonth: "March – June",
+    status: "published",
+    viewCount: 0,
+    totalBudget: 40000,
+    currency: "INR",
+    tripType: "Nature",
+    readingTime: 9,
+    _createdAt: "2026-09-11T00:00:00Z",
+    _updatedAt: "2026-09-11T00:00:00Z",
+    coverImage: { _type: "image", asset: { _type: "reference", _ref: "/images/tirthan-valley.jpg" } } as any,
+    itinerary: [
+      {
+        _key: "tv-day1",
+        dayNumber: 1,
+        title: "Chandigarh to Tirthan Valley",
+        date: "2026-04-10",
+        summary: "Fly to Chandigarh from Mumbai/Pune, then drive to Tirthan.",
+        activities: [
+          {
+            _key: "tv1a",
+            title: "Drive to Banjar",
+            description: "An 8-hour drive from Chandigarh to the valley.",
+            location: { name: "Tirthan Valley", lat: 31.6373, lng: 77.3458 },
+            time: "10:00 AM",
+            type: "transport"
+          },
+          {
+            _key: "tv1b",
+            title: "Check-in at Raju Bharti's Guesthouse",
+            description: "A legendary homestay accessible by a pulley cart across the river.",
+            time: "05:00 PM",
+            type: "accommodation"
+          }
+        ]
+      },
+      {
+        _key: "tv-day2",
+        dayNumber: 2,
+        title: "Trout Fishing and Jalori Pass",
+        date: "2026-04-11",
+        summary: "Try trout fishing in the Tirthan river and drive up to Jalori Pass.",
+        activities: [
+          {
+            _key: "tv2a",
+            title: "Trout Fishing",
+            description: "Get a permit and try angling in the crystal clear waters.",
+            time: "09:00 AM",
+            type: "activity"
+          },
+          {
+            _key: "tv2b",
+            title: "Jalori Pass & Serolsar Lake",
+            description: "Drive to Jalori Pass (10,800 ft) and take a short trek to Serolsar Lake.",
+            time: "12:00 PM",
+            type: "sightseeing"
+          }
+        ]
+      },
+      {
+        _key: "tv-day3",
+        dayNumber: 3,
+        title: "Choi Waterfall Trek",
+        date: "2026-04-12",
+        summary: "A short trek through the woods to a hidden waterfall.",
+        activities: [
+          {
+            _key: "tv3a",
+            title: "Trek to Choi Waterfall",
+            description: "A 45-minute uphill hike from the main road.",
+            time: "10:00 AM",
+            type: "activity"
+          }
+        ]
+      },
+      {
+        _key: "tv-day4",
+        dayNumber: 4,
+        title: "Great Himalayan National Park",
+        date: "2026-04-13",
+        summary: "Enter the UNESCO World Heritage site.",
+        activities: [
+          {
+            _key: "tv4a",
+            title: "GHNP Eco Zone",
+            description: "Take a guided nature walk into the park. Spot rare birds and flora.",
+            time: "08:00 AM",
+            type: "sightseeing"
+          }
+        ]
+      },
+      {
+        _key: "tv-day5",
+        dayNumber: 5,
+        title: "Relaxation and Local Food",
+        date: "2026-04-14",
+        summary: "Enjoy the homestay and local delicacies.",
+        activities: [
+          {
+            _key: "tv5a",
+            title: "Homestay Relaxation",
+            description: "Read a book by the river. Enjoy local Himachali Dham cooked by the hosts.",
+            time: "11:00 AM",
+            type: "food"
+          }
+        ]
+      },
+      {
+        _key: "tv-day6",
+        dayNumber: 6,
+        title: "Departure",
+        date: "2026-04-15",
+        summary: "Return drive to Chandigarh.",
+        activities: [
+          {
+            _key: "tv6a",
+            title: "Drive to Airport",
+            description: "Head back to Chandigarh and fly home.",
+            time: "08:00 AM",
+            type: "transport"
+          }
+        ]
+      }
+    ]
   }
 ];
