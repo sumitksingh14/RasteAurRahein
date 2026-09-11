@@ -6673,4 +6673,311 @@ export const DEMO_TRIPS: Trip[] = [
       },
     ],
   },
+  {
+    _id: "trip-neil-island-6-days",
+    title: "Neil Island (Shaheed Dweep) — The Laid-Back Andaman Alternative",
+    slug: "neil-island-6-days",
+    excerpt: "A laid-back alternative to the bustling Havelock, offering serene beaches, natural rock bridges, and a slow-paced island life.",
+    tags: ["Beach", "Island", "Relaxation", "Andamans", "Nature"],
+    country: "India",
+    startDate: "2026-10-01",
+    endDate: "2026-10-06",
+    bestSuggestedMonth: "October – May",
+    status: "published",
+    viewCount: 0,
+    totalBudget: 45000,
+    currency: "INR",
+    tripType: "Relaxation",
+    readingTime: 10,
+    _createdAt: "2026-09-11T00:00:00Z",
+    _updatedAt: "2026-09-11T00:00:00Z",
+    coverImage: "/images/neil-island.jpg",
+    itinerary: [
+      {
+        _key: "ni-day1",
+        dayNumber: 1,
+        title: "Travel to Port Blair",
+        date: "2026-10-01",
+        summary: "Fly from Mumbai/Pune to Veer Savarkar International Airport, Port Blair. Rest and prep for ferry.",
+        activities: [
+          {
+            _key: "ni1a",
+            title: "Arrival in Port Blair",
+            description: "Check into a hotel, relax, and maybe visit Cellular Jail for the evening light and sound show.",
+            location: { name: "Port Blair", lat: 11.6234, lng: 92.7265 },
+            time: "12:00 PM",
+            type: "transport"
+          }
+        ]
+      },
+      {
+        _key: "ni-day2",
+        dayNumber: 2,
+        title: "Ferry to Neil Island",
+        date: "2026-10-02",
+        summary: "Take a morning cruise to Neil Island and check into your beachside accommodation.",
+        activities: [
+          {
+            _key: "ni2a",
+            title: "Ferry Ride",
+            description: "Take Makruzz or Green Ocean ferry from Port Blair to Neil Island (approx. 1.5 - 2 hours).",
+            location: { name: "Neil Island Jetty", lat: 11.8354, lng: 93.0336 },
+            time: "08:00 AM",
+            type: "transport"
+          },
+          {
+            _key: "ni2b",
+            title: "Check-in at Sea Shell Samssara",
+            description: "Check into one of the best places to stay on the island.",
+            time: "11:00 AM",
+            type: "accommodation",
+            notes: "Other great options: Summer Sands Beach Resort, TSG Aura."
+          },
+          {
+            _key: "ni2c",
+            title: "Lunch at Something Different",
+            description: "A beachside cafe known for great seafood and continental dishes.",
+            time: "01:30 PM",
+            type: "food"
+          }
+        ]
+      },
+      {
+        _key: "ni-day3",
+        dayNumber: 3,
+        title: "Beaches and Howrah Bridge",
+        date: "2026-10-03",
+        summary: "Explore the natural rock formation and pristine beaches.",
+        activities: [
+          {
+            _key: "ni3a",
+            title: "Natural Rock Formation (Howrah Bridge)",
+            description: "Visit during low tide to walk up to the natural rock bridge.",
+            time: "09:00 AM",
+            type: "sightseeing"
+          },
+          {
+            _key: "ni3b",
+            title: "Laxmanpur Beach",
+            description: "Perfect for an evening stroll and a stunning sunset view.",
+            time: "04:30 PM",
+            type: "activity"
+          },
+          {
+            _key: "ni3c",
+            title: "Dinner at Blue Sea Restaurant",
+            description: "Enjoy local Andamanese and Indian thalis.",
+            time: "08:00 PM",
+            type: "food"
+          }
+        ]
+      },
+      {
+        _key: "ni-day4",
+        dayNumber: 4,
+        title: "Snorkeling at Bharatpur Beach",
+        date: "2026-10-04",
+        summary: "Enjoy water sports and relax.",
+        activities: [
+          {
+            _key: "ni4a",
+            title: "Bharatpur Beach",
+            description: "Great for swimming, glass-bottom boat rides, and snorkeling. The coral reefs here are vibrant.",
+            time: "10:00 AM",
+            type: "activity"
+          }
+        ]
+      },
+      {
+        _key: "ni-day5",
+        dayNumber: 5,
+        title: "Return to Port Blair",
+        date: "2026-10-05",
+        summary: "Take the ferry back to Port Blair.",
+        activities: [
+          {
+            _key: "ni5a",
+            title: "Ferry to Port Blair",
+            description: "Catch the afternoon ferry back to the capital.",
+            time: "02:00 PM",
+            type: "transport"
+          }
+        ]
+      },
+      {
+        _key: "ni-day6",
+        dayNumber: 6,
+        title: "Departure",
+        date: "2026-10-06",
+        summary: "Fly back to Mumbai/Pune.",
+        activities: [
+          {
+            _key: "ni6a",
+            title: "Flight from Port Blair",
+            description: "Depart from Veer Savarkar Airport.",
+            time: "10:00 AM",
+            type: "transport"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    _id: "trip-diglipur-7-days",
+    title: "Diglipur — North Andaman's Pristine Frontier",
+    slug: "diglipur-7-days",
+    excerpt: "Famous for its turtle nesting beaches, twin islands of Ross & Smith connected by a sandbar, and the highest peak in the Andamans.",
+    tags: ["Adventure", "Island", "Offbeat", "Andamans", "Nature"],
+    country: "India",
+    startDate: "2026-11-10",
+    endDate: "2026-11-16",
+    bestSuggestedMonth: "October – April",
+    status: "published",
+    viewCount: 0,
+    totalBudget: 55000,
+    currency: "INR",
+    tripType: "Adventure",
+    readingTime: 12,
+    _createdAt: "2026-09-11T00:00:00Z",
+    _updatedAt: "2026-09-11T00:00:00Z",
+    coverImage: "/images/diglipur.jpg",
+    itinerary: [
+      {
+        _key: "dig-day1",
+        dayNumber: 1,
+        title: "Arrival in Port Blair",
+        date: "2026-11-10",
+        summary: "Fly from Mumbai/Pune to Port Blair.",
+        activities: [
+          {
+            _key: "dig1a",
+            title: "Reach Port Blair",
+            description: "Check into your hotel. Rest early as tomorrow is a long journey.",
+            location: { name: "Port Blair", lat: 11.6234, lng: 92.7265 },
+            time: "02:00 PM",
+            type: "transport"
+          }
+        ]
+      },
+      {
+        _key: "dig-day2",
+        dayNumber: 2,
+        title: "The Long Journey North",
+        date: "2026-11-11",
+        summary: "Take the Andaman Trunk Road (ATR) passing through the Jarawa Reserve to Diglipur.",
+        activities: [
+          {
+            _key: "dig2a",
+            title: "Road Trip to Diglipur",
+            description: "An adventurous 10-12 hour drive (approx 300km) through dense forests. Alternatively, take an overnight ferry to Aerial Bay Jetty.",
+            time: "04:00 AM",
+            type: "transport"
+          },
+          {
+            _key: "dig2b",
+            title: "Check-in at Pristine Beach Resort",
+            description: "Arrive at Kalipur Beach and settle in.",
+            time: "04:00 PM",
+            type: "accommodation",
+            notes: "Other options: Turtle Resort (APTDC) or Saddle Peak View Resort."
+          },
+          {
+            _key: "dig2c",
+            title: "Dinner at Anu Bar & Restaurant",
+            description: "Reliable local spot for Indian and seafood meals.",
+            time: "08:00 PM",
+            type: "food"
+          }
+        ]
+      },
+      {
+        _key: "dig-day3",
+        dayNumber: 3,
+        title: "Ross and Smith Islands",
+        date: "2026-11-12",
+        summary: "Visit the stunning twin islands connected by a natural white sandbar.",
+        activities: [
+          {
+            _key: "dig3a",
+            title: "Boat to Ross & Smith",
+            description: "Take a short fiber boat ride from Aerial Bay Jetty. Spend the day walking the sandbar and swimming in crystal clear waters.",
+            location: { name: "Ross and Smith Islands", lat: 13.2965, lng: 93.0673 },
+            time: "09:00 AM",
+            type: "activity"
+          }
+        ]
+      },
+      {
+        _key: "dig-day4",
+        dayNumber: 4,
+        title: "Kalipur Beach & Turtle Nesting",
+        date: "2026-11-13",
+        summary: "Explore Kalipur Beach and look out for turtles.",
+        activities: [
+          {
+            _key: "dig4a",
+            title: "Kalipur Beach",
+            description: "Walk the unique volcanic sand beach. During the nesting season (Dec-Mar), you might see Olive Ridley or Leatherback turtles.",
+            time: "06:00 PM",
+            type: "sightseeing"
+          }
+        ]
+      },
+      {
+        _key: "dig-day5",
+        dayNumber: 5,
+        title: "Trek to Saddle Peak (Optional) or Rest",
+        date: "2026-11-14",
+        summary: "Trek the highest peak of Andaman.",
+        activities: [
+          {
+            _key: "dig5a",
+            title: "Saddle Peak Trek",
+            description: "A challenging 8km trek through Saddle Peak National Park, offering breathtaking views of the archipelago.",
+            time: "06:00 AM",
+            type: "activity"
+          },
+          {
+            _key: "dig5b",
+            title: "Dinner at Resort",
+            description: "Have a hearty multi-cuisine dinner at the Pristine Beach Resort Restaurant.",
+            time: "08:00 PM",
+            type: "food"
+          }
+        ]
+      },
+      {
+        _key: "dig-day6",
+        dayNumber: 6,
+        title: "Return to Port Blair",
+        date: "2026-11-15",
+        summary: "Journey back to the capital.",
+        activities: [
+          {
+            _key: "dig6a",
+            title: "Return Drive/Ferry",
+            description: "Head back to Port Blair via the ATR or by sea.",
+            time: "05:00 AM",
+            type: "transport"
+          }
+        ]
+      },
+      {
+        _key: "dig-day7",
+        dayNumber: 7,
+        title: "Departure",
+        date: "2026-11-16",
+        summary: "Fly back from Port Blair.",
+        activities: [
+          {
+            _key: "dig7a",
+            title: "Flight from Port Blair",
+            description: "Fly back to Mumbai/Pune.",
+            time: "11:00 AM",
+            type: "transport"
+          }
+        ]
+      }
+    ]
+  }
 ];
