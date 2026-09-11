@@ -6691,7 +6691,7 @@ export const DEMO_TRIPS: Trip[] = [
     readingTime: 10,
     _createdAt: "2026-09-11T00:00:00Z",
     _updatedAt: "2026-09-11T00:00:00Z",
-    coverImage: "/images/neil-island.jpg",
+    coverImage: { _type: "image", asset: { _type: "reference", _ref: "/images/neil-island.jpg" } } as any,
     itinerary: [
       {
         _key: "ni-day1",
@@ -6840,7 +6840,7 @@ export const DEMO_TRIPS: Trip[] = [
     readingTime: 12,
     _createdAt: "2026-09-11T00:00:00Z",
     _updatedAt: "2026-09-11T00:00:00Z",
-    coverImage: "/images/diglipur.jpg",
+    coverImage: { _type: "image", asset: { _type: "reference", _ref: "/images/diglipur.jpg" } } as any,
     itinerary: [
       {
         _key: "dig-day1",
