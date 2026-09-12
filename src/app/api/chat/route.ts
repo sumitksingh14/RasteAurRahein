@@ -41,9 +41,8 @@ async function checkRateLimit(clientIp: string): Promise<boolean> {
   }
 }
 
-function resolveProvider(): "gemini" | "groq" | "openai" | "nvidia" {
-  return "groq";
-}
+// LLM Fallback order
+const FALLBACK_PROVIDERS: ("groq" | "gemini" | "openai")[] = ["groq", "gemini", "openai"];
 
 export async function POST(req: NextRequest) {
   try {
@@ -115,8 +114,7 @@ ${formattedHistory}
 
 User message: ${trimmedQuery}`;
 
-    // 6. Select LLM provider
-    const provider = resolveProvider();
+    // 6. (Provider resolution is now handled inside the stream with fallbacks)
 
     // 7. Create SSE ReadableStream
     const encoder = new TextEncoder();
@@ -125,8 +123,37 @@ User message: ${trimmedQuery}`;
     const stream = new ReadableStream({
       async start(controller) {
         try {
-          const generator = LLMService.generateContentStream(prompt, { model: provider });
+          let generator: AsyncGenerator<string, void, unknown> | null = null;
+          let firstChunk: string | null = null;
+          let lastError: unknown = null;
 
+          for (const provider of FALLBACK_PROVIDERS) {
+            try {
+              const currentGenerator = LLMService.generateContentStream(prompt, { model: provider });
+              const result = await currentGenerator.next();
+              
+              if (!result.done) {
+                firstChunk = result.value;
+                generator = currentGenerator;
+                break; // Successfully connected and got the first chunk
+              }
+            } catch (err) {
+              console.warn(`[Raahi Chatbot] Provider ${provider} failed, falling back...`, err instanceof Error ? err.message : err);
+              lastError = err;
+            }
+          }
+
+          if (!generator) {
+            throw lastError || new Error("All LLM providers failed. Please try again later.");
+          }
+
+          // Send the first chunk we retrieved
+          if (firstChunk) {
+            accumulatedAnswer += firstChunk;
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ token: firstChunk })}\n\n`));
+          }
+
+          // Consume the rest of the stream
           for await (const chunk of generator) {
             accumulatedAnswer += chunk;
             const data = JSON.stringify({ token: chunk });

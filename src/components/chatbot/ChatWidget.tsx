@@ -57,10 +57,10 @@ function InlineTripCard({ slug }: { slug: string }) {
   return (
     <Link
       href={`/trips/${slug}`}
-      className="group my-2 block overflow-hidden rounded-xl border hover:border-[#c85a17]/60 bg-white shadow-sm hover:shadow-md transition-all duration-200"
-      style={{ borderColor: B.border }}
+      className="group block overflow-hidden rounded-xl border hover:border-[#c85a17]/60 bg-white shadow-sm hover:shadow-md transition-all duration-200"
+      style={{ borderColor: B.border, margin: "12px 0" }}
     >
-      <div className="flex items-center gap-3 p-2.5">
+      <div className="flex items-center gap-3 w-full box-border" style={{ padding: "10px" }}>
         <div className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0" style={{ background: B.sandDark }}>
           <Image
             src={imageSrc}
@@ -201,7 +201,7 @@ function MarkdownRenderer({ content }: { content: string }) {
   };
 
   return (
-    <div className="space-y-2 text-xs" style={{ color: B.slate, lineHeight: 1.65 }}>
+    <div className="text-xs" style={{ color: B.slate, lineHeight: 1.65, display: "flex", flexDirection: "column", gap: "8px" }}>
       {lines.map((line, lIdx) => {
         const trimmed = line.trim();
         if (!trimmed) return <div key={lIdx} className="h-1" />;
@@ -295,10 +295,10 @@ function MarkdownRenderer({ content }: { content: string }) {
 
       {/* Interactive trip cards */}
       {tripSlugs.length > 0 && (
-        <div className="pt-2 mt-2 border-t space-y-1" style={{ borderColor: B.border }}>
+        <div className="border-t" style={{ borderColor: B.border, marginTop: "16px", paddingTop: "12px", display: "flex", flexDirection: "column", gap: "8px" }}>
           <div
             className="text-[10px] font-mono font-bold uppercase tracking-wider mb-1.5 flex items-center gap-1.5"
-            style={{ color: B.terra }}
+            style={{ color: B.terra, paddingLeft: "2px" }}
           >
             <MapPin className="w-3 h-3" />
             Curated Route Dossiers:
@@ -742,10 +742,10 @@ export default function ChatWidget() {
                                   {/* Message footer */}
                                   {!isWelcome && (
                                     <div
-                                      className="flex items-center justify-between pt-2 mt-2 border-t text-[10px] font-mono"
-                                      style={{ borderColor: B.border, color: B.muted }}
+                                      className="flex items-center justify-between border-t text-[10px] font-mono"
+                                      style={{ borderColor: B.border, color: B.muted, marginTop: "16px", paddingTop: "12px" }}
                                     >
-                                      <span className="flex items-center gap-1">
+                                      <span className="flex items-center gap-1.5">
                                         <span
                                           className="w-1.5 h-1.5 rounded-full"
                                           style={{ background: "#22c55e" }}
