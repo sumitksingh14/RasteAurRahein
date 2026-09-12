@@ -7,6 +7,7 @@ import type { Trip } from "@/lib/types";
 import { format } from "date-fns";
 import { useState } from "react";
 import BookmarkButton from "@/components/ui/BookmarkButton";
+import { TripAlertBadge } from "@/components/ui/TripAlertBanner";
 
 import { getTripImage } from "@/lib/data/tripImages";
 
@@ -137,6 +138,7 @@ export default function TripCard({
                 {tag}
               </span>
             ))}
+            <TripAlertBadge slug={trip.slug} />
           </div>
         )}
 
@@ -265,7 +267,7 @@ export default function TripCard({
               <Users size={14} color="#6B7280" />
               Solo / Group
             </span>
-            {trip.viewCount !== undefined && (
+            {(trip.viewCount ?? 0) > 0 && (
               <span
                 style={{
                   display: "flex",
@@ -278,7 +280,7 @@ export default function TripCard({
                 }}
               >
                 <Maximize2 size={13} color="#6B7280" />
-                {trip.viewCount.toLocaleString()} views
+                {trip.viewCount!.toLocaleString()} views
               </span>
             )}
           </div>

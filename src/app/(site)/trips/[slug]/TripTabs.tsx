@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Map, List, DollarSign, Hotel, Utensils, Gauge, Cloud, Sparkles, ExternalLink, CheckSquare } from "lucide-react";
+import { Map, List, DollarSign, Hotel, Utensils, Gauge, Cloud, Sparkles, ExternalLink, CheckSquare, BookOpen } from "lucide-react";
 import ItineraryAccordion from "@/components/ui/ItineraryAccordion";
 import MapView from "@/components/ui/MapView";
 import StaySuggestions from "@/components/ui/StaySuggestions";
@@ -18,6 +18,7 @@ import SmartPackingChecklist from "@/components/ui/SmartPackingChecklist";
 import { TRIP_WEATHER_COORDS } from "@/lib/weatherCoords";
 import type { Trip, MapPin } from "@/lib/types";
 import type { TripFieldName } from "@/lib/enrichment/types";
+import TripStories from "@/components/ui/TripStories";
 
 // ---------------------------------------------------------------------------
 // Unverified badge — shown when a field is ai_filled but not yet verified
@@ -132,7 +133,7 @@ function useEnrichmentStatuses(tripSlug: string) {
   return statuses;
 }
 
-type TabId = "itinerary" | "map" | "costs" | "stay" | "food" | "route" | "packing" | "weather";
+type TabId = "itinerary" | "map" | "costs" | "stay" | "food" | "route" | "packing" | "weather" | "stories";
 
 const TABS: { id: TabId; label: string; Icon: React.ElementType }[] = [
   { id: "itinerary", label: "Itinerary", Icon: List },
@@ -143,6 +144,7 @@ const TABS: { id: TabId; label: string; Icon: React.ElementType }[] = [
   { id: "route", label: "Route & Altitude", Icon: Gauge },
   { id: "packing", label: "Packing", Icon: CheckSquare },
   { id: "weather", label: "Weather", Icon: Cloud },
+  { id: "stories", label: "Stories & Reviews", Icon: BookOpen },
 ];
 
 // AI-estimated budget ranges per trip slug (derived from trip type & destination)
@@ -890,6 +892,10 @@ export default function TripTabs({ trip }: TripTabsProps) {
           />
         );
       })()}
+
+      {activeTab === "stories" && (
+        <TripStories tripSlug={trip.slug} />
+      )}
     </div>
   );
 }

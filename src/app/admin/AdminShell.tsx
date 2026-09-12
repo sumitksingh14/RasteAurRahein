@@ -12,11 +12,13 @@ import {
   Shield,
   ChevronRight,
   Sparkles,
+  BookOpen,
 } from "lucide-react";
 
 const NAV_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { href: "/admin/trips", label: "Trips", icon: MapPin },
+  { href: "/admin/stories", label: "Stories", icon: BookOpen },
   { href: "/admin/comments", label: "Comments", icon: MessageSquare },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/enrichment", label: "Enrichment", icon: Sparkles },

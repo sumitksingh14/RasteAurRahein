@@ -27,6 +27,7 @@ import AddToCalendarButton from "@/components/ui/AddToCalendarButton";
 import GPXDownloadButton from "@/components/ui/GPXDownloadButton";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 import NewsletterInline from "@/components/ui/NewsletterInline";
+import TripAlertBanner from "@/components/ui/TripAlertBanner";
 
 import { getTripImage } from "@/lib/data/tripImages";
 
@@ -253,10 +254,10 @@ export default async function TripDetailPage({ params }: Props) {
                 {durationDays} days
               </span>
             )}
-            {trip.viewCount !== undefined && (
+            {(trip.viewCount ?? 0) > 0 && (
               <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
                 <Eye size={14} />
-                {trip.viewCount.toLocaleString()} views
+                {trip.viewCount!.toLocaleString()} views
               </span>
             )}
             {trip._updatedAt && (
@@ -284,6 +285,8 @@ export default async function TripDetailPage({ params }: Props) {
         >
           {/* Left — Tabs */}
           <div>
+            <TripAlertBanner slug={trip.slug} />
+            
             {trip.excerpt && (
               <p
                 style={{

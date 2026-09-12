@@ -159,4 +159,14 @@ export const redis = {
   async ttl(key: string): Promise<number> {
     return (await redisCmd("ttl", key)) as number;
   },
+
+  /** LPUSH key member → number */
+  async lpush(key: string, member: string): Promise<number> {
+    return (await redisCmd("lpush", key, member)) as number;
+  },
+
+  /** LREM key count member → number */
+  async lrem(key: string, count: number, member: string): Promise<number> {
+    return (await redisCmd("lrem", key, count, member)) as number;
+  },
 };

@@ -30,6 +30,24 @@ const BUDGET_OPTIONS: { label: string; min: number; max: number }[] = [
 
 const SEASON_OPTIONS = ["Any", "Summer", "Monsoon", "Winter", "Spring", "Autumn"];
 
+const DIFFICULTY_OPTIONS = ["Any", "Easy", "Moderate", "Hard"] as const;
+type Difficulty = typeof DIFFICULTY_OPTIONS[number];
+
+/**
+ * Infer difficulty from trip tags + tripType when the trip doesn't have an
+ * explicit `difficulty` field set.
+ */
+function inferDifficulty(trip: Trip): Difficulty {
+  if (trip.difficulty) return trip.difficulty;
+  const tags = (trip.tags || []).map((t) => t.toLowerCase());
+  const type = (trip.tripType || "").toLowerCase();
+  const hardKeywords = ["trek", "trekking", "adventure", "high altitude", "ladakh", "spiti", "himalaya", "mountaineering", "glacier"];
+  const easyKeywords = ["beach", "family", "culture", "pilgrimage", "heritage", "food", "relaxation"];
+  if (hardKeywords.some((kw) => tags.includes(kw) || type.includes(kw))) return "Hard";
+  if (easyKeywords.some((kw) => tags.includes(kw) || type.includes(kw))) return "Easy";
+  return "Moderate";
+}
+
 const MONTH_NAMES: Record<string, number> = {
   jan: 1, january: 1,
   feb: 2, february: 2,
@@ -140,6 +158,7 @@ interface TripsClientProps {
   initialBudgetIdx?: number;
   initialRegion?: string;
   initialSortBy?: "date" | "views" | "title";
+  initialDifficulty?: Difficulty;
 }
 
 export default function TripsClient({
@@ -151,6 +170,7 @@ export default function TripsClient({
   initialBudgetIdx = 0,
   initialRegion = "Any",
   initialSortBy = "date",
+  initialDifficulty = "Any" as Difficulty,
 }: TripsClientProps) {
   const router = useRouter();
   const [query, setQuery] = useState(initialQuery);
@@ -159,9 +179,10 @@ export default function TripsClient({
   const [season, setSeason] = useState(initialSeason || "Any");
   const [sortBy, setSortBy] = useState<"date" | "views" | "title">(initialSortBy);
   const [showFilters, setShowFilters] = useState(false);
-  const [durationIdx, setDurationIdx] = useState(initialDurationIdx); // index into DURATION_OPTIONS
-  const [budgetIdx, setBudgetIdx] = useState(initialBudgetIdx);     // index into BUDGET_OPTIONS
+  const [durationIdx, setDurationIdx] = useState(initialDurationIdx);
+  const [budgetIdx, setBudgetIdx] = useState(initialBudgetIdx);
   const [regionLabel, setRegionLabel] = useState(initialRegion || "Any");
+  const [difficulty, setDifficulty] = useState<Difficulty>(initialDifficulty);
 
   const isFirstMount = useRef(true);
 
@@ -178,6 +199,7 @@ export default function TripsClient({
     if (durationIdx > 0) params.set("durationIdx", String(durationIdx));
     if (budgetIdx > 0) params.set("budgetIdx", String(budgetIdx));
     if (regionLabel && regionLabel !== "Any") params.set("region", regionLabel);
+    if (difficulty && difficulty !== "Any") params.set("difficulty", difficulty);
     if (sortBy && sortBy !== "date") params.set("sortBy", sortBy);
 
     const queryString = params.toString();
@@ -185,7 +207,7 @@ export default function TripsClient({
     if (typeof window !== "undefined") {
       window.history.replaceState(null, "", newUrl);
     }
-  }, [query, selectedTags, season, durationIdx, budgetIdx, regionLabel, sortBy]);
+  }, [query, selectedTags, season, durationIdx, budgetIdx, regionLabel, difficulty, sortBy]);
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
@@ -201,6 +223,7 @@ export default function TripsClient({
     setDurationIdx(0);
     setBudgetIdx(0);
     setRegionLabel("Any");
+    setDifficulty("Any");
     if (typeof window !== "undefined") {
       window.history.replaceState(null, "", window.location.pathname);
     }
@@ -261,6 +284,11 @@ export default function TripsClient({
       result = result.filter((t) => tripMatchesSeason(t, season));
     }
 
+    // Difficulty filter
+    if (difficulty && difficulty !== "Any") {
+      result = result.filter((t) => inferDifficulty(t) === difficulty);
+    }
+
     // Sort
     if (sortBy === "date") {
       result.sort(
@@ -274,7 +302,7 @@ export default function TripsClient({
     }
 
     return result;
-  }, [trips, query, selectedTags, season, sortBy, durationIdx, budgetIdx, regionLabel]);
+  }, [trips, query, selectedTags, season, sortBy, durationIdx, budgetIdx, regionLabel, difficulty]);
 
   const hasActiveFilters =
     Boolean(query) ||
@@ -282,7 +310,8 @@ export default function TripsClient({
     (season !== "Any" && Boolean(season)) ||
     durationIdx > 0 ||
     budgetIdx > 0 ||
-    regionLabel !== "Any";
+    regionLabel !== "Any" ||
+    difficulty !== "Any";
 
   const mostPopular = [...trips]
     .sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0))
@@ -293,7 +322,8 @@ export default function TripsClient({
     (season !== "Any" && Boolean(season) ? 1 : 0) +
     (durationIdx > 0 ? 1 : 0) +
     (budgetIdx > 0 ? 1 : 0) +
-    (regionLabel !== "Any" ? 1 : 0);
+    (regionLabel !== "Any" ? 1 : 0) +
+    (difficulty !== "Any" ? 1 : 0);
 
   return (
     <div>
@@ -547,6 +577,49 @@ export default function TripsClient({
                         style={pillStyle(active)}
                       >
                         {r.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Difficulty */}
+              <div>
+                <div style={labelStyle}>Difficulty</div>
+                <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+                  {DIFFICULTY_OPTIONS.map((opt) => {
+                    const active = difficulty === opt;
+                    const colorMap: Record<string, string> = {
+                      Easy: "#16a34a",
+                      Moderate: "#d97706",
+                      Hard: "#dc2626",
+                    };
+                    return (
+                      <button
+                        key={opt}
+                        onClick={() => setDifficulty(opt)}
+                        id={`difficulty-filter-${opt.toLowerCase()}`}
+                        style={{
+                          ...pillStyle(active),
+                          ...(active && opt !== "Any" ? {
+                            background: `${colorMap[opt]}15`,
+                            borderColor: colorMap[opt],
+                            color: colorMap[opt],
+                          } : {}),
+                        }}
+                      >
+                        {opt !== "Any" && (
+                          <span style={{
+                            display: "inline-block",
+                            width: 7,
+                            height: 7,
+                            borderRadius: "50%",
+                            background: colorMap[opt],
+                            marginRight: 5,
+                            verticalAlign: "middle",
+                          }} />
+                        )}
+                        {opt}
                       </button>
                     );
                   })}

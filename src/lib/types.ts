@@ -71,6 +71,7 @@ export interface Trip {
   totalBudget?: number;
   currency?: string;
   tripType?: string;
+  difficulty?: "Easy" | "Moderate" | "Hard";
   readingTime?: number;
   generationStatus?: "generating" | "complete" | "failed";
   _createdAt: string;

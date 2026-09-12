@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 import type { Trip, ItineraryDay, Activity } from "@/lib/types";
 import TripPreviewModal from "@/app/admin/TripPreviewModal";
+import type { TripAlert } from "@/lib/tripAlerts";
 
 // ─────────────────────────────────────────────────────────────
 // Shared styles
@@ -295,6 +296,149 @@ function ItineraryPreviewTab({
 }
 
 // ─────────────────────────────────────────────────────────────
+// Alert Management Tab
+// ─────────────────────────────────────────────────────────────
+function AlertEditorTab({ tripSlug }: { tripSlug: string }) {
+  const [alert, setAlert] = useState<TripAlert | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const [form, setForm] = useState({
+    status: "open",
+    message: "",
+  });
+
+  useEffect(() => {
+    fetch(`/api/admin/trips/${tripSlug}/alert`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.alert) {
+          setAlert(d.alert);
+          setForm({ status: d.alert.status, message: d.alert.message });
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [tripSlug]);
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    setError("");
+    setSuccess("");
+    try {
+      const res = await fetch(`/api/admin/trips/${tripSlug}/alert`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) {
+        const d = await res.json();
+        setError(d.error || "Failed to save alert");
+      } else {
+        setSuccess("Alert updated successfully.");
+        setAlert({
+          slug: tripSlug,
+          status: form.status as any,
+          message: form.message,
+          updatedAt: new Date().toISOString(),
+          updatedBy: "Admin",
+        });
+        setTimeout(() => setSuccess(""), 3000);
+      }
+    } catch {
+      setError("Network error.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleClear = async () => {
+    if (!confirm("Remove the active alert for this trip?")) return;
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/admin/trips/${tripSlug}/alert`, { method: "DELETE" });
+      if (res.ok) {
+        setAlert(null);
+        setForm({ status: "open", message: "" });
+        setSuccess("Alert removed.");
+        setTimeout(() => setSuccess(""), 3000);
+      }
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) return <div style={{ color: "#64748b", padding: "2rem" }}>Loading alert…</div>;
+
+  return (
+    <div>
+      <div style={{ marginBottom: "1.5rem" }}>
+        <h3 style={{ margin: "0 0 0.5rem", fontSize: "1.1rem", color: "#0f172a" }}>Route Condition Alert</h3>
+        <p style={{ margin: 0, fontSize: "0.85rem", color: "#64748b" }}>
+          Publish an alert if there are road closures, landslides, or significant conditions travellers should know about.
+        </p>
+      </div>
+
+      {error && <div style={{ background: "#FEF2F2", border: "1px solid #FCA5A5", borderRadius: 10, padding: "0.75rem 1rem", marginBottom: "1rem", color: "#dc2626", fontSize: "0.875rem" }}>{error}</div>}
+      {success && <div style={{ background: "#F0FDF4", border: "1px solid #86EFAC", borderRadius: 10, padding: "0.75rem 1rem", marginBottom: "1rem", color: "#16a34a", fontSize: "0.875rem" }}>{success}</div>}
+
+      <form onSubmit={handleSave} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+        <Field label="Status">
+          <select style={inputStyle} value={form.status} onChange={(e) => setForm((f) => ({ ...f, status: e.target.value }))}>
+            <option value="open">🟢 Open (Normal conditions)</option>
+            <option value="caution">🟡 Caution (Proceed with care)</option>
+            <option value="closed">🔴 Closed (Inaccessible)</option>
+          </select>
+        </Field>
+        
+        <Field label="Alert Message">
+          <textarea 
+            style={{ ...inputStyle, minHeight: 80, resize: "vertical" }} 
+            placeholder="E.g. Road blocked near Kunzum Pass due to recent snowfall..."
+            value={form.message} 
+            onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
+            required
+          />
+        </Field>
+
+        <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.75rem", paddingTop: "0.5rem" }}>
+          {alert && (
+            <button
+              type="button"
+              onClick={handleClear}
+              disabled={saving}
+              style={{ padding: "0.7rem 1.25rem", borderRadius: 10, background: "#FEF2F2", color: "#dc2626", border: "1px solid #FCA5A5", fontSize: "0.9rem", fontWeight: 600, cursor: saving ? "not-allowed" : "pointer" }}
+            >
+              Clear Alert
+            </button>
+          )}
+          <button
+            type="submit"
+            disabled={saving}
+            style={{ padding: "0.7rem 1.5rem", borderRadius: 10, background: saving ? "#E2E8F0" : "linear-gradient(135deg,#006CE4,#3B82F6)", color: saving ? "#94a3b8" : "#fff", border: "none", fontSize: "0.9rem", fontWeight: 600, cursor: saving ? "not-allowed" : "pointer" }}
+          >
+            {saving ? "Saving…" : alert ? "Update Alert" : "Publish Alert"}
+          </button>
+        </div>
+      </form>
+
+      {alert && (
+        <div style={{ marginTop: "2rem", paddingTop: "1.5rem", borderTop: "1px solid #E2E8F0" }}>
+          <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.75rem" }}>Current Alert State</div>
+          <div style={{ fontSize: "0.82rem", color: "#475569" }}>
+            <p style={{ margin: "0 0 4px" }}><strong>Last updated:</strong> {new Date(alert.updatedAt).toLocaleString("en-IN")}</p>
+            <p style={{ margin: 0 }}><strong>By:</strong> {alert.updatedBy || "Admin"}</p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
 // Raw JSON tab
 // ─────────────────────────────────────────────────────────────
 function RawDataTab({ trip }: { trip: Trip }) {
@@ -330,7 +474,7 @@ function RawDataTab({ trip }: { trip: Trip }) {
 // ─────────────────────────────────────────────────────────────
 // Main page
 // ─────────────────────────────────────────────────────────────
-type TabId = "overview" | "itinerary" | "raw";
+type TabId = "overview" | "itinerary" | "alerts" | "raw";
 
 interface TripForm {
   title: string;
@@ -437,6 +581,7 @@ export default function EditTripPage() {
   const TABS: { id: TabId; label: string; Icon: React.ElementType }[] = [
     { id: "overview", label: "Overview & Edit", Icon: Settings },
     { id: "itinerary", label: `Itinerary${trip.itinerary?.length ? ` (${trip.itinerary.length} days)` : ""}`, Icon: List },
+    { id: "alerts", label: "Alerts", Icon: AlertCircle },
     { id: "raw", label: "Raw JSON", Icon: Code2 },
   ];
 
@@ -626,6 +771,13 @@ export default function EditTripPage() {
               } : f);
             }}
           />
+        </div>
+      )}
+
+      {/* ── TAB: Alerts ── */}
+      {activeTab === "alerts" && (
+        <div style={{ background: "#fff", borderRadius: 16, padding: "2rem", boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}>
+          <AlertEditorTab tripSlug={slug} />
         </div>
       )}
 
