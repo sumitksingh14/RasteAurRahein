@@ -3,6 +3,7 @@ import Footer from "@/components/layout/Footer";
 import MobileTabBar from "@/components/layout/MobileTabBar";
 import StaticBackground from "@/components/ui/StaticBackground";
 import AIItineraryButton from "@/components/ai/AIItineraryButton";
+import ChatWidget from "@/components/chatbot/ChatWidget";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -17,6 +18,8 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         <MobileTabBar />
       </div>
       <AIItineraryButton />
+      <ChatWidget />
     </>
   );
 }
+
