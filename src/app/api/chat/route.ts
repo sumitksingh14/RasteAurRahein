@@ -42,11 +42,7 @@ async function checkRateLimit(clientIp: string): Promise<boolean> {
 }
 
 function resolveProvider(): "gemini" | "groq" | "openai" | "nvidia" {
-  if (process.env.GEMINI_API_KEY) return "gemini";
-  if (process.env.GROQ_API_KEY) return "groq";
-  if (process.env.OPENAI_API_KEY) return "openai";
-  if (process.env.NVIDIA_API_KEY) return "nvidia";
-  return "gemini";
+  return "groq";
 }
 
 export async function POST(req: NextRequest) {
@@ -94,8 +90,8 @@ export async function POST(req: NextRequest) {
     const formattedHistory =
       recentHistory.length > 0
         ? recentHistory
-            .map((h) => `${h.role === "user" ? "User" : "Raahi"}: ${h.content.trim()}`)
-            .join("\n")
+          .map((h) => `${h.role === "user" ? "User" : "Raahi"}: ${h.content.trim()}`)
+          .join("\n")
         : "None (new conversation)";
 
     // 5. Build strict system prompt matching spec §6
@@ -157,12 +153,12 @@ User message: ${trimmedQuery}`;
           }
         } catch (err: unknown) {
           let errorMessage = err instanceof Error ? err.message : "Failed to generate response.";
-          
+
           // Make 429 / Quota errors user-friendly
           if (errorMessage.includes("429") || errorMessage.includes("Quota exceeded") || errorMessage.includes("RESOURCE_EXHAUSTED")) {
             errorMessage = "API Rate Limit Exceeded: The free tier quota has been reached. Please wait a minute and try again.";
           }
-          
+
           console.error("[Raahi Chatbot Stream Error]", errorMessage);
           const errorData = JSON.stringify({ error: errorMessage });
           controller.enqueue(encoder.encode(`data: ${errorData}\n\n`));
