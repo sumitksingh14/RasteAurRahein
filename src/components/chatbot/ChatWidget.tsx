@@ -523,68 +523,58 @@ export default function ChatWidget() {
             >
               {/* ── HEADER ── */}
               <div
-                className="relative flex items-center justify-between px-4 py-3 border-b select-none shrink-0"
-                style={{ background: B.forest, borderColor: B.darkBorder }}
+                className="relative flex items-center justify-between border-b select-none shrink-0 w-full box-border"
+                style={{ background: B.forest, borderColor: `${B.terra}40`, padding: "12px 16px" }}
               >
-                {/* Mobile drag handle */}
-                <div className="sm:hidden absolute top-1.5 left-1/2 -translate-x-1/2 w-10 h-1 rounded-full bg-white/20" />
-
-                <div className="flex items-center gap-2.5 min-w-0 overflow-hidden flex-1">
-                  {/* Avatar */}
-                  <div className="relative shrink-0">
-                    <div
-                      className="w-9 h-9 rounded-xl flex items-center justify-center border font-bold"
+                <div className="flex items-center gap-3 min-w-0">
+                  <div
+                    className="relative w-10 h-10 rounded-full flex items-center justify-center shrink-0 border"
+                    style={{ background: "#263c2c", borderColor: B.terra }}
+                  >
+                    <span
+                      className="font-bold text-lg"
                       style={{
-                        background: `${B.terra}20`,
-                        borderColor: `${B.terra}40`,
+                        color: B.terra,
+                        fontFamily: 'var(--font-serif)',
                       }}
                     >
-                      <span
-                        className="text-base"
-                        style={{ color: B.terra }}
-                      >
-                        R
-                      </span>
-                    </div>
+                      R
+                    </span>
                     <span
-                      className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2"
+                      className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2"
                       style={{ background: "#22c55e", borderColor: B.forest }}
                     />
                   </div>
-
-                  <div className="min-w-0 overflow-hidden flex-1">
-                    <div className="flex items-center gap-1.5 overflow-hidden">
-                      <h2
-                        className="font-semibold text-[10px] leading-tight truncate"
-                        style={{ color: B.sand }}
-                      >
-                        Raahi bot
-                      </h2>
+                  <div className="min-w-0">
+                    <h3
+                      className="text-[22px] font-extrabold leading-none truncate flex items-center gap-1.5"
+                      style={{ color: "#ffffff", fontFamily: 'var(--font-sans)' }}
+                    >
+                      Raahi bot
                       <span
-                        className="text-[7px] font-mono font-bold px-1 py-0.5 rounded tracking-wider uppercase shrink-0"
-                        style={{ background: B.terra, color: "#fff" }}
+                        className="text-[9px] px-1 py-0.5 rounded uppercase tracking-widest font-bold shrink-0"
+                        style={{ background: B.terra, color: B.sand }}
                       >
                         AI
                       </span>
-                    </div>
-                    <p className="text-[9px] mt-0.5 flex items-center gap-1" style={{ color: "#a8b5aa" }}>
-                      <span
-                        className="w-1.5 h-1.5 rounded-full inline-block animate-pulse shrink-0"
-                        style={{ background: "#4ade80" }}
-                      />
+                    </h3>
+                    <p
+                      className="text-[10px] mt-1 font-medium truncate flex items-center gap-1"
+                      style={{ color: "#a1a1aa" }}
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#22c55e" }} />
                       Live Telemetry &amp; BRO Synced
                     </p>
                   </div>
                 </div>
 
-                {/* Controls */}
-                <div className="flex items-center gap-0.5 shrink-0 ml-2" style={{ color: "#9ca89e" }}>
+                <div className="flex items-center gap-2 shrink-0">
                   <button
                     onClick={clearChat}
-                    title="Reset conversation"
-                    className="p-1.5 rounded-lg transition-colors hover:text-white hover:bg-white/10 cursor-pointer"
+                    className="p-1.5 hover:bg-white/10 rounded-lg transition-colors cursor-pointer"
+                    title="Reset Session"
                   >
-                    <RotateCcw className="w-4 h-4" />
+                    <RotateCcw className="w-4 h-4" style={{ color: "#a1a1aa" }} />
                   </button>
                   <button
                     onClick={() => setIsExpanded(!isExpanded)}
@@ -592,9 +582,9 @@ export default function ChatWidget() {
                     className="hidden sm:inline-flex p-1.5 rounded-lg transition-colors hover:text-white hover:bg-white/10 cursor-pointer"
                   >
                     {isExpanded ? (
-                      <Minimize2 className="w-4 h-4" />
+                      <Minimize2 className="w-4 h-4" style={{ color: "#a1a1aa" }} />
                     ) : (
-                      <Maximize2 className="w-4 h-4" />
+                      <Maximize2 className="w-4 h-4" style={{ color: "#a1a1aa" }} />
                     )}
                   </button>
                   <button
@@ -602,7 +592,7 @@ export default function ChatWidget() {
                     title="Close"
                     className="p-1.5 rounded-lg transition-colors hover:text-white hover:bg-white/10 cursor-pointer"
                   >
-                    <X className="w-4 h-4" />
+                    <X className="w-4 h-4" style={{ color: "#ffffff" }} />
                   </button>
                 </div>
               </div>
@@ -674,8 +664,8 @@ export default function ChatWidget() {
 
               {/* ── MESSAGES SCROLL AREA ── */}
               <div
-                className="flex-1 overflow-y-auto px-4 pt-4 pb-4"
-                style={{ background: B.sand }}
+                className="flex-1 overflow-y-auto w-full box-border"
+                style={{ background: B.sand, padding: "16px" }}
               >
                 <div className="flex flex-col gap-4">
                   {/* Corpus stamp — inline inside scroll area so it doesn't eat panel height */}
@@ -729,7 +719,7 @@ export default function ChatWidget() {
                                 isUser
                                   ? {
                                       background: B.forest,
-                                      color: "#f3f4f6", // light grey/white text for user
+                                      color: "#ffffff", // white text for user
                                       padding: "16px",
                                       borderRadius: "16px 4px 16px 16px",
                                     }
@@ -744,7 +734,7 @@ export default function ChatWidget() {
                               }
                             >
                               {isUser ? (
-                                <p className="leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+                                <p className="leading-relaxed whitespace-pre-wrap" style={{ color: "#ffffff" }}>{msg.content}</p>
                               ) : msg.content ? (
                                 <div>
                                   <MarkdownRenderer content={msg.content} />
@@ -897,26 +887,27 @@ export default function ChatWidget() {
               {/* ── SUGGESTED CHIPS ── */}
               {pageContext.suggestedPrompts.length > 0 && (
                 <div
-                  className="px-3.5 py-2.5 border-t flex items-start gap-2 overflow-x-auto shrink-0"
-                  style={{ background: B.bg, borderColor: B.border }}
+                  className="border-t flex flex-col gap-2 shrink-0 w-full min-w-0 box-border"
+                  style={{ background: B.bg, borderColor: B.border, padding: "10px 16px" }}
                 >
                   <span
-                    className="text-[10px] font-mono uppercase tracking-widest shrink-0 mt-1.5 leading-none"
+                    className="text-[10px] font-mono uppercase tracking-widest leading-none"
                     style={{ color: B.muted }}
                   >
                     QUICK PROMPTS:
                   </span>
-                  <div className="flex gap-2 flex-wrap">
+                  <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide flex-nowrap w-full">
                     {pageContext.suggestedPrompts.slice(0, 2).map((prompt, idx) => (
                       <button
                         key={idx}
                         onClick={() => handleSend(prompt)}
                         disabled={isStreaming}
-                        className="text-[12px] px-3 py-1.5 rounded-full border whitespace-nowrap transition-all disabled:opacity-50 shrink-0 cursor-pointer shadow-sm"
+                        className="text-[12px] rounded-full border whitespace-nowrap transition-all disabled:opacity-50 shrink-0 cursor-pointer shadow-sm"
                         style={{
                           background: "#ffffff",
                           borderColor: B.border,
                           color: B.slate,
+                          padding: "6px 12px",
                         }}
                         onMouseEnter={(e) => {
                           (e.currentTarget as HTMLButtonElement).style.borderColor = B.terra;
@@ -936,13 +927,14 @@ export default function ChatWidget() {
 
               {/* ── INPUT DOCK ── */}
               <div
-                className="px-3.5 pt-3 pb-2.5 border-t shrink-0"
-                style={{ background: "#ffffff", borderColor: B.border }}
+                className="border-t shrink-0 w-full min-w-0 box-border"
+                style={{ background: "#ffffff", borderColor: B.border, padding: "12px 16px" }}
               >
                 <div
-                  className="flex items-center gap-2 rounded-full px-4 py-1 border transition-all bg-white"
+                  className="flex items-center gap-2 rounded-full border transition-all bg-white w-full box-border"
                   style={{
                     borderColor: B.border,
+                    padding: "4px 12px",
                   }}
                   onFocus={(e) =>
                     ((e.currentTarget as HTMLDivElement).style.borderColor = B.terra)
@@ -968,8 +960,8 @@ export default function ChatWidget() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder="Ask about passes, road conditions, fuel points, secret..."
-                    className="flex-1 h-[46px] bg-transparent text-[14px] focus:outline-none"
+                    placeholder="Ask about passes, road conditions, fuel points..."
+                    className="flex-1 min-w-0 w-full h-[46px] bg-transparent text-[14px] focus:outline-none"
                     style={{ color: B.forest }}
                   />
 
