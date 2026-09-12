@@ -222,6 +222,9 @@ export const TRIP_REGION_MAP: Record<string, string[]> = {
   "poshina-3-days": ["rajasthan"],
   "champaner-pavagadh-3-days": ["rajasthan"],
   "palitana-3-days": ["rajasthan"],
+
+  // ── 7. Sacred Gangetic Triangle ──
+  "varanasi-ayodhya-prayagraj-5-days": ["central-india", "himalayas"],
 };
 
 /**

@@ -13850,4 +13850,487 @@ export const DEMO_TRIPS: Trip[] = [
       }
     ]
   },
+
+  {
+    "_id": "trip-varanasi-ayodhya-prayagraj-5-days",
+    "title": "Varanasi, Ayodhya & Prayagraj Sacred Triangle — 5 Days from Mumbai / Pune",
+    "slug": "varanasi-ayodhya-prayagraj-5-days",
+    "excerpt": "Embark on an inspiring 5-day spiritual pilgrimage through India's holiest Gangetic triangle — from the eternal ghats, Kashi Vishwanath Jyotirlinga, and divine evening Maha Aarti of Varanasi (Kashi), to the sacred Triveni Sangam holy dip and reclining Hanuman in Prayagraj, culminating in the grand new Shri Ram Janmabhoomi Mandir and serene Saryu Aarti in Ayodhya. Curated with direct flights from Mumbai/Pune, verified riverside stays, and authentic satvik cuisine.",
+    "tags": [
+      "Pilgrimage",
+      "Spiritual",
+      "Varanasi",
+      "Ayodhya",
+      "Prayagraj",
+      "Ganga Aarti",
+      "Temples",
+      "Heritage",
+      "Culture",
+      "North India"
+    ],
+    "country": "India",
+    "startDate": "2026-10-20",
+    "endDate": "2026-10-24",
+    "bestSuggestedMonth": "October – March (Crisp 12°C–25°C, sacred festival season)",
+    "status": "published",
+    "viewCount": 0,
+    "totalBudget": 22500,
+    "currency": "INR",
+    "tripType": "Sacred Pilgrimage & Temple Circuit",
+    "readingTime": 9,
+    "_createdAt": "2026-09-08T00:00:00Z",
+    "_updatedAt": "2026-09-08T00:00:00Z",
+    "itinerary": [
+      {
+        "_key": "vap-day1",
+        "dayNumber": 1,
+        "title": "Mumbai/Pune → Varanasi Airport (VNS) → Dashashwamedh Ghat Evening Maha Aarti",
+        "date": "2026-10-20",
+        "summary": "Board a direct morning flight from Mumbai (BOM) or Pune (PNQ) to Varanasi's Lal Bahadur Shastri Airport (VNS). Transfer to your riverside heritage haveli on the ghats. Enjoy authentic Banarasi Tamatar Chaat at Godowlia before embarking on a private sunset Bajra boat cruise to witness the world-renowned Dashashwamedh Ghat Ganga Maha Aarti.",
+        "activities": [
+          {
+            "_key": "vap1a",
+            "title": "Direct Morning Flight Mumbai / Pune to Varanasi (VNS)",
+            "description": "Fly direct from Mumbai (BOM) or Pune (PNQ) to Varanasi Airport (~2 hrs 10 mins). Meet your private pre-booked chauffeur at the arrival gate.",
+            "location": {
+              "name": "Lal Bahadur Shastri International Airport Varanasi",
+              "lat": 25.4524,
+              "lng": 82.8593
+            },
+            "time": "10:30 AM",
+            "type": "transport",
+            "cost": 6500,
+            "currency": "INR",
+            "notes": "Daily direct flights on IndiGo and Air India Express. Pre-arranged AC cab avoids airport touts."
+          },
+          {
+            "_key": "vap1b",
+            "title": "Check-in to BrijRama Palace / Riverside Heritage Haveli",
+            "description": "Arrive at Rajghat/Darbhanga Ghat and take a traditional wooden boat transfer to check in to the 210-year-old palace hotel directly on the riverfront.",
+            "location": {
+              "name": "BrijRama Palace Varanasi",
+              "lat": 25.3056,
+              "lng": 83.0102
+            },
+            "time": "01:00 PM",
+            "type": "accommodation",
+            "cost": 8500,
+            "currency": "INR",
+            "notes": "Contact: +91-542-2450840. Uninterrupted view of the sacred Ganges from private stone balconies."
+          },
+          {
+            "_key": "vap1c",
+            "title": "Iconic Street Food Lunch at Kashi Chaat Bhandar",
+            "description": "Walk to Godowlia Chowk to savor the world-famous piping hot Tamatar Chaat served in earthen kulhads, crispy Palak Patta Chaat, and Gulab Jamun.",
+            "location": {
+              "name": "Kashi Chaat Bhandar Godowlia",
+              "lat": 25.3105,
+              "lng": 83.0075
+            },
+            "time": "02:30 PM",
+            "type": "food",
+            "cost": 250,
+            "currency": "INR",
+            "notes": "Must-try Banaras specialty; uniquely spiced tomato puree with crispy namakpare."
+          },
+          {
+            "_key": "vap1d",
+            "title": "Sunset Bajra Boat Cruise across 84 Ghats",
+            "description": "Board a hand-rowed wooden Bajra boat at Assi Ghat and glide down the river past ancient sandstone palaces, akhadas, and historic ghats as dusk sets in.",
+            "location": {
+              "name": "Assi Ghat to Dashashwamedh Riverfront",
+              "lat": 25.2896,
+              "lng": 83.0068
+            },
+            "time": "05:00 PM",
+            "type": "activity",
+            "cost": 1200,
+            "currency": "INR",
+            "notes": "MUST ATTEND: Experience the golden hour reflections of temples and thousands of floating marigold diyas."
+          },
+          {
+            "_key": "vap1e",
+            "title": "Dashashwamedh Ghat Evening Ganga Maha Aarti",
+            "description": "Witness the grand ritual performed by saffron-clad Vedic priests holding multi-tiered brass lamps, amidst the ringing of bronze bells, blowing of conch shells, and Vedic chanting.",
+            "location": {
+              "name": "Dashashwamedh Ghat Varanasi",
+              "lat": 25.3075,
+              "lng": 83.0106
+            },
+            "time": "06:45 PM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "MUST ATTEND: The best vantage point is directly from your moored wooden boat on the river facing the ghat."
+          }
+        ]
+      },
+      {
+        "_key": "vap-day2",
+        "dayNumber": 2,
+        "title": "Shri Kashi Vishwanath Jyotirlinga Dham → Heritage Lanes → Sarnath Excursion",
+        "date": "2026-10-21",
+        "summary": "Rise before dawn for the divine Sugam Darshan at Shri Kashi Vishwanath Jyotirlinga through the grand corridor. Explore Annapurna Mandir, Manikarnika Ghat, and historic Galis. After a breakfast of clay-pot Blue Lassi and Malai Toast, journey to Sarnath where Lord Buddha delivered his historic first sermon.",
+        "activities": [
+          {
+            "_key": "vap2a",
+            "title": "Shri Kashi Vishwanath Jyotirlinga Mangala Darshan",
+            "description": "Enter via the new river corridor directly from the ghat to offer bilva leaves, holy Ganga jal, and milk to the golden-spired Vishweshwara Jyotirlinga.",
+            "location": {
+              "name": "Shri Kashi Vishwanath Temple",
+              "lat": 25.3109,
+              "lng": 83.0107
+            },
+            "time": "05:30 AM",
+            "type": "sightseeing",
+            "cost": 500,
+            "currency": "INR",
+            "notes": "MUST ATTEND: Book online Sugam Darshan ticket in advance to avoid 2-hour queue. Carry original ID."
+          },
+          {
+            "_key": "vap2b",
+            "title": "Maa Annapurna Mandir & Manikarnika Ghat Walk",
+            "description": "Seek blessings for perpetual abundance at Maa Annapurna Temple, followed by a sober, philosophical walk past Manikarnika Ghat (the eternal Mahashamshan crematorium).",
+            "location": {
+              "name": "Manikarnika Ghat Varanasi",
+              "lat": 25.3108,
+              "lng": 83.0142
+            },
+            "time": "07:30 AM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Deeply reflective and sacred site where the eternal funeral fires have burned continuously for millennia."
+          },
+          {
+            "_key": "vap2c",
+            "title": "Breakfast: Blue Lassi Shop & Lakshmi Chai Toast",
+            "description": "Relish hand-churned thick curd lassi with pomegranate, banana, and rabdi at the 1925 Blue Lassi shop, paired with white-butter malai toast and saffron kulhad chai.",
+            "location": {
+              "name": "Blue Lassi Shop Varanasi",
+              "lat": 25.3115,
+              "lng": 83.0125
+            },
+            "time": "09:00 AM",
+            "type": "food",
+            "cost": 200,
+            "currency": "INR",
+            "notes": "Located in the narrow heritage lanes near Manikarnika; loved by travelers worldwide."
+          },
+          {
+            "_key": "vap2d",
+            "title": "Excursion to Sarnath (Dhamek Stupa & Deer Park)",
+            "description": "Drive 10 km north to Sarnath, the sacred deer park where Lord Buddha preached his first sermon (Dharmachakra Pravartana). Explore the massive 5th-century Dhamek Stupa and Mulagandhakuti Vihara.",
+            "location": {
+              "name": "Dhamek Stupa Sarnath",
+              "lat": 25.3809,
+              "lng": 83.0245
+            },
+            "time": "11:30 AM",
+            "type": "sightseeing",
+            "cost": 100,
+            "currency": "INR",
+            "notes": "MUST ATTEND: Meditate in the tranquil archaeological gardens. Visit Sarnath ASI Museum to see the original Ashoka Lion Capital."
+          },
+          {
+            "_key": "vap2e",
+            "title": "Satvik Feast at Shree Shivay Thali & Keshav Paan",
+            "description": "Enjoy a grand multi-course pure satvik thali in Varanasi, concluding with an authentic melt-in-mouth Banarasi Maghai Meetha Paan at Keshav Tambool.",
+            "location": {
+              "name": "Shree Shivay Grand Thali",
+              "lat": 25.315,
+              "lng": 82.992
+            },
+            "time": "02:00 PM",
+            "type": "food",
+            "cost": 550,
+            "currency": "INR",
+            "notes": "Traditional Banarasi paan folded with gulkand, saunf, and silver vark without tobacco."
+          }
+        ]
+      },
+      {
+        "_key": "vap-day3",
+        "dayNumber": 3,
+        "title": "Varanasi → Prayagraj (125 km / 2.5 hrs) → Triveni Sangam Sacred Snan & Bade Hanuman",
+        "date": "2026-10-22",
+        "summary": "Drive along the smooth 4-lane NH19 expressway to holy Prayagraj (Allahabad). Savor legendary Netram Desi Ghee Kachoris in Katra. Board an authorized motorboat to the sacred Triveni Sangam for a holy dip (Snan) where the Ganga, Yamuna, and invisible Saraswati converge. Seek blessings at the unique underground reclining Bade Hanuman Ji Mandir and visit the immortal Akshayavat tree.",
+        "activities": [
+          {
+            "_key": "vap3a",
+            "title": "Scenic Highway Drive to Prayagraj via NH19 (125 km)",
+            "description": "Comfortable 2.5-hour AC cab ride across the fertile Gangetic plains via Gopiganj and Handia.",
+            "location": {
+              "name": "Varanasi-Prayagraj NH19 Expressway",
+              "lat": 25.38,
+              "lng": 82.45
+            },
+            "time": "08:00 AM",
+            "type": "transport",
+            "cost": 2800,
+            "currency": "INR",
+            "notes": "Clean highway dhabas and fuel plazas available en route."
+          },
+          {
+            "_key": "vap3b",
+            "title": "Legendary Kachori-Jalebi Breakfast at Netram Moolchand & Sons",
+            "description": "Feast on crisp urad dal kachoris fried in pure cow desi ghee, spicy dum aloo, pumpkin sabzi, and thick malai jalebi in Katra bazaar since 1864.",
+            "location": {
+              "name": "Netram Moolchand & Sons Katra",
+              "lat": 25.459,
+              "lng": 81.854
+            },
+            "time": "10:45 AM",
+            "type": "food",
+            "cost": 200,
+            "currency": "INR",
+            "notes": "A cherished Prayag culinary tradition; eat warm straight from the kadai."
+          },
+          {
+            "_key": "vap3c",
+            "title": "Check-in to The Legend Hotel / Hotel Kanha Shyam",
+            "description": "Check in to your boutique luxury hotel in Prayagraj's tree-lined Civil Lines.",
+            "location": {
+              "name": "The Legend Hotel Prayagraj",
+              "lat": 25.4518,
+              "lng": 81.834
+            },
+            "time": "11:45 AM",
+            "type": "accommodation",
+            "cost": 4200,
+            "currency": "INR",
+            "notes": "Contact: +91-532-2409999. Hotel concierge arranges private boat permits for Sangam."
+          },
+          {
+            "_key": "vap3d",
+            "title": "Triveni Sangam Boat Ride & Sacred Snan (Holy Confluence)",
+            "description": "Board an authorized boat from Qila Ghat / Daraganj to the exact confluence where the greyish Ganga meets the deep greenish-blue Yamuna and mythical Saraswati. Take the auspicious holy dip on wooden platforms.",
+            "location": {
+              "name": "Triveni Sangam Prayagraj",
+              "lat": 25.426,
+              "lng": 81.8845
+            },
+            "time": "01:30 PM",
+            "type": "activity",
+            "cost": 800,
+            "currency": "INR",
+            "notes": "MUST ATTEND: The holy dip is believed to cleanse lifetimes of sins. Changing enclosures and lifejackets available on wooden platforms."
+          },
+          {
+            "_key": "vap3e",
+            "title": "Darshan at Reclining Bade Hanuman Ji Mandir (Bandhwa Wale)",
+            "description": "Visit the revered subterranean temple housing a 20-foot monolithic red vermilion idol of Lord Hanuman in a unique reclining posture, flooded by Mother Ganga during monsoons.",
+            "location": {
+              "name": "Bade Hanuman Temple Prayagraj",
+              "lat": 25.4285,
+              "lng": 81.8795
+            },
+            "time": "03:45 PM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "MUST ATTEND: One-of-a-kind temple in India. Devotees offer red sindoor and boondi laddoos."
+          },
+          {
+            "_key": "vap3f",
+            "title": "Allahabad Fort, Patalpuri Temple & Akshayavat Banyan Tree",
+            "description": "Explore the exterior bastions of the colossal 1583 Akbar Fort and visit Patalpuri underground temple and the immortal Akshayavat tree mentioned in ancient Puranas.",
+            "location": {
+              "name": "Akshayavat Tree & Patalpuri Temple",
+              "lat": 25.429,
+              "lng": 81.877
+            },
+            "time": "05:00 PM",
+            "type": "sightseeing",
+            "cost": 50,
+            "currency": "INR",
+            "notes": "Army perimeter pass managed easily at the entrance gate."
+          }
+        ]
+      },
+      {
+        "_key": "vap-day4",
+        "dayNumber": 4,
+        "title": "Prayagraj → Ayodhya (165 km / 3.5 hrs) → Shri Ram Janmabhoomi Mandir & Saryu Aarti",
+        "date": "2026-10-23",
+        "summary": "Embark on a scenic drive along NH330 north to Ayodhya Dham, the birthplace of Lord Rama. Settle into The Ramayana Hotel. Seek blessings at the fortified Hanuman Garhi before having an unforgettable darshan of Ram Lalla at the grand newly consecrated Shri Ram Janmabhoomi Mandir. Visit Kanak Bhavan and witness the grand evening Saryu Maha Aarti and laser show at Ram Ki Paidi.",
+        "activities": [
+          {
+            "_key": "vap4a",
+            "title": "Highway Drive Prayagraj to Ayodhya via NH330 (165 km)",
+            "description": "Smooth 3.5-hour AC drive through Pratapgarh and Sultanpur across rural Awadh countryside to reach Ayodhya Dham.",
+            "location": {
+              "name": "Prayagraj-Ayodhya Highway NH330",
+              "lat": 26.2,
+              "lng": 82
+            },
+            "time": "08:00 AM",
+            "type": "transport",
+            "cost": 3200,
+            "currency": "INR",
+            "notes": "Stop at Sultanpur bypass for fresh tea and Awadhi samosas."
+          },
+          {
+            "_key": "vap4b",
+            "title": "Check-in to The Ramayana Hotel Ayodhya",
+            "description": "Check in to this premium luxury hotel just 10 minutes from the temple corridor, featuring Ramayana-themed decor and pure satvik dining.",
+            "location": {
+              "name": "The Ramayana Hotel Ayodhya",
+              "lat": 26.782,
+              "lng": 82.185
+            },
+            "time": "12:00 PM",
+            "type": "accommodation",
+            "cost": 6500,
+            "currency": "INR",
+            "notes": "Contact: +91-5278-297777. E-rickshaw transport and wheelchair access readily coordinated."
+          },
+          {
+            "_key": "vap4c",
+            "title": "Satvik Lunch at Ramprastha Restaurant / Kanak Rasoi",
+            "description": "Relish hot Bedmi Poori with Aloo Jhol, Kadhi-Chawal, Paneer Makhani, and sweet Khoya Peda prepared fresh in temple style.",
+            "location": {
+              "name": "Ramprastha Dining Naya Ghat",
+              "lat": 26.797,
+              "lng": 82.202
+            },
+            "time": "01:15 PM",
+            "type": "food",
+            "cost": 400,
+            "currency": "INR",
+            "notes": "100% vegetarian, pure ghee satvik meal."
+          },
+          {
+            "_key": "vap4d",
+            "title": "Hanuman Garhi Fortress Darshan (76 Steps)",
+            "description": "Ascend the 76 stone steps to the 10th-century fortress temple of Lord Hanuman who guards the city. According to tradition, one must take Hanuman Ji's permission before visiting Lord Rama.",
+            "location": {
+              "name": "Hanuman Garhi Temple Ayodhya",
+              "lat": 26.793,
+              "lng": 82.199
+            },
+            "time": "02:45 PM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "MUST ATTEND: Offer Besan Laddoos. The circular ramparts give sweeping views across the holy city."
+          },
+          {
+            "_key": "vap4e",
+            "title": "Shri Ram Janmabhoomi Mandir Darshan (Ram Lalla)",
+            "description": "Pass through the ornamental Gopuram gates to the magnificent Nagara-style temple hand-carved from pink Bansi Paharpur sandstone. Experience the divine darshan of the 51-inch black granite Ram Lalla idol adorned with golden jewels.",
+            "location": {
+              "name": "Shri Ram Janmabhoomi Temple",
+              "lat": 26.7956,
+              "lng": 82.1944
+            },
+            "time": "04:15 PM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "MUST ATTEND: Free electronic lockers available for phones and leather belts. Dedicated fast-track pilgrim corridor with ramp facilities."
+          },
+          {
+            "_key": "vap4f",
+            "title": "Visit Kanak Bhavan (Golden Palace of Sita)",
+            "description": "Explore the breathtaking temple palace gifted by Queen Kaikeyi to Sita upon her marriage to Rama, housing gold-crowned idols of Rama and Sita.",
+            "location": {
+              "name": "Kanak Bhavan Ayodhya",
+              "lat": 26.7985,
+              "lng": 82.1968
+            },
+            "time": "05:45 PM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Mesmerizing Bundelkhandi palace architecture with painted courtyards."
+          },
+          {
+            "_key": "vap4g",
+            "title": "Saryu River Evening Sandhya Aarti & Ram Ki Paidi Light Show",
+            "description": "Gather at Ram Ki Paidi and Naya Ghat as the setting sun turns the Saryu waters gold. Watch the Vedic priests perform the grand Saryu Aarti followed by a high-tech musical laser fountain show narrating the Ramayana.",
+            "location": {
+              "name": "Ram Ki Paidi Saryu Ghat",
+              "lat": 26.801,
+              "lng": 82.2045
+            },
+            "time": "07:00 PM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "MUST ATTEND: Thousands of glowing oil lamps illuminate the riverfront steps creating an ethereal visual feast."
+          }
+        ]
+      },
+      {
+        "_key": "vap-day5",
+        "dayNumber": 5,
+        "title": "Guptar Ghat Sunrise → Surya Kund → Ayodhya Airport (AYJ) → Mumbai / Pune",
+        "date": "2026-10-24",
+        "summary": "Start the day with tranquil sunrise prayers at Guptar Ghat on the Saryu River where Lord Rama concluded his earthly avatar. Visit Surya Kund and Nageshwarnath Temple. Savor hot Bedmi Puri and Rabdi Jalebi before boarding your direct afternoon flight from Ayodhya's new Maharishi Valmiki Airport back to Mumbai or Pune.",
+        "activities": [
+          {
+            "_key": "vap5a",
+            "title": "Sunrise Prayers & Boat Ride at Guptar Ghat",
+            "description": "Visit the serene riverside ghat where Lord Rama entered the Saryu River for Jal Samadhi (Maha Prayan) to return to his heavenly abode of Vaikuntha.",
+            "location": {
+              "name": "Guptar Ghat Ayodhya Cantt",
+              "lat": 26.786,
+              "lng": 82.138
+            },
+            "time": "06:30 AM",
+            "type": "sightseeing",
+            "cost": 300,
+            "currency": "INR",
+            "notes": "Remarkably tranquil morning ambiance with gentle river breezes, far from crowds."
+          },
+          {
+            "_key": "vap5b",
+            "title": "Visit Historic Surya Kund & Nageshwarnath Mandir",
+            "description": "Visit the expansive Sun temple reservoir renovated with ancient stone chhatris, and Nageshwarnath Temple established by Rama's son Kush.",
+            "location": {
+              "name": "Surya Kund Ayodhya",
+              "lat": 26.765,
+              "lng": 82.162
+            },
+            "time": "08:30 AM",
+            "type": "sightseeing",
+            "cost": 0,
+            "currency": "INR",
+            "notes": "Surya Kund features 52 ghat steps and stunning manicured heritage gardens."
+          },
+          {
+            "_key": "vap5c",
+            "title": "Farewell Breakfast & Souvenir Shopping",
+            "description": "Relish steaming Rabdi-Jalebi, Samosas, and Kulhad Chai. Pick up Ayodhya Khoya Peda sweets and Ramcharitmanas scripture souvenirs for home.",
+            "location": {
+              "name": "Naya Ghat Market Ayodhya",
+              "lat": 26.799,
+              "lng": 82.203
+            },
+            "time": "10:00 AM",
+            "type": "food",
+            "cost": 350,
+            "currency": "INR",
+            "notes": "Authentic souvenirs: brass puja lamps, wooden Ram Mandir models, and sacred Tulsi malas."
+          },
+          {
+            "_key": "vap5d",
+            "title": "Transfer to Ayodhya Maharishi Valmiki Airport (AYJ) & Return Flight",
+            "description": "Short 15-minute cab ride to the newly inaugurated Ayodhya Airport for direct flight back home to Mumbai (BOM) or Pune (PNQ).",
+            "location": {
+              "name": "Maharishi Valmiki International Airport Ayodhya",
+              "lat": 26.745,
+              "lng": 82.155
+            },
+            "time": "12:30 PM",
+            "type": "transport",
+            "cost": 6200,
+            "currency": "INR",
+            "notes": "Direct flights to Mumbai (IndiGo 6E / Air India Express, ~2h 15m). Carry blessed prasad and timeless spiritual memories."
+          }
+        ]
+      }
+    ]
+  },
 ];

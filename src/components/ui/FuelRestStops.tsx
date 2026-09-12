@@ -274,6 +274,14 @@ const FUEL_DATA: Record<string, FuelStop[]> = {
     { id: "pal_st4", name: "Shatrunjaya Summit Adinath Temple", type: "viewpoint", town: "Shatrunjaya Hill", distanceFromPrev: 1, altitude: 603, notes: "Sacred cluster of 900+ marble Jain temples atop the twin summits." },
     { id: "pal_st5", name: "Taleti Jain Museum", type: "rest", town: "Taleti Road", distanceFromPrev: 3, altitude: 155, notes: "Museum documenting the spiritual history and marble architecture of Shatrunjaya." },
   ],
+  "varanasi-ayodhya-prayagraj-5-days": [
+    { id: "vap_st1", name: "Indian Oil COCO, Varanasi Airport Road", type: "fuel", town: "Babatpur, Varanasi", distanceFromPrev: 0, altitude: 81, notes: "24-hour company-owned pump with clean restrooms and EV charger on NH31." },
+    { id: "vap_st2", name: "Dashashwamedh Ghat & Vishwanath Corridor", type: "viewpoint", town: "Godowlia, Varanasi", distanceFromPrev: 25, altitude: 76, notes: "Ganga Aarti bajra boat embarkation and pedestrian-only heritage corridor." },
+    { id: "vap_st3", name: "Reliance Petrol Pump & Highway Food Mall", type: "fuel", town: "Handia, NH19", distanceFromPrev: 75, altitude: 88, notes: "Smooth 4-lane expressway rest stop with fast food, tea stalls, and clean washrooms." },
+    { id: "vap_st4", name: "Triveni Sangam & Bade Hanuman Ji Mandir", type: "viewpoint", town: "Daraganj, Prayagraj", distanceFromPrev: 50, altitude: 98, notes: "Holy confluence boat jetty, sacred snan ghats, and reclining Hanuman temple." },
+    { id: "vap_st5", name: "BPCL Pump & Awadh Midway Food Plaza", type: "fuel", town: "Sultanpur, NH330", distanceFromPrev: 85, altitude: 100, notes: "Midway highway stop between Prayagraj and Ayodhya with regional snacks and fuel." },
+    { id: "vap_st6", name: "Shri Ram Janmabhoomi & Ram Ki Paidi", type: "viewpoint", town: "Ayodhya Dham", distanceFromPrev: 80, altitude: 105, notes: "Grand new temple complex, Saryu riverfront promenade, and laser light show." },
+  ],
 };
 
 const DEFAULT_STOPS: FuelStop[] = [

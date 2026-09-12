@@ -146,6 +146,7 @@ export const PASSPORT_STAMPS: PassportStamp[] = [
       "chitrakoot-mp-pilgrimage",
       "amarkantak-narmada-source",
       "bhimbetka-rock-shelters",
+      "varanasi-ayodhya-prayagraj-5-days",
     ],
     requiredCount: 1,
   },

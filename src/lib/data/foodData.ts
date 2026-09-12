@@ -1581,6 +1581,45 @@ export const FOOD_DATA: Record<string, FoodSpot[]> = {
       notes: "Authentic Saurashtra Kathiyawadi dhaba serving garlic-rich, spiced curries and fresh churned buttermilk.",
     },
   ],
+
+  "varanasi-ayodhya-prayagraj-5-days": [
+    {
+      id: "vap_f1", name: "Kashi Chaat Bhandar (Godowlia, Varanasi)", type: "street-food", town: "Godowlia Chowk, Varanasi",
+      mustTry: ["Tamatar Chaat (piping hot spiced tomato mash with crispy sev)", "Palak Patta Chaat", "Dahi Chuda", "Kulfi Falooda"],
+      priceRange: "₹", isVeg: true,
+      notes: "The legendary crown jewel of Banaras chaat. The Tamatar Chaat served in clay kulhads with sugar syrup and cumin powder is unforgettable.",
+    },
+    {
+      id: "vap_f2", name: "Shree Shivay Grand Thali (Varanasi)", type: "restaurant", town: "Rath Yatra Crossing, Varanasi",
+      mustTry: ["Satvik Banarasi Thali", "Paneer Lababdar", "Dal Tadka with Hing", "Malai Kofta", "Gulab Jamun"],
+      priceRange: "₹₹", isVeg: true,
+      notes: "Acclaimed multi-course pure vegetarian satvik dining without onion and garlic options for visiting pilgrims and families.",
+    },
+    {
+      id: "vap_f3", name: "Blue Lassi Shop & Lakshmi Chai (Varanasi)", type: "cafe", town: "Bangali Tola / Manikarnika Lane, Varanasi",
+      mustTry: ["Pomegranate-Banana-Pistachio Claypot Lassi", "Thick Rabdi Lassi", "Malai Toast with Saffron Milk Tea", "Keshav Banarasi Paan"],
+      priceRange: "₹", isVeg: true,
+      notes: "Operating since 1925 in the heritage lanes of Kashi. Watch thick curd hand-churned in wooden vats and served in earthen handis with rabdi toppings.",
+    },
+    {
+      id: "vap_f4", name: "Netram Moolchand & Sons (Prayagraj)", type: "restaurant", town: "Katra Bazaar, Prayagraj",
+      mustTry: ["Desi Ghee Urad Dal Kachori with Dum Aloo & Pumpkin Sabzi", "Jalebi with Thick Malai", "Gulab Jamun", "Samosa"],
+      priceRange: "₹", isVeg: true,
+      notes: "Over 160 years of culinary legacy. The post-Sangam morning breakfast of crisp kachoris fried in pure cow ghee is a sacred Prayag ritual.",
+    },
+    {
+      id: "vap_f5", name: "Loknath Gali & Nirala Sweets (Prayagraj)", type: "street-food", town: "Loknath Chowk, Old Prayagraj",
+      mustTry: ["Dahi Jalebi", "Fluffy Khasta Kachori", "Ghee Samosa Chaat", "Makhan Malai (seasonal winter froth)"],
+      priceRange: "₹", isVeg: true,
+      notes: "The historic food street of Allahabad. Nirala's Dahi Jalebi and Makhan Malai (winter milk dew delicacy) are world-famous.",
+    },
+    {
+      id: "vap_f6", name: "Ramprastha Restaurant & Kanak Rasoi (Ayodhya)", type: "restaurant", town: "Naya Ghat / Near Ram Ki Paidi, Ayodhya",
+      mustTry: ["Traditional Awadhi Satvik Thali", "Bedmi Poori with Aloo Jhol", "Ayodhya Special Khoya Peda", "Crispy Rabdi Jalebi"],
+      priceRange: "₹", isVeg: true,
+      notes: "Clean, spiritual dining close to Saryu riverfront. Freshly prepared satvik meals with traditional Awadhi spices, beloved by devotees.",
+    },
+  ],
 };
 
 export const DEFAULT_FOOD: FoodSpot[] = [

@@ -317,6 +317,20 @@ export const TRIP_ELEVATION_PROFILES: Record<string, ElevationPoint[]> = {
     { label: "Taleti Descent", day: 2, altitudeMeters: 150, description: "Complete pilgrimage before sunset" },
     { label: "Bhavnagar Airport", day: 3, altitudeMeters: 24, description: "Return flight home" },
   ],
+  "varanasi-ayodhya-prayagraj-5-days": [
+    { label: "Varanasi Airport (VNS)", day: 1, altitudeMeters: 81, description: "Arrival from Mumbai / Pune" },
+    { label: "Dashashwamedh Ghat", day: 1, altitudeMeters: 76, description: "Ganges riverbank & evening Maha Aarti" },
+    { label: "Kashi Vishwanath Dham", day: 2, altitudeMeters: 78, description: "Ancient Jyotirlinga river corridor" },
+    { label: "Sarnath Dhamek Stupa", day: 2, altitudeMeters: 82, description: "Buddha's first sermon site & deer park" },
+    { label: "NH19 Gangetic Highway", day: 3, altitudeMeters: 88, description: "Smooth 4-lane expressway to Prayagraj" },
+    { label: "Prayagraj Triveni Sangam", day: 3, altitudeMeters: 98, description: "Holy confluence of Ganga, Yamuna & Saraswati" },
+    { label: "Bade Hanuman & Akshayavat", day: 3, altitudeMeters: 95, description: "Reclining Lord Hanuman & subterranean tree" },
+    { label: "NH330 Ayodhya Highway", day: 4, altitudeMeters: 102, description: "Scenic highway through Awadh countryside" },
+    { label: "Shri Ram Janmabhoomi Mandir", day: 4, altitudeMeters: 105, description: "Grand new temple & Ram Lalla Darshan" },
+    { label: "Ram Ki Paidi & Saryu Ghat", day: 4, altitudeMeters: 96, description: "Evening Saryu Aarti & laser water show" },
+    { label: "Guptar Ghat Sunrise", day: 5, altitudeMeters: 94, description: "Lord Rama Jal Samadhi sacred riverside" },
+    { label: "Ayodhya Airport (AYJ)", day: 5, altitudeMeters: 106, description: "Return flight to Mumbai / Pune" },
+  ],
 };
 
 export function computeAMSRisk(points: ElevationPoint[]): AMSRiskAssessment {

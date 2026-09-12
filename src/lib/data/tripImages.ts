@@ -107,6 +107,9 @@ export const TRIP_IMAGES: Record<string, string> = {
   "poshina-3-days": "/images/poshina.jpg",
   "champaner-pavagadh-3-days": "/images/champaner-pavagadh.jpg",
   "palitana-3-days": "/images/palitana.jpg",
+
+  // Uttar Pradesh Spiritual Triangle (from Mumbai/Pune)
+  "varanasi-ayodhya-prayagraj-5-days": "/images/varanasi-ayodhya-prayagraj.jpg",
 };
 
 export const DEFAULT_TRIP_IMAGE = "/images/leh-ladakh-pangong-lake.jpg";

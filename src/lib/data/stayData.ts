@@ -1866,6 +1866,51 @@ export const STAY_DATA: Record<string, HotelSuggestion[]> = {
       notes: "Scenic royal country seat perched on a hillock overlooking the glistening white Jain temples of Shatrunjaya.",
     },
   ],
+
+  "varanasi-ayodhya-prayagraj-5-days": [
+    {
+      id: "vap_s1", name: "BrijRama Palace Varanasi (Heritage Grand)", type: "hotel", stars: 5,
+      avgPricePerNight: 18500, town: "Darbhanga Ghat, Varanasi", contact: "+91-542-2450840",
+      bookingUrl: "https://www.brijhotels.com/brijrama-palace-varanasi/",
+      amenities: ["Direct Ghat Access", "Private Bajra Boat", "Live Classical Sitar", "Pure Vegetarian Fine Dining", "Ayurvedic Spa"],
+      notes: "One of the oldest landmark structures on Varanasi's ghats (1812 AD). Accessible only by private river boat. Unmatched balcony vistas of the sunrise Ganga Aarti and floating lamps.",
+    },
+    {
+      id: "vap_s2", name: "Hotel Surya, Kaiser Palace Varanasi", type: "hotel", stars: 4,
+      avgPricePerNight: 4800, town: "The Mall, Cantonment, Varanasi", contact: "+91-542-2508466",
+      bookingUrl: "https://www.hotelsuryavns.com/",
+      amenities: ["Palatial Lawns", "Swimming Pool", "Heritage Architecture", "Cantonment Tranquility", "Multi-Cuisine Dining"],
+      notes: "19th-century royal palace of King of Nepal. Set amid lush manicured gardens away from city congestion, offering a serene luxury sanctuary after temple walks.",
+    },
+    {
+      id: "vap_s3", name: "The Legend Hotel Prayagraj", type: "hotel", stars: 4,
+      avgPricePerNight: 4200, town: "Civil Lines, Prayagraj", contact: "+91-532-2409999",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Prayagraj",
+      amenities: ["Central Civil Lines Location", "Fine Dining Restaurant", "Wi-Fi", "Travel Desk for Sangam Boats", "Airport Shuttle"],
+      notes: "Premier boutique hotel in the heart of Prayagraj's colonial Civil Lines. Excellent concierge service arranging authorized motorboat trips to Triveni Sangam.",
+    },
+    {
+      id: "vap_s4", name: "Hotel Kanha Shyam Prayagraj", type: "hotel", stars: 4,
+      avgPricePerNight: 5200, town: "Civil Lines, Prayagraj", contact: "+91-532-2560123",
+      bookingUrl: "https://www.hotelkanhashyam.com/",
+      amenities: ["Vegetarian Specialty Dining", "Executive Suites", "Fitness Center", "Complimentary Breakfast", "Valet Parking"],
+      notes: "A trusted luxury choice for pilgrims and dignitaries, featuring authentic Awadhi and North Indian cuisine just 15 minutes from the sacred Sangam.",
+    },
+    {
+      id: "vap_s5", name: "The Ramayana Hotel Ayodhya", type: "hotel", stars: 4,
+      avgPricePerNight: 6500, town: "Maniyarkot, Ayodhya", contact: "+91-5278-297777",
+      bookingUrl: "https://www.theramayanahotel.com/",
+      amenities: ["10 Mins from Ram Janmabhoomi", "Pure Vegetarian Satvik Kitchen", "Spiritual Ambiance", "Travel Desk", "EV Charging Station"],
+      notes: "Upscale modern luxury hotel themed around the Ramayana epic. Offers smooth VIP darshan facilitation and temple shuttle services.",
+    },
+    {
+      id: "vap_s6", name: "Royal Heritage Hotel & Resort Ayodhya", type: "hotel", stars: 3,
+      avgPricePerNight: 3800, town: "Ayodhya Bypass Road, Ayodhya", contact: "+91-5278-232323",
+      bookingUrl: "https://www.makemytrip.com/hotels/hotel-listing/?searchText=Ayodhya",
+      amenities: ["Spacious Garden Lawns", "AC Cottages", "Vegetarian Dining", "Ample Parking", "24x7 Hot Water"],
+      notes: "Peaceful resort located near Saryu River bridge and Ram Ki Paidi, ideal for families and elderly travelers.",
+    },
+  ],
 };
 
 export const DEFAULT_STAYS: HotelSuggestion[] = [

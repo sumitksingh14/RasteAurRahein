@@ -360,6 +360,16 @@ const AI_BUDGET_ESTIMATES: Record<string, {
     source: "Based on Palitana Shatrunjaya pilgrim reports (2024–26)",
     searchQuery: "Palitana Shatrunjaya trip budget per day 2024",
   },
+  "varanasi-ayodhya-prayagraj-5-days": {
+    accommodation: [2500, 7500] as [number, number],
+    food: [600, 1500] as [number, number],
+    transport: [1200, 3000] as [number, number],
+    activities: [500, 1500] as [number, number],
+    misc: [300, 800] as [number, number],
+    currency: "INR",
+    source: "Based on Kashi Ayodhya Prayag pilgrim & heritage reports (2024–26)",
+    searchQuery: "Varanasi Ayodhya Prayagraj 5 days trip budget per day 2024",
+  },
 };
 
 const DEFAULT_BUDGET = {
