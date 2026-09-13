@@ -298,6 +298,12 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Native Banner Ad */}
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: "2rem", width: "100%" }}>
+          <script async data-cfasync="false" src="https://pl31319854.profitableratecpmnetwork.com/84cd3aff69d5aff25df25d2703c09950/invoke.js"></script>
+          <div id="container-84cd3aff69d5aff25df25d2703c09950" suppressHydrationWarning></div>
+        </div>
+
         {/* Bottom bar */}
         <div
           style={{
@@ -314,17 +320,27 @@ export default function Footer() {
           <p style={{ color: "#6B7280", fontSize: "0.8rem" }}>
             © {new Date().getFullYear()} Raste Aur Raahein · All rights reserved
           </p>
-          <p style={{ color: "#6B7280", fontSize: "0.8rem" }}>
-            Built with ♥ by{" "}
+          <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
             <a
-              href="https://github.com/sumitksingh14"
+              href="https://www.profitableratecpmnetwork.com/vn744vs6b?key=e1ef34b2ac6e4e6e49b61bdde3e4b0d7"
               target="_blank"
               rel="noopener noreferrer"
-              style={{ color: "#006CE4", fontWeight: 600, textDecoration: "none" }}
+              style={{ color: "#6B7280", fontSize: "0.8rem", textDecoration: "none" }}
             >
-              @Sumit Singh
+              Partner Offers
             </a>
-          </p>
+            <p style={{ color: "#6B7280", fontSize: "0.8rem", margin: 0 }}>
+              Built with ♥ by{" "}
+              <a
+                href="https://github.com/sumitksingh14"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "#006CE4", fontWeight: 600, textDecoration: "none" }}
+              >
+                @Sumit Singh
+              </a>
+            </p>
+          </div>
         </div>
       </div>
 

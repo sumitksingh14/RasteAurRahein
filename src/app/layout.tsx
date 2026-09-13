@@ -70,14 +70,6 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
         <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512.png" />
         <WebSiteSchema />
-        {/* Google AdSense — only load in production (or explicit flag) to avoid invalid traffic policy warnings and cross-origin iframe SecurityErrors on localhost */}
-        {(process.env.NODE_ENV === "production" || process.env.NEXT_PUBLIC_ENABLE_ADSENSE === "true") && (
-          <script
-            async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4406894064911133"
-            crossOrigin="anonymous"
-          />
-        )}
       </head>
       <body>
         <ThemeProvider>
@@ -92,6 +84,7 @@ export default function RootLayout({
         </ThemeProvider>
         {/* Google Analytics 4 — loads after page is interactive, no-ops if env var not set */}
         <GoogleAnalytics />
+        <script src="https://pl31319807.profitableratecpmnetwork.com/fd/f2/38/fdf238329b112aaad98a01270319e6cd.js"></script>
       </body>
     </html>
   );
