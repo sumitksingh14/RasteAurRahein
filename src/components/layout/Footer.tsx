@@ -299,10 +299,8 @@ export default function Footer() {
         </div>
 
         {/* Native Banner Ad */}
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: "2rem", width: "100%" }}>
-          <script async data-cfasync="false" src="https://pl31319854.profitableratecpmnetwork.com/84cd3aff69d5aff25df25d2703c09950/invoke.js"></script>
-          <div id="container-84cd3aff69d5aff25df25d2703c09950" suppressHydrationWarning></div>
-        </div>
+        <script async data-cfasync="false" src="https://pl31319854.profitableratecpmnetwork.com/84cd3aff69d5aff25df25d2703c09950/invoke.js"></script>
+        <div id="container-84cd3aff69d5aff25df25d2703c09950"></div>
 
         {/* Bottom bar */}
         <div
