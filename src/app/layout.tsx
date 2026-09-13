@@ -84,6 +84,16 @@ export default function RootLayout({
         </ThemeProvider>
         {/* Google Analytics 4 — loads after page is interactive, no-ops if env var not set */}
         <GoogleAnalytics />
+        <div style={{ textAlign: "center", padding: "6px 0", fontSize: "0.8rem" }}>
+          <a
+            href="https://www.profitableratecpmnetwork.com/vn744vs6b?key=e1ef34b2ac6e4e6e49b61bdde3e4b0d7"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#6B7280", textDecoration: "underline" }}
+          >
+            Special Offers & Deals
+          </a>
+        </div>
         <script src="https://pl31319807.profitableratecpmnetwork.com/fd/f2/38/fdf238329b112aaad98a01270319e6cd.js"></script>
       </body>
     </html>
