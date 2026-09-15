@@ -23,7 +23,9 @@ export async function GET() {
       }))
       .sort((a: any, b: any) => a.id.localeCompare(b.id));
 
-    return NextResponse.json({ models });
+    const response = NextResponse.json({ models });
+    response.headers.set('Cache-Control', 'public, max-age=3600, stale-while-revalidate=7200');
+    return response;
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json({ error: message }, { status: 500 });

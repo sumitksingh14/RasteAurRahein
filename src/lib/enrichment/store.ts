@@ -115,10 +115,17 @@ export async function getTripFieldStatuses(
 ): Promise<TripFieldStatus[]> {
   try {
     const fields = await redis.smembers(keys.tripIndex(tripSlug));
-    const results = await Promise.all(
-      fields.map((f) => getFieldStatus(tripSlug, f as TripFieldName))
+    if (!fields || fields.length === 0) return [];
+
+    // Batch all HGETALL calls using Promise.all
+    const fieldKeys = fields.map(f => keys.field(tripSlug, f as TripFieldName));
+    const rawStatuses = await Promise.all(
+      fieldKeys.map(key => redis.hgetall(key).catch(() => null))
     );
-    return results.filter(Boolean) as TripFieldStatus[];
+
+    return rawStatuses
+      .filter((raw): raw is Record<string, string> => raw !== null && raw.id !== undefined)
+      .map(deserializeStatus);
   } catch {
     return [];
   }
@@ -174,17 +181,23 @@ export async function getFieldsByStatus(
 ): Promise<TripFieldStatus[]> {
   try {
     const ids = await redis.smembers(keys.statusIndex(status));
-    const results = await Promise.all(
-      ids.map((compositeId) => {
-        const parts = compositeId.split(":");
-        // compositeId format: "{tripSlug}:{field}"
-        // field is the last segment; tripSlug is everything before
-        const field = parts[parts.length - 1] as TripFieldName;
-        const tripSlug = parts.slice(0, -1).join(":");
-        return getFieldStatus(tripSlug, field);
-      })
+    if (!ids || ids.length === 0) return [];
+
+    // Parse composite IDs and batch all HGETALL calls
+    const fieldKeys = ids.map((compositeId) => {
+      const parts = compositeId.split(":");
+      const field = parts[parts.length - 1] as TripFieldName;
+      const tripSlug = parts.slice(0, -1).join(":");
+      return keys.field(tripSlug, field);
+    });
+
+    const rawStatuses = await Promise.all(
+      fieldKeys.map(key => redis.hgetall(key).catch(() => null))
     );
-    return results.filter(Boolean) as TripFieldStatus[];
+
+    return rawStatuses
+      .filter((raw): raw is Record<string, string> => raw !== null && raw.id !== undefined)
+      .map(deserializeStatus);
   } catch {
     return [];
   }

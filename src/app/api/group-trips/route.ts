@@ -32,16 +32,23 @@ export async function GET() {
       return NextResponse.json({ groups: [] });
     }
 
-    const groups = await Promise.all(
-      groupIds.map(async (id) => {
-        const hash = await redis.hgetall(`group:${id}`);
-        if (!hash) return null;
+    // Batch all Redis calls using Promise.all
+    const pipeline: Array<Promise<any>> = [];
+    for (const id of groupIds) {
+      pipeline.push(redis.hgetall(`group:${id}`).catch(() => null));
+      pipeline.push(redis.scard(`group:${id}:memberIds`).catch(() => 0));
+      pipeline.push(redis.hget(`group:${id}:members`, session.userId).catch(() => null));
+    }
 
-        // Get member count
-        const memberCount = await redis.scard(`group:${id}:memberIds`);
+    const results = await Promise.all(pipeline);
 
-        // Determine role
-        const role = await redis.hget(`group:${id}:members`, session.userId);
+    const groups = groupIds
+      .map((id, idx) => {
+        const hash = results[idx * 3];
+        if (!hash || !hash.id) return null;
+
+        const memberCount = results[idx * 3 + 1];
+        const role = results[idx * 3 + 2];
 
         return {
           id: hash.id,
@@ -53,9 +60,9 @@ export async function GET() {
           sourceItineraryId: hash.sourceItineraryId,
         };
       })
-    );
+      .filter(Boolean);
 
-    const validGroups = groups.filter(Boolean);
+    const validGroups = groups;
     return NextResponse.json({ groups: validGroups });
   } catch (err) {
     console.error("GET /api/group-trips error:", err);

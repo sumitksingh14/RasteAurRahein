@@ -11,22 +11,23 @@ export async function GET() {
   try {
     const trips = await getAllTrips();
 
-    const stats = await Promise.all(
-      trips.map(async (trip) => {
-        const [likes, commentCount] = await Promise.all([
-          redis.scard(`trip:likes:${trip.slug}`).catch(() => 0),
-          redis.llen(`comments:${trip.slug}`).catch(() => 0),
-        ]);
-        return {
-          slug: trip.slug,
-          title: trip.title,
-          status: trip.status,
-          viewCount: trip.viewCount || 0,
-          likes,
-          commentCount,
-        };
-      })
-    );
+    // Use Redis pipeline to batch all SCARD and LLEN calls
+    const pipeline: Array<Promise<any>> = [];
+    for (const trip of trips) {
+      pipeline.push(redis.scard(`trip:likes:${trip.slug}`).catch(() => 0));
+      pipeline.push(redis.llen(`comments:${trip.slug}`).catch(() => 0));
+    }
+
+    const results = await Promise.all(pipeline);
+
+    const stats = trips.map((trip, idx) => ({
+      slug: trip.slug,
+      title: trip.title,
+      status: trip.status,
+      viewCount: trip.viewCount || 0,
+      likes: results[idx * 2],
+      commentCount: results[idx * 2 + 1],
+    }));
 
     const totalLikes = stats.reduce((s, t) => s + t.likes, 0);
     const totalComments = stats.reduce((s, t) => s + t.commentCount, 0);

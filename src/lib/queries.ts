@@ -27,19 +27,24 @@ async function getRedisTrips(): Promise<Trip[]> {
   try {
     const slugs = await redis.smembers(TRIPS_INDEX_KEY);
     if (!slugs || slugs.length === 0) return [];
-    const trips = await Promise.all(
-      slugs.map(async (slug) => {
-        const raw = await redis.get(`trip:${slug}`);
+
+    // Use MGET to fetch all trips in a single round trip
+    const keys = slugs.map(slug => `trip:${slug}`);
+    const rawTrips = await redis.mget(...keys);
+
+    return rawTrips
+      .map((raw, idx) => {
         if (!raw) return null;
         try {
           return JSON.parse(raw) as Trip;
         } catch {
+          console.error(`Failed to parse trip: ${slugs[idx]}`);
           return null;
         }
       })
-    );
-    return trips.filter(Boolean) as Trip[];
-  } catch {
+      .filter(Boolean) as Trip[];
+  } catch (error) {
+    console.error('Error fetching Redis trips:', error);
     return [];
   }
 }

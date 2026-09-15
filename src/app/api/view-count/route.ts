@@ -59,7 +59,9 @@ export async function GET(req: NextRequest) {
     });
 
     const { result } = await response.json();
-    return NextResponse.json({ count: result ? parseInt(result, 10) : 0 });
+    const res = NextResponse.json({ count: result ? parseInt(result, 10) : 0 });
+    res.headers.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
+    return res;
   } catch {
     return NextResponse.json({ count: null });
   }

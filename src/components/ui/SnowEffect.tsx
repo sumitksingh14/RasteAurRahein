@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 interface Snowflake {
   id: number;
@@ -14,8 +14,14 @@ interface Snowflake {
 
 export default function SnowEffect() {
   const [snowflakes, setSnowflakes] = useState<Snowflake[]>([]);
+  const [isVisible, setIsVisible] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Check for prefers-reduced-motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
     // Generate flakes on client only to avoid hydration mismatch
     const flakes: Snowflake[] = Array.from({ length: 50 }).map((_, i) => ({
       id: i,
@@ -27,12 +33,29 @@ export default function SnowEffect() {
       opacity: Math.random() * 0.6 + 0.2, // 0.2 to 0.8
     }));
     setSnowflakes(flakes);
+
+    // Use Intersection Observer to pause animation when offscreen
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
   }, []);
 
   if (snowflakes.length === 0) return null;
 
   return (
     <div
+      ref={containerRef}
       style={{
         position: "fixed",
         top: 0,
@@ -45,7 +68,7 @@ export default function SnowEffect() {
       }}
       aria-hidden="true"
     >
-      {snowflakes.map((flake) => (
+      {isVisible && snowflakes.map((flake) => (
         <div
           key={flake.id}
           className="snow-flake"

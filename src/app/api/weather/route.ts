@@ -53,7 +53,10 @@ export async function GET(req: NextRequest) {
   url.searchParams.set("forecast_days", "7");
 
   try {
-    const res = await fetch(url.toString(), { next: { revalidate: 0 } });
+    const res = await fetch(url.toString(), {
+      next: { revalidate: 0 },
+      signal: AbortSignal.timeout(10000)
+    });
     if (!res.ok) {
       return NextResponse.json({ error: "Failed to fetch weather data" }, { status: 502 });
     }
@@ -91,7 +94,9 @@ export async function GET(req: NextRequest) {
       // Cache write failure is non-fatal
     }
 
-    return NextResponse.json(payload, { headers: { "X-Cache": "MISS" } });
+    const response = NextResponse.json(payload, { headers: { "X-Cache": "MISS" } });
+    response.headers.set('Cache-Control', 'public, max-age=600, stale-while-revalidate=1800');
+    return response;
   } catch (err) {
     console.error("Weather forecast fetch error:", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

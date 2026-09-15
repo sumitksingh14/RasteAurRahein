@@ -100,8 +100,22 @@ export async function getSavedItineraries(
   userId: string
 ): Promise<SavedItinerary[]> {
   const ids = await getSavedItineraryIds(userId);
-  const results = await Promise.all(ids.map(getSavedItineraryById));
-  return results.filter((r): r is SavedItinerary => r !== null);
+  if (!ids || ids.length === 0) return [];
+
+  // Batch all HGETALL calls using Promise.all
+  const rawItineraries = await Promise.all(
+    ids.map(id => redis.hgetall(itineraryKey(id)).catch(() => null))
+  );
+
+  return rawItineraries
+    .filter((hash): hash is Record<string, string> => hash !== null && hash.id !== undefined)
+    .map(hash => ({
+      id: hash.id,
+      userId: hash.userId,
+      title: hash.title,
+      itinerary: JSON.parse(hash.itinerary),
+      createdAt: hash.createdAt,
+    }));
 }
 
 /**
@@ -117,14 +131,9 @@ export async function deleteItinerary(
 
   await redis.del(itineraryKey(id));
 
-  // Remove from the user's list
+  // Remove from the user's list using LREM (more efficient than read-filter-rewrite)
   const key = userItinerariesKey(userId);
-  const ids = await redis.lrange(key, 0, -1);
-  const updated = ids.filter((i) => i !== id);
-  await redis.del(key);
-  for (const itemId of updated) {
-    await redis.rpush(key, itemId);
-  }
+  await redis.lrem(key, 0, id);
 
   return true;
 }

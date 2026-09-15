@@ -29,7 +29,9 @@ export async function GET(req: NextRequest) {
     const average = count > 0 ? votes.reduce((a, b) => a + b, 0) / count : 0;
     const userRating = userRatingRaw ? Number(userRatingRaw) : null;
 
-    return NextResponse.json({ average: Math.round(average * 10) / 10, count, userRating });
+    const response = NextResponse.json({ average: Math.round(average * 10) / 10, count, userRating });
+    response.headers.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
+    return response;
   } catch {
     return NextResponse.json({ average: 0, count: 0, userRating: null });
   }

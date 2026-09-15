@@ -2,6 +2,46 @@ import OpenAI from "openai";
 
 export type LLMModelProvider = "gemini" | "nvidia" | "groq" | "openai";
 
+// ---------------------------------------------------------------------------
+// Module-scoped SDK clients (lazy-initialized singletons)
+// ---------------------------------------------------------------------------
+let nvidiaClient: OpenAI | null = null;
+let groqClient: OpenAI | null = null;
+let openaiClient: OpenAI | null = null;
+
+function getNvidiaClient(): OpenAI {
+  if (!nvidiaClient) {
+    const apiKey = process.env.NVIDIA_API_KEY;
+    if (!apiKey) throw new Error("NVIDIA_API_KEY is not configured. Add it to .env.local.");
+    nvidiaClient = new OpenAI({
+      apiKey,
+      baseURL: "https://integrate.api.nvidia.com/v1",
+    });
+  }
+  return nvidiaClient;
+}
+
+function getGroqClient(): OpenAI {
+  if (!groqClient) {
+    const apiKey = process.env.GROQ_API_KEY;
+    if (!apiKey) throw new Error("GROQ_API_KEY is not configured. Add it to .env.local.");
+    groqClient = new OpenAI({
+      apiKey,
+      baseURL: "https://api.groq.com/openai/v1",
+    });
+  }
+  return groqClient;
+}
+
+function getOpenAIClient(): OpenAI {
+  if (!openaiClient) {
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) throw new Error("OPENAI_API_KEY is not configured. Add it to .env.local.");
+    openaiClient = new OpenAI({ apiKey });
+  }
+  return openaiClient;
+}
+
 interface NvidiaModelConfig {
   id: string;
   label: string;
@@ -133,17 +173,8 @@ export class LLMService {
   // Nvidia call helper (supports streaming + per-model extra params)
   // ---------------------------------------------------------------------------
   private static async callNvidia(prompt: string, modelId: string, jsonMode = false): Promise<string> {
-    const apiKey = process.env.NVIDIA_API_KEY;
-    if (!apiKey) {
-      throw new Error("NVIDIA_API_KEY is not configured. Add it to .env.local.");
-    }
-
     const config = NVIDIA_MODELS.find((m) => m.id === modelId) ?? NVIDIA_MODELS[0];
-
-    const openai = new OpenAI({
-      apiKey,
-      baseURL: "https://integrate.api.nvidia.com/v1",
-    });
+    const openai = getNvidiaClient();
 
     const baseParams: any = {
       model: config.id,
@@ -195,15 +226,7 @@ export class LLMService {
   // Groq call helper
   // ---------------------------------------------------------------------------
   private static async callGroq(prompt: string, modelId: string, jsonMode = false): Promise<string> {
-    const apiKey = process.env.GROQ_API_KEY;
-    if (!apiKey) {
-      throw new Error("GROQ_API_KEY is not configured. Add it to .env.local.");
-    }
-
-    const openai = new OpenAI({
-      apiKey,
-      baseURL: "https://api.groq.com/openai/v1",
-    });
+    const openai = getGroqClient();
     
     const params: any = {
       model: modelId,
