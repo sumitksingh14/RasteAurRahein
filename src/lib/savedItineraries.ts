@@ -110,12 +110,9 @@ export async function getSavedItineraries(
   return rawItineraries
     .filter((hash): hash is Record<string, string> => hash !== null && hash.id !== undefined)
     .map(hash => ({
-      id: hash.id,
-      userId: hash.userId,
-      title: hash.title,
-      itinerary: JSON.parse(hash.itinerary),
-      createdAt: hash.createdAt,
-    }));
+      ...hash,
+      days: Number(hash.days || 0),
+    } as unknown as SavedItinerary));
 }
 
 /**

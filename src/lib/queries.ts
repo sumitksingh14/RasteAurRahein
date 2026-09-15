@@ -36,7 +36,7 @@ async function getRedisTrips(): Promise<Trip[]> {
       .map((raw, idx) => {
         if (!raw) return null;
         try {
-          return JSON.parse(raw) as Trip;
+          return (typeof raw === "string" ? JSON.parse(raw) : raw) as Trip;
         } catch {
           console.error(`Failed to parse trip: ${slugs[idx]}`);
           return null;

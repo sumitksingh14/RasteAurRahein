@@ -45,6 +45,15 @@ export const redis = {
     return result as string | null;
   },
 
+  /** MGET key [key ...] → (string | null)[] */
+  async mget(...keys: (string | string[])[]): Promise<(string | null)[]> {
+    const flatKeys = keys.flat();
+    if (flatKeys.length === 0) return [];
+    const result = await redisCmd("mget", ...flatKeys);
+    if (!Array.isArray(result)) return [];
+    return result as (string | null)[];
+  },
+
   /** DEL key */
   async del(key: string): Promise<void> {
     await redisCmd("del", key);
