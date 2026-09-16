@@ -28,6 +28,7 @@ import GPXDownloadButton from "@/components/ui/GPXDownloadButton";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 import NewsletterInline from "@/components/ui/NewsletterInline";
 import TripAlertBanner from "@/components/ui/TripAlertBanner";
+import TripSchema from "@/components/ui/TripSchema";
 
 import { getTripImage } from "@/lib/data/tripImages";
 
@@ -124,6 +125,7 @@ export default async function TripDetailPage({ params }: Props) {
     <article>
       <ViewCountTracker slug={trip.slug} />
       <ReadingProgress />
+      <TripSchema trip={trip} />
       {/* Author E-E-A-T schema — injected once per trip page */}
       <AuthorSchema author={trip.author ?? DEMO_AUTHOR} />
       {/* ============================================================

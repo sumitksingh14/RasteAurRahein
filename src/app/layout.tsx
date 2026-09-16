@@ -69,6 +69,18 @@ export default function RootLayout({
         {/* ── iOS touch icon (shown when "Add to Home Screen") ── */}
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
         <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512.png" />
+        {/* ── Performance: preconnect to third-party origins ──
+            Tells the browser to open early TCP+TLS connections before
+            requests are made. Reduces LCP on pages that load external assets. */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://www.google-analytics.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://cdn.sanity.io" />
+        <link rel="preconnect" href="https://images.unsplash.com" />
+        {/* DNS prefetch for non-critical third parties */}
+        <link rel="dns-prefetch" href="https://pl31319807.profitableratecpmnetwork.com" />
+        <link rel="dns-prefetch" href="https://www.profitableratecpmnetwork.com" />
         <WebSiteSchema />
       </head>
       <body>

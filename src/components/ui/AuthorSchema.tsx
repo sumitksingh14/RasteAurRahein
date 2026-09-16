@@ -1,4 +1,5 @@
 import type { Author } from "@/lib/types";
+import { safeJsonLd } from "@/lib/jsonld";
 
 interface AuthorSchemaProps {
   author: Author;
@@ -40,7 +41,7 @@ export default function AuthorSchema({ author, url = "https://rasteaurrahein.com
       id="author-schema"
       type="application/ld+json"
       suppressHydrationWarning
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(personSchema) }}
     />
   );
 }
@@ -84,7 +85,7 @@ export function WebSiteSchema() {
       id="website-schema"
       type="application/ld+json"
       suppressHydrationWarning
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
     />
   );
 }

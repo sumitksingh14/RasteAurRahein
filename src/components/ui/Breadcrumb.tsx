@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { safeJsonLd } from "@/lib/jsonld";
 
 export interface BreadcrumbItem {
   label: string;
@@ -47,7 +48,7 @@ export default function Breadcrumb({ items, light = false }: BreadcrumbProps) {
         id="breadcrumb-schema"
         type="application/ld+json"
         suppressHydrationWarning
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
       />
 
       {/* Visual breadcrumb */}

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import type { FAQItem } from "@/lib/faqBuilder";
+import { safeJsonLd } from "@/lib/jsonld";
 
 interface FAQSchemaProps {
   items: FAQItem[];
@@ -40,7 +41,7 @@ export default function FAQSchema({ items, showAccordion = true }: FAQSchemaProp
         id="faq-schema"
         type="application/ld+json"
         suppressHydrationWarning
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
       />
 
       {/* Visible accordion */}

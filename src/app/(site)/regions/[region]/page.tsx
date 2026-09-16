@@ -8,6 +8,7 @@ import { REGIONS, filterTripsByRegion } from "@/lib/regions";
 import TripCard from "@/components/ui/TripCard";
 import WeatherPanel from "@/components/ui/WeatherPanel";
 import { REGION_WEATHER_COORDS } from "@/lib/weatherCoords";
+import { safeJsonLd } from "@/lib/jsonld";
 
 interface Props {
   params: Promise<{ region: string }>;
@@ -25,6 +26,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: region.label,
     description: region.description,
+    alternates: {
+      canonical: `/regions/${region.slug}`,
+    },
     openGraph: {
       title: `${region.headline} | Raste Aur Raahein`,
       description: region.description,
@@ -69,7 +73,7 @@ export default async function RegionHubPage({ params }: Props) {
         id="region-schema"
         type="application/ld+json"
         suppressHydrationWarning
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(collectionSchema) }}
       />
 
       {/* ── Hero ── */}

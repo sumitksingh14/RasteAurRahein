@@ -4,23 +4,71 @@ import Link from "next/link";
 import { MapPin, ArrowRight } from "lucide-react";
 import { REGIONS, filterTripsByRegion } from "@/lib/regions";
 import { getAllTrips } from "@/lib/queries";
+import { safeJsonLd } from "@/lib/jsonld";
+
+const BASE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://rasteaurrahein.com";
 
 export const metadata: Metadata = {
-  title: "Explore by Region",
+  title: "Explore by Region | Raste Aur Raahein",
   description:
     "Browse travel itineraries, cost breakdowns, and trip guides organised by region — Himalayas, South India, Rajasthan, Coastal, and Northeast India.",
+  keywords: [
+    "India travel regions",
+    "Himalayan travel",
+    "South India road trip",
+    "Rajasthan travel guide",
+    "Northeast India adventures",
+    "coastal India itinerary",
+  ],
+  alternates: { canonical: "/regions" },
   openGraph: {
     title: "Explore by Region | Raste Aur Raahein",
     description:
       "Himalayas, South India, Rajasthan, Coastal, Northeast — find trips by where you want to go.",
+    type: "website",
+    images: [{ url: "/icons/icon-512.png", width: 512, height: 512, alt: "Raste Aur Raahein regions" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Explore by Region | Raste Aur Raahein",
+    description: "Find India travel itineraries by region — Himalayas, Rajasthan, South India, Northeast, and more.",
+    images: ["/icons/icon-512.png"],
   },
 };
 
 export default async function RegionsIndexPage() {
   const allTrips = await getAllTrips();
 
+  const regionsSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Explore India by Region",
+    description:
+      "Browse travel itineraries organised by region — Himalayas, South India, Rajasthan, Coastal, and Northeast India.",
+    url: `${BASE_URL}/regions`,
+    inLanguage: "en-IN",
+    publisher: {
+      "@type": "Organization",
+      "@id": `${BASE_URL}/#website`,
+      name: "Raste Aur Raahein",
+    },
+    hasPart: REGIONS.map((r) => ({
+      "@type": "CollectionPage",
+      name: r.label,
+      url: `${BASE_URL}/regions/${r.slug}`,
+      description: r.description,
+    })),
+  };
+
   return (
     <div style={{ paddingTop: "var(--nav-height)" }}>
+      {/* CollectionPage JSON-LD */}
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(regionsSchema) }}
+      />
       {/* ── Header ── */}
       <section
         style={{

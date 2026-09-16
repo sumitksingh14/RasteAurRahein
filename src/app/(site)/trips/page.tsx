@@ -1,12 +1,38 @@
 import type { Metadata } from "next";
 import { getAllTrips } from "@/lib/queries";
 import TripsClient from "./TripsClient";
+import { safeJsonLd } from "@/lib/jsonld";
+
+const BASE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://rasteaurrahein.com";
 
 export const metadata: Metadata = {
   title: "India Travel Itineraries — All Trips | Raste Aur Raahein",
   description:
     "Browse detailed travel itineraries across India — Himalayan road trips, desert drives, coastal routes, and forest trails. Filter by region, season, and budget.",
+  keywords: [
+    "India travel itineraries",
+    "Himalayan road trip",
+    "adventure travel India",
+    "Spiti Valley",
+    "Leh Ladakh",
+    "offbeat India",
+    "travel planning India",
+  ],
   alternates: { canonical: "/trips" },
+  openGraph: {
+    title: "India Travel Itineraries — All Trips | Raste Aur Raahein",
+    description:
+      "Browse detailed travel itineraries across India — Himalayan road trips, desert drives, coastal routes, and forest trails.",
+    type: "website",
+    images: [{ url: "/icons/icon-512.png", width: 512, height: 512, alt: "Raste Aur Raahein trips" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "India Travel Itineraries | Raste Aur Raahein",
+    description: "Documented adventures across India — search or browse by region, season, and budget.",
+    images: ["/icons/icon-512.png"],
+  },
 };
 
 
@@ -26,8 +52,36 @@ export default async function TripsPage(props: PageProps) {
   const initialRegion = typeof sp.region === 'string' ? sp.region : "Any";
   const initialSortBy = (sp.sortBy === "views" || sp.sortBy === "title" || sp.sortBy === "date") ? sp.sortBy : "date";
 
+  // CollectionPage JSON-LD for Google structured data
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "India Travel Itineraries",
+    description:
+      "Browse detailed travel itineraries across India — Himalayan road trips, desert drives, coastal routes, and forest trails.",
+    url: `${BASE_URL}/trips`,
+    inLanguage: "en-IN",
+    publisher: {
+      "@type": "Organization",
+      "@id": `${BASE_URL}/#website`,
+      name: "Raste Aur Raahein",
+    },
+    hasPart: trips.slice(0, 10).map((trip) => ({
+      "@type": "TouristTrip",
+      name: trip.title,
+      url: `${BASE_URL}/trips/${trip.slug}`,
+      description: trip.excerpt ?? "",
+    })),
+  };
+
   return (
     <div style={{ paddingTop: "var(--nav-height)", minHeight: "100vh" }}>
+      {/* CollectionPage JSON-LD */}
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(collectionSchema) }}
+      />
       {/* Page header */}
       <div
         style={{
