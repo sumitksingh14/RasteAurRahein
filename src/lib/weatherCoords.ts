@@ -51,6 +51,7 @@ export const TRIP_WEATHER_COORDS: Record<string, WeatherLocation> = {
   "champaner-pavagadh-3-days": { name: "Champaner-Pavagadh", lat: 22.4833, lon: 73.5333 },
   "palitana-3-days": { name: "Palitana, Shatrunjaya", lat: 21.5222, lon: 71.8286 },
   "varanasi-ayodhya-prayagraj-5-days": { name: "Varanasi (Kashi Dham)", lat: 25.3176, lon: 82.9739 },
+  "tawang-7-days": { name: "Tawang, Arunachal Pradesh", lat: 27.5860, lon: 91.8594 },
 };
 
 // ---------------------------------------------------------------------------

@@ -63,6 +63,7 @@ export const TRIP_IMAGES: Record<string, string> = {
   "unakoti-rock-carvings-tripura": "/images/unakoti-carvings.jpg",
   "namdapha-national-park-safari": "/images/namdapha-jungle.jpg",
   "bomdila-monastery-arunachal": "/images/bomdila-monastery.jpg",
+  "tawang-7-days": "/images/tawang-monastery.jpg",
 
   // Andaman Islands
   "neil-island-6-days": "/images/neil-island.jpg",

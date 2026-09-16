@@ -112,7 +112,7 @@ export const REGIONS: RegionConfig[] = [
       "Northeast", "Meghalaya", "Arunachal", "Nagaland", "Assam",
       "Sikkim", "Manipur", "Mizoram", "Tripura", "Brahmaputra",
       "Living Root Bridge", "Khonoma", "Apatani", "Dzukou",
-      "Loktak", "Unakoti", "Vantawng", "Namdapha", "Bomdila",
+      "Loktak", "Unakoti", "Vantawng", "Namdapha", "Bomdila", "Tawang",
     ],
     heroImage: "/images/meghalaya-dawki-river.jpg",
     heroAlt: "Crystal clear Umngot River in Dawki Meghalaya",
@@ -177,6 +177,7 @@ export const TRIP_REGION_MAP: Record<string, string[]> = {
   "reiek-hill-mizoram": ["northeast-india"],
   "vantawng-waterfall-thenzawl": ["northeast-india"],
   "unakoti-rock-carvings-tripura": ["northeast-india"],
+  "tawang-7-days": ["northeast-india"],
 
   // ── 3. Central India & Heartland (11 trips) ──
   "orchha-bundelkhand-heritage": ["central-india"],

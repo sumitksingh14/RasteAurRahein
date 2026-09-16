@@ -1620,6 +1620,50 @@ export const FOOD_DATA: Record<string, FoodSpot[]> = {
       notes: "Clean, spiritual dining close to Saryu riverfront. Freshly prepared satvik meals with traditional Awadhi spices, beloved by devotees.",
     },
   ],
+  "tawang-7-days": [
+    {
+      id: "tw_f1", name: "Monpa Kitchen, Tawang", type: "restaurant", town: "Tawang Town",
+      mustTry: ["Khura (Monpa buckwheat pancakes)", "Butter Tea (Po Cha)", "Thukpa (Tibetan noodle soup)", "Zang (tsampa roasted barley flour)"],
+      priceRange: "₹", isVeg: false,
+      notes: "The best place to experience authentic Monpa tribal food. Butter tea (Po Cha — salty, yak-butter tea) is an acquired taste but essential at 10,000 ft. Ask for Khura with honey — a perfect breakfast.",
+    },
+    {
+      id: "tw_f2", name: "Tawang Restaurant (Near Monastery)", type: "restaurant", town: "Tawang Town",
+      mustTry: ["Yak Meat Curry", "Zan (millet porridge)", "Bamboo Shoot & Pork", "Momos (steamed dumplings)"],
+      priceRange: "₹", isVeg: false,
+      notes: "Small but reliable multi-cuisine restaurant near the monastery gate. Yak meat curry is the signature dish — rich, warming, and perfect for cold Tawang nights. The steamed momos are stuffed generously with pork.",
+    },
+    {
+      id: "tw_f3", name: "Military Canteen / Army Dhaba, Sela Pass", type: "dhaba", town: "Sela Pass (4,170 m)",
+      mustTry: ["Hot Masala Chai", "Instant Noodles at 13,700 ft", "Paratha with Achaar", "Army Omelette"],
+      priceRange: "₹", isVeg: true,
+      notes: "The only food stop at Sela Pass — run by the Indian Army or adjacent civilians. Hot tea at the top is mandatory. Hands and feet will be cold — wrap your chai cup for warmth. Open only during snow-free season.",
+    },
+    {
+      id: "tw_f4", name: "Sonam's Kitchen Homestay, Tawang", type: "homestay-kitchen", town: "Tawang Town",
+      mustTry: ["Puta (buckwheat noodles)", "Ara (traditional millet rice wine)", "Fried Yak Cheese", "Mustard Leaf Curry"],
+      priceRange: "₹", isVeg: false,
+      notes: "A family homestay kitchen that opens to outside guests for dinner by prior request. Ara (millet wine) is served in bamboo mugs. The most authentic Monpa meal experience in Tawang — worth calling ahead (+91-94361-78654).",
+    },
+    {
+      id: "tw_f5", name: "Bomdila Mess & Hotel Restaurants", type: "restaurant", town: "Bomdila",
+      mustTry: ["Arunachali Pork Curry", "Bamboo Shoot with Dried Fish", "Apple Wine (seasonal)", "Rice Beer (Apong)"],
+      priceRange: "₹", isVeg: false,
+      notes: "Bomdila's hotel restaurants serve a mix of Indian Chinese and local Arunachali food. Ask specifically for the bamboo shoot pork curry — unique to this region. Apple cider and local Apong rice beer available in autumn.",
+    },
+    {
+      id: "tw_f6", name: "Dirang Bazaar Stalls", type: "street-food", town: "Dirang",
+      mustTry: ["Fresh Apple Juice", "Kiwi Fruit (seasonal)", "Tibetan Bread with Jam", "Hot Corn Soup"],
+      priceRange: "₹", isVeg: true,
+      notes: "Dirang is famous for apple and kiwi orchards — fresh juice stalls along the market road. In October–November, buy fresh apples directly from orchard gates for a fraction of city prices. Hot corn soup from roadside vendors is warming.",
+    },
+    {
+      id: "tw_f7", name: "Guwahati Airport Restaurants (Departure)", type: "restaurant", town: "Guwahati Airport",
+      mustTry: ["Assamese Thali (Tenga Fish Curry)", "Khar (alkaline banana stem curry)", "Duck Meat Curry", "Pitha (rice cake)"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Before your departure flight, grab an Assamese thali at the airport restaurants or in Fancy Bazar, Guwahati. Tenga (sour fish curry) and Khar are must-tries you won't easily find elsewhere in India.",
+    },
+  ],
 };
 
 export const DEFAULT_FOOD: FoodSpot[] = [
