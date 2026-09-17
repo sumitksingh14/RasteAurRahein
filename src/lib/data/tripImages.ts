@@ -130,6 +130,23 @@ export const TRIP_IMAGES: Record<string, string> = {
   "chettinad-4-days": "/images/chettinad.jpg",
   "dhanushkodi-4-days": "/images/dhanushkodi.jpg",
   "valparai-4-days": "/images/valparai.jpg",
+  "vagamon-3-days": "/images/vagamon.jpg",
+  "gavi-3-days": "/images/gavi.jpg",
+  "chembra-peak-3-days": "/images/chembra-peak.jpg",
+  "silent-valley-3-days": "/images/silent-valley.jpg",
+  "poovar-island-3-days": "/images/poovar-island.jpg",
+  "sirsi-3-days": "/images/sirsi.jpg",
+  "gandikota-3-days": "/images/gandikota.jpg",
+  "araku-valley-4-days": "/images/araku-valley.jpg",
+  "papikondalu-3-days": "/images/papikondalu.jpg",
+  "talakona-3-days": "/images/talakona.jpg",
+  "horsley-hills-3-days": "/images/horsley-hills.jpg",
+  "yaganti-3-days": "/images/yaganti.jpg",
+  "anegundi-3-days": "/images/anegundi.jpg",
+  "yana-rocks-3-days": "/images/yana-rocks.jpg",
+  "agumbe-3-days": "/images/agumbe.jpg",
+  "chelavara-falls-3-days": "/images/chelavara-falls.jpg",
+  "gopalaswamy-betta-3-days": "/images/gopalaswamy-betta.jpg",
 };
 
 export const DEFAULT_TRIP_IMAGE = "/images/leh-ladakh-pangong-lake.jpg";

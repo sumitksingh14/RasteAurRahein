@@ -2064,6 +2064,465 @@ export const FOOD_DATA: Record<string, FoodSpot[]> = {
       notes: "Set adjacent to the historic tea factory. Taste premium export-quality tea flushes brewed in mountain spring water, while taking in the aroma of freshly oxidized tea leaves rolling through the dryers.",
     },
   ],
+
+  "vagamon-3-days": [
+    {
+      id: "vgm_f1", name: "Green Hill Restaurant Vagamon", type: "restaurant", town: "Vagamon Main Junction",
+      mustTry: ["Appam with Kerala Duck Roast", "Beef Ularthiyathu with Malabar Parotta", "Tapioca with Spicy Fish Curry", "Hot Cardamom Tea"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Popular hill-town diner favored by travelers. The slow-roasted duck in thick shallot and black pepper gravy paired with lacy hot appams is the ultimate cold-weather comfort food.",
+    },
+    {
+      id: "vgm_f2", name: "The Cavern Food Court", type: "restaurant", town: "Vagamon Heights Road",
+      mustTry: ["Malabar Chicken Biryani", "Dragon Chicken", "Fresh Strawberry Milkshake", "Wood-fired Garlic Naan"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Modern multi-cuisine restaurant with glass windows offering panoramic views of misty pine valleys. Great portions and prompt service after exploring the green meadows.",
+    },
+    {
+      id: "vgm_f3", name: "Vanilla County Estate Kitchen", type: "homestay-kitchen", town: "Mavady, Vagamon Foothills",
+      mustTry: ["Meen Peera (Fish with Fresh Shredded Coconut)", "Vegetable Ishtu with String Hoppers", "Syrian Christian Pork Roast"],
+      priceRange: "₹₹₹", isVeg: false,
+      notes: "Authentic Syrian Christian plantation dining cooked by estate hosts using organic spices, wild cinnamon, and fresh garden herbs harvested on the property.",
+    },
+    {
+      id: "vgm_f4", name: "DTPC Pine Valley Tea Kiosk", type: "street-food", town: "Vagamon Pine Forest Entrance",
+      mustTry: ["Hot Pazham Pori (Banana Fritters)", "Ela Ada (Steamed Rice Parcel with Jaggery)", "Spiced Chukku Kaapi (Dry Ginger Coffee)"],
+      priceRange: "₹", isVeg: true,
+      notes: "Cozy forest kiosk outside the towering pine woods. Nothing warms you up faster in the swirling mist than hot jaggery-coconut rice parcels and spicy dry-ginger coffee.",
+    },
+  ],
+
+  "gavi-3-days": [
+    {
+      id: "gvi_f1", name: "KFDC Green Mansions Forest Dining Hall", type: "restaurant", town: "Gavi Eco-Reserve",
+      mustTry: ["Traditional Kerala Matta Rice Buffet", "Nadan Chicken Curry", "Avial with Fresh Coconut", "Palada Payasam"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Wholesome buffet served right on the forest lodge deck overlooking Gavi lake. Simple, nutritious, and deeply satisfying after a morning tracking wild elephants on foot.",
+    },
+    {
+      id: "gvi_f2", name: "Bamboo Cafe Thekkady", type: "cafe", town: "Kumily Road (Gavi Gateway)",
+      mustTry: ["Wood-fired Thin Crust Veg Pizza", "Cardamom Spiced Cappuccino", "Fresh Apple Cinnamon Pie"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Eco-friendly cafe built with local bamboo and cane. Relaxed bohemian vibe with traveler book exchange and excellent artisanal coffee.",
+    },
+    {
+      id: "gvi_f3", name: "Chrissie's Hotel & Cafe Kumily", type: "cafe", town: "Lake Road, Thekkady",
+      mustTry: ["Homemade Spinach & Ricotta Ravioli", "Kerala Spiced Fish Fillet", "French Press Coorg Coffee", "Lemon Tart"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Charming rooftop cafe overlooking green treetops where monkeys play. Known for impeccable European-Kerala fusion dishes and clean, organic ingredients.",
+    },
+    {
+      id: "gvi_f4", name: "Grandma's Cafe Vandiperiyar", type: "street-food", town: "Vandiperiyar Forest Gate",
+      mustTry: ["Hot Unniyappam", "Crispy Jackfruit Chips", "Fresh Spiced Black Tea"],
+      priceRange: "₹", isVeg: true,
+      notes: "The last pit stop before entering the dense 28 km unpaved forest track into Gavi. Grab freshly made unniyappams and hot tea for the bumpy jungle trail.",
+    },
+  ],
+
+  "chembra-peak-3-days": [
+    {
+      id: "chm_f1", name: "1980's A Nostalgic Restaurant", type: "restaurant", town: "Kalpetta Bypass, Wayanad",
+      mustTry: ["Traditional 20-Dish Banana Leaf Sadhya", "Bamboo Dum Biryani", "Kozhi Porichathu (Crisp Fried Chicken)", "Elaneer (Tender Coconut) Pudding"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Atmospheric traditional thatched restaurant celebrating old-world Kerala village culture. The fragrant bamboo biryani cooked inside whole bamboo stalks over wood charcoal is unmissable.",
+    },
+    {
+      id: "chm_f2", name: "Wilton Restaurant Kalpetta", type: "restaurant", town: "Main Road, Kalpetta",
+      mustTry: ["Malabar Mutton Biryani with Dates Pickle", "Fish Mango Curry", "Coin Parottas with Beef Roast", "Sharjah Shake"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Iconic Wayanad establishment serving top-tier Malabar coastal fare. The tender mutton biryani and rich mango fish curry are widely regarded as the best in the district.",
+    },
+    {
+      id: "chm_f3", name: "Cafe Robusta Meppadi", type: "cafe", town: "Chembra Base Road, Meppadi",
+      mustTry: ["Wayanad Robusta Cold Brew", "Grilled Mushroom Cheese Sandwich", "Warm Banana Walnut Cake", "Spiced Masala Chai"],
+      priceRange: "₹", isVeg: true,
+      notes: "Trendy coffee house at the foot of Chembra Peak. Celebrate reaching the heart-shaped lake with a cold brew made from single-origin Wayanad robusta beans.",
+    },
+    {
+      id: "chm_f4", name: "ClayHut A Village Restaurant", type: "restaurant", town: "Vythiri, Wayanad",
+      mustTry: ["Earthen Pot Fish Curry", "Kappa Biryani", "Clay-Oven Roast Chicken", "Sambharam Buttermilk"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Earth-friendly kitchen cooking exclusively in traditional unglazed clay pots. Retains the natural earthen aromas of wood smoke and stone-ground spices.",
+    },
+  ],
+
+  "silent-valley-3-days": [
+    {
+      id: "slv_f1", name: "Mukkali Forest Information Center Canteen", type: "restaurant", town: "Mukkali Checkpost",
+      mustTry: ["Kerala Matta Rice Lunch with Sambar & Rasam", "Spicy Omelette", "Chilly Gobi", "Piping Hot Black Tea"],
+      priceRange: "₹", isVeg: false,
+      notes: "Simple, honest canteen operated at the forest headquarters in Mukkali. Perfect hot meal to fuel up before boarding the 4WD safari up to the Sairandhri watchtower.",
+    },
+    {
+      id: "slv_f2", name: "Attappadi Tribal Millet Kitchen", type: "restaurant", town: "Attappadi Road, Agali",
+      mustTry: ["Ragi (Finger Millet) Puttu with Kadala", "Foxtail Millet Upma", "Wild Forest Honey with Amla", "Herbal Sukku Coffee"],
+      priceRange: "₹", isVeg: true,
+      notes: "Showcases indigenous Irula and Muduga tribal gastronomy. Attappadi was declared India's first organic tribal block; dishes are rich in dietary fiber and ancient nutrients.",
+    },
+    {
+      id: "slv_f3", name: "Hotel Sri Krishna Inn Mannarkkad", type: "restaurant", town: "Mannarkkad Town",
+      mustTry: ["Crispy Ghee Roast Masala Dosa", "Hot Medu Vada with 3 Chutneys", "Degree Filter Coffee"],
+      priceRange: "₹", isVeg: true,
+      notes: "Bustling traditional vegetarian stop in Mannarkkad foothills. Renowned for crispy golden ghee dosas and rich aromatic filter coffee.",
+    },
+    {
+      id: "slv_f4", name: "Anakatti River View Dhaba", type: "dhaba", town: "Anakatti Border (Kerala-TN)",
+      mustTry: ["Fresh Bhavani River Fish Fry", "Kerala Parotta with Pepper Chicken", "Chilled Tender Coconut Water"],
+      priceRange: "₹", isVeg: false,
+      notes: "Relaxed riverside dhaba situated right on the state border bridge. Relish crisp fried freshwater fish while watching the Bhavani river flow past giant bamboo clusters.",
+    },
+  ],
+
+  "poovar-island-3-days": [
+    {
+      id: "pvr_f1", name: "Floating Restaurant at Poovar Island Resort", type: "restaurant", town: "Poovar Backwaters",
+      mustTry: ["Jumbo Tiger Prawns Tawa Roast", "Karimeen Pollichathu in Banana Leaf", "Lobster Thermidor", "Kerala Coconut Rice"],
+      priceRange: "₹₹₹", isVeg: false,
+      notes: "A magical dining experience on a floating pavilion tethered over the backwaters. Fresh marine catches cooked with freshly extracted coconut milk and coastal spices.",
+    },
+    {
+      id: "pvr_f2", name: "Ripples Estuary Diner", type: "restaurant", town: "Poovar Estuary",
+      mustTry: ["Grilled Red Snapper with Lemon Garlic Butter", "Calamari Pepper Fry", "Appams with Veg Stew", "Tender Coconut Souffle"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Open-air dining overlooking the golden sandspit where the Neyyar river merges with the Arabian Sea. Cool sea breezes and spectacular evening sunsets.",
+    },
+    {
+      id: "pvr_f3", name: "Vizhinjam Harbor Seafood Shacks", type: "street-food", town: "Vizhinjam (12 km from Poovar)",
+      mustTry: ["Fresh Kingfish (Neymeen) Fry", "Squid Roast with Crushed Shallots", "Parotta with Spicy Crab Masala"],
+      priceRange: "₹", isVeg: false,
+      notes: "Vibrant fishing harbor eateries where fresh catches arrive directly from catamarans. Watch cooks flash-fry spicy seafood over roaring iron skillets.",
+    },
+    {
+      id: "pvr_f4", name: "Golden Sand Beach Coconut Stalls", type: "street-food", town: "Poovar Golden Beach Spit",
+      mustTry: ["Green King Tender Coconut Water", "Raw Mango Slices with Red Chilli Salt", "Spiced Roasted Sweet Corn"],
+      priceRange: "₹", isVeg: true,
+      notes: "Simple thatched kiosks on the isolated golden sand spit accessible only by boat. Drink chilled tender coconut water while gazing at the crashing surf.",
+    },
+  ],
+
+  "sirsi-3-days": [
+    {
+      id: "srs_f1", name: "Hotel Pandurang Veg Restaurant", type: "restaurant", town: "Hubli Road, Sirsi",
+      mustTry: ["Famous Sirsi Benne Dosa", "Appe Huli (Raw Mango Rasam)", "Todikana Halwa", "Filter Coffee"],
+      priceRange: "₹", isVeg: true,
+      notes: "Legendary vegetarian institution in Sirsi famous for golden crisp butter dosas, traditional Havyaka Brahmin dishes, and steaming tumblers of chicory-free coffee.",
+    },
+    {
+      id: "srs_f2", name: "Ganesh Bhavan Sweet Stall & Snack Corner", type: "street-food", town: "Near Marikamba Temple, Sirsi",
+      mustTry: ["Sirsi Banana Halwa", "Kadubu (Jackfruit steamed dumplings)", "Kaayi Holige", "Avalakki Upkari"],
+      priceRange: "₹", isVeg: true,
+      notes: "Historic sweets shop renowned for authentic Uttara Kannada sweets, particularly the chewy, dark-red banana halwa made from local banana cultivars and pure desi ghee.",
+    },
+    {
+      id: "srs_f3", name: "Havyaka Homestyle Mess", type: "dhaba", town: "Banavasi Road, Sirsi",
+      mustTry: ["Tambli (Herbal yoghurt cooler)", "Halasina Hannina Happala (Jackfruit papad)", "Majjige Huli with Red Rice", "Patrode"],
+      priceRange: "₹", isVeg: true,
+      notes: "Unassuming community dining mess serving authentic home-cooked Havyaka thalis made with garden-fresh medicinal herbs, jackfruit, and coconut.",
+    },
+    {
+      id: "srs_f4", name: "Unchalli Falls Forest Tea Stall", type: "street-food", town: "Heggarne, near Unchalli Falls",
+      mustTry: ["Steaming Ginger Cardamom Chai", "Kallangadi (Watermelon) Juice", "Mirchi Bajji with Spicy Chutney"],
+      priceRange: "₹", isVeg: true,
+      notes: "Rustic wooden shelter near the falls viewpoint trail. Perfect stop for hot, crisp chilli pakoras and ginger chai after the humid jungle hike.",
+    },
+  ],
+
+  "gandikota-3-days": [
+    {
+      id: "gdk_f1", name: "Haritha Restaurant Gandikota", type: "restaurant", town: "Gorge Viewpoint, Gandikota",
+      mustTry: ["Rayalaseema Ragi Mudda with Natu Kodi Pulusu", "Gongura Mutton Curry", "Andhra Meals with Ghee & Podi", "Curd Rice"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Spacious restaurant overlooking the fort walls serving authentic Rayalaseema hot chicken and spicy mutton curries paired with finger millet balls.",
+    },
+    {
+      id: "gdk_f2", name: "Gandikota Fort Heritage Dhabas", type: "dhaba", town: "Gandikota Village Main Gate",
+      mustTry: ["Country Chicken Fry", "Jowar Roti with Brinjal Gravy", "Mirchi Bajji", "Koramenu Chepala Pulusu"],
+      priceRange: "₹", isVeg: false,
+      notes: "Cluster of village thatched eateries right outside the fort. The village cooks prepare rustic wood-fired country chicken and hand-patted jowar rotis.",
+    },
+    {
+      id: "gdk_f3", name: "Belum Caves Cafeteria", type: "cafe", town: "Belum Caves Complex",
+      mustTry: ["Andhra Veg Meals with Podi & Pappu", "Samosa Chaat", "Chilled Badam Milk"],
+      priceRange: "₹", isVeg: true,
+      notes: "Airy canteen at the entrance of Belum Caves offering comforting thalis, quick snacks, and cool refreshments after exploring the underground cavern chambers.",
+    },
+    {
+      id: "gdk_f4", name: "Jammalamadugu Ghee Dosa Corners", type: "street-food", town: "Jammalamadugu (15 km from Gandikota)",
+      mustTry: ["Karam Dosa (Red chilli garlic dosa)", "Ghee Upma Pesarattu", "Hot Filter Coffee"],
+      priceRange: "₹", isVeg: true,
+      notes: "Famous night street-food carts in the nearby town of Jammalamadugu where sizzling dosas are slathered in spicy red onion-chilli paste and drenched in pure ghee.",
+    },
+  ],
+
+  "araku-valley-4-days": [
+    {
+      id: "ark_f1", name: "Araku Tribal Bamboo Chicken Kiosks", type: "street-food", town: "Padmapuram Gardens & Chaparai Road",
+      mustTry: ["Authentic Bongu Kodi (Bamboo Chicken)", "Bamboo Mutton", "Bamboo Rice", "Charcoal Roasted Corn"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Famous roadside culinary phenomenon where marinated country chicken is stuffed into raw green bamboo stalks and slow-roasted over burning wood coals with zero oil.",
+    },
+    {
+      id: "ark_f2", name: "Araku Tribal Coffee House", type: "cafe", town: "Near Tribal Museum, Araku Valley",
+      mustTry: ["Single-Origin Araku Arabica Espresso", "Filter Coffee with Organic Jaggery", "Dark Roast Pour-Over", "Coffee Pastries"],
+      priceRange: "₹", isVeg: true,
+      notes: "Flagship cafe promoting the internationally awarded organic Arabica coffee grown by indigenous adivasi farmers in the Eastern Ghats shade canopy.",
+    },
+    {
+      id: "ark_f3", name: "Haritha Valley Restaurant", type: "restaurant", town: "Araku Valley",
+      mustTry: ["Andhra Royyala Iguru (Prawn curry)", "Gongura Chicken with Steamed Rice", "Allam Pachadi with Vada", "Madugula Halwa"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Spacious restaurant offering traditional spicy Coastal Andhra and tribal dishes, along with the famous wheat milk dessert Madugula Halwa.",
+    },
+    {
+      id: "ark_f4", name: "Borra Caves Forest Canteen", type: "street-food", town: "Borra Caves Entrance",
+      mustTry: ["Karam Vada", "Punugulu with Coconut & Ginger Chutneys", "Hot Ginger Tea"],
+      priceRange: "₹", isVeg: true,
+      notes: "Lively snack stalls under large banyan trees outside Borra Caves serving crispy deep-fried rice flour dumplings and fiery chutneys.",
+    },
+  ],
+
+  "papikondalu-3-days": [
+    {
+      id: "ppk_f1", name: "Godavari Cruise Onboard Kitchen", type: "restaurant", town: "Papikondalu Riverboat Cruise",
+      mustTry: ["Godavari Royyala Vepudu (Spicy Prawn Fry)", "Traditional Andhra Chicken Pulusu", "Gongura Pappu with Ghee", "Semiyan Payasam"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Freshly prepared hot buffet served on the upper deck of the boat as the vessel glides between the towering emerald gorges of Papikondalu.",
+    },
+    {
+      id: "ppk_f2", name: "Kolluru Sandbank Campfire Barbecue", type: "dhaba", town: "Kolluru Island, Godavari",
+      mustTry: ["Campfire Bamboo Chicken", "Country Style Egg Curry", "Smoky Roasted Brinjal Curry (Vankaya Bajji)", "Steaming Rice with Rasam"],
+      priceRange: "₹", isVeg: false,
+      notes: "Rustic open-air dining under starry skies on the sandy riverbanks of the Godavari. Food is cooked on open wood stoves inside traditional mud ovens.",
+    },
+    {
+      id: "ppk_f3", name: "Hotel Shelton Flavours Diner", type: "restaurant", town: "Rajahmundry City",
+      mustTry: ["Rajahmundry Special Pulasa Fish Curry (seasonal)", "Avakaya Biryani", "Ulavacharu Biryani with Natu Kodi", "Potharekulu"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Renowned fine-dining spot in Rajahmundry celebrating the prized Hilsa (Pulasa) fish and authentic Godavari delta festive delicacies.",
+    },
+    {
+      id: "ppk_f4", name: "Atreyapuram Potharekulu Sweet Emporium", type: "street-food", town: "Rajahmundry Kotipalli Road",
+      mustTry: ["Paper Sweet (Potharekulu with Ghee & Dry Fruits)", "Madatha Kaja", "Kakinada Kaja", "Kova Puri"],
+      priceRange: "₹", isVeg: true,
+      notes: "Specialist sweet shop sourcing paper-thin rice starch sweet rolls (Potharekulu) layered with powdered jaggery, pure ghee, and roasted cashews.",
+    },
+  ],
+
+  "talakona-3-days": [
+    {
+      id: "tlk_f1", name: "Talakona Haritha Forest Canteen", type: "restaurant", town: "Talakona Waterfall Base",
+      mustTry: ["Rayalaseema Veg Meals with Gunpowder Podi", "Chicken Fry with Chapati", "Spicy Rasam Rice", "Buttermilk with Ginger & Curry Leaves"],
+      priceRange: "₹", isVeg: false,
+      notes: "Forest canteen near the stream crossing serving wholesome homestyle meals to trekkers before ascending the 270ft waterfall climb.",
+    },
+    {
+      id: "tlk_f2", name: "Chandragiri Fort Highway Dhaba", type: "dhaba", town: "Chandragiri (near Fort gate)",
+      mustTry: ["Natu Kodi Biryani", "Chittoor Style Mutton Chukka", "Jowar Roti with Tomato Pappu", "Mirchi Bajji"],
+      priceRange: "₹", isVeg: false,
+      notes: "Popular local dhaba on the highway connecting Tirupati to Talakona, known for pungent rustic Rayalaseema spices and clay-oven cooked meats.",
+    },
+    {
+      id: "tlk_f3", name: "Minerva Coffee Shop Tirupati", type: "restaurant", town: "Tirupati City (45 km from Talakona)",
+      mustTry: ["Ghee Roast Masala Dosa", "Pesarattu Upma with Allam Pachadi", "Rava Pongal with Coconut Chutney", "Degree Filter Coffee"],
+      priceRange: "₹₹", isVeg: true,
+      notes: "Legendary pure vegetarian restaurant famous for melt-in-the-mouth ghee dosas, savoury pongal, and the finest South Indian filter coffee in the temple town.",
+    },
+    {
+      id: "tlk_f4", name: "Nerabailu Village Tea Kiosks", type: "street-food", town: "Nerabailu Checkpost",
+      mustTry: ["Karam Podi Punugulu", "Hot Onion Pakoras", "Lemon Tea with Honey"],
+      priceRange: "₹", isVeg: true,
+      notes: "Quaint village tea stop under tamarind groves right before entering the reserve forest check-post of Sri Venkateswara National Park.",
+    },
+  ],
+
+  "horsley-hills-3-days": [
+    {
+      id: "hsh_f1", name: "Haritha Hilltop Restaurant", type: "restaurant", town: "Governor Bungalow, Horsley Hills",
+      mustTry: ["Andhra Thali with Gutti Vankaya (Stuffed Brinjal)", "Spicy Andhra Chicken Curry", "Sambar Rice with Appalam", "Chilled Badam Milk"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Main dining hall on the hill ridge with panoramic outdoor seating. Wholesome Andhra thalis and hearty evening chicken fries.",
+    },
+    {
+      id: "hsh_f2", name: "Gali Bandalu Viewpoint Snack Kiosks", type: "street-food", town: "Gali Bandalu (Wind Rocks), Horsley Hills",
+      mustTry: ["Crispy Andhra Punugulu with Peanut Chutney", "Spiced Roasted Sweet Corn", "Masala Chai with Green Cardamom"],
+      priceRange: "₹", isVeg: true,
+      notes: "Snack kiosks positioned atop the gusty wind-rock plateau. Enjoy sizzling fritters while leaning into the cool 40 km/h breezes.",
+    },
+    {
+      id: "hsh_f3", name: "Madanapalle Military Hotel", type: "dhaba", town: "Madanapalle Town (at foothill)",
+      mustTry: ["Mutton Biryani (Seeraga Samba rice)", "Boti Fry", "Natu Kodi Pulusu with Parotta", "Payaya Soup"],
+      priceRange: "₹", isVeg: false,
+      notes: "Old-school military hotel in Madanapalle serving aromatic wood-fired biryani and peppery meat gravies to local travelers.",
+    },
+    {
+      id: "hsh_f4", name: "Eucalyptus Grove Tea Stall", type: "street-food", town: "Kalyani Eucalyptus Tree point",
+      mustTry: ["Herbal Eucalyptus Nilgiri Tea", "Hot Mirchi Bajji", "Sweet Banana Buns"],
+      priceRange: "₹", isVeg: true,
+      notes: "Charming tea stall under the shadow of the colossal 150-year-old eucalyptus tree, serving invigorating herbal teas infused with local spices.",
+    },
+  ],
+
+  "yaganti-3-days": [
+    {
+      id: "ygt_f1", name: "Yaganti Temple Annadana Canteen", type: "restaurant", town: "Temple Complex, Yaganti",
+      mustTry: ["Sacred Maha Prasadam", "Tamarind Pulihora with Roasted Peanuts", "Sweet Pongal (Chakkara Pongali)", "Curd Rice with Pomegranate"],
+      priceRange: "₹", isVeg: true,
+      notes: "Sacred temple dining hall serving blessed prasadam meals to pilgrims cooked according to traditional centuries-old Agamic recipes.",
+    },
+    {
+      id: "ygt_f2", name: "Banaganapalle Mango & Sweet Mart", type: "street-food", town: "Banaganapalle Town (15 km from Yaganti)",
+      mustTry: ["Authentic Banganapalle Mangoes (in season)", "Kurnool Halwa", "Bellam Jalebi", "Hot Samosa"],
+      priceRange: "₹", isVeg: true,
+      notes: "Historic town that gave the world the royal GI-tagged Benishan (Banganapalle) mango. The sweet shops here also make mouth-watering jaggery jalebis.",
+    },
+    {
+      id: "ygt_f3", name: "Mourya Inn Rayalaseema Ruchulu", type: "restaurant", town: "Kurnool City",
+      mustTry: ["Rayalaseema Kodi Vepudu (Pepper Chicken)", "Jowar Roti with Ulava Charu", "Gongura Royyalu (Prawns)", "Ghee Podi Annam"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "The gold standard for Rayalaseema regional cuisine in Kurnool, featuring authentic fiery spice blends, cold-pressed groundnut oil, and heirloom millet rotis.",
+    },
+    {
+      id: "ygt_f4", name: "Yaganti Caves Mountain Tea Stall", type: "street-food", town: "Agastya Cave Steps, Yaganti",
+      mustTry: ["Belum Spiced Masala Chai", "Hot Poha with Roasted Peanuts", "Uggani with Mirchi Bajji"],
+      priceRange: "₹", isVeg: true,
+      notes: "Refreshing hillside tea stall situated near the stone flight of steps leading to Agastya and Venkateswara caves. Taste the iconic Rayalaseema combo of Uggani (seasoned puffed rice) with fiery stuffed mirchi bajji.",
+    },
+  ],
+
+  "anegundi-3-days": [
+    {
+      id: "ang_f1", name: "The Kishkinda Trust Craft & Cafe", type: "cafe", town: "Anegundi Heritage Village",
+      mustTry: ["Ragi Mudde with Shenga (Peanut) Chutney", "Jolada Rotti Oota", "Organic Hibiscus Cooler", "Steamed Banana Cake"],
+      priceRange: "₹", isVeg: true,
+      notes: "Artisanal community cafe run by local women weaving banana fiber crafts. Wholesome rustic meals made with heirloom millet and cold-pressed oils.",
+    },
+    {
+      id: "ang_f2", name: "Laughing Buddha Hippie Cafe", type: "cafe", town: "Near Sanapur Boulders",
+      mustTry: ["Nutella Banana Pancake", "Shakshuka with Pita", "Wood-Fired Pizza", "Fresh Mint Lime Soda"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Bohemian open-air riverside cafe with floor mattresses, hammocks, and ambient sitar tunes overlooking the boulder fields and the Tungabhadra river.",
+    },
+    {
+      id: "ang_f3", name: "Sanapur Lake Coconut & Maggi Kiosks", type: "street-food", town: "Sanapur Lake Cliff Point",
+      mustTry: ["Pahadi Masala Maggi with Fried Garlic", "Fresh Tender Coconut Water", "Chilli Garlic Bajjis"],
+      priceRange: "₹", isVeg: true,
+      notes: "Thatched kiosks perched directly above the turquoise waters of Sanapur Lake reservoir. Essential refreshment spot after cliff leaping and coracle drifting.",
+    },
+    {
+      id: "ang_f4", name: "Hampi Mango Tree Restaurant", type: "restaurant", town: "Kamalapur / Hampi Road (12 km)",
+      mustTry: ["Special South Indian Thali", "Mango Lassi", "Egg Curry with Parotta", "Banoffee Pie"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Fabled traveler oasis serving hearty meals, fruit smoothies, and continental breakfasts with shaded garden seating.",
+    },
+  ],
+
+  "yana-rocks-3-days": [
+    {
+      id: "ynr_f1", name: "Yana Valley Forest Canteen", type: "dhaba", town: "Yana Rocks Entry Checkpoint",
+      mustTry: ["Steaming Herbal Kashaya", "Jackfruit Chips (Halasina Hannu)", "Uttara Kannada Jolada Rotti with Ennegai (Stuffed Brinjal)", "Mirchi Bajji"],
+      priceRange: "₹", isVeg: true,
+      notes: "Rustic wooden stall at the beginning of the Yana jungle trail serving warm herbal teas, crispy jackfruit chips, and spicy village fritters.",
+    },
+    {
+      id: "ynr_f2", name: "Vibhooti Falls Shaded Tea Kiosk", type: "street-food", town: "Vibhooti Falls Trail Head",
+      mustTry: ["Spiced Kokum Juice", "Ginger Cardamom Tea", "Pineapple with Red Chilli Powder"],
+      priceRange: "₹", isVeg: true,
+      notes: "Refreshing trailside shelter where local village families serve sweet-sour chilled kokum sherbet and freshly plucked pineapples.",
+    },
+    {
+      id: "ynr_f3", name: "Hotel Pandurang Veg Sirsi", type: "restaurant", town: "Sirsi Town (30 km from Yana)",
+      mustTry: ["Sirsi Benne Dosa", "Appe Huli", "Todikana Halwa", "Filter Coffee"],
+      priceRange: "₹", isVeg: true,
+      notes: "Celebrated vegetarian establishment in the hills of Sirsi, famous for thick butter dosas and traditional Havyaka cuisine.",
+    },
+    {
+      id: "ynr_f4", name: "Namaste Cafe Gokarna", type: "restaurant", town: "Om Beach, Gokarna (42 km from Yana)",
+      mustTry: ["King Prawns Butter Garlic", "Nutella Crepes", "Israeli Shakshuka", "Seafood Platter"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Iconic beachside restaurant nestled into the rocky edge of Om Beach. Watch waves crash while relishing fresh catches after a trek through the Yana rocks.",
+    },
+  ],
+
+  "agumbe-3-days": [
+    {
+      id: "agb_f1", name: "Doddamane Malnad Dining Hall", type: "homestay-kitchen", town: "Agumbe Main Bazaar (Malgudi Days House)",
+      mustTry: ["Unlimited Malnad Brahmin Thali", "Authentic Kashaya (Medicinal Herbal Brew)", "Majjige Huli", "Patrode", "Jackfruit Payasa"],
+      priceRange: "₹", isVeg: true,
+      notes: "The beating heart of Agumbe. Kasturi Akka and family serve warm, generous Malnad feasts on banana leaves inside this 130-year-old wooden house. No fixed bill—guests leave what they wish in a donation box.",
+    },
+    {
+      id: "agb_f2", name: "Agumbe Sunset Point Snack Stalls", type: "street-food", town: "Sunset Point, Agumbe Ghat",
+      mustTry: ["Piping Hot Mangalore Buns", "Goli Baje (Maida fritters)", "Steaming Ginger Chai", "Spiced Churumuri"],
+      priceRange: "₹", isVeg: true,
+      notes: "Lively evening food carts on the 14th hairpin bend of the Agumbe Ghats. Sip steaming cardamom chai while watching the sun sink into the Arabian Sea horizon.",
+    },
+    {
+      id: "agb_f3", name: "Hotel Mayura Thirthahalli", type: "restaurant", town: "Thirthahalli Town (28 km)",
+      mustTry: ["Thirthahalli Kotte Kadubu (idlis steamed in jackfruit leaves)", "Neer Dosa with Coconut Chutney", "Halasina Hannina Happala"],
+      priceRange: "₹", isVeg: true,
+      notes: "Classic Malnad eatery celebrated for traditional fragrant Kotte Kadubu and delicate lacy neer dosas.",
+    },
+    {
+      id: "agb_f4", name: "Seethanadi Riverside Cafe", type: "cafe", town: "Someshwara Sanctuary Road",
+      mustTry: ["Fresh Sugar-Cane Juice with Ginger", "Medu Vada with Sambar", "Tender Coconut Water"],
+      priceRange: "₹", isVeg: true,
+      notes: "Tranquil open-air cafe under forest canopies along the Sita River, ideal for refuel after visiting the Agumbe Rainforest Research Station.",
+    },
+  ],
+
+  "chelavara-falls-3-days": [
+    {
+      id: "clv_f1", name: "Kabbe Ridge Homestyle Kitchen", type: "homestay-kitchen", town: "Cheyyandane Village (near Chelavara)",
+      mustTry: ["Authentic Kodava Pandi Curry", "Kadambuttu (Steamed rice balls)", "Bamboo Shoot (Baimbale) Curry", "Kakkada Nyand (Crab curry)"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Coorg culinary perfection: dark roasted spices, tart Kachampuli vinegar, and slow-braised meats served with pillowy steamed rice dumplings.",
+    },
+    {
+      id: "clv_f2", name: "Taste of Coorg Virajpet", type: "restaurant", town: "Clock Tower Road, Virajpet (16 km)",
+      mustTry: ["Akki Rotti with Ellu Pajji (Sesame chutney)", "Coorg Pork Roast", "Chicken Pepper Fry", "Koli Curry"],
+      priceRange: "₹", isVeg: false,
+      notes: "Popular local dining spot in Virajpet known for rustic Kodava recipes, soft rice rotis, and fiery dry meat roasts.",
+    },
+    {
+      id: "clv_f3", name: "Chomabetta Foothills Tea Stall", type: "street-food", town: "Kabbe Hills Base",
+      mustTry: ["Fresh Estate Cardamom Coffee", "Banana Fritters", "Hot Maggi with Mountain Herbs"],
+      priceRange: "₹", isVeg: true,
+      notes: "Cozy roadside shed right at the starting point of the Chomabetta cliff trek, serving estate-grown peaberry coffee and hot tea.",
+    },
+    {
+      id: "clv_f4", name: "The Tamara Deck Restaurant", type: "restaurant", town: "Napoklu (near Chelavara)",
+      mustTry: ["Artisanal Coorg Coffee Brews", "Wild Mushroom Pepper Fry", "Jackfruit Biryani", "Vanilla Panna Cotta"],
+      priceRange: "₹₹₹", isVeg: false,
+      notes: "Fine dining on a wooden deck suspended over the mist-canopied rainforest. Combines traditional Coorg flavors with gourmet international presentation.",
+    },
+  ],
+
+  "gopalaswamy-betta-3-days": [
+    {
+      id: "gsb_f1", name: "Himavad Hilltop Prasadam Counter", type: "street-food", town: "Venugopala Swamy Temple Peak",
+      mustTry: ["Temple Laddu Prasadam", "Tamarind Chitranna", "Hot Jaggery Sweet Pongal", "Spiced Buttermilk"],
+      priceRange: "₹", isVeg: true,
+      notes: "Sacred temple kiosk atop the misty 1,450m peak serving blessed sweet laddus and warm tamarind rice to pilgrims and travelers.",
+    },
+    {
+      id: "gsb_f2", name: "Bandipur Safari Lodge Dining Hall", type: "restaurant", town: "Melukamanahalli, Bandipur",
+      mustTry: ["Jungle Lodges Buffet", "Mysore Rasam", "Chicken Sukka", "Karnataka Bisi Bele Bath with Boondi"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Open-air dining pavilion surrounded by chital deer and whistling birds. Lavish South Indian and Karnataka thali buffets served after wildlife safaris.",
+    },
+    {
+      id: "gsb_f3", name: "Gundlupet Sunflower Highway Dhabas", type: "dhaba", town: "Gundlupet Highway (12 km)",
+      mustTry: ["Thatte Idli with Red Coconut Chutney", "Benne Masala Dosa", "Filter Coffee", "Maddur Vada"],
+      priceRange: "₹", isVeg: true,
+      notes: "Vibrant roadside highway stops framing the golden sunflower and marigold fields of Gundlupet, famous for oversized plate idlis and crispy Maddur vadas.",
+    },
+    {
+      id: "gsb_f4", name: "Nanjangud Rasabale & Sweet Mart", type: "street-food", town: "Nanjangud Town (on route to Mysore)",
+      mustTry: ["GI-Tagged Nanjangud Rasabale Bananas", "Mysore Pak with Pure Ghee", "Chiroti with Almond Milk"],
+      priceRange: "₹", isVeg: true,
+      notes: "Famous temple town along the Kapila River renowned for the prized fragrant Nanjangud Rasabale bananas and melt-in-mouth royal Mysore Pak.",
+    },
+  ],
 };
 
 export const DEFAULT_FOOD: FoodSpot[] = [

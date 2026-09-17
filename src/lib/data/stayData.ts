@@ -2467,6 +2467,512 @@ export const STAY_DATA: Record<string, HotelSuggestion[]> = {
       notes: "Welcoming mountain homestay just 5 minutes walk from the serene crystal waters of Koolangal River. Excellent local Kongu Nadu chicken curries and fresh filter coffee.",
     },
   ],
+
+  "vagamon-3-days": [
+    {
+      id: "vgm1", name: "Foggy Knolls Resort Vagamon", type: "resort", stars: 4,
+      avgPricePerNight: 6500, town: "Vagamon Hills",
+      contact: "+91-4869-248500",
+      bookingUrl: "https://www.foggyknollsresort.com",
+      amenities: ["Cliff Edge Views", "Heated Swimming Pool", "Mist Balcony", "Multicuisine Diner", "Campfire"],
+      notes: "Perched dramatically on a rocky knoll with panoramic views of rolling green hills. Features cave-inspired suites, indoor games, and guided morning walks into the pine valley.",
+    },
+    {
+      id: "vgm2", name: "Falcon Crest Vagamon", type: "resort", stars: 3,
+      avgPricePerNight: 4200, town: "Chottupara, Vagamon",
+      contact: "+91-4869-248100",
+      amenities: ["Tea Garden Cottages", "Private Balconies", "Campfire Lawn", "Kerala Cuisine"],
+      notes: "Sprawled across 3 acres of pristine virgin tea plantation. Wake up to swirling silver mist, mountain birds, and fragrant tea blossom aromas.",
+    },
+    {
+      id: "vgm3", name: "Vanilla County Heritage Homestay", type: "homestay", stars: 4,
+      avgPricePerNight: 5800, town: "Mavady, Vagamon Foothills",
+      contact: "+91-94472-88188",
+      bookingUrl: "https://www.vanillacounty.in",
+      amenities: ["Natural Spring Water Rock Pool", "Organic Spice Tour", "75-Year Heritage Estate", "Syrian Christian Feasts"],
+      notes: "Set on an organic vanilla, rubber, and spice estate. Features a rare natural rock pool filled by a crystal mountain spring and authentic home-cooked duck and fish curries.",
+    },
+    {
+      id: "vgm4", name: "Orion County Eco Resort", type: "resort", stars: 3,
+      avgPricePerNight: 3500, town: "Vagamon Pine Valley Road",
+      contact: "+91-94464-10222",
+      amenities: ["Wooden Pine Cabins", "Meadow Views", "Barbecue Setup", "Wi-Fi"],
+      notes: "Peaceful timber cottages located just 2 km from the famous Vagamon Pine Forest and Kurisumala dairy farm. Great for quiet family mountain holidays.",
+    },
+  ],
+
+  "gavi-3-days": [
+    {
+      id: "gvi1", name: "KFDC Green Mansions Jungle Lodge", type: "resort", stars: 4,
+      avgPricePerNight: 7500, town: "Gavi Eco-Tourism Reserve",
+      contact: "+91-4735-236500",
+      bookingUrl: "https://www.kfdcltd.com",
+      amenities: ["Lake View Forest Lodge", "All Meals Included", "Guided Jungle Safari", "Row Boating", "Sabarimala Viewpoint Trek"],
+      notes: "The legendary official Kerala Forest Development Corporation lodge situated right in the heart of Gavi's evergreen jungle. The stay package includes all meals, guided 4x4 safaris, and rowing on Gavi lake.",
+    },
+    {
+      id: "gvi2", name: "KFDC Swiss Safari Tents Gavi", type: "camp", stars: 3,
+      avgPricePerNight: 5500, town: "Gavi Reservoir Shore",
+      contact: "+91-4735-236500",
+      amenities: ["Lakeside Luxury Tents", "Attached Restrooms", "Forest Guide", "Elephant Spotting Deck"],
+      notes: "Pitched on the scenic shores of Gavi lake. Experience the nocturnal sounds of the Periyar forest with wild elephants, sambar deer, and Malabar giant squirrels roaming near the perimeter.",
+    },
+    {
+      id: "gvi3", name: "Spice Village - CGH Earth", type: "resort", stars: 5,
+      avgPricePerNight: 13500, town: "Thekkady / Kumily (Gavi Gateway)",
+      contact: "+91-484-4261711",
+      bookingUrl: "https://www.cghearth.com/spice-village",
+      amenities: ["Tribal Thatched Cottages", "Organic Farm", "Ayurvedic Spa", "Botanical Walks", "Swimming Pool"],
+      notes: "World-renowned eco-resort modeled on traditional Mannan tribal dwellings. Ideal luxury base before or after taking the early morning 4WD forest permit into Gavi.",
+    },
+    {
+      id: "gvi4", name: "Periyar House (KTDC)", type: "hotel", stars: 3,
+      avgPricePerNight: 2800, town: "Inside Thekkady Sanctuary",
+      contact: "+91-4869-222026",
+      bookingUrl: "https://www.ktdc.com",
+      amenities: ["Inside Forest Reserve", "Kerala Buffet Dining", "Wildlife Viewing Terrace", "Car Parking"],
+      notes: "Strategically located government hotel inside the forest gates. Clean, comfortable, and provides easy access to early morning forest department checkposts.",
+    },
+  ],
+
+  "chembra-peak-3-days": [
+    {
+      id: "chm1", name: "Vythiri Village Resort", type: "resort", stars: 5,
+      avgPricePerNight: 8500, town: "Vythiri, Wayanad",
+      contact: "+91-4936-256716",
+      bookingUrl: "https://www.vythirivillage.com",
+      amenities: ["Rainforest Suspension Bridge", "Artificial Waterfall", "Ayurvedic Spa", "Zip-line", "Infinity Pool"],
+      notes: "Sprawled across 22 acres of tropical Wayanad hillside. Features an iconic hanging bridge, luxury treehouse suites, and quick 25-minute drive to Chembra Peak trekking base.",
+    },
+    {
+      id: "chm2", name: "Pepper Trail Wayanad", type: "resort", stars: 5,
+      avgPricePerNight: 12000, town: "Mangalam Carp Estate, Sulthan Bathery",
+      contact: "+91-95622-77000",
+      bookingUrl: "https://www.peppertrail.in",
+      amenities: ["140-Year Planter Bungalow", "Luxury Treehouses (40ft high)", "Canoeing on Private Lake", "Plantation Dining"],
+      notes: "Set in 200 acres of working coffee and pepper plantations. Sleep in luxurious treehouses surrounded by giant bamboo groves and hornbill nesting sites.",
+    },
+    {
+      id: "chm3", name: "Chembra Heritage Resort", type: "resort", stars: 3,
+      avgPricePerNight: 3600, town: "Meppadi Foothills, Wayanad",
+      contact: "+91-4936-282000",
+      amenities: ["Chembra Peak Facing Balconies", "Trek Guide Support", "Kerala Homestyle Food", "Campfire"],
+      notes: "Located right in Meppadi at the closest point to the Chembra Peak Forest Office. Step out to direct views of the rugged mountain crest and endless tea carpets.",
+    },
+    {
+      id: "chm4", name: "Upavan Resort Lakkidi", type: "resort", stars: 3,
+      avgPricePerNight: 3200, town: "Lakkidi Rainforest Pass",
+      contact: "+91-4936-255888",
+      amenities: ["Valley View Rooms", "Ayurvedic Therapy", "Coffee Shop", "Travel Desk"],
+      notes: "Perched at the highest vantage point of Thamarassery Ghat pass. Blessed with year-round cool breezes, dense fog, and lush green forest views.",
+    },
+  ],
+
+  "silent-valley-3-days": [
+    {
+      id: "slv1", name: "Silent Valley Forest Rest House", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1500, town: "Mukkali Gate, Silent Valley",
+      contact: "+91-4924-253225",
+      amenities: ["Inside Forest Campus", "Direct Safari Booking", "Basic Attached Rooms", "Canteen Meals"],
+      notes: "Official Forest Department inspection bungalow at Mukkali. Clean, peaceful, and allows you to be the very first group on the morning 4WD safari into Sairandhri.",
+    },
+    {
+      id: "slv2", name: "Vision Nature Resorts Attappadi", type: "resort", stars: 4,
+      avgPricePerNight: 4800, town: "Attappadi Valley (18 km to Mukkali)",
+      contact: "+91-94474-00100",
+      bookingUrl: "https://www.visionnatureresorts.com",
+      amenities: ["Riverfront Cottages", "Swimming Pool", "Tribal Village Tour", "Organic Farm Diners"],
+      notes: "Tranquil retreat on the banks of the Siruvani River. Surrounded by organic pomegranate orchards and forested hills of the Attappadi tribal valley.",
+    },
+    {
+      id: "slv3", name: "KTDC Motel Aaraam Mannarkkad", type: "hotel", stars: 2,
+      avgPricePerNight: 1800, town: "Mannarkkad (32 km from Mukkali)",
+      contact: "+91-4924-222300",
+      bookingUrl: "https://www.ktdc.com",
+      amenities: ["AC Rooms", "Kerala Sadhya Restaurant", "Car Parking", "Highway Access"],
+      notes: "Convenient roadside motel on the Palakkad-Kozhikode highway. Reliable stopping point before driving up the scenic ghat road to Mukkali forest camp.",
+    },
+    {
+      id: "slv4", name: "Kairali - The Ayurvedic Healing Village", type: "resort", stars: 5,
+      avgPricePerNight: 11000, town: "Olassery, Palakkad",
+      contact: "+91-95551-56156",
+      bookingUrl: "https://www.kairali.com",
+      amenities: ["Vastu-Designed Villas", "Authentic Panchakarma", "Organic Herbal Food", "Yoga & Meditation", "Herbal Garden"],
+      notes: "World-class health sanctuary set in 60 acres of lush greenery with gentle running streams. Ideal for a holistic detox before or after visiting Silent Valley.",
+    },
+  ],
+
+  "poovar-island-3-days": [
+    {
+      id: "pvr1", name: "Poovar Island Resort", type: "resort", stars: 5,
+      avgPricePerNight: 9500, town: "Poovar Island, Trivandrum",
+      contact: "+91-471-2212068",
+      bookingUrl: "https://www.poovarislandresort.com",
+      amenities: ["Floating Cottages on River", "Floating Restaurant", "Ayurvedic Center", "Boat Transfer", "Swimming Pool"],
+      notes: "Iconic tropical resort featuring floating cottages that gently sway on the backwaters with private sundecks. Reached exclusively by a scenic 10-minute motorboat ride through coconut canals.",
+    },
+    {
+      id: "pvr2", name: "Estuary Sarovar Portico", type: "resort", stars: 4,
+      avgPricePerNight: 6200, town: "Poovar Estuary Road",
+      contact: "+91-471-2214343",
+      bookingUrl: "https://www.sarovarhotels.com",
+      amenities: ["Estuary & Ocean View", "3 Swimming Pools", "Ayurvedic Spa", "Seafood Grill", "Kids Activity Zone"],
+      notes: "Spectacular property positioned where the Neyyar river meets the Arabian sea. Walk across to the golden sandspit beach or take an estuary motorboat cruise at sunset.",
+    },
+    {
+      id: "pvr3", name: "Isola Di Cocco Ayurvedic Beach Resort", type: "resort", stars: 4,
+      avgPricePerNight: 5200, town: "Poovar Beach Road",
+      contact: "+91-471-2210008",
+      bookingUrl: "https://www.isoladicocco.com",
+      amenities: ["Coconut Grove Villas", "Private Boat to Beach", "Ayurvedic Hospital", "Open Air Showers"],
+      notes: "Nestled in an island-like coconut grove surrounded by waterways. Offers private shuttle boats to the deserted Golden Sand Beach and authentic herbal treatments.",
+    },
+    {
+      id: "pvr4", name: "Over The Hill Boutique Resort", type: "resort", stars: 3,
+      avgPricePerNight: 3800, town: "Pozhiyoor, Poovar",
+      contact: "+91-94470-65200",
+      amenities: ["Hilltop Estuary View", "Infinity Pool", "Sunset Deck", "Kerala Cuisine"],
+      notes: "Peaceful boutique retreat perched on an elevated hillock overlooking the backwaters meeting the ocean. Ideal for romantic getaways away from tour crowds.",
+    },
+  ],
+
+  "sirsi-3-days": [
+    {
+      id: "srs1", name: "Areca County Heritage Stay", type: "homestay", stars: 4,
+      avgPricePerNight: 4500, town: "Yellapur Road, Sirsi", contact: "+91-94488-82500",
+      amenities: ["Arecanut Plantation Walk", "Traditional Havyaka Cuisine", "Heritage Courtyard", "Waterfall Guidance", "Wi-Fi"],
+      notes: "Charming traditional plantation homestay surrounded by betel nut groves and pepper vines. Authentic home-cooked Havyaka vegetarian feasts served on banana leaves.",
+    },
+    {
+      id: "srs2", name: "Bakula Homestay Sirsi", type: "homestay", stars: 3,
+      avgPricePerNight: 3200, town: "Huligadde, Sirsi", contact: "+91-94803-91185",
+      amenities: ["Forest Glades", "Natural Spring Bath", "Birdwatching", "Home Food", "Campfire"],
+      notes: "Eco-friendly cottage stay hidden amidst Western Ghats evergreen canopies. Convenient base for Unchalli Falls and Yana rock monoliths.",
+    },
+    {
+      id: "srs3", name: "Hotel Pandurang International", type: "hotel", stars: 3,
+      avgPricePerNight: 2400, town: "Hubli Road, Sirsi Town", contact: "+91-83842-26778",
+      amenities: ["Air Conditioned Rooms", "Multi-Cuisine Veg Diner", "Conference Hall", "Travel Desk", "Ample Parking"],
+      notes: "Reliable modern city hotel right in Sirsi town with clean rooms, spacious parking, and easy access to Marikamba Temple and Sahasralinga.",
+    },
+    {
+      id: "srs4", name: "Mattighatta Wilderness Retreat", type: "resort", stars: 3,
+      avgPricePerNight: 3800, town: "Mattighatta, Sirsi", contact: "+91-94812-73600",
+      amenities: ["Nature Trails", "Stream Walk", "Plantation Tour", "Authentic Malnad Meals"],
+      notes: "Serene valley retreat bordering reserve forests, offering quiet rejuvenation, starry night skies, and guided trekking to hidden waterfalls.",
+    },
+  ],
+
+  "gandikota-3-days": [
+    {
+      id: "gdk1", name: "Haritha Resort Gandikota (APTDC)", type: "resort", stars: 3,
+      avgPricePerNight: 2800, town: "Gorge View Point, Gandikota", contact: "+91-85602-99044",
+      bookingUrl: "https://tourism.ap.gov.in",
+      amenities: ["Walking Distance to Gorge", "Cliffside Cottages", "Restaurant", "Garden Lawn", "Parking"],
+      notes: "The premier stay right beside the ancient Gandikota fort walls and 5 minutes walk to the Pennar gorge rim. Book well in advance for sunrise gorge views.",
+    },
+    {
+      id: "gdk2", name: "Freakouts Gandikota Adventure Camp", type: "resort", stars: 3,
+      avgPricePerNight: 2200, town: "Pennar Riverbank / Fort Edge", contact: "+91-96405-05070",
+      amenities: ["Clifftop Tents", "Bonfire & Stargazing", "Kayaking in Gorge", "Rock Climbing", "Buffet Meals"],
+      notes: "Adventure glamping experience with all-weather alpine tents pitched near the canyon rim. Includes sunrise kayaking on the Pennar River and rappelling.",
+    },
+    {
+      id: "gdk3", name: "Royal County Resort Proddatur", type: "hotel", stars: 4,
+      avgPricePerNight: 4200, town: "Proddatur (38 km from Gandikota)", contact: "+91-85642-44555",
+      amenities: ["Swimming Pool", "Gym & Spa", "Multi-Cuisine Restaurant", "Luxury Suites", "Banquet Hall"],
+      notes: "Upscale full-service hotel offering modern comforts, plush AC suites, and large swimming pool, just a 45-minute drive from the Gandikota canyon.",
+    },
+    {
+      id: "gdk4", name: "Haritha Hotel Belum Caves", type: "hotel", stars: 3,
+      avgPricePerNight: 1800, town: "Kolimigundla, Belum Caves (60 km)", contact: "+91-85122-20055",
+      bookingUrl: "https://tourism.ap.gov.in",
+      amenities: ["Direct Caves Access", "Andhra Thali Diner", "AC Rooms", "Free Parking"],
+      notes: "Convenient government guest house located right at the entrance of the subterranean Belum Caves. Ideal midway stop between Gandikota and Yaganti.",
+    },
+  ],
+
+  "araku-valley-4-days": [
+    {
+      id: "ark1", name: "Haritha Valley Resort Araku (APTDC)", type: "resort", stars: 3,
+      avgPricePerNight: 3200, town: "Near Railway Station, Araku Valley", contact: "+91-89362-49490",
+      bookingUrl: "https://tourism.ap.gov.in",
+      amenities: ["Landscaped Hill Gardens", "Coffee Plantation Walk", "Multi-Cuisine Diner", "Tribal Dhimsa Dance", "Children Play Area"],
+      notes: "Sprawling government property surrounded by mist-draped Eastern Ghat hills. Organizes evening authentic Dhimsa folk tribal dances around the bonfire.",
+    },
+    {
+      id: "ark2", name: "Tyda Jungle Bells Nature Camp (APTDC)", type: "resort", stars: 3,
+      avgPricePerNight: 3600, town: "Tyda, Ananthagiri Hills (35 km before Araku)", contact: "+91-89362-49488",
+      amenities: ["Wooden Log Huts", "Tribal Archery", "Guided Forest Treks", "Birdwatching", "Campfire"],
+      notes: "Picturesque eco-tourism nature camp set inside deep sal and teak forests on the ghat road. Stay in elevated wooden tree-huts and log cabins.",
+    },
+    {
+      id: "ark3", name: "Prakriti Holiday Resort Araku", type: "resort", stars: 3,
+      avgPricePerNight: 2800, town: "Main Road, Araku Valley", contact: "+91-94943-22888",
+      amenities: ["Valley View Balconies", "Bonfire Deck", "Organic Coffee Counter", "Restaurant", "Doctor on Call"],
+      notes: "Comfortable scenic retreat overlooking rolling terraced vegetable fields and coffee hills. Freshly brewed organic Araku Arabica coffee served daily.",
+    },
+    {
+      id: "ark4", name: "Haritha Hill Resort Ananthagiri", type: "resort", stars: 3,
+      avgPricePerNight: 2900, town: "Ananthagiri (28 km from Araku)", contact: "+91-89362-49492",
+      amenities: ["Coffee Estate Views", "Breezy Hilltop Gazebo", "Near Borra Caves", "Andhra Kitchen"],
+      notes: "Perched amidst sprawling coffee plantations in the cooler Ananthagiri ranges, very close to Borra Caves and Katiki waterfall trail.",
+    },
+  ],
+
+  "papikondalu-3-days": [
+    {
+      id: "ppk1", name: "Kolluru Bamboo Huts Eco Camp", type: "resort", stars: 3,
+      avgPricePerNight: 3500, town: "Kolluru Island, Godavari River", contact: "+91-94406-38377",
+      amenities: ["Riverfront Eco Bamboo Huts", "Bonfire on Sandbanks", "All Meals Included", "Boat Transfers", "Stargazing"],
+      notes: "The quintessential Papikondalu experience—rustic bamboo huts on the sandy banks of the Godavari River nestled deep between towering forested mountains. Electric power is limited, providing pure digital detox.",
+    },
+    {
+      id: "ppk2", name: "Papikondalu Tourism River Cruise & Resort", type: "resort", stars: 3,
+      avgPricePerNight: 4200, town: "Perantapalli / Pochavaram", contact: "+91-98499-12299",
+      amenities: ["Cruise Inclusions", "Traditional Godavari Buffet", "Folk Dance Evenings", "River View Tents"],
+      notes: "Comprehensive river cruise package stay including AC boat journey through the narrow mountain gorge, stop at Sri Ramakrishna Samithi ashram, and riverbank camp stay.",
+    },
+    {
+      id: "ppk3", name: "River Bay Resort Rajahmundry", type: "resort", stars: 4,
+      avgPricePerNight: 4800, town: "Gowthami Ghat, Rajahmundry", contact: "+91-883-2442499",
+      bookingUrl: "https://www.riverbayresort.com",
+      amenities: ["Godavari River View", "Water Park", "Multi-Cuisine Diners", "Swimming Pool", "Spa & Health Club"],
+      notes: "Premier luxury river resort in Rajahmundry with panoramic views of the Godavari River and Havelock Bridge. The perfect luxurious transit base before boarding the river cruise.",
+    },
+    {
+      id: "ppk4", name: "Hotel Shelton Rajahmundry", type: "hotel", stars: 3,
+      avgPricePerNight: 3200, town: "Kambala Cheruvu, Rajahmundry", contact: "+91-883-2499999",
+      amenities: ["Spacious AC Rooms", "24/7 Room Service", "Flavours Restaurant", "Boardroom", "Airport Pickups"],
+      notes: "Centrally located business and leisure hotel in Rajahmundry, 15 minutes from Rajahmundry Airport (RJA) with convenient early morning taxi departures to Polavaram boat jetty.",
+    },
+  ],
+
+  "talakona-3-days": [
+    {
+      id: "tlk1", name: "Haritha Forest Resort Talakona (APTDC)", type: "resort", stars: 3,
+      avgPricePerNight: 2400, town: "Talakona Waterfall Entrance, Nerabailu", contact: "+91-98480-07033",
+      bookingUrl: "https://tourism.ap.gov.in",
+      amenities: ["Inside National Park", "Walking Distance to Falls", "Log Huts", "Canopy Walk Access", "Forest Canteen"],
+      notes: "Located right at the doorstep of the Talakona waterfall trail inside Sri Venkateswara National Park. Surrounded by medicinal flora, chital deer, and mountain streams.",
+    },
+    {
+      id: "tlk2", name: "Talakona Eco-Tourism Wooden Cottages", type: "homestay", stars: 3,
+      avgPricePerNight: 2000, town: "Nerabailu, Talakona", contact: "+91-85842-83566",
+      amenities: ["Rustic Wooden Log Cabins", "Forest Trails", "Authentic Country Food", "Bonfire", "Bird Watching"],
+      notes: "Managed by the local Forest Department Vana Samrakshana Samithi (VSS). Serene forest clearing stay with mountain breezes and bird songs.",
+    },
+    {
+      id: "tlk3", name: "Marasa Sarovar Premiere Tirupati", type: "resort", stars: 5,
+      avgPricePerNight: 6500, town: "Upadhyaya Nagar, Tirupati (48 km from Talakona)", contact: "+91-877-6660000",
+      bookingUrl: "https://www.sarovarhotels.com",
+      amenities: ["Navarasa Theme Architecture", "Lotus Shaped Pool", "Luxury Spa", "Gourmet Pure Veg Diners", "Concierge"],
+      notes: "Spectacular 5-star themed luxury resort inspired by the Navarasas at the foot of Tirumala hills. Ideal luxury sanctuary after a daytime hike in Talakona.",
+    },
+    {
+      id: "tlk4", name: "Fortune Select Grand Ridge Tirupati", type: "hotel", stars: 4,
+      avgPricePerNight: 4600, town: "Shilparamam, Tirupati", contact: "+91-877-2221888",
+      amenities: ["Hill Views", "Outdoor Pool", "Rainbow Multi-Cuisine Diner", "Gym", "Airport Shuttle"],
+      notes: "Upscale business-class hotel next to Shilparamam arts village with easy highway connectivity to both Chandragiri Fort and Talakona.",
+    },
+  ],
+
+  "horsley-hills-3-days": [
+    {
+      id: "hsh1", name: "Haritha Hill Resort Horsley Hills (APTDC)", type: "resort", stars: 3,
+      avgPricePerNight: 2600, town: "Hilltop, Horsley Hills", contact: "+91-85712-79323",
+      bookingUrl: "https://tourism.ap.gov.in",
+      amenities: ["Hilltop Viewpoint", "Swimming Pool", "Governor Bungalow Cottages", "Restaurant", "Children Park"],
+      notes: "The signature hilltop resort spreading across the crest of Horsley Hills at 1,290m altitude. Lush eucalyptus-scented gardens and sunset panorama decks.",
+    },
+    {
+      id: "hsh2", name: "Horsley Hills Holiday Homes", type: "hotel", stars: 3,
+      avgPricePerNight: 2200, town: "Main Road, Horsley Hills", contact: "+91-94402-97888",
+      amenities: ["Valley Facing Rooms", "Campfire Yard", "Home-Style Andhra Food", "Hot Water", "Parking"],
+      notes: "Comfortable hill retreat close to Gali Bandalu (windy rocks) with panoramic view balconies and breezy pine courtyards.",
+    },
+    {
+      id: "hsh3", name: "Chittoor Forest Department Guest House", type: "homestay", stars: 2,
+      avgPricePerNight: 1600, town: "Horsley Hills Ridge", contact: "+91-85712-79222",
+      amenities: ["Colonial Stone Architecture", "Old Growth Trees", "Peaceful Forest Ambiance"],
+      notes: "Historic stone cottage built during the British era under massive eucalyptus and jacaranda trees. Prior booking through the Andhra Pradesh Forest Department.",
+    },
+    {
+      id: "hsh4", name: "Highways Grand Hotel Madanapalle", type: "hotel", stars: 3,
+      avgPricePerNight: 2400, town: "Madanapalle (27 km down the hill)", contact: "+91-85712-25555",
+      amenities: ["AC Deluxe Rooms", "Andhra Thali Restaurant", "Banquet Hall", "24hr Power Backup"],
+      notes: "Reliable modern town hotel at the foothills in Madanapalle, ideal if hilltop accommodations are sold out on long weekends.",
+    },
+  ],
+
+  "yaganti-3-days": [
+    {
+      id: "ygt1", name: "Haritha Hotel Yaganti (APTDC)", type: "hotel", stars: 3,
+      avgPricePerNight: 1800, town: "Temple Road, Yaganti", contact: "+91-85152-25678",
+      bookingUrl: "https://tourism.ap.gov.in",
+      amenities: ["Walking Distance to Temple", "Pure Veg Canteen", "Clean AC Rooms", "Temple Hill Views"],
+      notes: "State tourism guest house located right opposite the magnificent Yaganti Uma Maheswara Temple. Hear the dawn temple conches from your room balcony.",
+    },
+    {
+      id: "ygt2", name: "Hotel Mourya Inn Kurnool", type: "hotel", stars: 3,
+      avgPricePerNight: 3200, town: "Bhagya Nagar, Kurnool (78 km from Yaganti)", contact: "+91-85182-24999",
+      amenities: ["Central AC", "Mourya Multi-Cuisine Diner", "Bar & Lounge", "Travel Desk", "Free Breakfast"],
+      notes: "The premier hospitality hotel in Kurnool city with spacious rooms, Rayalaseema food festivals, and easy highway connections to Konda Reddy Buruju and Yaganti.",
+    },
+    {
+      id: "ygt3", name: "Haritha Resort Belum Caves", type: "hotel", stars: 3,
+      avgPricePerNight: 1800, town: "Belum Caves (45 km from Yaganti)", contact: "+91-85122-20055",
+      bookingUrl: "https://tourism.ap.gov.in",
+      amenities: ["Direct Caves Access", "Andhra Meals", "Clean Dorms & AC Rooms", "Garden"],
+      notes: "Strategically located at the gate of Belum subterranean caves, allowing you to combine the mysterious caves and the sacred Yaganti temple on the same circuit.",
+    },
+    {
+      id: "ygt4", name: "Hotel DR Indroyal Nandyal", type: "hotel", stars: 3,
+      avgPricePerNight: 2500, town: "Srinivasa Nagar, Nandyal (48 km from Yaganti)", contact: "+91-85142-45555",
+      amenities: ["Modern AC Rooms", "Vegetarian Restaurant", "24/7 Reception", "Covered Car Parking"],
+      notes: "Comfortable modern transit hotel in Nandyal town, located right on the gateway route between Yaganti temple, Mahanandi, and Ahobilam.",
+    },
+  ],
+
+  "anegundi-3-days": [
+    {
+      id: "ang1", name: "Uramma Heritage Homes", type: "homestay", stars: 4,
+      avgPricePerNight: 4800, town: "Anegundi Village", contact: "+91-94482-84227",
+      bookingUrl: "https://urammaheritage.com",
+      amenities: ["Restored 150-Year Heritage Home", "Traditional Courtyards", "Banana Fiber Crafts", "Authentic Karnataka Vegetarian Cuisine", "Bicycle Rentals"],
+      notes: "Exquisitely restored 19th-century village homes managed by The Kishkinda Trust. Features traditional stone courtyards, antique wooden pillars, and organic farm-to-table dining.",
+    },
+    {
+      id: "ang2", name: "Kishkinda Heritage Resort", type: "resort", stars: 3,
+      avgPricePerNight: 3500, town: "Near Sanapur Lake, Anegundi", contact: "+91-85332-87000",
+      amenities: ["Swimming Pool", "Water Park", "AC Cottages", "Multi-Cuisine Diner", "Garden Lawns"],
+      notes: "Sprawling resort located near the foot of Anjanadri Hill and Sanapur Lake, offering serene boulder views and comfortable cottage accommodations.",
+    },
+    {
+      id: "ang3", name: "Shanthi Guest House", type: "homestay", stars: 3,
+      avgPricePerNight: 2400, town: "Sanapur / Hippie Island road", contact: "+91-94491-10022",
+      amenities: ["Paddy Field Balconies", "Hammocks", "Rooftop Cafe", "Bike Hire", "Wi-Fi"],
+      notes: "Serene rural retreat nestled among emerald green paddy fields and giant balancing boulders. Relax on verandah hammocks with panoramic views of rocky ridges.",
+    },
+    {
+      id: "ang4", name: "Heritage Resort Hampi", type: "resort", stars: 4,
+      avgPricePerNight: 6200, town: "Hosapete / Hampi Road (18 km)", contact: "+91-83942-41100",
+      amenities: ["Luxury Eco Villas", "Spa & Wellness", "Swimming Pool", "Organic Farm Diners"],
+      notes: "Eco-luxury retreat set on 8 acres of lush organic plantations. A relaxing upscale base after days of trekking and temple exploration.",
+    },
+  ],
+
+  "yana-rocks-3-days": [
+    {
+      id: "ynr1", name: "Yana Wilderness Resort & Camps", type: "resort", stars: 3,
+      avgPricePerNight: 3200, town: "Yana Foothills, Kumta Road", contact: "+91-94815-44200",
+      amenities: ["Jungle Cottages", "Bonfire", "Guided Trek to Yana Spires", "Local Uttara Kannada Meals", "Stream Bath"],
+      notes: "Nature retreat nestled in dense Sahyadri rainforest at the base of the karst monoliths. Guided early-morning treks avoid daytime crowds.",
+    },
+    {
+      id: "ynr2", name: "Kahani Paradise Gokarna", type: "resort", stars: 5,
+      avgPricePerNight: 12000, town: "Belle, Gokarna (42 km from Yana)", contact: "+91-83862-57000",
+      amenities: ["Clifftop Ocean View", "Infinity Pool", "Ayurvedic Spa", "Gourmet Dining", "Helipad"],
+      notes: "Ultra-luxury boutique villa sanctuary perched on coastal cliffs overlooking Paradise Beach and the Western Ghats. Only 1 hour scenic drive to Yana.",
+    },
+    {
+      id: "ynr3", name: "Areca County Heritage Homestay", type: "homestay", stars: 4,
+      avgPricePerNight: 4500, town: "Sirsi-Yana Highway (30 km)", contact: "+91-94488-82500",
+      amenities: ["Arecanut Plantation", "Traditional Havyaka Meals", "Heritage Courtyard", "Bird Watching"],
+      notes: "Charming traditional plantation homestay surrounded by betel nut groves and spice vines, offering authentic Havyaka hospitality.",
+    },
+    {
+      id: "ynr4", name: "Kudle Beach View Resort & Spa", type: "resort", stars: 3,
+      avgPricePerNight: 3800, town: "Kudle Beach, Gokarna (45 km)", contact: "+91-83862-56789",
+      amenities: ["Sea View Rooms", "Pool", "Multi-Cuisine Seafood Diner", "Yoga Deck"],
+      notes: "Comfortable coastal resort perched above Kudle Beach, providing the perfect blend of sea beaches and jungle monolith trekking.",
+    },
+  ],
+
+  "agumbe-3-days": [
+    {
+      id: "agb1", name: "Doddamane Heritage Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 2000, town: "Agumbe Village Main Street", contact: "+91-81812-33207",
+      amenities: ["Historic 130-Year Malgudi Days House", "Traditional Thirthahalli Meals", "Courtyard Chawadi", "Authentic Kashaya Herbal Tea"],
+      notes: "Iconic 130-year-old traditional tiled mansion where the classic TV serial 'Malgudi Days' was filmed. Run by Kasturi Akka's family with legendary, heartwarming hospitality and unlimited home-cooked Malnad vegetarian feasts.",
+    },
+    {
+      id: "agb2", name: "Seethanadi Nature Camp (Jungle Lodges & Resorts)", type: "resort", stars: 3,
+      avgPricePerNight: 3600, town: "Someshwara Wildlife Sanctuary (12 km)", contact: "+91-82582-74233",
+      bookingUrl: "https://www.junglelodges.com",
+      amenities: ["Wooden Riverfront Tents", "Coracle Rides", "Guided Rainforest Treks", "All Meals Included", "Campfire"],
+      notes: "Karnataka government eco-camp situated on the banks of the Sita River inside Someshwara Wildlife Sanctuary. Night walks uncover bioluminescent fungi and endemic amphibians.",
+    },
+    {
+      id: "agb3", name: "Kolavara Heritage Homestay Thirthahalli", type: "homestay", stars: 4,
+      avgPricePerNight: 4800, town: "Thirthahalli (28 km from Agumbe)", contact: "+91-94482-16629",
+      amenities: ["Areca Plantation", "Malnad Thali", "River Stream Access", "Campfire", "Spacious Family Suites"],
+      notes: "Beautiful traditional ancestral home tucked within areca nut and vanilla plantations. Renowned for rich Malnad culinary traditions and guided plantation walks.",
+    },
+    {
+      id: "agb4", name: "Hingaara Nature Stay", type: "homestay", stars: 3,
+      avgPricePerNight: 3200, town: "Guddekeri, Agumbe", contact: "+91-94487-20235",
+      amenities: ["Waterfall Hikes", "Rainforest Canopy Views", "Traditional Malnad Buffet", "Night Safari"],
+      notes: "Rustic nature lodge dedicated to eco-tourism and herpetology enthusiasts. Proximity to Onake Abbi and Barkana falls trails.",
+    },
+  ],
+
+  "chelavara-falls-3-days": [
+    {
+      id: "clv1", name: "Kabbe Holidays Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 3500, town: "Near Chelavara Falls, Cheyyandane", contact: "+91-94486-45520",
+      amenities: ["Valley Views", "Coffee Estate Walk", "Traditional Kodava Pandi Curry", "Campfire", "Trek Guidance"],
+      notes: "Perched on the edge of the Kabbe mountain ridge overlooking the mist-filled valleys of Kerala and Coorg. Walking distance to Chelavara Falls and Chomabetta peak.",
+    },
+    {
+      id: "clv2", name: "The Tamara Coorg", type: "resort", stars: 5,
+      avgPricePerNight: 16500, town: "Yavakapadi Village, Napoklu (14 km)", contact: "+91-82722-58800",
+      bookingUrl: "https://www.thetamara.com",
+      amenities: ["Luxury Wooden Chalets", "Coffee Plantation", "Temperature-Controlled Pool", "Ayurvedic Spa", "Fine Dining"],
+      notes: "Award-winning 5-star eco-luxury resort with elevated wooden cottages on stilts over coffee and cardamom canopies. Unmatched tranquility and luxury.",
+    },
+    {
+      id: "clv3", name: "Palace Estate Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 3200, town: "Kakkabe (near Nalknad Palace, 12 km)", contact: "+91-98804-47702",
+      amenities: ["Private Waterfall on Estate", "Tadiandamol Base", "Home-Cooked Kodava Meals", "Campfire"],
+      notes: "Set on a 50-acre organic coffee estate at the base of Tadiandamol peak with its own private natural waterfall and home-cooked Kodava specialties.",
+    },
+    {
+      id: "clv4", name: "Club Mahindra Virajpet", type: "resort", stars: 4,
+      avgPricePerNight: 6500, town: "Palangala Village, Virajpet (18 km)", contact: "+91-82742-60700",
+      amenities: ["Large Swimming Pool", "Activity Center", "Coffee Estate Walks", "Multi-Cuisine Diners"],
+      notes: "Family-friendly luxury resort nestled in the lush Virajpet valleys, offering comfortable suites and curated plantation tours.",
+    },
+  ],
+
+  "gopalaswamy-betta-3-days": [
+    {
+      id: "gsb1", name: "Bandipur Safari Lodge (Jungle Lodges & Resorts)", type: "resort", stars: 4,
+      avgPricePerNight: 7500, town: "Melukamanahalli, Bandipur (18 km)", contact: "+91-82292-36001",
+      bookingUrl: "https://www.junglelodges.com",
+      amenities: ["2 Wildlife Jeep Safaris Included", "Naturalist Guides", "All Meals Buffet", "Eco Cottages", "Bonfire"],
+      notes: "The premier wildlife lodge in Bandipur. Managed by Karnataka Tourism with government-permitted 4x4 open-jeep tiger and elephant safaris.",
+    },
+    {
+      id: "gsb2", name: "The Serai Bandipur", type: "resort", stars: 5,
+      avgPricePerNight: 14000, town: "Kaniyanapura, Bandipur (20 km)", contact: "+91-82292-36000",
+      bookingUrl: "https://www.theserai.in",
+      amenities: ["Luxury Mountain Villas", "Open Air Jacuzzi", "Oma Spa", "Wilderness Diners", "Swimming Pool"],
+      notes: "Ultra-luxury sanctuary at the foothills of the Nilgiris with glass-walled chalets framing panoramic views of Bandipur's elephant corridors.",
+    },
+    {
+      id: "gsb3", name: "Country Club Wild Orchid Bandipur", type: "resort", stars: 3,
+      avgPricePerNight: 3800, town: "Mangala Village, Gundlupet", contact: "+91-82292-33004",
+      amenities: ["Cottages with Verandahs", "Pool", "Multi-Cuisine Restaurant", "Close to Gopalaswamy Betta Checkpost"],
+      notes: "Comfortable, serene nature resort located right near the foothills checkpost where KSRTC forest buses take visitors up to Gopalaswamy Betta.",
+    },
+    {
+      id: "gsb4", name: "MC Resort Bandipur", type: "resort", stars: 3,
+      avgPricePerNight: 3200, town: "Melukamanahalli, Bandipur", contact: "+91-82292-36018",
+      amenities: ["Forest View Cottages", "Swimming Pool", "Campfire Yard", "Wildlife Documentary Screening"],
+      notes: "Value-for-money wildlife resort bordering the buffer zone of the tiger reserve, perfect base for early morning mist ascents to the hilltop temple.",
+    },
+  ],
 };
 
 export const DEFAULT_STAYS: HotelSuggestion[] = [

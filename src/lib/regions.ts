@@ -222,7 +222,7 @@ export const TRIP_REGION_MAP: Record<string, string[]> = {
   "neil-island-6-days": ["coastal"],
   "diglipur-7-days": ["coastal"],
 
-  // ── 5. South India (11 trips) ──
+  // ── 5. South India (16 trips) ──
   "mysore-coorg-wayanad-ooty": ["south-india"],
   "kerala-7-days": ["south-india", "coastal"],
   "chorla-ghat-western-ghats": ["south-india", "coastal"],
@@ -234,6 +234,23 @@ export const TRIP_REGION_MAP: Record<string, string[]> = {
   "chettinad-4-days": ["south-india"],
   "dhanushkodi-4-days": ["south-india", "coastal"],
   "valparai-4-days": ["south-india"],
+  "vagamon-3-days": ["south-india"],
+  "gavi-3-days": ["south-india"],
+  "chembra-peak-3-days": ["south-india"],
+  "silent-valley-3-days": ["south-india"],
+  "poovar-island-3-days": ["south-india", "coastal"],
+  "sirsi-3-days": ["south-india", "coastal"],
+  "gandikota-3-days": ["south-india"],
+  "araku-valley-4-days": ["south-india"],
+  "papikondalu-3-days": ["south-india", "coastal"],
+  "talakona-3-days": ["south-india"],
+  "horsley-hills-3-days": ["south-india"],
+  "yaganti-3-days": ["south-india"],
+  "anegundi-3-days": ["south-india"],
+  "yana-rocks-3-days": ["south-india", "coastal"],
+  "agumbe-3-days": ["south-india", "coastal"],
+  "chelavara-falls-3-days": ["south-india"],
+  "gopalaswamy-betta-3-days": ["south-india"],
 
   // ── 6. Rajasthan & West ──
   "rajasthan-desert-kingdom": ["rajasthan"],
