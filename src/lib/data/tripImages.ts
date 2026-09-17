@@ -120,6 +120,16 @@ export const TRIP_IMAGES: Record<string, string> = {
   "kalimpong-5-days": "/images/kalimpong.jpg",
   "rishyap-4-days": "/images/rishyap.jpg",
   "jhargram-3-days": "/images/jhargram.jpg",
+
+  // South India Offbeat Destinations (from Mumbai/Pune)
+  "vazhachal-falls-3-days": "/images/vazhachal-falls.jpg",
+  "marari-beach-4-days": "/images/marari-beach.jpg",
+  "hogenakkal-falls-3-days": "/images/hogenakkal-falls.jpg",
+  "yercaud-4-days": "/images/yercaud.jpg",
+  "kolli-hills-3-days": "/images/kolli-hills.jpg",
+  "chettinad-4-days": "/images/chettinad.jpg",
+  "dhanushkodi-4-days": "/images/dhanushkodi.jpg",
+  "valparai-4-days": "/images/valparai.jpg",
 };
 
 export const DEFAULT_TRIP_IMAGE = "/images/leh-ladakh-pangong-lake.jpg";

@@ -59,6 +59,14 @@ export const TRIP_WEATHER_COORDS: Record<string, WeatherLocation> = {
   "kalimpong-5-days": { name: "Kalimpong", lat: 27.0594, lon: 88.4695 },
   "rishyap-4-days": { name: "Rishyap (Rishop)", lat: 27.1083, lon: 88.6472 },
   "jhargram-3-days": { name: "Jhargram Palace", lat: 22.4530, lon: 86.9840 },
+  "vazhachal-falls-3-days": { name: "Vazhachal & Athirappilly", lat: 10.2986, lon: 76.5414 },
+  "marari-beach-4-days": { name: "Marari Beach, Alappuzha", lat: 9.6019, lon: 76.2994 },
+  "hogenakkal-falls-3-days": { name: "Hogenakkal Falls, Dharmapuri", lat: 12.1188, lon: 77.7766 },
+  "yercaud-4-days": { name: "Yercaud, Shevaroy Hills", lat: 11.7753, lon: 78.2093 },
+  "kolli-hills-3-days": { name: "Kolli Hills, Namakkal", lat: 11.2484, lon: 78.3387 },
+  "chettinad-4-days": { name: "Karaikudi, Chettinad", lat: 10.0714, lon: 78.7838 },
+  "dhanushkodi-4-days": { name: "Dhanushkodi & Rameswaram", lat: 9.1775, lon: 79.4144 },
+  "valparai-4-days": { name: "Valparai Plateau, Anamalai", lat: 10.3263, lon: 76.9554 },
 };
 
 // ---------------------------------------------------------------------------

@@ -1848,6 +1848,222 @@ export const FOOD_DATA: Record<string, FoodSpot[]> = {
       notes: "Belpahari's weekly tribal market stalls serve Babarsha — a rare 250-year-old delicate filigree pastry soaked in sugar syrup invented for Mughal Emperor Babur during royal travels.",
     },
   ],
+
+  "vazhachal-falls-3-days": [
+    {
+      id: "vzh_f1", name: "Rainforest Cliffside Restaurant", type: "restaurant", town: "Athirappilly Waterfall",
+      mustTry: ["Appam with Kerala Chicken Stew", "Meen Pollichathu in Banana Leaf", "Tapioca with Fish Curry", "Karimeen Mappas"],
+      priceRange: "₹₹₹", isVeg: false,
+      notes: "Dining terrace suspended with jaw-dropping views of Athirappilly and Vazhachal waterfalls. The fresh backwater fish steamed inside scorched banana leaf with shallots, crushed ginger, and curry leaves is legendary.",
+    },
+    {
+      id: "vzh_f2", name: "Green Trees Multicuisine Diner", type: "restaurant", town: "Vazhachal Checkpost Road",
+      mustTry: ["Malabar Chicken Dum Biryani", "Crispy Anchovy (Kozhuva) Fry", "Kerala Parotta with Pepper Beef Roast"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Popular highway restaurant favored by wildlife photographers and forest officers. Hearty portions of Malabar spice-infused rice and freshly spiced seafood caught from the Chalakudy river.",
+    },
+    {
+      id: "vzh_f3", name: "Hotel Bharath Chalakudy", type: "restaurant", town: "Chalakudy Railway Station Road",
+      mustTry: ["Traditional Kerala Sadhya on Banana Leaf", "Ghee Roast Dosa with Sambar", "Degree Filter Coffee"],
+      priceRange: "₹", isVeg: true,
+      notes: "Historic pure vegetarian establishment in the transit hub of Chalakudy. Serves authentic unlimited Sadhya meals with avial, olan, pulissery, and creamy palada pradhaman payasam.",
+    },
+    {
+      id: "vzh_f4", name: "Vazhachal Forest Rest Kiosk", type: "street-food", town: "Vazhachal Falls Park",
+      mustTry: ["Sambharam (Spiced Kerala Buttermilk)", "Hot Pazham Pori (Banana Fritters)", "Fresh Tender Coconut Water"],
+      priceRange: "₹", isVeg: true,
+      notes: "Rustic forest counter operated near the falls entry. Crispy golden banana fritters paired with cold, refreshing buttermilk spiced with green chillies, ginger, and curry leaves.",
+    },
+  ],
+
+  "marari-beach-4-days": [
+    {
+      id: "mrb_f1", name: "Chakara Restaurant (CGH Earth Marari)", type: "restaurant", town: "Mararikulam North",
+      mustTry: ["Karimeen Pollichathu (Pearl Spot Baked in Leaf)", "Alleppey Mango Fish Curry", "Appams with Vegetable Ishtu", "Coconut Souffle"],
+      priceRange: "₹₹₹", isVeg: false,
+      notes: "The epitome of sustainable coastal dining. Fresh catch brought directly from local fishermen each morning cooked with raw mangoes, freshly squeezed coconut milk, and herbs grown in their 4-acre organic kitchen garden.",
+    },
+    {
+      id: "mrb_f2", name: "Cafe Catamaran Marari", type: "cafe", town: "Marari Beach Front",
+      mustTry: ["Grilled Tiger Prawns in Garlic Herb Butter", "Calamari Pepper Fry", "Pineapple Mint Coolers", "Iced Kerala Spiced Coffee"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Boho-chic seaside cafe sitting right on the sands. Sink your toes in the sand while devouring succulent tiger prawns and catching unobstructed sunsets over the Arabian Sea.",
+    },
+    {
+      id: "mrb_f3", name: "Cassia Restaurant & Lounge", type: "restaurant", town: "Alappuzha Coastal Road",
+      mustTry: ["Kerala Crab Roast in Coconut Masala", "Squid Roast with Shallots", "Duck Mappas", "Malabar Coin Parotta"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Celebrated dining retreat combining Syrian Christian cooking styles with coastal seafood. Slow-cooked duck curry in thick coconut cream and crispy multi-layered flaky parottas.",
+    },
+    {
+      id: "mrb_f4", name: "Marari Fishing Village Tea Stalls", type: "street-food", town: "Mararikulam Fishermen Cove",
+      mustTry: ["Early Morning Pan-Fried Sardines (Mathi)", "Tapioca (Kappa) Mash with Red Chilli Chutney", "Strong Meter Chai"],
+      priceRange: "₹", isVeg: false,
+      notes: "Authentic coastal tea stalls where fishermen gather after hauling nets at 6:30 AM. Super fresh sardines crisp-fried in coconut oil served alongside piping hot black tea.",
+    },
+  ],
+
+  "hogenakkal-falls-3-days": [
+    {
+      id: "hgn_f1", name: "Cauvery Riverside Fresh Fish Shacks", type: "street-food", town: "Hogenakkal Boating Bank",
+      mustTry: ["Hot Kaveri River Kendai & Rohu Fish Fry", "Chilli Garlic Crab Fry", "Fresh Steamed White Rice with Fish Rasam"],
+      priceRange: "₹", isVeg: false,
+      notes: "The quintessential Hogenakkal food experience. Choose live fresh freshwater fish right by the riverbanks; local cooks marinate it in stone-ground red chillies and deep fry it golden on charcoal fires.",
+    },
+    {
+      id: "hgn_f2", name: "Hotel Tamil Nadu (TTDC) Restaurant", type: "restaurant", town: "Hogenakkal Main Falls Road",
+      mustTry: ["Tamil Nadu Non-Veg Meals", "Parotta with Chettinad Chicken Salna", "Pepper Mutton Chukka", "Thayir Sadam (Curd Rice)"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Hygienic and spacious dining hall right inside the government tourist bungalow. Great for a sit-down family lunch after a thrilling coracle boat ride in the misty falls gorge.",
+    },
+    {
+      id: "hgn_f3", name: "Sri Saravana Bhavan Dharmapuri", type: "restaurant", town: "Dharmapuri Bus Stand Junction",
+      mustTry: ["Crispy Ghee Podi Roast Dosa", "Hot Medu Vada with 3 Chutneys", "Kumbakonam Degree Filter Coffee"],
+      priceRange: "₹", isVeg: true,
+      notes: "Bustling traditional vegetarian eatery in Dharmapuri. Golden paper-thin roast dosas smeared with fragrant gun powder podi and accompanied by authentic piping hot sambar.",
+    },
+    {
+      id: "hgn_f4", name: "Pennagaram Aavin Milk & Halwa Mart", type: "street-food", town: "Pennagaram Bazaar",
+      mustTry: ["Dharmapuri Mango Halwa", "Hot Cardamom Saffron Milk", "Tirunelveli Style Wheat Halwa"],
+      priceRange: "₹", isVeg: true,
+      notes: "Dharmapuri is the mango capital of Tamil Nadu. This sweet mart crafts rich seasonal mango halwa and pure milk sweets simmered slowly in bronze pans.",
+    },
+  ],
+
+  "yercaud-4-days": [
+    {
+      id: "yrc_f1", name: "Sweet Rascal Yercaud", type: "restaurant", town: "Tipperary Road, Yercaud",
+      mustTry: ["Herb Roasted Country Chicken", "Creamy Vegetable Shepherd's Pie", "Homemade Passion Fruit Crumble", "Irish Stew"],
+      priceRange: "₹₹₹", isVeg: false,
+      notes: "Iconic, quirky reservation-only establishment run by warm eccentric host Rascal Dennis. Eclectic Anglo-Indian and European home cooking served in a fairy-lit vintage bungalow garden.",
+    },
+    {
+      id: "yrc_f2", name: "The Orange Restaurant (GRT Great Trails)", type: "restaurant", town: "Kombaikkadu, Yercaud",
+      mustTry: ["Kongu Nadu Nattu Kozhi Biryani", "Salem Mutton Chops Chukka", "Shevaroy Orange Spiced Duck", "Filter Coffee Tiramisu"],
+      priceRange: "₹₹₹", isVeg: false,
+      notes: "High-end panoramic glass-walled dining overlooking the Shevaroy cliffside. The Kongu style country chicken biryani cooked with local short-grain Seeraga Samba rice is outstanding.",
+    },
+    {
+      id: "yrc_f3", name: "Salem RR Biryani Yercaud", type: "restaurant", town: "Yercaud Roundabout",
+      mustTry: ["Salem Special Seeraga Samba Mutton Biryani", "Chicken 65", "Flaky Parottas with Chicken Curry", "Goli Soda"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Hill station branch of Salem's legendary biryani brand. Tender meat infused with star anise and mint, accompanied by spicy dalcha gravy and onion raita.",
+    },
+    {
+      id: "yrc_f4", name: "Bhavani Singh's Tea & Spices Corner", type: "street-food", town: "Emerald Lake Promenade",
+      mustTry: ["Organic Cinnamon Spiced Black Tea", "Roasted Chili Jackfruit Chips", "Handmade Dark Mint Chocolates"],
+      priceRange: "₹", isVeg: true,
+      notes: "Stroll along Yercaud lake and grab a hot cup of plantation-fresh cinnamon tea paired with crunchy jackfruit chips seasoned with rock salt and hill spices.",
+    },
+  ],
+
+  "kolli-hills-3-days": [
+    {
+      id: "klh_f1", name: "Semmedu Nattu Kozhi Mess", type: "restaurant", town: "Semmedu Central, Kolli Hills",
+      mustTry: ["Kolli Hills Nattu Kozhi Varuval (Country Chicken Fry)", "Kambu Koozh (Fermented Pearl Millet Porridge)", "Hot Parottas with Salna"],
+      priceRange: "₹", isVeg: false,
+      notes: "Legendary local mess specializing in free-range mountain country chicken tossed in cracked black peppercorns, crushed garlic, and curry leaves. Pair it with cooling Kambu Koozh porridge.",
+    },
+    {
+      id: "klh_f2", name: "Silverline Valley Kitchen", type: "restaurant", town: "Silverline Resort, Semmedu",
+      mustTry: ["Kolli Herbal Mutton Soup (12 Forest Herbs)", "Pepper Mushroom Stir Fry", "Steamed Idiyappam with Coconut Milk"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Kolli Hills is celebrated across South India for its medicinal plants. This kitchen infuses mountain broths with wild forest herbs that soothe fatigued muscles after climbing the Agaya Gangai steps.",
+    },
+    {
+      id: "klh_f3", name: "Hotel Tamil Nadu Semmedu Canteen", type: "restaurant", town: "Semmedu Bus Stand",
+      mustTry: ["Unlimited Tamil Banana Leaf Thali", "Chettinad Sambar", "Poondu (Garlic) Rasam", "Crispy Appalam"],
+      priceRange: "₹", isVeg: true,
+      notes: "Hearty, unpretentious South Indian meals. The steaming garlic-pepper rasam served with hot ponni rice and spicy potato roast is the best comfort meal in the mountain chill.",
+    },
+    {
+      id: "klh_f4", name: "Arapaleeswarar Temple Steps Fruit Stalls", type: "street-food", town: "Agaya Gangai Trailhead",
+      mustTry: ["Sweet Kolli Hills Queen Pineapples", "Sirumalai Hill Bananas", "Raw Mango Slices with Red Chilli Salt"],
+      priceRange: "₹", isVeg: true,
+      notes: "Kolli Hills pineapples are famous across Tamil Nadu for being intensely sweet and low-acid. Eat freshly sliced wedges sprinkled with black salt before tackling the 1,000 stairs.",
+    },
+  ],
+
+  "chettinad-4-days": [
+    {
+      id: "cht_f1", name: "The Bangala Dining Hall", type: "restaurant", town: "Senjai, Karaikudi",
+      mustTry: ["Authentic Chettinad Pepper Chicken", "Mandi (Okra in Fermented Rice Broth)", "Uppu Kari (Dry Spiced Mutton)", "Crab Masala", "Paal Payasam"],
+      priceRange: "₹₹₹", isVeg: false,
+      notes: "The gold standard of Chettinad culinary art. 7-course banana leaf silver service where every gravy is freshly ground using stone grinders (ammi kal) without commercial powder packets.",
+    },
+    {
+      id: "cht_f2", name: "Chidambara Vilas Royal Kitchen", type: "restaurant", town: "Kadiapatti, Chettinad",
+      mustTry: ["Kola Urundai (Crispy Spiced Meatballs)", "Kavuni Arisi (Royal Black Sticky Rice Sweet)", "Nattu Kozhi Kuzhambu", "Athangudi Seeyam"],
+      priceRange: "₹₹₹", isVeg: false,
+      notes: "Dine like royal Chettiar merchant princes. Features heirloom specialties like Kavuni Arisi, a nutritious dessert made from black rice brought back by Chettiar traders from Burma in the 1800s.",
+    },
+    {
+      id: "cht_f3", name: "Priya Mess Karaikudi", type: "restaurant", town: "Near Karaikudi Bus Stand",
+      mustTry: ["Seeraga Samba Mutton Biryani", "Spicy Nandu (Crab) Roast", "Kal Dosa with Meen Kuzhambu", "Liver Fry"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Fiery, uninhibited local dining institution. Packed with locals from noon to 3 PM for its blistering crab roasts, mutton chukka, and thick tangy fish curries.",
+    },
+    {
+      id: "cht_f4", name: "Kanadukathan Kai Murukku & Tea Stalls", type: "street-food", town: "Kanadukathan Village Square",
+      mustTry: ["Hand-twisted Kai Murukku", "Vellai Paniyaram with Spicy Tomato Chutney", "Kandharappam Sweet", "Degree Filter Coffee"],
+      priceRange: "₹", isVeg: true,
+      notes: "Watch Chettinad village women skillfully twist dough into intricate spirals of crunchy Kai Murukku. Pair crisp melt-in-mouth Vellai Paniyarams with hot frothy filter coffee.",
+    },
+  ],
+
+  "dhanushkodi-4-days": [
+    {
+      id: "dhk_f1", name: "Hotel Guru Vegetarian Restaurant", type: "restaurant", town: "West Car Street, Rameswaram",
+      mustTry: ["Ghee Sambar Mini Idlis", "Crispy Masala Roast Dosa", "Ven Pongal with Medu Vada", "Kumbakonam Degree Filter Coffee"],
+      priceRange: "₹", isVeg: true,
+      notes: "The premier traditional breakfast institution in Rameswaram. Steaming button idlis floating in piping hot aromatic sambar and perfectly crispy golden dosas served with fresh coconut chutney.",
+    },
+    {
+      id: "dhk_f2", name: "Gujarat Bhavan Bhojanalaya", type: "restaurant", town: "North Car Street, Rameswaram",
+      mustTry: ["Pure Satvik Gujarati Thali", "Phulkas with Pure Desi Ghee", "Gujarati Kadhi & Moong Dal", "Basundi"],
+      priceRange: "₹", isVeg: true,
+      notes: "Beloved by pilgrims seeking pure Satvik food (no onion, no garlic). Clean, welcoming, and unlimited wholesome thalis with freshly rolled rotis and comforting home-style dal.",
+    },
+    {
+      id: "dhk_f3", name: "Shabari Restaurant (Daiwik Hotels)", type: "restaurant", town: "Rameswaram Bypass Road",
+      mustTry: ["Coastal Tamil Seafood Curry", "Chettinad Paneer Masala", "Malabar Parotta", "Elaneer (Tender Coconut) Payasam"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Refined multi-cuisine dining with soothing instrumental Carnatic music. Exceptional tender coconut payasam and authentic regional curries served in an upscale air-conditioned ambiance.",
+    },
+    {
+      id: "dhk_f4", name: "Dhanushkodi Beach Edge Stalls", type: "street-food", town: "Arichal Munai Point, Dhanushkodi",
+      mustTry: ["Vanjaram (Seer Fish) Tawa Fry", "Fried Baby Crabs with Lime", "Chilled Green Tender Coconut"],
+      priceRange: "₹", isVeg: false,
+      notes: "Temporary wooden shacks pitched on the sandspit between the Bay of Bengal and Indian Ocean. Fisherman wives pan-fry freshly hauled seer fish with red chilli paste right before your eyes.",
+    },
+  ],
+
+  "valparai-4-days": [
+    {
+      id: "vlp_f1", name: "Green Hill Hotel Restaurant", type: "restaurant", town: "Valparai Town Main Market",
+      mustTry: ["Flaky Kerala Parotta with Pepper Chicken Gravy", "Valparai Mutton Biryani", "Egg Roast", "Kadala Curry with Puttu"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "The most popular dining spot in Valparai town. Sits at the crossroads of Tamil Nadu and Kerala culinary styles, serving hot multi-layered parottas and rich black-pepper chicken curries.",
+    },
+    {
+      id: "vlp_f2", name: "Sinna Dorai's Planter Dining Room", type: "restaurant", town: "Paralai Estate, Valparai",
+      mustTry: ["Planter Afternoon High Tea with Scones & Clotted Cream", "Kongu Country Chicken Curry", "Anamalai Estate Orange Pekoe Tea", "Caramel Custard"],
+      priceRange: "₹₹₹", isVeg: false,
+      notes: "Exclusive plantation dining with colonial British heritage. Savor afternoon tea on the panoramic veranda overlooking miles of tea gardens, followed by a formal 3-course dinner by the fireplace.",
+    },
+    {
+      id: "vlp_f3", name: "Hotel Saravana Grand Valparai", type: "restaurant", town: "Stanmore Road, Valparai",
+      mustTry: ["Crispy Podi Masala Dosa", "Sambar Vada", "Hot Filter Coffee", "Poori Masala"],
+      priceRange: "₹", isVeg: true,
+      notes: "Quick, clean pure vegetarian haven for morning breakfast before driving down to Sholayar Dam or Koolangal River. The filter coffee brewed with fresh mountain milk is exceptional.",
+    },
+    {
+      id: "vlp_f4", name: "Waterfall Estate Tea Lounge", type: "cafe", town: "Waterfall Tea Estate, Anamalai",
+      mustTry: ["Single-Estate Orthodox Black Tea", "Green Tea with Mountain Honey", "Spiced Hot Vegetable Puffs", "Tea Cake"],
+      priceRange: "₹", isVeg: true,
+      notes: "Set adjacent to the historic tea factory. Taste premium export-quality tea flushes brewed in mountain spring water, while taking in the aroma of freshly oxidized tea leaves rolling through the dryers.",
+    },
+  ],
 };
 
 export const DEFAULT_FOOD: FoodSpot[] = [

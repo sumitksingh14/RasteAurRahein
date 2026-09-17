@@ -222,10 +222,18 @@ export const TRIP_REGION_MAP: Record<string, string[]> = {
   "neil-island-6-days": ["coastal"],
   "diglipur-7-days": ["coastal"],
 
-  // ── 5. South India (3 trips) ──
+  // ── 5. South India (11 trips) ──
   "mysore-coorg-wayanad-ooty": ["south-india"],
   "kerala-7-days": ["south-india", "coastal"],
   "chorla-ghat-western-ghats": ["south-india", "coastal"],
+  "vazhachal-falls-3-days": ["south-india", "coastal"],
+  "marari-beach-4-days": ["south-india", "coastal"],
+  "hogenakkal-falls-3-days": ["south-india"],
+  "yercaud-4-days": ["south-india"],
+  "kolli-hills-3-days": ["south-india"],
+  "chettinad-4-days": ["south-india"],
+  "dhanushkodi-4-days": ["south-india", "coastal"],
+  "valparai-4-days": ["south-india"],
 
   // ── 6. Rajasthan & West ──
   "rajasthan-desert-kingdom": ["rajasthan"],
