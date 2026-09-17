@@ -1784,7 +1784,7 @@ code {
   font-family: var(--font-sans);
   white-space: nowrap;
   flex-shrink: 0;
-  justifyContent: center;
+  justify-content: center;
   transition: all var(--transition);
   scroll-snap-align: start;
 }
@@ -1797,6 +1797,34 @@ code {
 /* Mobile Quick Facts Bar (< 900px) */
 .trip-mobile-quick-facts {
   display: none;
+}
+
+/* Hero Action Toolbar (Desktop / Web view) — all buttons aligned in one row */
+.trip-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.trip-hero-actions-primary {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.trip-hero-actions-secondary {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.trip-hero-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 @media (max-width: 900px) {
@@ -1844,9 +1872,16 @@ code {
     gap: 0.75rem !important;
   }
 
-  .trip-hero-actions > button,
-  .trip-hero-actions > a {
+  .trip-hero-actions-primary {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
     width: 100%;
+  }
+
+  .trip-hero-actions-primary > button,
+  .trip-hero-actions-primary > a {
+    flex: 1;
     justify-content: center;
   }
 
@@ -1855,6 +1890,12 @@ code {
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    gap: 0.5rem;
+  }
+
+  .trip-hero-tools {
+    display: flex;
+    align-items: center;
     gap: 0.5rem;
   }
 

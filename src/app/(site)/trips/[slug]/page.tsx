@@ -279,12 +279,12 @@ export default async function TripDetailPage({ params }: Props) {
 
           {/* Hero Action Toolbar */}
           <div className="trip-hero-actions">
-            <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
+            <div className="trip-hero-actions-primary">
               <StartTripButton tripSlug={trip.slug} tripTitle={trip.title} />
               <RemixTripButton trip={trip} />
             </div>
             <div className="trip-hero-actions-secondary">
-              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <div className="trip-hero-tools">
                 <BookmarkButton tripSlug={trip.slug} initialSaved={initialSaved} />
                 <ShareButton title={trip.title} excerpt={trip.excerpt} />
               </div>
