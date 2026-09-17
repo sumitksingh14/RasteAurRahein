@@ -112,8 +112,10 @@ export default function ResetPasswordPage({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: "1.5rem",
         paddingTop: "calc(var(--nav-height) + 2rem)",
+        paddingBottom: "1.5rem",
+        paddingLeft: "1.5rem",
+        paddingRight: "1.5rem",
       }}
     >
       <div style={{ width: "100%", maxWidth: 420 }}>

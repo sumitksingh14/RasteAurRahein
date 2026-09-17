@@ -482,7 +482,7 @@ export default function AboutPage() {
           <h2 style={{ color: "var(--text-primary)", marginBottom: "1rem" }}>
             Want to Collaborate?
           </h2>
-          <p style={{ color: "var(--text-muted)", marginBottom: "2rem", maxWidth: 480, margin: "0 auto 2rem", lineHeight: 1.7 }}>
+          <p style={{ color: "var(--text-muted)", maxWidth: 480, margin: "0 auto 2rem", lineHeight: 1.7 }}>
             Open to travel writing collaborations, itinerary consultations, and photography projects.
           </p>
           <Link href="/contact" className="btn btn-primary" id="about-contact-btn">

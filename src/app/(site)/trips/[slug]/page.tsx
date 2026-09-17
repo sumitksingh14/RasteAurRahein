@@ -122,7 +122,7 @@ export default async function TripDetailPage({ params }: Props) {
       : trip.itinerary?.length || null;
 
   return (
-    <article>
+    <article data-trip-region={trip.tags?.[0] || "Himachal"}>
       <ViewCountTracker slug={trip.slug} />
       <ReadingProgress />
       <TripSchema trip={trip} />
@@ -132,10 +132,13 @@ export default async function TripDetailPage({ params }: Props) {
           HERO
       ============================================================ */}
       <div
+        className="trip-hero-section"
         style={{
           position: "relative",
-          height: "70vh",
-          minHeight: 480,
+          minHeight: "68vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-end",
           overflow: "hidden",
         }}
       >
@@ -153,21 +156,22 @@ export default async function TripDetailPage({ params }: Props) {
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(0deg, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.5) 40%, rgba(10,10,15,0.2) 100%)",
+              "linear-gradient(0deg, rgba(10,10,15,0.98) 0%, rgba(10,10,15,0.65) 45%, rgba(10,10,15,0.25) 100%)",
           }}
         />
 
         {/* Content on hero */}
         <div
-          className="container"
+          className="container trip-hero-content"
           style={{
-            position: "absolute",
-            inset: 0,
+            position: "relative",
+            zIndex: 2,
+            width: "100%",
             display: "flex",
             flexDirection: "column",
             justifyContent: "flex-end",
-            paddingBottom: "3rem",
-            paddingTop: "calc(var(--nav-height) + 2rem)",
+            paddingTop: "calc(var(--nav-height) + 1.5rem)",
+            paddingBottom: "2.5rem",
           }}
         >
           {/* Breadcrumb + Back link row */}
@@ -176,8 +180,8 @@ export default async function TripDetailPage({ params }: Props) {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              marginBottom: "auto",
-              gap: "1rem",
+              marginBottom: "1.25rem",
+              gap: "0.75rem",
               flexWrap: "wrap",
             }}
           >
@@ -187,7 +191,7 @@ export default async function TripDetailPage({ params }: Props) {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "6px",
-                color: "rgba(255,255,255,0.6)",
+                color: "rgba(255,255,255,0.75)",
                 fontSize: "0.85rem",
                 transition: "color var(--transition)",
               }}
@@ -195,18 +199,20 @@ export default async function TripDetailPage({ params }: Props) {
               <ArrowLeft size={14} />
               All Trips
             </Link>
-            <Breadcrumb
-              items={[
-                { label: "Trips", href: "/trips" },
-                { label: trip.title },
-              ]}
-            />
+            <div className="trip-breadcrumb-hide-mobile">
+              <Breadcrumb
+                items={[
+                  { label: "Trips", href: "/trips" },
+                  { label: trip.title },
+                ]}
+              />
+            </div>
           </div>
 
           {/* Tags */}
-          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginBottom: "1rem" }}>
+          <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap", marginBottom: "0.85rem" }}>
             {trip.tags?.slice(0, 4).map((tag) => (
-              <span key={tag} className="tag-pill">
+              <span key={tag} className="tag-pill" style={{ fontSize: "0.72rem", padding: "0.2rem 0.6rem" }}>
                 {tag}
               </span>
             ))}
@@ -217,62 +223,73 @@ export default async function TripDetailPage({ params }: Props) {
             style={{
               fontFamily: "var(--font-serif)",
               color: "white",
-              fontSize: "clamp(2rem, 5vw, 4rem)",
+              fontSize: "clamp(1.75rem, 5.5vw, 3.75rem)",
               fontWeight: 700,
-              lineHeight: 1.15,
-              marginBottom: "1.25rem",
-              maxWidth: 800,
+              lineHeight: 1.2,
+              marginBottom: "1rem",
+              maxWidth: 820,
             }}
           >
             {trip.title}
           </h1>
 
-          {/* Meta bar */}
+          {/* Meta bar — text facts */}
           <div
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "1.5rem",
-              color: "rgba(255,255,255,0.6)",
-              fontSize: "0.875rem",
+              gap: "0.75rem 1.25rem",
+              color: "rgba(255,255,255,0.7)",
+              fontSize: "0.82rem",
               flexWrap: "wrap",
+              marginBottom: "1.25rem",
             }}
           >
             {trip.country && (
               <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-                <MapPin size={14} />
+                <MapPin size={13} color="#FEBB02" />
                 {trip.country}
               </span>
             )}
             {trip.startDate && (
               <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-                <Calendar size={14} />
+                <Calendar size={13} />
                 {format(new Date(trip.startDate), "MMMM yyyy")}
               </span>
             )}
             {durationDays && (
               <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-                <Clock size={14} />
+                <Clock size={13} color="#FEBB02" />
                 {durationDays} days
               </span>
             )}
             {(trip.viewCount ?? 0) > 0 && (
               <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-                <Eye size={14} />
+                <Eye size={13} />
                 {trip.viewCount!.toLocaleString()} views
               </span>
             )}
             {trip._updatedAt && (
               <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-                <RefreshCw size={13} />
+                <RefreshCw size={12} />
                 Updated {format(new Date(trip._updatedAt), "MMM yyyy")}
               </span>
             )}
-            <ShareButton title={trip.title} excerpt={trip.excerpt} />
-            <BookmarkButton tripSlug={trip.slug} initialSaved={initialSaved} />
-            <AddToCalendarButton trip={trip} />
-            <RemixTripButton trip={trip} />
-            <StartTripButton tripSlug={trip.slug} tripTitle={trip.title} />
+          </div>
+
+          {/* Hero Action Toolbar */}
+          <div className="trip-hero-actions">
+            <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
+              <StartTripButton tripSlug={trip.slug} tripTitle={trip.title} />
+              <RemixTripButton trip={trip} />
+            </div>
+            <div className="trip-hero-actions-secondary">
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <BookmarkButton tripSlug={trip.slug} initialSaved={initialSaved} />
+                <ShareButton title={trip.title} excerpt={trip.excerpt} />
+              </div>
+              <AddToCalendarButton trip={trip} />
+            </div>
           </div>
         </div>
       </div>
@@ -280,25 +297,51 @@ export default async function TripDetailPage({ params }: Props) {
       {/* ============================================================
           MAIN CONTENT
       ============================================================ */}
-      <div className="container" style={{ paddingTop: "3rem", paddingBottom: "5rem" }}>
+      <div
+        className="container"
+        style={{
+          paddingTop: "2rem",
+          paddingBottom: "calc(var(--mobile-tab-height, 60px) + 4rem)",
+        }}
+      >
+        {/* Mobile Quick Facts Bar — visible on mobile (< 900px) */}
+        <div className="trip-mobile-quick-facts">
+          <div className="quick-fact-item">
+            <span className="qf-label">DURATION</span>
+            <span className="qf-value">{durationDays ? `${durationDays} Days` : "Multi-day"}</span>
+          </div>
+          <div className="quick-fact-item">
+            <span className="qf-label">BUDGET</span>
+            <span className="qf-value">{trip.totalBudget ? `₹${trip.totalBudget.toLocaleString()}` : "–"}</span>
+          </div>
+          <div className="quick-fact-item">
+            <span className="qf-label">BEST SEASON</span>
+            <span className="qf-value">{trip.bestSuggestedMonth || "Year-round"}</span>
+          </div>
+          <div className="quick-fact-item">
+            <span className="qf-label">TYPE / REGION</span>
+            <span className="qf-value">{trip.tripType || trip.country || "Adventure"}</span>
+          </div>
+        </div>
+
         <div
           className="trip-layout"
-          style={{ alignItems: "start" }}
+          style={{ alignItems: "start", width: "100%", maxWidth: "100%" }}
         >
           {/* Left — Tabs */}
-          <div>
+          <div style={{ minWidth: 0, width: "100%", maxWidth: "100%" }}>
             <TripAlertBanner slug={trip.slug} />
             
             {trip.excerpt && (
               <p
                 style={{
-                  fontSize: "1.15rem",
+                  fontSize: "1.1rem",
                   color: "var(--text-secondary)",
-                  lineHeight: 1.8,
-                  marginBottom: "2.5rem",
+                  lineHeight: 1.7,
+                  marginBottom: "2rem",
                   fontStyle: "italic",
                   borderLeft: "3px solid var(--accent-gold)",
-                  paddingLeft: "1.25rem",
+                  paddingLeft: "1.1rem",
                 }}
               >
                 {trip.excerpt}
@@ -556,7 +599,11 @@ export default async function TripDetailPage({ params }: Props) {
       <style>{`
         @media (max-width: 900px) {
           .trip-layout {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: minmax(0, 1fr) !important;
+          }
+          .trip-layout > * {
+            min-width: 0 !important;
+            max-width: 100% !important;
           }
         }
       `}</style>

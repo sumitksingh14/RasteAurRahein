@@ -17,12 +17,21 @@ import {
   Map,
   X,
   Compass,
+  CheckCircle2,
+  Clock,
+  IndianRupee,
+  Edit3,
+  ArrowUpRight,
+  Plus,
+  Check,
 } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useGeneratedTrips, type GeneratedTrip } from "@/components/providers/GeneratedTripsProvider";
 import type { Trip } from "@/lib/types";
+import type { TripPlan, TripStatus } from "@/lib/savedTrips";
 import ExportPDFButton from "@/components/ai/ExportPDFButton";
 import PassportStamps from "@/components/ui/PassportStamps";
+import PushOptIn from "@/components/pwa/PushOptIn";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -51,7 +60,7 @@ interface GroupTripCard {
 // ---------------------------------------------------------------------------
 // Tab type
 // ---------------------------------------------------------------------------
-type Tab = "saved" | "itineraries" | "groups" | "passport";
+type Tab = "saved" | "planned" | "itineraries" | "groups" | "passport";
 
 // ---------------------------------------------------------------------------
 // Saved trip card (minimal — just slug + fetched trip data)
@@ -172,6 +181,413 @@ function SavedTripItem({
           <X size={14} />
         </button>
       </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Planned trip card with spend log & status tracker
+// ---------------------------------------------------------------------------
+function PlannedTripCard({
+  trip,
+  plan,
+  onUpdatePlan,
+}: {
+  trip: { slug: string; title: string; image?: string | null; duration?: string; cost?: string };
+  plan?: TripPlan;
+  onUpdatePlan: (slug: string, updated: Partial<TripPlan>) => Promise<void>;
+}) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [status, setStatus] = useState<TripStatus>(plan?.status || "planned");
+  const [startDate, setStartDate] = useState(plan?.plannedStart || "");
+  const [endDate, setEndDate] = useState(plan?.plannedEnd || "");
+  const [actualSpend, setActualSpend] = useState<string>(
+    plan?.actualSpend !== undefined ? String(plan.actualSpend) : ""
+  );
+  const [quotedBudget, setQuotedBudget] = useState(plan?.quotedBudget || trip.cost || "");
+  const [notes, setNotes] = useState(plan?.notes || "");
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (plan) {
+      setStatus(plan.status || "planned");
+      setStartDate(plan.plannedStart || "");
+      setEndDate(plan.plannedEnd || "");
+      setActualSpend(plan.actualSpend !== undefined ? String(plan.actualSpend) : "");
+      setQuotedBudget(plan.quotedBudget || trip.cost || "");
+      setNotes(plan.notes || "");
+    }
+  }, [plan, trip.cost]);
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const spendVal = actualSpend.trim() !== "" ? Number(actualSpend.replace(/[^0-9.]/g, "")) : undefined;
+      await onUpdatePlan(trip.slug, {
+        status,
+        plannedStart: startDate || undefined,
+        plannedEnd: endDate || undefined,
+        actualSpend: spendVal !== undefined && !isNaN(spendVal) ? spendVal : undefined,
+        quotedBudget: quotedBudget || undefined,
+        notes: notes || undefined,
+      });
+      setIsEditing(false);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const statusConfig = {
+    planned: { label: "Planned", bg: "rgba(59, 130, 246, 0.12)", color: "#2563EB", border: "rgba(59, 130, 246, 0.3)" },
+    "in-progress": { label: "In Progress", bg: "rgba(245, 158, 11, 0.12)", color: "#D97706", border: "rgba(245, 158, 11, 0.3)" },
+    completed: { label: "Completed", bg: "rgba(16, 185, 129, 0.12)", color: "#059669", border: "rgba(16, 185, 129, 0.3)" },
+  };
+
+  const currentStatus = statusConfig[plan?.status || status || "planned"];
+
+  const cleanNum = (str?: string) => {
+    if (!str) return null;
+    const n = parseInt(str.replace(/[^0-9]/g, ""), 10);
+    return isNaN(n) ? null : n;
+  };
+
+  const parsedQuoted = cleanNum(quotedBudget);
+  const parsedActual = plan?.actualSpend !== undefined ? plan.actualSpend : (actualSpend ? parseFloat(actualSpend) : null);
+  const spendDiff = parsedQuoted !== null && parsedActual !== null ? parsedQuoted - parsedActual : null;
+
+  return (
+    <div
+      style={{
+        background: "#FFFFFF",
+        border: "1px solid #E5E7EB",
+        borderRadius: "var(--radius-lg, 16px)",
+        padding: "1.25rem",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+      }}
+    >
+      {/* Header */}
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "0.75rem", flexWrap: "wrap" }}>
+        <div style={{ flex: 1, minWidth: 200 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                padding: "0.2rem 0.65rem",
+                borderRadius: "100px",
+                fontSize: "0.72rem",
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "0.04em",
+                background: currentStatus.bg,
+                color: currentStatus.color,
+                border: `1px solid ${currentStatus.border}`,
+              }}
+            >
+              {currentStatus.label}
+            </span>
+            {trip.duration && (
+              <span style={{ fontSize: "0.78rem", color: "#6B7280" }}>
+                • {trip.duration}
+              </span>
+            )}
+          </div>
+          <h3
+            style={{
+              fontSize: "1.05rem",
+              fontWeight: 700,
+              color: "#262729",
+              margin: 0,
+              lineHeight: 1.3,
+            }}
+          >
+            {trip.title}
+          </h3>
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <Link
+            href={`/trips/${trip.slug}`}
+            className="btn btn-outline"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 4,
+              padding: "0.35rem 0.75rem",
+              fontSize: "0.8rem",
+            }}
+          >
+            View Trip <ArrowUpRight size={13} />
+          </Link>
+          <button
+            onClick={() => setIsEditing(!isEditing)}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 4,
+              padding: "0.35rem 0.75rem",
+              fontSize: "0.8rem",
+              fontWeight: 600,
+              background: isEditing ? "#F3F4F6" : "rgba(0,108,228,0.08)",
+              color: isEditing ? "#4B5563" : "#006CE4",
+              border: "1px solid transparent",
+              borderRadius: "var(--radius-sm, 8px)",
+              cursor: "pointer",
+            }}
+          >
+            <Edit3 size={13} />
+            {isEditing ? "Cancel" : "Edit Plan"}
+          </button>
+        </div>
+      </div>
+
+      {/* Main Info Box */}
+      {!isEditing ? (
+        <div
+          style={{
+            background: "rgba(0,0,0,0.02)",
+            borderRadius: "var(--radius-md, 12px)",
+            padding: "0.9rem 1rem",
+            border: "1px solid #F3F4F6",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+            gap: "1rem",
+          }}
+        >
+          <div>
+            <div style={{ fontSize: "0.75rem", color: "#6B7280", fontWeight: 600, textTransform: "uppercase", marginBottom: 3 }}>
+              Travel Dates
+            </div>
+            <div style={{ fontSize: "0.9rem", fontWeight: 600, color: "#1F2937", display: "flex", alignItems: "center", gap: 5 }}>
+              <Calendar size={14} color="#006CE4" />
+              {plan?.plannedStart ? (
+                <span>
+                  {new Date(plan.plannedStart).toLocaleDateString("en-IN", { month: "short", day: "numeric" })}
+                  {plan.plannedEnd ? ` — ${new Date(plan.plannedEnd).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" })}` : ""}
+                </span>
+              ) : (
+                <span style={{ color: "#9CA3AF", fontWeight: 400, fontSize: "0.82rem" }}>Not set yet</span>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <div style={{ fontSize: "0.75rem", color: "#6B7280", fontWeight: 600, textTransform: "uppercase", marginBottom: 3 }}>
+              Actual Spend / Budget
+            </div>
+            <div style={{ fontSize: "0.9rem", fontWeight: 600, color: "#1F2937", display: "flex", alignItems: "center", gap: 5 }}>
+              <IndianRupee size={14} color="#059669" />
+              {plan?.actualSpend !== undefined ? (
+                <span>₹{plan.actualSpend.toLocaleString("en-IN")}</span>
+              ) : (
+                <span style={{ color: "#9CA3AF", fontWeight: 400, fontSize: "0.82rem" }}>₹0 logged</span>
+              )}
+              {quotedBudget && (
+                <span style={{ fontSize: "0.8rem", color: "#6B7280", fontWeight: 400 }}>
+                  / {quotedBudget}
+                </span>
+              )}
+            </div>
+            {spendDiff !== null && (
+              <div style={{ fontSize: "0.75rem", marginTop: 4, fontWeight: 600, color: spendDiff >= 0 ? "#059669" : "#DC2626" }}>
+                {spendDiff >= 0 ? `✓ ₹${spendDiff.toLocaleString("en-IN")} under budget` : `⚠ ₹${Math.abs(spendDiff).toLocaleString("en-IN")} over budget`}
+              </div>
+            )}
+          </div>
+
+          {plan?.notes && (
+            <div style={{ gridColumn: "1 / -1" }}>
+              <div style={{ fontSize: "0.75rem", color: "#6B7280", fontWeight: 600, textTransform: "uppercase", marginBottom: 2 }}>
+                Notes & Log
+              </div>
+              <p style={{ fontSize: "0.82rem", color: "#4B5563", margin: 0 }}>
+                {plan.notes}
+              </p>
+            </div>
+          )}
+        </div>
+      ) : (
+        /* Edit Form */
+        <div
+          style={{
+            background: "rgba(0,108,228,0.03)",
+            borderRadius: "var(--radius-md, 12px)",
+            padding: "1rem",
+            border: "1px solid rgba(0,108,228,0.15)",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.85rem",
+          }}
+        >
+          <div>
+            <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 600, color: "#374151", marginBottom: 6 }}>
+              TRIP STATUS
+            </label>
+            <div style={{ display: "flex", gap: "0.5rem" }}>
+              {(["planned", "in-progress", "completed"] as TripStatus[]).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => setStatus(s)}
+                  style={{
+                    padding: "0.35rem 0.75rem",
+                    borderRadius: "100px",
+                    fontSize: "0.75rem",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    textTransform: "capitalize",
+                    border: status === s ? "1.5px solid #006CE4" : "1px solid #D1D5DB",
+                    background: status === s ? "#006CE4" : "#FFFFFF",
+                    color: status === s ? "#FFFFFF" : "#4B5563",
+                    transition: "all 0.15s ease",
+                  }}
+                >
+                  {s.replace("-", " ")}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+            <div>
+              <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 600, color: "#374151", marginBottom: 4 }}>
+                START DATE
+              </label>
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "0.45rem 0.65rem",
+                  borderRadius: "6px",
+                  border: "1px solid #D1D5DB",
+                  fontSize: "0.82rem",
+                  fontFamily: "var(--font-sans)",
+                }}
+              />
+            </div>
+            <div>
+              <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 600, color: "#374151", marginBottom: 4 }}>
+                END DATE
+              </label>
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "0.45rem 0.65rem",
+                  borderRadius: "6px",
+                  border: "1px solid #D1D5DB",
+                  fontSize: "0.82rem",
+                  fontFamily: "var(--font-sans)",
+                }}
+              />
+            </div>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+            <div>
+              <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 600, color: "#374151", marginBottom: 4 }}>
+                ACTUAL SPEND (₹)
+              </label>
+              <input
+                type="number"
+                placeholder="e.g. 18500"
+                value={actualSpend}
+                onChange={(e) => setActualSpend(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "0.45rem 0.65rem",
+                  borderRadius: "6px",
+                  border: "1px solid #D1D5DB",
+                  fontSize: "0.82rem",
+                  fontFamily: "var(--font-sans)",
+                }}
+              />
+            </div>
+            <div>
+              <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 600, color: "#374151", marginBottom: 4 }}>
+                QUOTED / TARGET BUDGET
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. ₹25,000"
+                value={quotedBudget}
+                onChange={(e) => setQuotedBudget(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "0.45rem 0.65rem",
+                  borderRadius: "6px",
+                  border: "1px solid #D1D5DB",
+                  fontSize: "0.82rem",
+                  fontFamily: "var(--font-sans)",
+                }}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 600, color: "#374151", marginBottom: 4 }}>
+              TRIP LOG NOTES & CHECKLIST
+            </label>
+            <textarea
+              rows={2}
+              placeholder="e.g. Booked homestay, fuel cost ₹4,200, gear packed..."
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "0.45rem 0.65rem",
+                borderRadius: "6px",
+                border: "1px solid #D1D5DB",
+                fontSize: "0.82rem",
+                fontFamily: "var(--font-sans)",
+                resize: "vertical",
+              }}
+            />
+          </div>
+
+          <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.5rem", marginTop: 4 }}>
+            <button
+              type="button"
+              onClick={() => setIsEditing(false)}
+              disabled={saving}
+              style={{
+                padding: "0.4rem 0.9rem",
+                borderRadius: "6px",
+                border: "1px solid #D1D5DB",
+                background: "#FFF",
+                fontSize: "0.8rem",
+                cursor: "pointer",
+                color: "#4B5563",
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleSave}
+              disabled={saving}
+              className="btn btn-primary"
+              style={{
+                padding: "0.4rem 1rem",
+                fontSize: "0.8rem",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 5,
+              }}
+            >
+              <Check size={14} />
+              {saving ? "Saving…" : "Save Log"}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -604,10 +1020,19 @@ export default function DashboardPage() {
 
   const [activeTab, setActiveTab] = useState<Tab>("saved");
   const [savedSlugs, setSavedSlugs] = useState<string[]>([]);
+  const [tripPlans, setTripPlans] = useState<Record<string, TripPlan>>({});
+  const [tripsMeta, setTripsMeta] = useState<
+    Array<{
+      slug: string;
+      title: string;
+      image?: string | null;
+      duration?: string;
+      cost?: string;
+    }>
+  >([]);
   const [serverItineraries, setServerItineraries] = useState<ServerItinerary[]>([]);
   const [groupTrips, setGroupTrips] = useState<GroupTripCard[]>([]);
   const [dataLoading, setDataLoading] = useState(true);
-
 
   // Import from localStorage prompt
   const [showImportPrompt, setShowImportPrompt] = useState(false);
@@ -616,10 +1041,11 @@ export default function DashboardPage() {
   const fetchDashboardData = useCallback(async () => {
     setDataLoading(true);
     try {
-      const [savedRes, itinRes, groupRes] = await Promise.all([
+      const [savedRes, itinRes, groupRes, plansRes] = await Promise.all([
         fetch("/api/saved-trips", { credentials: "include" }),
         fetch("/api/saved-itineraries", { credentials: "include" }),
         fetch("/api/group-trips", { credentials: "include" }),
+        fetch("/api/trip-plans", { credentials: "include" }),
       ]);
 
       if (savedRes.ok) {
@@ -642,10 +1068,36 @@ export default function DashboardPage() {
         const d = await groupRes.json();
         setGroupTrips(d.groups || []);
       }
+
+      if (plansRes.ok) {
+        const d = await plansRes.json();
+        setTripPlans(d.plans || {});
+        if (d.trips) setTripsMeta(d.trips);
+      }
     } finally {
       setDataLoading(false);
     }
   }, [localTrips.length]);
+
+  const handleUpdateTripPlan = async (slug: string, updated: Partial<TripPlan>) => {
+    try {
+      const res = await fetch("/api/trip-plans", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ tripSlug: slug, ...updated }),
+      });
+      if (res.ok) {
+        const d = await res.json();
+        setTripPlans((prev) => ({
+          ...prev,
+          [slug]: d.plan,
+        }));
+      }
+    } catch (err) {
+      console.error("Failed to update trip plan", err);
+    }
+  };
 
   useEffect(() => {
     if (!loading && !user) {
@@ -830,6 +1282,14 @@ export default function DashboardPage() {
             count={savedSlugs.length}
           />
           <TabButton
+            id="planned"
+            active={activeTab === "planned"}
+            onClick={setActiveTab}
+            icon={Calendar}
+            label="Planned Trips"
+            count={savedSlugs.length}
+          />
+          <TabButton
             id="itineraries"
             active={activeTab === "itineraries"}
             onClick={setActiveTab}
@@ -881,6 +1341,48 @@ export default function DashboardPage() {
                     onRemove={(s) => setSavedSlugs((prev) => prev.filter((x) => x !== s))}
                   />
                 ))}
+              </div>
+            )}
+          </>
+        )}
+
+        {/* ── Planned Trips Tab ── */}
+        {activeTab === "planned" && (
+          <>
+            {dataLoading ? (
+              <LoadingSkeleton />
+            ) : savedSlugs.length === 0 ? (
+              <EmptyState
+                icon={Calendar}
+                title="No planned trips yet"
+                description="Save any trip from our catalog to set travel dates, track your actual spend vs quoted budget, and update your journey status."
+                cta={{ label: "Explore trips to plan", href: "/trips" }}
+              />
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1rem",
+                }}
+              >
+                {savedSlugs.map((slug) => {
+                  const meta = tripsMeta.find((t) => t.slug === slug) || {
+                    slug,
+                    title: slug
+                      .split("-")
+                      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+                      .join(" "),
+                  };
+                  return (
+                    <PlannedTripCard
+                      key={slug}
+                      trip={meta}
+                      plan={tripPlans[slug]}
+                      onUpdatePlan={handleUpdateTripPlan}
+                    />
+                  );
+                })}
               </div>
             )}
           </>
@@ -952,6 +1454,11 @@ export default function DashboardPage() {
         {activeTab === "passport" && (
           <PassportStamps savedTripSlugs={savedSlugs} />
         )}
+
+        {/* ── Push Notifications Opt-In ── */}
+        <div style={{ marginTop: "3rem" }}>
+          <PushOptIn />
+        </div>
       </div>
 
 
@@ -1038,7 +1545,6 @@ function EmptyState({
         style={{
           color: "#6B7280",
           lineHeight: 1.6,
-          marginBottom: "2rem",
           maxWidth: 380,
           margin: "0 auto 2rem",
           fontSize: "0.9rem",

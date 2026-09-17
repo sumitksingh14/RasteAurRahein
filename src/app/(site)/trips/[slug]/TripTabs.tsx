@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Map, List, DollarSign, Hotel, Utensils, Gauge, Cloud, Sparkles, ExternalLink, CheckSquare, BookOpen } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { Map, List, DollarSign, Hotel, Utensils, Gauge, Cloud, Sparkles, ExternalLink, CheckSquare, BookOpen, FileText } from "lucide-react";
 import ItineraryAccordion from "@/components/ui/ItineraryAccordion";
 import MapView from "@/components/ui/MapView";
 import StaySuggestions from "@/components/ui/StaySuggestions";
@@ -19,6 +19,8 @@ import { TRIP_WEATHER_COORDS } from "@/lib/weatherCoords";
 import type { Trip, MapPin } from "@/lib/types";
 import type { TripFieldName } from "@/lib/enrichment/types";
 import TripStories from "@/components/ui/TripStories";
+import FieldReportList from "@/components/ui/FieldReportList";
+import FieldReportForm from "@/components/ui/FieldReportForm";
 
 // ---------------------------------------------------------------------------
 // Unverified badge — shown when a field is ai_filled but not yet verified
@@ -133,7 +135,7 @@ function useEnrichmentStatuses(tripSlug: string) {
   return statuses;
 }
 
-type TabId = "itinerary" | "map" | "costs" | "stay" | "food" | "route" | "packing" | "weather" | "stories";
+type TabId = "itinerary" | "map" | "costs" | "stay" | "food" | "route" | "packing" | "weather" | "stories" | "reports";
 
 const TABS: { id: TabId; label: string; Icon: React.ElementType }[] = [
   { id: "itinerary", label: "Itinerary", Icon: List },
@@ -145,6 +147,7 @@ const TABS: { id: TabId; label: string; Icon: React.ElementType }[] = [
   { id: "packing", label: "Packing", Icon: CheckSquare },
   { id: "weather", label: "Weather", Icon: Cloud },
   { id: "stories", label: "Stories & Reviews", Icon: BookOpen },
+  { id: "reports", label: "Field Reports", Icon: FileText },
 ];
 
 // AI-estimated budget ranges per trip slug (derived from trip type & destination)
@@ -399,6 +402,7 @@ interface TripTabsProps {
 
 export default function TripTabs({ trip }: TripTabsProps) {
   const [activeTab, setActiveTab] = useState<TabId>("itinerary");
+  const [reportRefreshKey, setReportRefreshKey] = useState(0);
   const enrichmentStatuses = useEnrichmentStatuses(trip.slug);
 
   // Collect all map pins from itinerary
@@ -439,55 +443,37 @@ export default function TripTabs({ trip }: TripTabsProps) {
 
   return (
     <div>
-      {/* Tab Bar — horizontally scrollable on mobile */}
-      <div
-        className="trip-tabs-bar"
-        style={{
-          display: "flex",
-          gap: "0.25rem",
-          background: "var(--bg-secondary)",
-          padding: "0.375rem",
-          borderRadius: "var(--radius-md)",
-          marginBottom: "2rem",
-          overflowX: "auto",
-          WebkitOverflowScrolling: "touch" as React.CSSProperties["WebkitOverflowScrolling"],
-          scrollbarWidth: "none" as React.CSSProperties["scrollbarWidth"],
-          msOverflowStyle: "none" as React.CSSProperties["msOverflowStyle"],
-        }}
-      >
-        {TABS.map(({ id, label, Icon }) => {
-          const isActive = activeTab === id;
-          return (
-            <button
-              key={id}
-              onClick={() => setActiveTab(id)}
-              id={`tab-${id}`}
-              className="trip-tab-btn"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-                padding: "0.625rem 1rem",
-                borderRadius: "var(--radius-sm)",
-                border: "none",
-                cursor: "pointer",
-                fontSize: "0.875rem",
-                fontWeight: 500,
-                fontFamily: "var(--font-sans)",
-                whiteSpace: "nowrap",
-                flexShrink: 0,
-                justifyContent: "center",
-                transition: "all var(--transition)",
-                background: isActive ? "var(--bg-card)" : "transparent",
-                color: isActive ? "var(--accent-gold)" : "var(--text-muted)",
-                boxShadow: isActive ? "var(--shadow-sm)" : "none",
-              }}
-            >
-              <Icon size={15} />
-              <span className="trip-tab-label">{label}</span>
-            </button>
-          );
-        })}
+      {/* Tab Bar — horizontally scrollable pill container with smooth touch scrolling */}
+      <div className="trip-tabs-wrapper">
+        <div className="trip-tabs-bar" id="trip-tabs-container">
+          {TABS.map(({ id, label, Icon }) => {
+            const isActive = activeTab === id;
+            return (
+              <button
+                key={id}
+                onClick={(e) => {
+                  setActiveTab(id);
+                  e.currentTarget.scrollIntoView({
+                    behavior: "smooth",
+                    inline: "center",
+                    block: "nearest",
+                  });
+                }}
+                id={`tab-${id}`}
+                className="trip-tab-btn"
+                style={{
+                  background: isActive ? "var(--bg-card, #1e293b)" : "transparent",
+                  color: isActive ? "var(--accent-gold, #FEBB02)" : "var(--text-muted, #94a3b8)",
+                  boxShadow: isActive ? "0 2px 8px rgba(0,0,0,0.18)" : "none",
+                  border: isActive ? "1px solid rgba(254, 187, 2, 0.35)" : "1px solid transparent",
+                }}
+              >
+                <Icon size={15} />
+                <span className="trip-tab-label">{label}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Tab Panels */}
@@ -895,6 +881,16 @@ export default function TripTabs({ trip }: TripTabsProps) {
 
       {activeTab === "stories" && (
         <TripStories tripSlug={trip.slug} />
+      )}
+
+      {activeTab === "reports" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+          <FieldReportList tripSlug={trip.slug} refreshKey={reportRefreshKey} />
+          <FieldReportForm
+            tripSlug={trip.slug}
+            onSubmitted={() => setReportRefreshKey((k) => k + 1)}
+          />
+        </div>
       )}
     </div>
   );

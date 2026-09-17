@@ -4,10 +4,12 @@ import MobileTabBar from "@/components/layout/MobileTabBar";
 import StaticBackground from "@/components/ui/StaticBackground";
 import AIItineraryButton from "@/components/ai/AIItineraryButton";
 import ChatWidget from "@/components/chatbot/ChatWidget";
+import TripViewTracker from "@/components/providers/TripViewTracker";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
+      <TripViewTracker />
       {/* Static fixed background — single image for all pages */}
       <StaticBackground />
       {/* Page chrome — sits above background */}

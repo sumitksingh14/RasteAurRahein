@@ -397,6 +397,7 @@ export default function AIPlanner() {
   const [expandedDays, setExpandedDays] = useState<Set<number>>(new Set([1]));
   const [progress, setProgress] = useState(0);
   const [savedTitle, setSavedTitle] = useState("");
+  const [shareSlug, setShareSlug] = useState("");
   // Geocoded pin for the destination — set when streaming finishes
   const [destinationPin, setDestinationPin] = useState<{ lat: number; lng: number } | null>(null);
 
@@ -601,8 +602,9 @@ export default function AIPlanner() {
   };
 
   // ── Save ───────────────────────────────────────────────────────────────────
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!itinerary || streamingDays.length === 0) return;
+    // Save to local store (for offline/dashboard use)
     addTrip({
       title: itinerary.title,
       destination: itinerary.destination,
@@ -616,6 +618,35 @@ export default function AIPlanner() {
       generatedAt: new Date().toISOString(),
     });
     setSavedTitle(itinerary.title);
+
+    // Also persist server-side to get a public shareable slug
+    try {
+      const payload = {
+        title: itinerary.title,
+        destination: itinerary.destination,
+        days: streamingDays.length,
+        pace: params.pace,
+        budget: itinerary.totalBudgetEstimate || params.budget,
+        travelStyle: (itinerary.tags || []).join(","),
+        itineraryJson: JSON.stringify({
+          ...itinerary,
+          days: streamingDays,
+        }),
+      };
+      const res = await fetch("/api/saved-itineraries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.itinerary?.slug) setShareSlug(data.itinerary.slug);
+      }
+    } catch {
+      // Non-fatal: offline save still worked
+    }
+
     setStep("saved");
   };
 
@@ -718,14 +749,16 @@ export default function AIPlanner() {
       <div
         style={{
           minHeight: "100vh",
-          paddingTop: "var(--nav-height)",
           backgroundColor: "#5a6e4e",
           backgroundImage: TOPO_BG,
           backgroundSize: "400px 400px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          padding: `calc(var(--nav-height) + 2rem) 1rem 3rem`,
+          paddingTop: "calc(var(--nav-height) + 2rem)",
+          paddingBottom: "3rem",
+          paddingLeft: "1rem",
+          paddingRight: "1rem",
         }}
       >
         {/* Page title */}
@@ -805,8 +838,40 @@ export default function AIPlanner() {
                 <Sparkles size={14} /> Plan Another Trip
               </button>
             </div>
+
+            {/* Share section — appears once server-side save gives us a slug */}
+            {shareSlug && (() => {
+              const siteUrl = typeof window !== "undefined" ? window.location.origin : "https://raste-aur-rahein.vercel.app";
+              const shareUrl = `${siteUrl}/itineraries/${shareSlug}`;
+              const waText = encodeURIComponent(`🗺️ Check out this ${streamingDays.length}-day AI itinerary!\n\n${savedTitle}\n\n${shareUrl}\n\nGenerated on Raste Aur Raahein 🏔️`);
+              return (
+                <div style={{ width: "100%", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "1rem 1.25rem" }}>
+                  <div style={{ fontSize: "0.72rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(255,255,255,0.5)", marginBottom: "0.6rem" }}>Share this itinerary</div>
+                  <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap", justifyContent: "center" }}>
+                    <a
+                      href={`https://wa.me/?text=${waText}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "0.5rem 1rem", background: "#25D366", borderRadius: 8, color: "#fff", fontSize: "0.82rem", fontWeight: 700, textDecoration: "none" }}
+                    >
+                      💬 Share on WhatsApp
+                    </a>
+                    <button
+                      onClick={async () => {
+                        try { await navigator.clipboard.writeText(shareUrl); } catch { /* ignore */ }
+                      }}
+                      style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "0.5rem 1rem", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 8, color: "rgba(255,255,255,0.8)", fontSize: "0.82rem", fontWeight: 700, cursor: "pointer" }}
+                    >
+                      🔗 Copy Link
+                    </button>
+                  </div>
+                </div>
+              );
+            })()}
+
           </div>
         )}
+
 
         {/* ═══════════════════════════════════════════════════════════════════
             MAIN TWO-PANEL GRID (form + generating + result share the grid)

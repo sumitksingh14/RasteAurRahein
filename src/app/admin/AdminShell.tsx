@@ -13,11 +13,15 @@ import {
   ChevronRight,
   Sparkles,
   BookOpen,
+  FileText,
+  Send,
 } from "lucide-react";
 
 const NAV_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { href: "/admin/trips", label: "Trips", icon: MapPin },
+  { href: "/admin/submissions", label: "Submissions", icon: Send },
+  { href: "/admin/field-reports", label: "Field Reports", icon: FileText },
   { href: "/admin/stories", label: "Stories", icon: BookOpen },
   { href: "/admin/comments", label: "Comments", icon: MessageSquare },
   { href: "/admin/users", label: "Users", icon: Users },

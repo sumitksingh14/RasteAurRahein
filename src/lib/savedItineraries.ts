@@ -11,6 +11,7 @@ import { redis } from "@/lib/redis";
 export interface SavedItinerary {
   id: string;
   userId: string;
+  slug: string;        // public shareable slug, e.g. "goa-3-days-ab12c"
   title: string;
   destination: string;
   days: number;
@@ -29,8 +30,23 @@ function userItinerariesKey(userId: string) {
   return `saved:itineraries:${userId}`;
 }
 
+function slugKey(slug: string) {
+  return `itinerary:slug:${slug}`;
+}
+
 function generateId(): string {
   return `si-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+}
+
+function generateSlug(destination: string): string {
+  const base = destination
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .slice(0, 40);
+  const suffix = Math.random().toString(36).slice(2, 7);
+  return `${base}-${suffix}`;
 }
 
 /**
@@ -39,13 +55,15 @@ function generateId(): string {
  */
 export async function saveItinerary(
   userId: string,
-  data: Omit<SavedItinerary, "id" | "userId" | "createdAt">
+  data: Omit<SavedItinerary, "id" | "userId" | "createdAt" | "slug">
 ): Promise<SavedItinerary> {
   const id = generateId();
+  const slug = generateSlug(data.destination);
   const createdAt = new Date().toISOString();
 
   const itinerary: SavedItinerary = {
     id,
+    slug,
     userId,
     createdAt,
     ...data,
@@ -54,6 +72,7 @@ export async function saveItinerary(
   // Store hash
   await redis.hset(itineraryKey(id), {
     id,
+    slug,
     userId,
     title: data.title,
     destination: data.destination,
@@ -64,6 +83,9 @@ export async function saveItinerary(
     itineraryJson: data.itineraryJson,
     createdAt,
   });
+
+  // Reverse-lookup: slug → id
+  await redis.set(slugKey(slug), id);
 
   // Prepend to user's list (newest first)
   await redis.rpush(userItinerariesKey(userId), id);
@@ -116,6 +138,20 @@ export async function getSavedItineraries(
 }
 
 /**
+ * Fetch a saved itinerary by its public slug.
+ * Does a two-step lookup: slug → id → hash.
+ */
+export async function getItineraryBySlug(
+  slug: string
+): Promise<SavedItinerary | null> {
+  const id = (await redis.get(slugKey(slug))) as string | null;
+  if (id) {
+    return getSavedItineraryById(id);
+  }
+  return getSavedItineraryById(slug);
+}
+
+/**
  * Delete a saved itinerary (only if owned by userId).
  * Returns true if deleted, false if not found or not owned.
  */
@@ -126,11 +162,14 @@ export async function deleteItinerary(
   const hash = await redis.hgetall(itineraryKey(id));
   if (!hash || hash.userId !== userId) return false;
 
+  // Remove slug reverse-lookup if present
+  if (hash.slug) await redis.del(slugKey(hash.slug));
+
   await redis.del(itineraryKey(id));
 
-  // Remove from the user's list using LREM (more efficient than read-filter-rewrite)
   const key = userItinerariesKey(userId);
   await redis.lrem(key, 0, id);
 
   return true;
 }
+

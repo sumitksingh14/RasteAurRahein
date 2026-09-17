@@ -391,7 +391,7 @@ export default function ItinerariesPage() {
             >
               No itineraries yet
             </h2>
-            <p style={{ color: "var(--text-secondary)", lineHeight: 1.6, marginBottom: "2.25rem", maxWidth: 400, margin: "0 auto 2.25rem" }}>
+            <p style={{ color: "var(--text-secondary)", lineHeight: 1.6, maxWidth: 400, margin: "0 auto 2.25rem" }}>
               Use the AI Trip Planner to generate your first personalised day-by-day itinerary — just enter a destination and let AI do the rest.
             </p>
 

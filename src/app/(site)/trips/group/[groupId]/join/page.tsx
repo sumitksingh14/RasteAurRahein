@@ -75,13 +75,15 @@ export default function JoinGroupPage() {
   return (
     <div
       style={{
-        paddingTop: "var(--nav-height)",
         minHeight: "100vh",
         background: "linear-gradient(135deg, #EFF6FF 0%, #F9FAFB 100%)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: "2rem 1rem",
+        paddingTop: "calc(var(--nav-height) + 2rem)",
+        paddingBottom: "2rem",
+        paddingLeft: "1rem",
+        paddingRight: "1rem",
       }}
     >
       <div

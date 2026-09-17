@@ -141,11 +141,12 @@ export default function BudgetEstimator({ trip, baseDays }: BudgetEstimatorProps
 
   return (
     <div
+      className="budget-estimator-card"
       style={{
         background: "var(--bg-card)",
         border: "1px solid var(--border)",
         borderRadius: "var(--radius-md)",
-        padding: "1.75rem",
+        padding: "clamp(1rem, 3.5vw, 1.75rem)",
         boxShadow: "var(--shadow-sm)",
       }}
     >
@@ -175,9 +176,9 @@ export default function BudgetEstimator({ trip, baseDays }: BudgetEstimatorProps
         </div>
 
         {/* Currency Switcher */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
           <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>Currency:</span>
-          <div style={{ display: "flex", background: "var(--bg-secondary)", borderRadius: "var(--radius-sm)", padding: "2px", border: "1px solid var(--border)" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "2px", background: "var(--bg-secondary)", borderRadius: "var(--radius-sm)", padding: "2px", border: "1px solid var(--border)" }}>
             {CURRENCIES.map((c) => {
               const active = currency === c.code;
               return (
@@ -209,7 +210,7 @@ export default function BudgetEstimator({ trip, baseDays }: BudgetEstimatorProps
         <label style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", display: "block", marginBottom: "0.75rem" }}>
           Select Travel Tier
         </label>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "0.75rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 180px), 1fr))", gap: "0.75rem" }}>
           {(Object.keys(STYLE_TIERS) as TravelStyle[]).map((st) => {
             const item = STYLE_TIERS[st];
             const active = style === st;

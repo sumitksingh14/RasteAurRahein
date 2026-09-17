@@ -53,9 +53,12 @@ function ActivityItem({ activity }: { activity: Activity }) {
     <div
       style={{
         display: "flex",
-        gap: "1rem",
+        gap: "0.75rem",
         paddingBottom: "1.25rem",
         position: "relative",
+        width: "100%",
+        maxWidth: "100%",
+        boxSizing: "border-box",
       }}
     >
       {/* Timeline line */}
@@ -65,6 +68,7 @@ function ActivityItem({ activity }: { activity: Activity }) {
           flexDirection: "column",
           alignItems: "center",
           gap: 0,
+          flexShrink: 0,
         }}
       >
         <ActivityIcon type={activity.type} />
@@ -79,14 +83,15 @@ function ActivityItem({ activity }: { activity: Activity }) {
       </div>
 
       {/* Content */}
-      <div style={{ flex: 1, paddingBottom: "0.5rem" }}>
+      <div style={{ flex: 1, minWidth: 0, paddingBottom: "0.5rem" }}>
         <div
           style={{
             display: "flex",
             alignItems: "flex-start",
             justifyContent: "space-between",
-            gap: "1rem",
+            gap: "0.5rem",
             marginBottom: "0.25rem",
+            flexWrap: "wrap",
           }}
         >
           <h4
@@ -95,7 +100,10 @@ function ActivityItem({ activity }: { activity: Activity }) {
               fontWeight: 600,
               color: "var(--text-primary)",
               fontFamily: "var(--font-sans)",
-              lineHeight: 1.3,
+              lineHeight: 1.35,
+              wordBreak: "break-word",
+              overflowWrap: "anywhere",
+              flex: "1 1 180px",
             }}
           >
             {activity.title}
@@ -104,8 +112,9 @@ function ActivityItem({ activity }: { activity: Activity }) {
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "0.75rem",
+              gap: "0.5rem",
               flexShrink: 0,
+              flexWrap: "wrap",
             }}
           >
             {activity.time && (
@@ -151,6 +160,8 @@ function ActivityItem({ activity }: { activity: Activity }) {
               color: "var(--text-secondary)",
               lineHeight: 1.6,
               marginBottom: "0.5rem",
+              wordBreak: "break-word",
+              overflowWrap: "anywhere",
             }}
           >
             {activity.description}
@@ -166,9 +177,11 @@ function ActivityItem({ activity }: { activity: Activity }) {
               fontSize: "0.75rem",
               color: "var(--text-muted)",
               marginBottom: activity.notes ? "0.5rem" : 0,
+              wordBreak: "break-word",
+              overflowWrap: "anywhere",
             }}
           >
-            <MapPin size={11} />
+            <MapPin size={11} style={{ flexShrink: 0 }} />
             {activity.location.name}
           </span>
         )}
@@ -184,10 +197,12 @@ function ActivityItem({ activity }: { activity: Activity }) {
               borderRadius: "var(--radius-sm)",
               padding: "0.5rem 0.75rem",
               marginTop: "0.5rem",
+              width: "100%",
+              boxSizing: "border-box",
             }}
           >
             <Lightbulb size={13} style={{ color: "var(--accent-gold)", flexShrink: 0, marginTop: 2 }} />
-            <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", lineHeight: 1.5 }}>
+            <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", lineHeight: 1.5, wordBreak: "break-word", overflowWrap: "anywhere", margin: 0 }}>
               {activity.notes}
             </p>
           </div>
@@ -338,12 +353,14 @@ export default function ItineraryAccordion({ days, origin, destination }: Itiner
             <div
               key={day._key}
               style={{
-                border: "1px solid",
-                borderColor: isOpen ? "var(--border-accent)" : "var(--border)",
+                border: `1px solid ${isOpen ? "var(--border-accent)" : "var(--border)"}`,
                 borderRadius: "var(--radius-md)",
                 overflow: "hidden",
                 transition: "border-color var(--transition)",
                 background: isOpen ? "var(--bg-card)" : "var(--bg-secondary)",
+                width: "100%",
+                maxWidth: "100%",
+                boxSizing: "border-box",
               }}
             >
               {/* Header */}
@@ -352,27 +369,27 @@ export default function ItineraryAccordion({ days, origin, destination }: Itiner
                 id={`itinerary-day-${day.dayNumber}`}
                 style={{
                   width: "100%",
-                  padding: "1.25rem 1.5rem",
+                  padding: "clamp(0.85rem, 2.5vw, 1.25rem) clamp(0.75rem, 2.5vw, 1.25rem)",
                   display: "flex",
                   alignItems: "center",
-                  gap: "1rem",
+                  gap: "0.75rem",
                   background: "transparent",
                   border: "none",
                   cursor: "pointer",
                   textAlign: "left",
+                  boxSizing: "border-box",
                 }}
               >
                 {/* Day badge */}
                 <div
                   style={{
-                    width: 48,
-                    height: 48,
+                    width: 44,
+                    height: 44,
                     borderRadius: "var(--radius-sm)",
                     background: isOpen
                       ? "var(--accent-gold)"
                       : "var(--bg-card)",
-                    border: "1px solid",
-                    borderColor: isOpen ? "var(--accent-gold)" : "var(--border)",
+                    border: `1px solid ${isOpen ? "var(--accent-gold)" : "var(--border)"}`,
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
@@ -383,7 +400,7 @@ export default function ItineraryAccordion({ days, origin, destination }: Itiner
                 >
                   <span
                     style={{
-                      fontSize: "0.6rem",
+                      fontSize: "0.55rem",
                       fontWeight: 600,
                       textTransform: "uppercase",
                       letterSpacing: "0.05em",
@@ -395,7 +412,7 @@ export default function ItineraryAccordion({ days, origin, destination }: Itiner
                   </span>
                   <span
                     style={{
-                      fontSize: "1.1rem",
+                      fontSize: "1.05rem",
                       fontWeight: 700,
                       fontFamily: "var(--font-serif)",
                       color: isOpen ? "var(--bg-primary)" : "var(--text-primary)",
@@ -406,14 +423,17 @@ export default function ItineraryAccordion({ days, origin, destination }: Itiner
                   </span>
                 </div>
 
-                <div style={{ flex: 1 }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
                   <h3
                     style={{
-                      fontSize: "1rem",
+                      fontSize: "0.95rem",
                       fontWeight: 600,
                       fontFamily: "var(--font-sans)",
                       color: "var(--text-primary)",
                       marginBottom: "0.2rem",
+                      lineHeight: 1.35,
+                      wordBreak: "break-word",
+                      overflowWrap: "anywhere",
                     }}
                   >
                     {day.title}
@@ -423,6 +443,7 @@ export default function ItineraryAccordion({ days, origin, destination }: Itiner
                       style={{
                         fontSize: "0.75rem",
                         color: "var(--text-muted)",
+                        display: "block",
                       }}
                     >
                       {format(new Date(day.date), "EEEE, MMMM d, yyyy")}
@@ -430,8 +451,8 @@ export default function ItineraryAccordion({ days, origin, destination }: Itiner
                   )}
                 </div>
 
-                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexShrink: 0 }}>
-                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexShrink: 0 }}>
+                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", whiteSpace: "nowrap" }}>
                     {day.activities?.length || 0} stops
                   </span>
                   <ChevronDown
@@ -440,6 +461,7 @@ export default function ItineraryAccordion({ days, origin, destination }: Itiner
                       color: "var(--text-muted)",
                       transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
                       transition: "transform var(--transition)",
+                      flexShrink: 0,
                     }}
                   />
                 </div>
@@ -448,16 +470,24 @@ export default function ItineraryAccordion({ days, origin, destination }: Itiner
               {/* Collapsible Body */}
               <div
                 style={{
-                  maxHeight: isOpen ? "2000px" : "0px",
+                  maxHeight: isOpen ? "4000px" : "0px",
                   overflow: "hidden",
                   transition: "max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                  width: "100%",
+                  maxWidth: "100%",
+                  boxSizing: "border-box",
                 }}
               >
                 <div
                   style={{
-                    padding: "0 1.5rem 1.5rem 1.5rem",
-                    borderTop: "1px solid var(--border)",
                     paddingTop: "1.25rem",
+                    paddingBottom: "clamp(0.85rem, 2.5vw, 1.25rem)",
+                    paddingLeft: "clamp(0.75rem, 2.5vw, 1.25rem)",
+                    paddingRight: "clamp(0.75rem, 2.5vw, 1.25rem)",
+                    borderTop: "1px solid var(--border)",
+                    width: "100%",
+                    maxWidth: "100%",
+                    boxSizing: "border-box",
                   }}
                 >
                   {day.summary && (
@@ -470,6 +500,8 @@ export default function ItineraryAccordion({ days, origin, destination }: Itiner
                         lineHeight: 1.7,
                         borderLeft: "2px solid var(--accent-gold)",
                         paddingLeft: "1rem",
+                        wordBreak: "break-word",
+                        overflowWrap: "anywhere",
                       }}
                     >
                       {day.summary}

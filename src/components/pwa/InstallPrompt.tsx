@@ -20,6 +20,9 @@ export default function InstallPrompt() {
   const [isInstalled, setIsInstalled] = useState(false);
   const [isInstalling, setIsInstalling] = useState(false);
 
+  const [nudgeRegion, setNudgeRegion] = useState("Himachal");
+  const [showNudgeBanner, setShowNudgeBanner] = useState(false);
+
   useEffect(() => {
     // Already installed — running in standalone mode
     if (window.matchMedia("(display-mode: standalone)").matches) {
@@ -33,6 +36,33 @@ export default function InstallPrompt() {
       return;
     }
 
+    // Check viewed trips count
+    const checkViewedTrips = () => {
+      try {
+        const stored = localStorage.getItem("rar_viewed_trips");
+        const trips: string[] = stored ? JSON.parse(stored) : [];
+        const lastRegion = localStorage.getItem("rar_last_viewed_region") || "Himachal";
+        setNudgeRegion(lastRegion);
+
+        if (trips.length >= 2) {
+          setShowNudgeBanner(true);
+        }
+      } catch {
+        // ignore
+      }
+    };
+
+    checkViewedTrips();
+
+    // Listen for custom trigger from TripViewTracker
+    const handleNudgeEvent = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      if (detail?.region) setNudgeRegion(detail.region);
+      setShowNudgeBanner(true);
+    };
+
+    window.addEventListener("rar:trigger-install-nudge", handleNudgeEvent);
+
     // iOS detection (Safari "Add to Home Screen" path)
     const ios =
       /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase()) &&
@@ -40,24 +70,26 @@ export default function InstallPrompt() {
 
     if (ios) {
       setIsIos(true);
-      setTimeout(() => setIsVisible(true), 4000);
-      return;
     }
 
-    // Android / Chrome desktop: wait for beforeinstallprompt
+    // Android / Chrome desktop: capture beforeinstallprompt
     const handler = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
-      // Show after a short delay so it doesn't immediately pop on load
-      setTimeout(() => setIsVisible(true), 3000);
     };
 
     window.addEventListener("beforeinstallprompt", handler);
-    return () => window.removeEventListener("beforeinstallprompt", handler);
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handler);
+      window.removeEventListener("rar:trigger-install-nudge", handleNudgeEvent);
+    };
   }, []);
 
   const handleInstall = async () => {
-    if (!deferredPrompt) return;
+    if (!deferredPrompt) {
+      setIsVisible(true);
+      return;
+    }
     setIsInstalling(true);
     try {
       await deferredPrompt.prompt();
@@ -68,12 +100,14 @@ export default function InstallPrompt() {
     } finally {
       setIsInstalling(false);
       setIsVisible(false);
+      setShowNudgeBanner(false);
       setDeferredPrompt(null);
     }
   };
 
   const handleDismiss = () => {
     setIsVisible(false);
+    setShowNudgeBanner(false);
     localStorage.setItem(DISMISSED_KEY, String(Date.now()));
   };
 
@@ -81,6 +115,103 @@ export default function InstallPrompt() {
 
   return (
     <>
+      {/* ── Subtle 2+ Trips Nudge Banner ── */}
+      {showNudgeBanner && !isVisible && (
+        <div
+          role="region"
+          aria-label="Install app recommendation"
+          style={{
+            position: "fixed",
+            bottom: "calc(var(--mobile-tab-height, 0px) + 16px)",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "min(540px, calc(100% - 24px))",
+            zIndex: 7990,
+            background: "linear-gradient(135deg, #111318 0%, #1c202a 100%)",
+            color: "#FFFFFF",
+            borderRadius: "16px",
+            padding: "0.85rem 1.15rem",
+            boxShadow: "0 10px 32px rgba(0,0,0,0.35)",
+            border: "1px solid rgba(255,255,255,0.12)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "0.85rem",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flex: 1, minWidth: 0 }}>
+            <div
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: "10px",
+                background: "rgba(0,108,228,0.2)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "1.2rem",
+                flexShrink: 0,
+              }}
+            >
+              🏔️
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div
+                style={{
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  color: "#FFFFFF",
+                  lineHeight: 1.25,
+                }}
+              >
+                Save offline maps of {nudgeRegion} for your next trip
+              </div>
+              <div style={{ fontSize: "0.72rem", color: "#9CA3AF", marginTop: 2 }}>
+                Trek &amp; navigate even with zero cell connectivity.
+              </div>
+            </div>
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexShrink: 0 }}>
+            <button
+              onClick={() => {
+                setShowNudgeBanner(false);
+                setIsVisible(true);
+              }}
+              style={{
+                background: "#006CE4",
+                color: "#FFFFFF",
+                border: "none",
+                borderRadius: "8px",
+                padding: "0.45rem 0.85rem",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+                boxShadow: "0 2px 8px rgba(0,108,228,0.3)",
+              }}
+            >
+              Install App
+            </button>
+            <button
+              onClick={handleDismiss}
+              style={{
+                background: "transparent",
+                border: "none",
+                color: "#9CA3AF",
+                cursor: "pointer",
+                padding: 4,
+                display: "flex",
+                alignItems: "center",
+              }}
+              aria-label="Close banner"
+            >
+              <X size={16} />
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Backdrop — subtle scrim when sheet is open */}
       <div
         onClick={handleDismiss}
