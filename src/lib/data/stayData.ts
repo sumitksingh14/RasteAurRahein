@@ -1969,6 +1969,236 @@ export const STAY_DATA: Record<string, HotelSuggestion[]> = {
       notes: "AAPDA (Arunachal Pradesh Tourism) run tourist lodge at the Assam–Arunachal border. Clean and functional. Best value for the overnight at Bhalukpong on Day 1 — book ahead during holiday season.",
     },
   ],
+
+  // ── East India Offbeat Destinations ──────────────────────────────────────
+  "chandipur-4-days": [
+    {
+      id: "chp1", name: "Panthanivas Chandipur (OTDC)", type: "resort", stars: 3,
+      avgPricePerNight: 2200, town: "Chandipur Beach",
+      contact: "+91-6782-270-051",
+      bookingUrl: "https://www.panthanivas.com/chandipur",
+      amenities: ["Direct Beach Access", "Odia Restaurant", "Garden", "AC Rooms", "Free Parking"],
+      notes: "The premier beachfront property in Chandipur operated by Odisha Tourism. Situated right on the shoreline where you can watch the sea recede for kilometers directly from your sea-facing balcony.",
+    },
+    {
+      id: "chp2", name: "Arpita Beach Resort", type: "resort", stars: 3,
+      avgPricePerNight: 2800, town: "Chandipur",
+      contact: "+91-94370-65481",
+      bookingUrl: "https://www.booking.com/searchresults.html?ss=Chandipur",
+      amenities: ["Swimming Pool", "Seafood Restaurant", "Lawn", "Wi-Fi", "Conference Hall"],
+      notes: "Well-maintained leisure resort 400m from the coast. Excellent freshwater pool, landscaped lawns, and helpful staff arranging morning excursions to Kasafal and Balaramgadi fishing harbor.",
+    },
+    {
+      id: "chp3", name: "Hotel Mirabel", type: "hotel", stars: 3,
+      avgPricePerNight: 1800, town: "Chandipur-on-Sea",
+      contact: "+91-6782-270-222",
+      amenities: ["Multi-cuisine Restaurant", "Room Service", "Power Backup", "Hot Water"],
+      notes: "Reliable modern hotel offering spacious AC rooms with coastal views. Renowned for its fresh crab and prawn curry preparations served at the in-house restaurant.",
+    },
+    {
+      id: "chp4", name: "Panthasala Panchalingeswar (OTDC)", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1400, town: "Panchalingeswar Hills",
+      contact: "+91-6782-252-859",
+      amenities: ["Hill View", "Traditional Food", "Trek Guide", "Peaceful Forest Setting"],
+      notes: "Serene hillside guesthouse nestled in the Devgiri hills near the perennial spring Shiva shrine, 30 km from Chandipur. Ideal for an overnight nature retreat amidst sal woods.",
+    },
+  ],
+
+  "gopalpur-on-sea-4-days": [
+    {
+      id: "gpl1", name: "Mayfair Palm Beach Resort", type: "resort", stars: 5,
+      avgPricePerNight: 8500, town: "Gopalpur-on-Sea",
+      contact: "+91-680-666-0101",
+      bookingUrl: "https://www.mayfairhotels.com/gopalpur-on-sea",
+      amenities: ["Private Beachfront", "Infinity Pool", "Luxury Spa", "Multi-Cuisine Dining", "Cabana Bar"],
+      notes: "Heritage seaside luxury originally established in 1914 by an Italian hotelier and transformed into a world-class resort by Mayfair. Direct access to golden sands, sea-facing suites, and exquisite Odia and coastal dining.",
+    },
+    {
+      id: "gpl2", name: "Swosti Palm Resort", type: "resort", stars: 4,
+      avgPricePerNight: 4200, town: "Gopalpur Beach",
+      contact: "+91-680-224-3718",
+      bookingUrl: "https://www.swostihotels.com/swosti-palm-resort",
+      amenities: ["Lawn Dining", "Bar & Restaurant", "Bicycle Rental", "Wi-Fi", "Travel Desk"],
+      notes: "Charming resort situated a few steps from the historic 1871 lighthouse. Cozy wood-accented rooms, attentive hospitality, and fresh catch seafood platters.",
+    },
+    {
+      id: "gpl3", name: "Panthanivas Gopalpur (OTDC)", type: "hotel", stars: 3,
+      avgPricePerNight: 2400, town: "Gopalpur-on-Sea",
+      contact: "+91-680-224-3931",
+      bookingUrl: "https://www.panthanivas.com/gopalpur",
+      amenities: ["Sea View Rooms", "Restaurant", "Garden", "Parking"],
+      notes: "Prime beach-facing state tourism hotel providing sweeping views of the Bay of Bengal surf. Great value, peaceful gardens, and immediate access to the evening promenade.",
+    },
+    {
+      id: "gpl4", name: "Sea Pearl Beach Resort", type: "hotel", stars: 2,
+      avgPricePerNight: 1600, town: "Gopalpur",
+      contact: "+91-94372-11880",
+      amenities: ["Balcony Rooms", "Room Service", "Travel Desk", "Hot Water"],
+      notes: "Budget-friendly seaside stay popular with independent travelers and photographers wanting early morning lighthouse sunrises and beach walks.",
+    },
+  ],
+
+  "netarhat-4-days": [
+    {
+      id: "nth1", name: "Hotel Prabhat Vihar (JTDC)", type: "resort", stars: 3,
+      avgPricePerNight: 2400, town: "Netarhat Hilltop",
+      contact: "+91-6569-277-217",
+      bookingUrl: "https://tourism.jharkhand.gov.in",
+      amenities: ["Panoramic Sunrise View", "Dining Hall", "Lawn", "Room Heaters", "Parking"],
+      notes: "The legendary hilltop property run by Jharkhand Tourism perched on the edge of the plateau. Famous for offering jaw-dropping views of sunrise over the Chotanagpur forest ranges right from your private terrace.",
+    },
+    {
+      id: "nth2", name: "The Royal Retreat Netarhat", type: "resort", stars: 3,
+      avgPricePerNight: 3500, town: "Netarhat",
+      contact: "+91-94311-22990",
+      amenities: ["Pine Grove View", "Multi-Cuisine Restaurant", "Bonfire", "Hot Water", "Garden"],
+      notes: "A serene nature retreat set amidst fragrant chir pine woods. Spacious cottage-style rooms, warm hospitality, bonfire evenings, and guided trails to Magnolia Sunset Point.",
+    },
+    {
+      id: "nth3", name: "Forest Rest House Netarhat", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1200, town: "Netarhat",
+      contact: "+91-6569-277-203",
+      amenities: ["British Era Heritage", "Forest Setting", "Basic Dining", "Peaceful"],
+      notes: "Colonial-era stone bungalow built during the British Raj. Surrounded by towering sal trees and wild orchids. Requires booking through the Latehar Forest Division.",
+    },
+    {
+      id: "nth4", name: "Pine View Eco Cottages", type: "homestay", stars: 3,
+      avgPricePerNight: 1800, town: "Netarhat Plateau",
+      contact: "+91-93041-88450",
+      amenities: ["Local Home-Cooked Food", "Campfire", "Orchard", "Hot Water"],
+      notes: "Family-run homestay near the pear and apple orchards. Warm tribal hospitality, authentic seasonal meals (including local Rugra mushrooms), and intimate local insights.",
+    },
+  ],
+
+  "betla-national-park-4-days": [
+    {
+      id: "btl1", name: "Hotel Van Vihar (JTDC)", type: "resort", stars: 3,
+      avgPricePerNight: 2200, town: "Betla Gate",
+      contact: "+91-6567-226-513",
+      bookingUrl: "https://tourism.jharkhand.gov.in",
+      amenities: ["Safari Booking Desk", "Restaurant", "Jungle View", "AC & Non-AC", "Lawn"],
+      notes: "Conveniently situated right at the main entry gate of Betla National Park. Excellent safari desk assisting with morning elephant safaris and afternoon gypsy drives into the tiger reserve.",
+    },
+    {
+      id: "btl2", name: "Betla Forest Tree House & Rest House", type: "guesthouse", stars: 3,
+      avgPricePerNight: 2500, town: "Inside Betla Forest",
+      contact: "+91-6567-226-522",
+      amenities: ["Canopy Tree House", "Wildlife Waterhole View", "Eco-friendly", "Forest Canteen"],
+      notes: "An enchanting wooden treehouse perched high in the forest canopy directly overlooking a salt lick and waterhole where wild herds of chital, gaur, and wild boars gather at dusk.",
+    },
+    {
+      id: "btl3", name: "The Roar Resort Palamu", type: "resort", stars: 3,
+      avgPricePerNight: 3200, town: "Daltonganj-Betla Road",
+      contact: "+91-94313-77400",
+      amenities: ["Swimming Pool", "Garden", "Jungle Treks", "Restaurant", "Wi-Fi"],
+      notes: "Comfortable safari lodge on the outskirts of Betla. Modern amenities, refreshing pool after dusty safari trails, and bonfires with local folk music under starry skies.",
+    },
+    {
+      id: "btl4", name: "Wild Camp Betla Eco Cottages", type: "camp", stars: 2,
+      avgPricePerNight: 1600, town: "Betla",
+      contact: "+91-98351-44211",
+      amenities: ["Swiss Tents", "Bonfire", "Local Guide", "Home-Style Food"],
+      notes: "Eco-camp featuring sturdy safari tents on raised platforms with attached baths. Ideal for wildlife enthusiasts who appreciate being close to nature and listening to jungle sounds at night.",
+    },
+  ],
+
+  "kalimpong-5-days": [
+    {
+      id: "klp1", name: "The Elgin Silver Oaks", type: "hotel", stars: 5,
+      avgPricePerNight: 7800, town: "Rinkingpong Road, Kalimpong",
+      contact: "+91-3552-255-296",
+      bookingUrl: "https://www.elginhotels.com/silver-oaks-kalimpong",
+      amenities: ["Colonial Heritage Decor", "Himalayan View Garden", "Fine Dining", "Bar", "Spa"],
+      notes: "Legendary heritage manor originally built in 1930 for a British jute magnate. Features teak floors, lithographs, blooming landscaped gardens, and direct views of Mount Kanchenjunga.",
+    },
+    {
+      id: "klp2", name: "Morgan House Tourism Lodge (WBTDC)", type: "hotel", stars: 3,
+      avgPricePerNight: 2800, town: "Durpin Dara, Kalimpong",
+      contact: "+91-3552-255-384",
+      bookingUrl: "https://www.wbtdcl.com",
+      amenities: ["Colonial Stone Architecture", "Fireplaces", "Restaurant", "Golf Course View"],
+      notes: "Iconic 1930s British stone mansion with sloping gabled roofs, creepers, and chimneys perched on Durpin Dara hill. Overlooks the Kalimpong army golf course and mountain ridges.",
+    },
+    {
+      id: "klp3", name: "Mayfair Himalayan Spa Resort", type: "resort", stars: 5,
+      avgPricePerNight: 8200, town: "Upper Cart Road, Kalimpong",
+      contact: "+91-3552-255-004",
+      bookingUrl: "https://www.mayfairhotels.com/kalimpong",
+      amenities: ["Heated Pool", "Luxury Spa", "Valley View Suites", "Kids Play Area", "Boutique Bar"],
+      notes: "Lavish five-star sanctuary combining traditional Sikkimese and European mountain architecture. Unmatched spa therapies, gourmet dining, and manicured terrace lawns.",
+    },
+    {
+      id: "klp4", name: "Himalayan Forest Homestay", type: "homestay", stars: 3,
+      avgPricePerNight: 1800, town: "Lower Echhey, Kalimpong",
+      contact: "+91-98320-88334",
+      amenities: ["Organic Farm", "Home-Cooked Meals", "Valley Balcony", "Wi-Fi", "Pet-Friendly"],
+      notes: "Warm Nepali and Lepcha family homestay in a quiet pine hamlet 3 km from town. Home-grown organic vegetables, authentic buckwheat pancakes, and family warmth.",
+    },
+  ],
+
+  "rishyap-4-days": [
+    {
+      id: "rsp1", name: "Sleeping Buddha Homestay Rishyap", type: "homestay", stars: 3,
+      avgPricePerNight: 1600, town: "Rishyap Ridge",
+      contact: "+91-98324-65112",
+      amenities: ["Unobstructed Kanchenjunga View", "Lepcha Cooking", "Wooden Cottages", "Room Heater"],
+      notes: "Perched high on the northern cliff of Rishyap with front-row panoramic views of the entire Kanchenjunga massif (the 'Sleeping Buddha' formation). Cozy pine-panelled wooden rooms.",
+    },
+    {
+      id: "rsp2", name: "Neora Valley Eco Huts", type: "resort", stars: 3,
+      avgPricePerNight: 2400, town: "Rishyap-Lava Forest",
+      contact: "+91-94340-44910",
+      amenities: ["Forest Cottages", "Birdwatching Trails", "Restaurant", "Bonfire", "Hot Water"],
+      notes: "Nestled right at the boundary of the pristine Neora Valley National Park. Surrounded by blooming rhododendrons in spring and visited by rare Himalayan birds like the scarlet minivet.",
+    },
+    {
+      id: "rsp3", name: "Sonar Bangla Rishyap", type: "hotel", stars: 3,
+      avgPricePerNight: 2800, town: "Rishyap",
+      contact: "+91-3552-265-100",
+      amenities: ["Glass Viewing Lounge", "Multi-Cuisine Food", "Heated Beds", "Power Backup"],
+      notes: "Modern comfortable hotel with glass-fronted viewing balconies facing the Great Himalayan snow range. Dependable power backup and warm hospitality in sub-zero winter nights.",
+    },
+    {
+      id: "rsp4", name: "Sunakhari Pine Resort", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1500, town: "Rishyap Village",
+      contact: "+91-97330-12888",
+      amenities: ["Garden", "Himalayan View", "Campfire", "Simple Fresh Food"],
+      notes: "Quaint timber cabins set amidst alpine wild flowers. A peaceful haven for travelers looking to disconnect from phone signals and wake up to 360-degree snow peak vistas.",
+    },
+  ],
+
+  "jhargram-3-days": [
+    {
+      id: "jgr1", name: "The Jhargram Palace Heritage Homestay", type: "resort", stars: 4,
+      avgPricePerNight: 4500, town: "Jhargram Town",
+      contact: "+91-98300-47120",
+      bookingUrl: "https://www.jhargrampalace.com",
+      amenities: ["Royal Palace Suites", "Heritage Grounds", "Royal Dining", "Museum Tour", "Free Wi-Fi"],
+      notes: "Live like royal nobility in the authentic residential wing of the 16th-century Malla Deb dynasty palace. Stately Italianate arches, antique four-poster teak beds, and historic royal dining.",
+    },
+    {
+      id: "jgr2", name: "WBFDC Jhargram Nature Resort (Prakriti Tirtha)", type: "resort", stars: 3,
+      avgPricePerNight: 2000, town: "Ghoradhara, Jhargram",
+      contact: "+91-3221-255-010",
+      bookingUrl: "https://www.wbfdc.com",
+      amenities: ["Sal Forest Cottages", "Butterfly Garden", "Restaurant", "AC Rooms", "Lawn"],
+      notes: "Green forest retreat operated by West Bengal Forest Development Corporation. Peaceful wooden cottages spread across acres of manicured gardens and dense tropical sal woods.",
+    },
+    {
+      id: "jgr3", name: "Rajbari Tourist Complex", type: "hotel", stars: 2,
+      avgPricePerNight: 1500, town: "Jhargram",
+      contact: "+91-3221-255-241",
+      amenities: ["Spacious Rooms", "Traditional Bengali Food", "Car Parking", "Travel Desk"],
+      notes: "Comfortable and budget-friendly base located just 5 minutes walk from the royal gates. Clean rooms and quick access to local Dokra metal craft artisan workshops.",
+    },
+    {
+      id: "jgr4", name: "Belpahari Forest Eco Rest House", type: "guesthouse", stars: 2,
+      avgPricePerNight: 1200, town: "Belpahari",
+      contact: "+91-94345-21098",
+      amenities: ["Tribal Village Trail", "Forest Canopy", "Basic Amenities", "Peaceful"],
+      notes: "Rustic resthouse in the rugged Belpahari forest hills, 45 km from Jhargram. Surrounded by mahua groves, Dulung river streams, and ancient tribal rock caves.",
+    },
+  ],
 };
 
 export const DEFAULT_STAYS: HotelSuggestion[] = [

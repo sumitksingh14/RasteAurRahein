@@ -52,6 +52,13 @@ export const TRIP_WEATHER_COORDS: Record<string, WeatherLocation> = {
   "palitana-3-days": { name: "Palitana, Shatrunjaya", lat: 21.5222, lon: 71.8286 },
   "varanasi-ayodhya-prayagraj-5-days": { name: "Varanasi (Kashi Dham)", lat: 25.3176, lon: 82.9739 },
   "tawang-7-days": { name: "Tawang, Arunachal Pradesh", lat: 27.5860, lon: 91.8594 },
+  "chandipur-4-days": { name: "Chandipur, Balasore", lat: 21.4682, lon: 87.0163 },
+  "gopalpur-on-sea-4-days": { name: "Gopalpur-on-Sea", lat: 19.2612, lon: 84.9088 },
+  "netarhat-4-days": { name: "Netarhat, Latehar", lat: 23.4795, lon: 84.2694 },
+  "betla-national-park-4-days": { name: "Betla National Park", lat: 23.8869, lon: 84.1884 },
+  "kalimpong-5-days": { name: "Kalimpong", lat: 27.0594, lon: 88.4695 },
+  "rishyap-4-days": { name: "Rishyap (Rishop)", lat: 27.1083, lon: 88.6472 },
+  "jhargram-3-days": { name: "Jhargram Palace", lat: 22.4530, lon: 86.9840 },
 };
 
 // ---------------------------------------------------------------------------
@@ -68,15 +75,15 @@ export const REGION_WEATHER_COORDS: Record<string, RegionWeatherConfig> = {
   "south-india": {
     hubTowns: [
       { name: "Mysore", lat: 12.2958, lon: 76.6394 },
-      { name: "Kochi", lat: 9.9312, lon: 76.2673 },
       { name: "Ooty", lat: 11.4102, lon: 76.6950 },
+      { name: "Munnar", lat: 10.0889, lon: 77.0595 },
     ],
   },
   rajasthan: {
     hubTowns: [
       { name: "Jaisalmer", lat: 26.9157, lon: 70.9083 },
-      { name: "Jodhpur", lat: 26.2389, lon: 73.0243 },
       { name: "Udaipur", lat: 24.5854, lon: 73.7125 },
+      { name: "Jaipur", lat: 26.9124, lon: 75.7873 },
     ],
   },
   coastal: {
@@ -98,6 +105,13 @@ export const REGION_WEATHER_COORDS: Record<string, RegionWeatherConfig> = {
       { name: "Bhopal", lat: 23.2599, lon: 77.4126 },
       { name: "Orchha / Jhansi", lat: 25.3524, lon: 78.6433 },
       { name: "Jagdalpur (Bastar)", lat: 19.0740, lon: 82.0080 },
+    ],
+  },
+  "east-india": {
+    hubTowns: [
+      { name: "Bhubaneswar", lat: 20.2961, lon: 85.8245 },
+      { name: "Ranchi", lat: 23.3441, lon: 85.3096 },
+      { name: "Kalimpong", lat: 27.0594, lon: 88.4695 },
     ],
   },
 };

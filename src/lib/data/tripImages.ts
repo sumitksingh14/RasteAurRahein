@@ -111,6 +111,15 @@ export const TRIP_IMAGES: Record<string, string> = {
 
   // Uttar Pradesh Spiritual Triangle (from Mumbai/Pune)
   "varanasi-ayodhya-prayagraj-5-days": "/images/varanasi-ayodhya-prayagraj.jpg",
+
+  // East India Offbeat Destinations (from Mumbai/Pune)
+  "chandipur-4-days": "/images/chandipur.jpg",
+  "gopalpur-on-sea-4-days": "/images/gopalpur-on-sea.jpg",
+  "netarhat-4-days": "/images/netarhat.jpg",
+  "betla-national-park-4-days": "/images/betla-national-park.jpg",
+  "kalimpong-5-days": "/images/kalimpong.jpg",
+  "rishyap-4-days": "/images/rishyap.jpg",
+  "jhargram-3-days": "/images/jhargram.jpg",
 };
 
 export const DEFAULT_TRIP_IMAGE = "/images/leh-ladakh-pangong-lake.jpg";

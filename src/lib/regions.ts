@@ -118,6 +118,23 @@ export const REGIONS: RegionConfig[] = [
     heroAlt: "Crystal clear Umngot River in Dawki Meghalaya",
     related: ["himalayas", "central-india", "south-india"],
   },
+  {
+    slug: "east-india",
+    label: "East India",
+    headline: "The Mystical East & Bay of Bengal",
+    description:
+      "Vanishing sea tides, colonial beach ports, cloud plateaus of Chotanagpur, ancient tiger forts, and Eastern Himalayan hideaways across Odisha, Jharkhand, and West Bengal.",
+    intro:
+      "East India is an evocative tapestry of biodiversity, deep tribal history, and forgotten maritime heritage. From Chandipur's vanishing ocean tides and Gopalpur's colonial lighthouse to Netarhat's pine cloud plateaus, Betla's overgrown 16th-century jungle forts, Jhargram's royal palaces, and the snow peak silence of Kalimpong and Rishyap, these offbeat journeys reward travelers with profound authenticity.",
+    tags: [
+      "East India", "Odisha", "West Bengal", "Jharkhand", "Chandipur",
+      "Gopalpur", "Netarhat", "Betla", "Kalimpong", "Rishyap",
+      "Jhargram", "Chotanagpur", "Bay of Bengal", "Palamu",
+    ],
+    heroImage: "/images/chandipur.jpg",
+    heroAlt: "Chandipur vanishing sea beach and golden sands, Odisha",
+    related: ["coastal", "himalayas", "central-india", "northeast-india"],
+  },
 ];
 
 /**
@@ -226,6 +243,15 @@ export const TRIP_REGION_MAP: Record<string, string[]> = {
 
   // ── 7. Sacred Gangetic Triangle ──
   "varanasi-ayodhya-prayagraj-5-days": ["central-india", "himalayas"],
+
+  // ── 8. East India Offbeat Expeditions (7 trips) ──
+  "chandipur-4-days": ["east-india", "coastal"],
+  "gopalpur-on-sea-4-days": ["east-india", "coastal"],
+  "netarhat-4-days": ["east-india", "central-india"],
+  "betla-national-park-4-days": ["east-india", "central-india"],
+  "kalimpong-5-days": ["east-india", "himalayas"],
+  "rishyap-4-days": ["east-india", "himalayas"],
+  "jhargram-3-days": ["east-india"],
 };
 
 /**

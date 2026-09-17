@@ -6,6 +6,7 @@ import { COASTAL_TRIPS } from "./coastal";
 import { CENTRAL_INDIA_TRIPS } from "./central-india";
 import { SOUTH_INDIA_TRIPS } from "./south-india";
 import { RAJASTHAN_TRIPS } from "./rajasthan";
+import { EAST_INDIA_TRIPS } from "./east-india";
 
 /**
  * Combined trip dataset from all regions.
@@ -18,6 +19,7 @@ import { RAJASTHAN_TRIPS } from "./rajasthan";
  *    MP / Chhattisgarh              →  trips/central-india.ts
  *    Kerala / Karnataka / TN        →  trips/south-india.ts
  *    Rajasthan / Gujarat / UP       →  trips/rajasthan.ts
+ *    East India (Odisha, WB, JH)    →  trips/east-india.ts
  *
  * 2. Add its slug → region(s) in src/lib/regions.ts  TRIP_REGION_MAP.
  *
@@ -31,6 +33,7 @@ export const DEMO_TRIPS: Trip[] = [
   ...CENTRAL_INDIA_TRIPS,
   ...SOUTH_INDIA_TRIPS,
   ...RAJASTHAN_TRIPS,
+  ...EAST_INDIA_TRIPS,
 ];
 
 // Named region exports for direct region-scoped access
@@ -41,4 +44,5 @@ export {
   CENTRAL_INDIA_TRIPS,
   SOUTH_INDIA_TRIPS,
   RAJASTHAN_TRIPS,
+  EAST_INDIA_TRIPS,
 };

@@ -1664,6 +1664,190 @@ export const FOOD_DATA: Record<string, FoodSpot[]> = {
       notes: "Before your departure flight, grab an Assamese thali at the airport restaurants or in Fancy Bazar, Guwahati. Tenga (sour fish curry) and Khar are must-tries you won't easily find elsewhere in India.",
     },
   ],
+
+  // ── East India Offbeat Destinations ──────────────────────────────────────
+  "chandipur-4-days": [
+    {
+      id: "chp_f1", name: "Shanti Niwas Seafood Restaurant", type: "restaurant", town: "Chandipur Beach",
+      mustTry: ["Kankada Jhola (Spicy Bay of Bengal Crab Curry)", "Bagda Chingudi Fry (Tiger Prawns)", "Ilish Machha Bhaja (Hilsa Fish)"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "The go-to seafood diner overlooking the receding tide. Fishermen deliver catches twice daily from the Balaramgadi harbor. The spicy crab curry simmered with whole spices and mustard paste is legendary.",
+    },
+    {
+      id: "chp_f2", name: "Balasore Old Station Mudhi Mansa Stalls", type: "street-food", town: "Balasore (near Station)",
+      mustTry: ["Mudhi Mansa (Puffed Rice with Slow-Cooked Mutton Gravy)", "Bara Ghugni", "Rasagola"],
+      priceRange: "₹", isVeg: false,
+      notes: "The quintessential culinary heritage of Mayurbhanj and Balasore. Crunchy puffed rice steeped in rich, fiery mutton curry infused with garlic and green chillies. Eaten as a hearty breakfast or afternoon ritual.",
+    },
+    {
+      id: "chp_f3", name: "Hotel Subham Sea Pearl Dining", type: "restaurant", town: "Chandipur Coast",
+      mustTry: ["Chhena Poda (Caramelized Baked Cheese Cake)", "Odia Dalma with Rice", "Potala Rasa (Pointed Gourd in Coconut Paste)"],
+      priceRange: "₹₹", isVeg: true,
+      notes: "Excellent for authentic vegetarian Odia cuisine. Dalma (lentils slow-cooked with pumpkin, raw banana, and roasted cumin-chilli tempering) and warm freshly baked Chhena Poda.",
+    },
+    {
+      id: "chp_f4", name: "Balaramgadi Fish Landing Canteens", type: "dhaba", town: "Balaramgadi River Estuary",
+      mustTry: ["Pomfret Tawa Fry", "Crab Sukha", "Steamed Rice with Rohu Kalia"],
+      priceRange: "₹", isVeg: false,
+      notes: "Rustic sheds right at the river-sea confluence where boats unload their sea harvest. Unmatched freshness — choose your fish directly from the ice crates and have it pan-fried with coastal spices.",
+    },
+  ],
+
+  "gopalpur-on-sea-4-days": [
+    {
+      id: "gpl_f1", name: "The Dining Room at Mayfair Palm Beach", type: "restaurant", town: "Gopalpur-on-Sea",
+      mustTry: ["Chingudi Malai Curry (Prawns in Coconut Milk)", "Crab Masala", "Chhena Jhili Sweet", "Tandoori Pomfret"],
+      priceRange: "₹₹₹", isVeg: false,
+      notes: "Colonial-style fine dining right by the beach lawns. Exceptional seafood sourced from local Ganjam fishermen and gourmet regional Odia delicacies served with five-star finesse.",
+    },
+    {
+      id: "gpl_f2", name: "Giri Market Street Food Hub", type: "street-food", town: "Berhampur (15 km from Gopalpur)",
+      mustTry: ["Berhampuri Puri-Upma with Sambar & Chutney", "Giri Achari Mutton Biryani", "Achaar (Famous Ganjam Pickles)"],
+      priceRange: "₹", isVeg: false,
+      notes: "Berhampur is celebrated as the culinary capital of southern Odisha. The iconic 'Puri-Upma' (crispy poori topped with fluffy semolina upma and spicy chana curry) is a beloved breakfast tradition.",
+    },
+    {
+      id: "gpl_f3", name: "Sea Pearl Multi-Cuisine Diner", type: "restaurant", town: "Beach Promenade, Gopalpur",
+      mustTry: ["Gopalpur Fried Fish", "Mustard Machha Besara", "Kanika (Sweet Fragrant Pulao)"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Lively family restaurant on the promenade. Order the catch of the day marinated in Ganjam mustard paste and pan-roasted on a cast iron skillet.",
+    },
+    {
+      id: "gpl_f4", name: "Tampara Lake Boating Club Cafe", type: "cafe", town: "Tampara Lake, Chatrapur",
+      mustTry: ["Fried Cashew Nuts (Local Ganjam Harvest)", "Spiced Tea", "Chhena Gaja"],
+      priceRange: "₹", isVeg: true,
+      notes: "Idyllic lakefront spot with breezy views of freshwater lagoons and rolling casuarina woods. The freshly roasted local cashews seasoned with black pepper are irresistible.",
+    },
+  ],
+
+  "netarhat-4-days": [
+    {
+      id: "nth_f1", name: "Prabhat Vihar JTDC Restaurant", type: "restaurant", town: "Netarhat Hilltop",
+      mustTry: ["Dhuska with Chana-Aloo Ghugni", "Dehati Chicken Curry", "Marua Roti (Finger Millet Bread) with Ghee"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Commanding terrace dining overlooking the mist-filled valleys. Dhuska (deep-fried savory rice and lentil fritters) served with spicy chickpea curry is the iconic Jharkhand breakfast.",
+    },
+    {
+      id: "nth_f2", name: "Magnolia Point Tea & Snack Stalls", type: "street-food", town: "Magnolia Sunset Point",
+      mustTry: ["Kulhad Masala Chai", "Hot Pyaaji (Onion Pakoras)", "Roasted Sweet Corn"],
+      priceRange: "₹", isVeg: true,
+      notes: "Sipping steaming spiced ginger tea from clay kulhads while watching the crimson sun sink behind the Chotanagpur forest ranges is the ultimate Netarhat tradition.",
+    },
+    {
+      id: "nth_f3", name: "Netarhat Tribal Home Kitchens", type: "homestay-kitchen", town: "Netarhat Village",
+      mustTry: ["Rugra Mushroom Curry (Wild seasonal puffballs)", "Bamboo Shoot Pickle", "Latha (Mahua Flower delicacy)"],
+      priceRange: "₹", isVeg: false,
+      notes: "Authentic indigenous Oraon and Munda dishes. Rugra (rare subterranean wild mushrooms gathered from sal root beds in the monsoons) cooked with roasted ground spices is a gastronomic marvel.",
+    },
+    {
+      id: "nth_f4", name: "Ghaghra Highway Dhaba", type: "dhaba", town: "Ghaghra (en route to Ranchi)",
+      mustTry: ["Clay-Oven Handi Mutton", "Garlic Tandoori Roti", "Chilka Roti"],
+      priceRange: "₹", isVeg: false,
+      notes: "Popular travelers' pit stop on the Western Plateau highway. The handi mutton is simmered for four hours in unglazed clay pots with whole garlic pods over wood charcoal.",
+    },
+  ],
+
+  "betla-national-park-4-days": [
+    {
+      id: "btl_f1", name: "Van Vihar Forest Dining Hall", type: "restaurant", town: "Betla Gate",
+      mustTry: ["Litti Chokha with Baingan & Tomato Bharta", "Country Chicken Kasha", "Sattu Sharbat"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Located at the park entrance. Wholesome rustic meals perfect before or after jungle safaris. Freshly roasted littis stuffed with spiced sattu and dipped in pure desi ghee.",
+    },
+    {
+      id: "btl_f2", name: "Daltonganj Champaran Meat House", type: "restaurant", town: "Daltonganj (25 km from Betla)",
+      mustTry: ["Ahuna Mutton (Earthen Pot Mutton)", "Steamed Basmati Rice", "Rumali Roti"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Famous regional meat house serving authentic Palamu Ahuna mutton. Cooked in sealed earthen pots with mustard oil, whole shallots, and fragrant dry red chillies.",
+    },
+    {
+      id: "btl_f3", name: "Betla Jungle Dhaba", type: "dhaba", town: "Main Road, Betla",
+      mustTry: ["Aloo Peda Sweet", "Dal Fry Tadka", "Spicy Egg Curry", "Tawa Bhakri"],
+      priceRange: "₹", isVeg: false,
+      notes: "Friendly highway eatery run by local naturalists and safari drivers. Great place to swap tiger and elephant sighting stories over hot chai and dal tadka.",
+    },
+    {
+      id: "btl_f4", name: "Kechki Sangam Forest Kiosk", type: "street-food", town: "Kechki (River Confluence)",
+      mustTry: ["Ginger Lemon Tea", "Besan Pakoras", "Roasted Peanuts"],
+      priceRange: "₹", isVeg: true,
+      notes: "Serene snack point at the meeting point of the Auranga and Koel rivers where Satyajit Ray filmed 'Aranyer Din Ratri'. Peaceful river breezes and fresh pakoras.",
+    },
+  ],
+
+  "kalimpong-5-days": [
+    {
+      id: "klp_f1", name: "Art Cafe Kalimpong", type: "cafe", town: "Singamari, Kalimpong",
+      mustTry: ["Kalimpong Cheese & Olive Toast", "Smoked Chicken Pizza", "Blueberry Cheesecake", "French Press Himalayan Coffee"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Bohemian open-air cafe perched over a sweeping valley with fairy lights and artistic wooden interiors. Famous for introducing modern cafe culture using locally made Kalimpong Gouda and Cheddar cheese.",
+    },
+    {
+      id: "klp_f2", name: "Za Khang Authentic Bhutanese Restaurant", type: "restaurant", town: "Durpin Dara Road, Kalimpong",
+      mustTry: ["Ema Datshi (Chilli Cheese Stew)", "Shamu Datshi (Mushroom Cheese)", "Kewa Datshi (Potato Cheese)", "Red Rice with Suja (Butter Tea)"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "The premier Bhutanese culinary destination in Eastern India. Traditional wooden low seating and authentic recipes from the Kingdom of Bhutan featuring rich mountain yak cheese and organic peppers.",
+    },
+    {
+      id: "klp_f3", name: "Gompu's Bar & Restaurant", type: "restaurant", town: "D.B. Giri Road, Kalimpong",
+      mustTry: ["Steamed Pork Momos with Dalle Chilli Chutney", "Thukpa (Tibetan Noodle Soup)", "Shaphalay (Crispy Meat Pie)"],
+      priceRange: "₹", isVeg: false,
+      notes: "Legendary 70-year-old family restaurant in the center of Kalimpong bazaar. Renowned throughout North Bengal for producing the juiciest, thinnest-skinned steamed momos paired with fiery local Dalle Khursani chilli sauce.",
+    },
+    {
+      id: "klp_f4", name: "Lark's Provisions & Confectionery", type: "street-food", town: "Kalimpong Main Market",
+      mustTry: ["Artisanal Kalimpong Cheese Wheel", "Kalimpong Lolly (Hard Candy)", "Himalayan Honey", "Dalle Khursani Pickle"],
+      priceRange: "₹", isVeg: true,
+      notes: "Historic provision store that has been curing Dutch-style Kalimpong cheese wheels since the British colonial period. Essential shopping stop to take Himalayan cheese and local artisanal preserves back home.",
+    },
+  ],
+
+  "rishyap-4-days": [
+    {
+      id: "rsp_f1", name: "Tiffin Dara Homestay Kitchen", type: "homestay-kitchen", town: "Rishyap Ridge",
+      mustTry: ["Gundruk Jhol (Fermented Leaf Soup)", "Kinema (Fermented Soya Bean Curry)", "Kodo ko Roti (Finger Millet Flatbread)", "Sel Roti with Aloo Dum"],
+      priceRange: "₹", isVeg: false,
+      notes: "Heartwarming home-cooked Himalayan kitchen. In the freezing mountain evenings, steaming bowls of Gundruk soup made with sundried mustard greens and ginger restore energy instantly.",
+    },
+    {
+      id: "rsp_f2", name: "Lava Orchid Restaurant & Bakery", type: "restaurant", town: "Lava Bazaar (4 km from Rishyap)",
+      mustTry: ["Chicken Tingmo (Steamed Tibetan Buns)", "Tibetan Butter Tea (Po Cha)", "Gyathuk (Flat Noodles in Broth)"],
+      priceRange: "₹", isVeg: false,
+      notes: "Comfortable dining hall in Lava pine village. Fluffy steamed flower-shaped Tingmo bread dipped into rich bone broth or spicy vegetable curry.",
+    },
+    {
+      id: "rsp_f3", name: "Neora Pine View Dhaba", type: "dhaba", town: "Rishyap Trail",
+      mustTry: ["Maggi with Local Mountain Herbs & Dalle Chilli", "Boiled Himalayan Eggs", "Hot Lemon Ginger Honey Tea"],
+      priceRange: "₹", isVeg: true,
+      notes: "Rustic wooden viewpoint shack along the trek route to Tiffin Dara. Nothing beats eating spicy mountain noodles while gazing directly at the 8,586m peaks of Kanchenjunga.",
+    },
+  ],
+
+  "jhargram-3-days": [
+    {
+      id: "jgr_f1", name: "Jhargram Rajbari Royal Dining", type: "restaurant", town: "Jhargram Palace Grounds",
+      mustTry: ["Rajbari Mutton Kasha", "Postor Bora (Crisp Poppyseed Patties)", "Chitol Machher Muitha (Fish Dumplings)", "Gobindobhog Rice with Ghee"],
+      priceRange: "₹₹₹", isVeg: false,
+      notes: "Regal culinary heritage preserved by the royal family of Jhargram. Dishes prepared using age-old ancestral recipes with freshly ground spices, slow woodfire simmering, and local cold-pressed mustard oil.",
+    },
+    {
+      id: "jgr_f2", name: "Aahar Restaurant & Tribal Kitchen", type: "restaurant", town: "Jhargram Station Road",
+      mustTry: ["Shukto (Bittersweet Veg Medley)", "Katla Machher Jhol", "Ilish Vapa (Steamed Hilsa in Mustard)", "Mishti Doi"],
+      priceRange: "₹₹", isVeg: false,
+      notes: "Authentic traditional Bengali cuisine. Serves fresh river fish caught daily from the Subarnarekha and Dulung waterways alongside traditional terracotta pots of creamy sweet curd.",
+    },
+    {
+      id: "jgr_f3", name: "Chilkigarh Van Bhojanalaya", type: "dhaba", town: "Chilkigarh Sacred Grove",
+      mustTry: ["Dulung River Small Fish Fry", "Aloo Posto (Potatoes in Poppyseed Paste)", "Lau Ghonto with Bori"],
+      priceRange: "₹", isVeg: false,
+      notes: "Rustic countryside eatery on the banks of Dulung river near Kanak Durga temple. Authentic home-style fare with crunchy sun-dried lentil dumplings (bori) and local river fish.",
+    },
+    {
+      id: "jgr_f4", name: "Belpahari Haat Sweet Stalls", type: "street-food", town: "Belpahari",
+      mustTry: ["Babarsha (Unique Heritage Sweet of Midnapore)", "Chanabora", "Mahua Flower Fritters (seasonal)"],
+      priceRange: "₹", isVeg: true,
+      notes: "Belpahari's weekly tribal market stalls serve Babarsha — a rare 250-year-old delicate filigree pastry soaked in sugar syrup invented for Mughal Emperor Babur during royal travels.",
+    },
+  ],
 };
 
 export const DEFAULT_FOOD: FoodSpot[] = [
