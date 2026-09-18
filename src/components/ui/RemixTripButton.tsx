@@ -64,20 +64,21 @@ export default function RemixTripButton({ trip, style = {} }: RemixTripButtonPro
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
+            id: saved.id,
             title: newTripData.title,
             destination: newTripData.destination,
             days: newTripData.days.length,
             pace: "moderate",
             budget: newTripData.totalBudgetEstimate || "₹30,000",
             travelStyle: (newTripData.tags || []).join(", "),
-            itineraryJson: JSON.stringify({ ...newTripData, id: saved.id }),
+            itineraryJson: JSON.stringify(saved),
           }),
         });
       } catch {
         // LocalStorage fallback already set in addTrip
       }
 
-      router.push(`/itineraries/${saved.id}`);
+      router.push(`/itineraries/${saved.id}?edit=true`);
     } catch (err) {
       console.error("Failed to remix trip:", err);
       setLoading(false);

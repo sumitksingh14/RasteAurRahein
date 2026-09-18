@@ -22,13 +22,14 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { title, destination, days, pace, budget, travelStyle, itineraryJson } = body;
+  const { id, title, destination, days, pace, budget, travelStyle, itineraryJson } = body;
 
   if (!title || !destination || !itineraryJson) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
 
   const itinerary = await saveItinerary(session.userId, {
+    id: typeof id === "string" ? id : undefined,
     title,
     destination,
     days: Number(days) || 1,

@@ -55,9 +55,9 @@ function generateSlug(destination: string): string {
  */
 export async function saveItinerary(
   userId: string,
-  data: Omit<SavedItinerary, "id" | "userId" | "createdAt" | "slug">
+  data: Omit<SavedItinerary, "id" | "userId" | "createdAt" | "slug"> & { id?: string }
 ): Promise<SavedItinerary> {
-  const id = generateId();
+  const id = data.id || generateId();
   const slug = generateSlug(data.destination);
   const createdAt = new Date().toISOString();
 
@@ -69,26 +69,33 @@ export async function saveItinerary(
     ...data,
   };
 
-  // Store hash
-  await redis.hset(itineraryKey(id), {
-    id,
-    slug,
-    userId,
-    title: data.title,
-    destination: data.destination,
-    days: String(data.days),
-    pace: data.pace,
-    budget: data.budget,
-    travelStyle: data.travelStyle,
-    itineraryJson: data.itineraryJson,
-    createdAt,
-  });
+  try {
+    // Store hash
+    await redis.hset(itineraryKey(id), {
+      id,
+      slug,
+      userId,
+      title: data.title,
+      destination: data.destination,
+      days: String(data.days),
+      pace: data.pace,
+      budget: data.budget,
+      travelStyle: data.travelStyle,
+      itineraryJson: data.itineraryJson,
+      createdAt,
+    });
 
-  // Reverse-lookup: slug → id
-  await redis.set(slugKey(slug), id);
+    // Reverse-lookup: slug → id
+    await redis.set(slugKey(slug), id);
+    if (data.id && data.id !== slug) {
+      await redis.set(slugKey(data.id), id);
+    }
 
-  // Prepend to user's list (newest first)
-  await redis.rpush(userItinerariesKey(userId), id);
+    // Prepend to user's list (newest first)
+    await redis.rpush(userItinerariesKey(userId), id);
+  } catch (err) {
+    console.warn("Failed to persist itinerary to Redis:", err);
+  }
 
   return itinerary;
 }
@@ -97,8 +104,13 @@ export async function saveItinerary(
  * Returns all itinerary IDs for this user (newest first).
  */
 export async function getSavedItineraryIds(userId: string): Promise<string[]> {
-  const ids = await redis.lrange(userItinerariesKey(userId), 0, -1);
-  return ids.reverse(); // newest first (RPUSH + reverse)
+  try {
+    const ids = await redis.lrange(userItinerariesKey(userId), 0, -1);
+    return ids.reverse(); // newest first (RPUSH + reverse)
+  } catch (err) {
+    console.warn("getSavedItineraryIds error:", err);
+    return [];
+  }
 }
 
 /**
@@ -107,12 +119,17 @@ export async function getSavedItineraryIds(userId: string): Promise<string[]> {
 export async function getSavedItineraryById(
   id: string
 ): Promise<SavedItinerary | null> {
-  const hash = await redis.hgetall(itineraryKey(id));
-  if (!hash) return null;
-  return {
-    ...hash,
-    days: Number(hash.days),
-  } as unknown as SavedItinerary;
+  try {
+    const hash = await redis.hgetall(itineraryKey(id));
+    if (!hash || !hash.id) return null;
+    return {
+      ...hash,
+      days: Number(hash.days || 0),
+    } as unknown as SavedItinerary;
+  } catch (err) {
+    console.warn("getSavedItineraryById error:", err);
+    return null;
+  }
 }
 
 /**
@@ -121,20 +138,25 @@ export async function getSavedItineraryById(
 export async function getSavedItineraries(
   userId: string
 ): Promise<SavedItinerary[]> {
-  const ids = await getSavedItineraryIds(userId);
-  if (!ids || ids.length === 0) return [];
+  try {
+    const ids = await getSavedItineraryIds(userId);
+    if (!ids || ids.length === 0) return [];
 
-  // Batch all HGETALL calls using Promise.all
-  const rawItineraries = await Promise.all(
-    ids.map(id => redis.hgetall(itineraryKey(id)).catch(() => null))
-  );
+    // Batch all HGETALL calls using Promise.all
+    const rawItineraries = await Promise.all(
+      ids.map(id => redis.hgetall(itineraryKey(id)).catch(() => null))
+    );
 
-  return rawItineraries
-    .filter((hash): hash is Record<string, string> => hash !== null && hash.id !== undefined)
-    .map(hash => ({
-      ...hash,
-      days: Number(hash.days || 0),
-    } as unknown as SavedItinerary));
+    return rawItineraries
+      .filter((hash): hash is Record<string, string> => hash !== null && hash.id !== undefined)
+      .map(hash => ({
+        ...hash,
+        days: Number(hash.days || 0),
+      } as unknown as SavedItinerary));
+  } catch (err) {
+    console.warn("getSavedItineraries error:", err);
+    return [];
+  }
 }
 
 /**
@@ -144,11 +166,16 @@ export async function getSavedItineraries(
 export async function getItineraryBySlug(
   slug: string
 ): Promise<SavedItinerary | null> {
-  const id = (await redis.get(slugKey(slug))) as string | null;
-  if (id) {
-    return getSavedItineraryById(id);
+  try {
+    const id = (await redis.get(slugKey(slug))) as string | null;
+    if (id) {
+      return getSavedItineraryById(id);
+    }
+    return getSavedItineraryById(slug);
+  } catch (err) {
+    console.warn("getItineraryBySlug error:", err);
+    return null;
   }
-  return getSavedItineraryById(slug);
 }
 
 /**
@@ -159,17 +186,22 @@ export async function deleteItinerary(
   userId: string,
   id: string
 ): Promise<boolean> {
-  const hash = await redis.hgetall(itineraryKey(id));
-  if (!hash || hash.userId !== userId) return false;
+  try {
+    const hash = await redis.hgetall(itineraryKey(id));
+    if (!hash || hash.userId !== userId) return false;
 
-  // Remove slug reverse-lookup if present
-  if (hash.slug) await redis.del(slugKey(hash.slug));
+    // Remove slug reverse-lookup if present
+    if (hash.slug) await redis.del(slugKey(hash.slug));
 
-  await redis.del(itineraryKey(id));
+    await redis.del(itineraryKey(id));
 
-  const key = userItinerariesKey(userId);
-  await redis.lrem(key, 0, id);
+    const key = userItinerariesKey(userId);
+    await redis.lrem(key, 0, id);
 
-  return true;
+    return true;
+  } catch (err) {
+    console.warn("deleteItinerary error:", err);
+    return false;
+  }
 }
 
