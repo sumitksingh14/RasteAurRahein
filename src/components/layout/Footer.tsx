@@ -317,7 +317,21 @@ export default function Footer() {
             © {new Date().getFullYear()} Raste Aur Raahein · All rights reserved
           </p>
           <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
-
+            <a
+              href="https://www.profitableratecpmnetwork.com/he3fbuw5pa?key=44f24c10c87012d44d803f2971ea0b72"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: "#6B7280",
+                fontSize: "0.8rem",
+                textDecoration: "none",
+                transition: "color var(--transition)",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#006CE4")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#6B7280")}
+            >
+              Partner Offers
+            </a>
             <p style={{ color: "#6B7280", fontSize: "0.8rem", margin: 0 }}>
               Built with ♥ by{" "}
               <a

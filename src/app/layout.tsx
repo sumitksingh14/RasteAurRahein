@@ -98,7 +98,7 @@ export default function RootLayout({
         <GoogleAnalytics />
         <div style={{ textAlign: "center", padding: "6px 0", fontSize: "0.8rem" }}>
           <a
-            href="https://www.profitableratecpmnetwork.com/vn744vs6b?key=e1ef34b2ac6e4e6e49b61bdde3e4b0d7"
+            href="https://www.profitableratecpmnetwork.com/he3fbuw5pa?key=44f24c10c87012d44d803f2971ea0b72"
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: "#6B7280", textDecoration: "underline" }}
