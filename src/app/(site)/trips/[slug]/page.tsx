@@ -30,6 +30,8 @@ import NewsletterInline from "@/components/ui/NewsletterInline";
 import TripAlertBanner from "@/components/ui/TripAlertBanner";
 import TripSchema from "@/components/ui/TripSchema";
 import TravelerReviews from "@/components/ui/TravelerReviews";
+import TripCTABlock from "@/components/ui/TripCTABlock";
+import TripPartnerLinks from "@/components/ui/TripPartnerLinks";
 
 import { getTripImage } from "@/lib/data/tripImages";
 
@@ -390,7 +392,7 @@ export default async function TripDetailPage({ params }: Props) {
               >
                 Did this help you plan?
               </div>
-              <LikeButton type="trip" id={trip.slug} />
+              <LikeButton type="trip" id={trip.slug} initialCount={trip.likes} />
             </div>
 
             {/* Trip Rating */}
@@ -536,7 +538,12 @@ export default async function TripDetailPage({ params }: Props) {
               </div>
             )}
 
-            {/* PDF Download — always visible; auth gate handled inside component */}
+            {/* Partner / affiliate links */}
+            <div className="glass-card" style={{ padding: "1.25rem", marginTop: "1rem" }}>
+              <TripPartnerLinks tripSlug={trip.slug} country={trip.country} />
+            </div>
+
+            {/* PDF Download — auth gate handled inside component */}
             <PDFDownloadButton trip={trip} />
           </aside>
         </div>
@@ -594,6 +601,15 @@ export default async function TripDetailPage({ params }: Props) {
       <section style={{ padding: "3rem 0", borderTop: "1px solid var(--border)" }}>
         <div className="container" style={{ maxWidth: 900 }}>
           <TravelerReviews tripSlug={trip.slug} />
+        </div>
+      </section>
+
+      {/* ============================================================
+          CUSTOM PLANNING CTA
+      ============================================================ */}
+      <section style={{ padding: "3rem 0", borderTop: "1px solid var(--border)" }}>
+        <div className="container" style={{ maxWidth: 860 }}>
+          <TripCTABlock trip={trip} />
         </div>
       </section>
 

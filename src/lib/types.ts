@@ -68,6 +68,7 @@ export interface Trip {
   gallery?: SanityImage[];
   body?: unknown; // Portable Text
   viewCount?: number;
+  likes?: number;
   totalBudget?: number;
   currency?: string;
   tripType?: string;
@@ -160,3 +161,24 @@ export interface TripComment {
   createdAt: string;
 }
 
+export type FieldNoteCategory =
+  | "gear-review"
+  | "budget-breakdown"
+  | "seasonal-advisory"
+  | "trail-update"
+  | "tips";
+
+export interface FieldNote {
+  _id: string;
+  slug: string;
+  title: string;
+  category: FieldNoteCategory;
+  excerpt: string;
+  body: string; // Markdown
+  coverImageUrl?: string;
+  relatedTripSlug?: string;
+  tags?: string[];
+  readingTime?: number; // minutes
+  _createdAt: string;
+  _updatedAt: string;
+}

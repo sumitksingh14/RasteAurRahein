@@ -13,6 +13,7 @@
 import type { Trip } from "@/lib/types";
 import { safeJsonLd } from "@/lib/jsonld";
 import { getTripImage } from "@/lib/data/tripImages";
+import { getTripAggregateRating } from "@/lib/reviewSchema";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://rasteaurrahein.com";
@@ -129,6 +130,17 @@ export default function TripSchema({ trip }: TripSchemaProps) {
       price: trip.totalBudget,
       priceCurrency: trip.currency ?? "INR",
       availability: "https://schema.org/InStock",
+    };
+  }
+
+  // Add AggregateRating for star snippets in Google Search
+  const aggregateRating = getTripAggregateRating(trip.slug);
+  if (aggregateRating) {
+    touristTripSchema.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: aggregateRating.ratingValue,
+      reviewCount: aggregateRating.reviewCount,
+      bestRating: aggregateRating.bestRating,
     };
   }
 

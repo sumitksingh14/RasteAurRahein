@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin, BedDouble, Users } from "lucide-react";
+import { MapPin, BedDouble, Users, Heart } from "lucide-react";
 import type { Trip } from "@/lib/types";
 import { format } from "date-fns";
 import { useState } from "react";
 import BookmarkButton from "@/components/ui/BookmarkButton";
 import { TripAlertBadge } from "@/components/ui/TripAlertBanner";
+import { getTripDummyLikes } from "@/lib/likes";
 
 import { getTripImage } from "@/lib/data/tripImages";
 
@@ -28,6 +29,7 @@ export default function TripCard({
 }: TripCardProps) {
   const imageSrc = getTripImage(trip.slug);
   const [isHovered, setIsHovered] = useState(false);
+  const likes = trip.likes ?? getTripDummyLikes(trip.slug);
 
   const dateLabel =
     trip.startDate && trip.endDate
@@ -267,7 +269,21 @@ export default function TripCard({
               <Users size={14} color="#6B7280" />
               Solo / Group
             </span>
-
+            <span
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "4px",
+                fontSize: "0.78rem",
+                color: "#E11D48",
+                fontWeight: 600,
+                marginLeft: "auto",
+              }}
+              title={`${likes} traveler likes`}
+            >
+              <Heart size={13} fill="#E11D48" color="#E11D48" />
+              {likes}
+            </span>
           </div>
         </div>
       </Link>

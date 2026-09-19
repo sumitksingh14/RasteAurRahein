@@ -108,7 +108,7 @@ export default function LikeButton({ type, id, initialCount }: LikeButtonProps) 
           flexShrink: 0,
         }}
       />
-      {fetched ? (
+      {fetched || initialCount !== undefined ? (
         <span>{count > 0 ? count : liked ? "1" : "0"}</span>
       ) : (
         <span style={{ opacity: 0.4 }}>…</span>

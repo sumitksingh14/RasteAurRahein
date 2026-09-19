@@ -9,12 +9,13 @@ import NewsletterInline from "@/components/ui/NewsletterInline";
 const companyLinks = [
   { href: "/about", label: "About Us" },
   { href: "/trips", label: "Find a Trip" },
+  { href: "/journal", label: "Field Notes" },
   { href: "/contact", label: "Contact Us" },
   { href: "/import", label: "Import Itinerary" },
 ];
 
 const helpLinks = [
-  { href: "/trips", label: "Find a Trip" },
+  { href: "/journal", label: "Field Notes & Journal" },
   { href: "/import", label: "How To Import?" },
   { href: "/about", label: "Why Us?" },
   { href: "/contact", label: "FAQs" },

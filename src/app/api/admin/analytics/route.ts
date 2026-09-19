@@ -25,7 +25,7 @@ export async function GET() {
       title: trip.title,
       status: trip.status,
       viewCount: trip.viewCount || 0,
-      likes: results[idx * 2],
+      likes: (trip.likes || 0) + (results[idx * 2] || 0),
       commentCount: results[idx * 2 + 1],
     }));
 

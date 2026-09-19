@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { redis } from "@/lib/redis";
 import { getSession } from "@/lib/session";
+import { getTripDummyLikes } from "@/lib/likes";
 
 function likeKey(type: string, id: string): string {
   return `${type}:likes:${id}`;
@@ -18,13 +19,14 @@ export async function GET(req: NextRequest) {
 
   const key = likeKey(type, id);
   const session = await getSession();
+  const dummyBase = type === "trip" ? getTripDummyLikes(id) : 0;
 
-  const [count, liked] = await Promise.all([
+  const [realCount, liked] = await Promise.all([
     redis.scard(key).catch(() => 0),
     session ? redis.sismember(key, session.userId).catch(() => false) : Promise.resolve(false),
   ]);
 
-  return NextResponse.json({ count, liked });
+  return NextResponse.json({ count: dummyBase + (realCount || 0), liked });
 }
 
 /** POST /api/likes  body: { type, id } → toggles like */
@@ -48,6 +50,7 @@ export async function POST(req: NextRequest) {
     await redis.sadd(key, session.userId);
   }
 
-  const count = await redis.scard(key);
-  return NextResponse.json({ count, liked: !alreadyLiked });
+  const dummyBase = type === "trip" ? getTripDummyLikes(id) : 0;
+  const realCount = (await redis.scard(key).catch(() => 0)) || 0;
+  return NextResponse.json({ count: dummyBase + realCount, liked: !alreadyLiked });
 }

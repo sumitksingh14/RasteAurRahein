@@ -51,6 +51,7 @@ export default async function TripsPage(props: PageProps) {
   const initialBudgetIdx = typeof sp.budgetIdx === 'string' ? parseInt(sp.budgetIdx, 10) : 0;
   const initialRegion = typeof sp.region === 'string' ? sp.region : "Any";
   const initialSortBy = (sp.sortBy === "views" || sp.sortBy === "title" || sp.sortBy === "date") ? sp.sortBy : "date";
+  const initialDifficulty = (sp.difficulty === "Easy" || sp.difficulty === "Moderate" || sp.difficulty === "Hard") ? sp.difficulty : "Any";
 
   // CollectionPage JSON-LD for Google structured data
   const collectionSchema = {
@@ -129,6 +130,7 @@ export default async function TripsPage(props: PageProps) {
         initialBudgetIdx={initialBudgetIdx}
         initialRegion={initialRegion}
         initialSortBy={initialSortBy}
+        initialDifficulty={initialDifficulty as "Any" | "Easy" | "Moderate" | "Hard"}
       />
     </div>
   );

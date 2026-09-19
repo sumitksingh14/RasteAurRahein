@@ -11,6 +11,7 @@ const navLinks = [
   { href: "/trips", label: "Find a Trip" },
   { href: "/ai-planner", label: "Generate Itinerary" },
   { href: "/regions", label: "Regions" },
+  { href: "/journal", label: "Journal" },
   { href: "/weather", label: "Weather 🌤️" },
   { href: "/about", label: "Share Stories" },
   { href: "/contact", label: "Contact" },

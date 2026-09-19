@@ -2,10 +2,18 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Search, SlidersHorizontal, X, TrendingUp, Clock } from "lucide-react";
+import { Search, SlidersHorizontal, X, TrendingUp, Clock, Grid2X2, MapIcon } from "lucide-react";
 import TripCard from "@/components/ui/TripCard";
 import type { Trip } from "@/lib/types";
 import { REGIONS, filterTripsByRegion } from "@/lib/regions";
+import dynamic from "next/dynamic";
+
+const TripsMapExplorer = dynamic(() => import("@/components/ui/TripsMapExplorer"), {
+  ssr: false,
+  loading: () => (
+    <div className="skeleton" style={{ height: 520, borderRadius: "var(--radius-md)" }} />
+  ),
+});
 
 const ALL_TAGS = [
   "Adventure", "Budget", "Solo", "Culture", "Food",
@@ -183,6 +191,7 @@ export default function TripsClient({
   const [budgetIdx, setBudgetIdx] = useState(initialBudgetIdx);
   const [regionLabel, setRegionLabel] = useState(initialRegion || "Any");
   const [difficulty, setDifficulty] = useState<Difficulty>(initialDifficulty);
+  const [viewMode, setViewMode] = useState<"grid" | "map">("grid");
 
   const isFirstMount = useRef(true);
 
@@ -201,13 +210,14 @@ export default function TripsClient({
     if (regionLabel && regionLabel !== "Any") params.set("region", regionLabel);
     if (difficulty && difficulty !== "Any") params.set("difficulty", difficulty);
     if (sortBy && sortBy !== "date") params.set("sortBy", sortBy);
+    if (viewMode === "map") params.set("view", "map");
 
     const queryString = params.toString();
     const newUrl = queryString ? `/trips?${queryString}` : "/trips";
     if (typeof window !== "undefined") {
       window.history.replaceState(null, "", newUrl);
     }
-  }, [query, selectedTags, season, durationIdx, budgetIdx, regionLabel, difficulty, sortBy]);
+  }, [query, selectedTags, season, durationIdx, budgetIdx, regionLabel, difficulty, sortBy, viewMode]);
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
@@ -296,7 +306,7 @@ export default function TripsClient({
           new Date(b._createdAt).getTime() - new Date(a._createdAt).getTime()
       );
     } else if (sortBy === "views") {
-      result.sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0));
+      result.sort((a, b) => ((b.likes || b.viewCount || 0) - (a.likes || a.viewCount || 0)));
     } else if (sortBy === "title") {
       result.sort((a, b) => a.title.localeCompare(b.title));
     }
@@ -314,7 +324,7 @@ export default function TripsClient({
     difficulty !== "Any";
 
   const mostPopular = [...trips]
-    .sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0))
+    .sort((a, b) => ((b.likes || b.viewCount || 0) - (a.likes || a.viewCount || 0)))
     .slice(0, 3);
 
   const activeFilterCount =
@@ -450,6 +460,43 @@ export default function TripsClient({
               <option value="views">Most Popular</option>
               <option value="title">A–Z</option>
             </select>
+
+            {/* Grid / Map toggle */}
+            <div
+              style={{
+                display: "flex",
+                border: "1px solid var(--border)",
+                borderRadius: "var(--radius-sm)",
+                overflow: "hidden",
+                flexShrink: 0,
+              }}
+            >
+              {(["grid", "map"] as const).map((mode) => (
+                <button
+                  key={mode}
+                  id={`view-${mode}-btn`}
+                  onClick={() => setViewMode(mode)}
+                  title={mode === "grid" ? "Grid view" : "Map view"}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                    padding: "0.65rem 0.85rem",
+                    background: viewMode === mode ? "var(--accent-gold-dim)" : "var(--bg-card)",
+                    color: viewMode === mode ? "var(--accent-gold)" : "var(--text-muted)",
+                    border: "none",
+                    cursor: "pointer",
+                    fontSize: "0.78rem",
+                    fontWeight: 600,
+                    fontFamily: "var(--font-sans)",
+                    transition: "all var(--transition)",
+                  }}
+                >
+                  {mode === "grid" ? <Grid2X2 size={14} /> : <MapIcon size={14} />}
+                  {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                </button>
+              ))}
+            </div>
 
             {hasActiveFilters && (
               <button
@@ -631,6 +678,14 @@ export default function TripsClient({
       </div>
 
       <div className="container" style={{ paddingTop: "3rem", paddingBottom: "5rem" }}>
+        {/* Map view */}
+        {viewMode === "map" && (
+          <TripsMapExplorer trips={filtered} />
+        )}
+
+        {/* Grid view */}
+        {viewMode === "grid" && (
+          <>
         {/* Most Popular strip */}
         {sortBy === "date" && !hasActiveFilters && mostPopular.length > 0 && (
           <div style={{ marginBottom: "3rem" }}>
@@ -664,7 +719,8 @@ export default function TripsClient({
         )}
 
         {/* Results header */}
-        <div
+        {viewMode === "grid" && (
+          <div
           style={{
             display: "flex",
             alignItems: "center",
@@ -705,9 +761,10 @@ export default function TripsClient({
             </div>
           )}
         </div>
+        )}
 
         {/* Trip Grid */}
-        {filtered.length > 0 ? (
+        {viewMode === "grid" && filtered.length > 0 && (
           <div className="trip-grid">
             {filtered.map((trip, idx) => {
               const isAboveFold = hasActiveFilters && idx < 2;
@@ -721,7 +778,8 @@ export default function TripsClient({
               );
             })}
           </div>
-        ) : (
+        )}
+        {viewMode === "grid" && filtered.length === 0 && (
           <div
             style={{
               textAlign: "center",
@@ -743,6 +801,8 @@ export default function TripsClient({
               Clear Filters
             </button>
           </div>
+        )}
+        </>
         )}
       </div>
     </div>

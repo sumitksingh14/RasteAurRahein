@@ -3,6 +3,7 @@ import type { Trip, Author } from "./types";
 import { redis } from "./redis";
 import { DEMO_TRIPS } from "./data/trips";
 import { DEMO_AUTHOR } from "./data/author";
+import { getTripDummyLikes } from "./likes";
 
 export { DEMO_TRIPS, DEMO_AUTHOR };
 
@@ -57,19 +58,32 @@ export const getAllTrips = cache(async (): Promise<Trip[]> => {
   const redisTrips = await getRedisTrips();
   const redisSlugs = new Set(redisTrips.map((t) => t.slug));
   const filteredDemo = DEMO_TRIPS.filter((t) => !redisSlugs.has(t.slug));
-  return [...redisTrips, ...filteredDemo].sort(
-    (a, b) => new Date(b._createdAt).getTime() - new Date(a._createdAt).getTime()
-  );
+  return [...redisTrips, ...filteredDemo]
+    .map((trip) => ({
+      ...trip,
+      likes: trip.likes ?? getTripDummyLikes(trip.slug),
+    }))
+    .sort(
+      (a, b) => new Date(b._createdAt).getTime() - new Date(a._createdAt).getTime()
+    );
 });
 
 export const getTripBySlug = cache(async (slug: string): Promise<Trip | null> => {
+  let trip: Trip | null = null;
   try {
     const raw = await redis.get(`trip:${slug}`);
-    if (raw) return JSON.parse(raw) as Trip;
+    if (raw) trip = JSON.parse(raw) as Trip;
   } catch {
     // fall through to static data
   }
-  return getStaticTripBySlug(slug);
+  if (!trip) trip = getStaticTripBySlug(slug);
+  if (trip) {
+    trip = {
+      ...trip,
+      likes: trip.likes ?? getTripDummyLikes(trip.slug),
+    };
+  }
+  return trip;
 });
 
 export const getTripsByRegion = cache(async (regionSlug: string): Promise<Trip[]> => {
