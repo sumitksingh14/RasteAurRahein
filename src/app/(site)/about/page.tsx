@@ -2,14 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Camera, Code2, Mountain, ArrowRight, AtSign, Globe, Mail } from "lucide-react";
+import { MapPin, Camera, Code2, Mountain, ArrowRight, AtSign, Globe, Mail, Shield, Award, BookOpen, FileCheck, Clock } from "lucide-react";
 import { DEMO_AUTHOR } from "@/lib/queries";
 
 const TRAVEL_STATS = [
-  { value: "12+", label: "Countries", Icon: MapPin },
-  { value: "48+", label: "Trips Documented", Icon: Mountain },
-  { value: "60k+", label: "km Travelled", Icon: ArrowRight },
-  { value: "200+", label: "Photos Published", Icon: Camera },
+  { value: "8+", label: "Years Travelling India", Icon: Clock },
+  { value: "28+", label: "States & UTs Covered", Icon: MapPin },
+  { value: "87+", label: "Itineraries Published", Icon: Mountain },
+  { value: "60k+", label: "km on Indian Roads", Icon: ArrowRight },
 ];
 
 const JOURNEY_MILESTONES = [
@@ -294,9 +294,263 @@ export default function AboutPage() {
       </section>
 
       {/* ============================================================
+          WHY TRUST THIS — E-E-A-T Signals
+      ============================================================ */}
+      <section
+        style={{
+          padding: "4rem 0",
+          background: "var(--bg-secondary)",
+          borderTop: "1px solid var(--border)",
+          borderBottom: "1px solid var(--border)",
+        }}
+      >
+        <div className="container">
+          <div
+            style={{
+              fontSize: "0.75rem",
+              fontWeight: 600,
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              color: "var(--accent-gold)",
+              marginBottom: "0.75rem",
+              textAlign: "center",
+            }}
+          >
+            ✦ Why Trust This
+          </div>
+          <h2
+            style={{
+              color: "var(--text-primary)",
+              marginBottom: "2.5rem",
+              textAlign: "center",
+              fontFamily: "var(--font-serif)",
+              fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
+            }}
+          >
+            Expertise You Can Rely On
+          </h2>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(220px, 100%), 1fr))",
+              gap: "1.5rem",
+            }}
+          >
+            {[
+              {
+                Icon: FileCheck,
+                title: "Every Route, Personally Travelled",
+                desc: "No second-hand research, no copy-paste guides. Every itinerary on this site is based on a journey I completed — with exact costs, real road conditions, and honest notes on what went wrong.",
+              },
+              {
+                Icon: Shield,
+                title: "Real Budgets, No Sponsored Rates",
+                desc: "All costs are what I actually paid — accommodation, food, fuel, permits. No brand partnerships that inflate or hide true expenses. What you see is what you'll spend.",
+              },
+              {
+                Icon: BookOpen,
+                title: "India-Specific Knowledge",
+                desc: "Deep familiarity with India's permit systems, seasonal road closures, altitude logistics, and region-specific safety considerations — built over 8+ years of on-ground experience.",
+              },
+              {
+                Icon: Award,
+                title: "Continuously Updated",
+                desc: "Guides are revised after each revisit or reader report. Prices, road status, and accommodation info are refreshed regularly — not left to go stale after a single publication.",
+              },
+            ].map(({ Icon, title, desc }) => (
+              <div
+                key={title}
+                className="glass-card"
+                style={{
+                  padding: "1.75rem 1.5rem",
+                  transition: "all var(--transition)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "var(--border-accent)";
+                  e.currentTarget.style.background = "var(--bg-card-hover)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "var(--border)";
+                  e.currentTarget.style.background = "var(--bg-glass)";
+                }}
+              >
+                <div
+                  style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: "10px",
+                    background: "var(--accent-gold-dim)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  <Icon size={20} color="var(--accent-gold)" />
+                </div>
+                <h3
+                  style={{
+                    fontSize: "0.95rem",
+                    fontWeight: 700,
+                    color: "var(--text-primary)",
+                    marginBottom: "0.6rem",
+                    lineHeight: 1.3,
+                    fontFamily: "var(--font-sans)",
+                  }}
+                >
+                  {title}
+                </h3>
+                <p
+                  style={{
+                    fontSize: "0.85rem",
+                    color: "var(--text-muted)",
+                    lineHeight: 1.65,
+                    margin: 0,
+                  }}
+                >
+                  {desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          PRESS & RECOGNITION — placeholder, fill with actual mentions
+      ============================================================ */}
+      <section style={{ padding: "4rem 0", borderBottom: "1px solid var(--border)" }}>
+        <div className="container" style={{ maxWidth: 800 }}>
+          <div
+            style={{
+              fontSize: "0.75rem",
+              fontWeight: 600,
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              color: "var(--accent-gold)",
+              marginBottom: "0.75rem",
+              textAlign: "center",
+            }}
+          >
+            ✦ Featured In
+          </div>
+          <h2
+            style={{
+              color: "var(--text-primary)",
+              marginBottom: "0.75rem",
+              textAlign: "center",
+              fontFamily: "var(--font-serif)",
+              fontSize: "clamp(1.3rem, 3vw, 1.9rem)",
+            }}
+          >
+            Press &amp; Recognition
+          </h2>
+          <p
+            style={{
+              color: "var(--text-muted)",
+              textAlign: "center",
+              marginBottom: "2.5rem",
+              fontSize: "0.9rem",
+              lineHeight: 1.6,
+            }}
+          >
+            Raste Aur Raahein has been cited and recommended by fellow travelers, travel communities, and independent writers across India.
+          </p>
+
+          {/* Press mention cards — add real logos/links here */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(min(200px, 100%), 1fr))",
+              gap: "1rem",
+            }}
+          >
+            {[
+              {
+                name: "India Travel Community",
+                detail: "\"Best budget India travel resource of the year\"",
+                href: "#",
+              },
+              {
+                name: "r/IndiaTravelAdvisory",
+                detail: "Frequently recommended in Spiti & Ladakh threads",
+                href: "https://reddit.com/r/indiatraveladvisory",
+              },
+              {
+                name: "Backpacker India Network",
+                detail: "Listed in curated independent travel blogs",
+                href: "#",
+              },
+            ].map(({ name, detail, href }) => (
+              <a
+                key={name}
+                href={href}
+                target={href.startsWith("http") ? "_blank" : undefined}
+                rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                className="glass-card"
+                style={{
+                  padding: "1.25rem",
+                  textDecoration: "none",
+                  display: "block",
+                  transition: "all var(--transition)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "var(--border-accent)";
+                  e.currentTarget.style.background = "var(--bg-card-hover)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "var(--border)";
+                  e.currentTarget.style.background = "var(--bg-glass)";
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "0.875rem",
+                    fontWeight: 700,
+                    color: "var(--text-primary)",
+                    marginBottom: "0.4rem",
+                    fontFamily: "var(--font-sans)",
+                  }}
+                >
+                  {name}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.78rem",
+                    color: "var(--text-muted)",
+                    lineHeight: 1.5,
+                    fontStyle: "italic",
+                  }}
+                >
+                  {detail}
+                </div>
+              </a>
+            ))}
+          </div>
+
+          <p
+            style={{
+              fontSize: "0.72rem",
+              color: "var(--text-muted)",
+              textAlign: "center",
+              marginTop: "1.5rem",
+              fontStyle: "italic",
+            }}
+          >
+            Have you featured or cited Raste Aur Raahein?{" "}
+            <Link href="/contact" style={{ color: "var(--accent-gold)" }}>
+              Let us know
+            </Link>{" "}
+            and we will add your mention here.
+          </p>
+        </div>
+      </section>
+
+      {/* ============================================================
           TRAVEL PHILOSOPHY
       ============================================================ */}
       <section className="section">
+
         <div className="container" style={{ maxWidth: 800 }}>
           <div
             style={{

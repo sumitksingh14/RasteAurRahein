@@ -29,6 +29,7 @@ import Breadcrumb from "@/components/ui/Breadcrumb";
 import NewsletterInline from "@/components/ui/NewsletterInline";
 import TripAlertBanner from "@/components/ui/TripAlertBanner";
 import TripSchema from "@/components/ui/TripSchema";
+import TravelerReviews from "@/components/ui/TravelerReviews";
 
 import { getTripImage } from "@/lib/data/tripImages";
 
@@ -584,6 +585,15 @@ export default async function TripDetailPage({ params }: Props) {
       <section style={{ padding: "3rem 0", borderTop: "1px solid var(--border)" }}>
         <div className="container" style={{ maxWidth: 760 }}>
           <NewsletterInline variant="card" source="trip-page" />
+        </div>
+      </section>
+
+      {/* ============================================================
+          TRAVELER REVIEWS
+      ============================================================ */}
+      <section style={{ padding: "3rem 0", borderTop: "1px solid var(--border)" }}>
+        <div className="container" style={{ maxWidth: 900 }}>
+          <TravelerReviews tripSlug={trip.slug} />
         </div>
       </section>
 

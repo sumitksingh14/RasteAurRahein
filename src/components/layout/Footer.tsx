@@ -277,7 +277,7 @@ export default function Footer() {
                   onMouseEnter={(e) => (e.currentTarget.style.color = "#006CE4")}
                   onMouseLeave={(e) => (e.currentTarget.style.color = "#4B5563")}
                 >
-                  <Mail size={15} color="#6B7280" /> Email: hello@rasteauraahein.com
+                  <Mail size={15} color="#6B7280" /> Email: zsumitksingh@gmail.com
                 </a>
               </li>
               <li>
@@ -316,14 +316,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Raste Aur Raahein · All rights reserved
           </p>
           <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
-            <a
-              href="https://www.profitableratecpmnetwork.com/vn744vs6b?key=e1ef34b2ac6e4e6e49b61bdde3e4b0d7"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: "#6B7280", fontSize: "0.8rem", textDecoration: "none" }}
-            >
-              Partner Offers
-            </a>
+
             <p style={{ color: "#6B7280", fontSize: "0.8rem", margin: 0 }}>
               Built with ♥ by{" "}
               <a

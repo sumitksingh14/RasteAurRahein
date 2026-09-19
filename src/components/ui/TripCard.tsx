@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin, BedDouble, Users, Maximize2 } from "lucide-react";
+import { MapPin, BedDouble, Users } from "lucide-react";
 import type { Trip } from "@/lib/types";
 import { format } from "date-fns";
 import { useState } from "react";
@@ -267,22 +267,7 @@ export default function TripCard({
               <Users size={14} color="#6B7280" />
               Solo / Group
             </span>
-            {(trip.viewCount ?? 0) > 0 && (
-              <span
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "5px",
-                  fontSize: "0.78rem",
-                  color: "#374151",
-                  fontWeight: 500,
-                  marginLeft: "auto",
-                }}
-              >
-                <Maximize2 size={13} color="#6B7280" />
-                {trip.viewCount!.toLocaleString()} views
-              </span>
-            )}
+
           </div>
         </div>
       </Link>
