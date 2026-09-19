@@ -3,6 +3,7 @@
  */
 import { redis } from "@/lib/redis";
 import { randomUUID } from "crypto";
+import { DUMMY_TRIP_STORIES } from "@/lib/data/dummyStories";
 
 export interface Story {
   id: string;
@@ -36,17 +37,25 @@ export async function submitStory(story: Omit<Story, "id" | "status" | "createdA
 }
 
 export async function getStoriesByTrip(tripSlug: string, onlyApproved = true): Promise<Story[]> {
-  const storyIds = await redis.smembers(TRIP_STORIES_PREFIX + tripSlug);
-  if (!storyIds || storyIds.length === 0) return [];
-  
-  const rawStories = await Promise.all(storyIds.map((id) => redis.get(STORY_PREFIX + id)));
-  const stories = rawStories
-    .filter(Boolean)
-    .map((raw) => JSON.parse(raw as string) as Story)
-    .filter((s) => !onlyApproved || s.status === "approved")
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-    
-  return stories;
+  try {
+    const storyIds = await redis.smembers(TRIP_STORIES_PREFIX + tripSlug);
+    if (storyIds && storyIds.length > 0) {
+      const rawStories = await Promise.all(storyIds.map((id) => redis.get(STORY_PREFIX + id)));
+      const stories = rawStories
+        .filter(Boolean)
+        .map((raw) => JSON.parse(raw as string) as Story)
+        .filter((s) => !onlyApproved || s.status === "approved");
+
+      if (stories.length > 0) {
+        return stories.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      }
+    }
+  } catch {
+    // Redis unavailable — fall back to dummy stories
+  }
+
+  // Fallback to static dummy stories (for the 45 curated trips)
+  return DUMMY_TRIP_STORIES[tripSlug] || [];
 }
 
 export async function getPendingStories(): Promise<Story[]> {
