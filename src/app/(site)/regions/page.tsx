@@ -5,6 +5,7 @@ import { MapPin, ArrowRight } from "lucide-react";
 import { REGIONS, filterTripsByRegion } from "@/lib/regions";
 import { getAllTrips } from "@/lib/queries";
 import { safeJsonLd } from "@/lib/jsonld";
+import SilkPageHeader from "@/components/ui/SilkPageHeader";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://rasteaurrahein.com";
@@ -69,60 +70,13 @@ export default async function RegionsIndexPage() {
         suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: safeJsonLd(regionsSchema) }}
       />
-      {/* ── Header ── */}
-      <section
-        style={{
-          padding: "5rem 0 3rem",
-          background: "linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%)",
-          borderBottom: "1px solid var(--border)",
-        }}
-      >
-        <div className="container">
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              padding: "0.35rem 0.9rem",
-              background: "var(--accent-gold-dim)",
-              border: "1px solid var(--border-accent)",
-              borderRadius: "100px",
-              fontSize: "0.75rem",
-              fontWeight: 600,
-              color: "var(--accent-gold)",
-              marginBottom: "1.25rem",
-              letterSpacing: "0.05em",
-              textTransform: "uppercase",
-            }}
-          >
-            <MapPin size={12} />
-            Where do you want to go?
-          </div>
-          <h1
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: "clamp(2.5rem, 5vw, 4rem)",
-              fontWeight: 700,
-              color: "var(--text-primary)",
-              marginBottom: "1rem",
-              lineHeight: 1.1,
-            }}
-          >
-            Explore by Region
-          </h1>
-          <p
-            style={{
-              color: "var(--text-secondary)",
-              fontSize: "1.05rem",
-              lineHeight: 1.75,
-              maxWidth: 560,
-            }}
-          >
-            Every trip documented on this blog organised by geography — from Himalayan
-            cold deserts to South Indian coffee country.
-          </p>
-        </div>
-      </section>
+      {/* ── Silk 3D Header ── */}
+      <SilkPageHeader
+        eyebrow={<><MapPin size={11} /> Where do you want to go?</>}
+        heading="Explore by Region"
+        description="Every trip documented on this blog organised by geography — from Himalayan cold deserts to South Indian coffee country."
+        maxWidth={800}
+      />
 
       {/* ── Region Cards ── */}
       <section className="section">

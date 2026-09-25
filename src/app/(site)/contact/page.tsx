@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Send, Mail, AtSign, Globe, CheckCircle, AlertCircle } from "lucide-react";
+import SilkPageHeader from "@/components/ui/SilkPageHeader";
 
 // ─── WhatsApp SVG Icon ──────────────────────────────────────────────────────
 function WhatsAppIcon({ size = 17 }: { size?: number }) {
@@ -143,42 +144,13 @@ export default function ContactPage() {
 
   return (
     <div style={{ paddingTop: "var(--nav-height)", minHeight: "100vh" }}>
-      <section
-        style={{
-          padding: "5rem 0 3rem",
-          background: "linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%)",
-          borderBottom: "1px solid var(--border)",
-        }}
-      >
-        <div className="container" style={{ maxWidth: 700 }}>
-          <div
-            style={{
-              fontSize: "0.75rem",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              letterSpacing: "0.1em",
-              color: "var(--accent-gold)",
-              marginBottom: "0.75rem",
-            }}
-          >
-            ✦ Get in Touch
-          </div>
-          <h1
-            style={{
-              fontFamily: "var(--font-serif)",
-              color: "var(--text-primary)",
-              marginBottom: "1rem",
-              fontSize: "clamp(2rem, 5vw, 3.5rem)",
-            }}
-          >
-            Let&apos;s Connect
-          </h1>
-          <p style={{ color: "var(--text-muted)", lineHeight: 1.7, fontSize: "1rem" }}>
-            Travel collaborations, itinerary consultations, photography projects, or just to say
-            hello — I&apos;d love to hear from you.
-          </p>
-        </div>
-      </section>
+      {/* Silk 3D Page header */}
+      <SilkPageHeader
+        eyebrow="✦ Get in Touch"
+        heading="Let's Connect"
+        description="Travel collaborations, itinerary consultations, photography projects, or just to say hello — I'd love to hear from you."
+        maxWidth={700}
+      />
 
       <div className="container" style={{ paddingTop: "3rem", paddingBottom: "5rem" }}>
         <div

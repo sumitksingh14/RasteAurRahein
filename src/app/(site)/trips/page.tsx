@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getAllTrips } from "@/lib/queries";
 import TripsClient from "./TripsClient";
 import { safeJsonLd } from "@/lib/jsonld";
+import SilkPageHeader from "@/components/ui/SilkPageHeader";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://rasteaurrahein.com";
@@ -83,43 +84,13 @@ export default async function TripsPage(props: PageProps) {
         suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: safeJsonLd(collectionSchema) }}
       />
-      {/* Page header */}
-      <div
-        style={{
-          padding: "4rem 0 3rem",
-          background:
-            "linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%)",
-          borderBottom: "1px solid var(--border)",
-        }}
-      >
-        <div className="container">
-          <div
-            style={{
-              fontSize: "0.75rem",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              letterSpacing: "0.1em",
-              color: "var(--accent-gold)",
-              marginBottom: "0.75rem",
-            }}
-          >
-            ✦ Explore
-          </div>
-          <h1
-            style={{
-              fontFamily: "var(--font-serif)",
-              color: "var(--text-primary)",
-              marginBottom: "0.75rem",
-              fontSize: "clamp(2rem, 5vw, 3.5rem)",
-            }}
-          >
-            India Trips
-          </h1>
-          <p style={{ color: "var(--text-muted)", maxWidth: 520, lineHeight: 1.7, fontSize: "1rem" }}>
-            {trips.length} documented adventures across India — search or browse by tag.
-          </p>
-        </div>
-      </div>
+      {/* Silk 3D Page header */}
+      <SilkPageHeader
+        eyebrow="✦ Explore"
+        heading="India Trips"
+        description={`${trips.length} documented adventures across India — search or browse by tag.`}
+        maxWidth={900}
+      />
 
       <TripsClient 
         trips={trips} 

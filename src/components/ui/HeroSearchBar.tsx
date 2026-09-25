@@ -53,9 +53,9 @@ export default function HeroSearchBar({ trendingTrips }: HeroSearchBarProps = {}
         style={{
           width: "100%",
           maxWidth: "560px",
-          background: "#fcfaf8",
+          background: "#e8eaf0",
           borderRadius: "0.75rem",
-          border: "1px solid #e7d9cf",
+          border: "1px solid rgba(99,102,241,0.20)",
           display: "flex",
           alignItems: "center",
           height: "3.5rem",
@@ -65,7 +65,7 @@ export default function HeroSearchBar({ trendingTrips }: HeroSearchBarProps = {}
         }}
       >
         <div
-          style={{ display: "flex", alignItems: "center", padding: "0 0.375rem 0 0.75rem", color: "#9a6b4c", flexShrink: 0, cursor: "pointer" }}
+          style={{ display: "flex", alignItems: "center", padding: "0 0.375rem 0 0.75rem", color: "#7c3aed", flexShrink: 0, cursor: "pointer" }}
           onClick={() => inputRef.current?.focus()}
         >
           <SearchIcon />
@@ -84,7 +84,7 @@ export default function HeroSearchBar({ trendingTrips }: HeroSearchBarProps = {}
             outline: "none",
             background: "transparent",
             fontSize: "0.8125rem",
-            color: "#1b130d",
+            color: "#1e1b4b",
             minWidth: 0,
             fontFamily: "inherit",
           }}
@@ -92,8 +92,8 @@ export default function HeroSearchBar({ trendingTrips }: HeroSearchBarProps = {}
         <button
           onClick={() => navigate(value)}
           style={{
-            background: "#d45f11",
-            color: "#fcfaf8",
+            background: "#6366f1",
+            color: "#e8eaf0",
             border: "none",
             borderRadius: "0.5rem",
             padding: "0 1.125rem",
