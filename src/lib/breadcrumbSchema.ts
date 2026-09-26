@@ -10,8 +10,9 @@
  *   ]);
  */
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://rasteaurrahein.com";
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://raste-aur-rahein.vercel.app"
+).replace(/\/$/, "");
 
 export interface BreadcrumbItem {
   label: string;

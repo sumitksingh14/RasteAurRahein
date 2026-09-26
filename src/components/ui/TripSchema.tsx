@@ -15,8 +15,9 @@ import { safeJsonLd } from "@/lib/jsonld";
 import { getTripImage } from "@/lib/data/tripImages";
 import { getTripAggregateRating } from "@/lib/reviewSchema";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://rasteaurrahein.com";
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://raste-aur-rahein.vercel.app"
+).replace(/\/$/, "");
 
 interface TripSchemaProps {
   trip: Trip;

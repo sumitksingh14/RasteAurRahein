@@ -17,6 +17,7 @@ const nextConfig: NextConfig = {
   // (next build uses webpack by default), so this is not a conflict.
   turbopack: {},
   images: {
+    formats: ["image/avif", "image/webp"],
     qualities: [75, 80, 85, 90],
     remotePatterns: [
       {

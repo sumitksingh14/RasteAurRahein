@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { GeneratedTripsProvider } from "@/components/providers/GeneratedTripsProvider";
@@ -8,10 +9,13 @@ import InstallPrompt from "@/components/pwa/InstallPrompt";
 import GoogleAnalytics from "@/components/providers/GoogleAnalytics";
 import NewsletterPopup from "@/components/ui/NewsletterPopup";
 
+// Strip trailing slash so metadataBase never produces double-slash canonicals.
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://raste-aur-rahein.vercel.app"
+).replace(/\/$/, "");
+
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://raste-aur-rahein.vercel.app/"
-  ),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Raste Aur Raahein — India Travel Blog by Sumit Singh",
     template: "%s | Raste Aur Raahein",
@@ -25,7 +29,13 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   verification: {
-    google: "BIEenwmGrsRC5bsvFN9U6T7pYVD2082zfSkxi4CObA4",
+    // Read verification tokens from env so they can be rotated without code changes.
+    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+      ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+      : { google: "BIEenwmGrsRC5bsvFN9U6T7pYVD2082zfSkxi4CObA4" }),
+    ...(process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+      ? { other: { "msvalidate.01": [process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION] } }
+      : {}),
   },
 
   openGraph: {
@@ -106,7 +116,11 @@ export default function RootLayout({
             Special Offers & Deals
           </a>
         </div>
-        <script src="https://pl31319807.profitableratecpmnetwork.com/fd/f2/38/fdf238329b112aaad98a01270319e6cd.js"></script>
+        {/* Non-critical ad script — deferred with lazyOnload so it never blocks LCP */}
+        <Script
+          src="https://pl31319807.profitableratecpmnetwork.com/fd/f2/38/fdf238329b112aaad98a01270319e6cd.js"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

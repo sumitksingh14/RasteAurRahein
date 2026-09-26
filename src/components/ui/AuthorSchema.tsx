@@ -1,6 +1,11 @@
 import type { Author } from "@/lib/types";
 import { safeJsonLd } from "@/lib/jsonld";
 
+// Strip trailing slash — env var ships with one ("https://…vercel.app/")
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://raste-aur-rahein.vercel.app"
+).replace(/\/$/, "");
+
 interface AuthorSchemaProps {
   author: Author;
   url?: string;
@@ -9,9 +14,8 @@ interface AuthorSchemaProps {
 /**
  * Renders structured data for a Person (author) following Google's E-E-A-T guidance.
  * Drop this into any page that has an author to signal expertise and authority.
- * Also injects a WebSite entity when used in the root layout.
  */
-export default function AuthorSchema({ author, url = "https://rasteaurrahein.com" }: AuthorSchemaProps) {
+export default function AuthorSchema({ author, url = SITE_URL }: AuthorSchemaProps) {
   const sameAs: string[] = (author.socialLinks ?? []).map((l) => l.url).filter(Boolean);
 
   const personSchema = {
@@ -32,7 +36,7 @@ export default function AuthorSchema({ author, url = "https://rasteaurrahein.com
     worksFor: {
       "@type": "Organization",
       name: "Raste Aur Raahein",
-      url,
+      url: SITE_URL,
     },
   };
 
@@ -53,19 +57,26 @@ export function WebSiteSchema() {
     "@graph": [
       {
         "@type": "WebSite",
-        "@id": "https://rasteaurrahein.com/#website",
-        url: "https://rasteaurrahein.com",
+        "@id": `${SITE_URL}/#website`,
+        url: SITE_URL,
         name: "Raste Aur Raahein",
         description:
           "Portfolio-style travel blog documenting high-altitude treks, desert roads, and off-the-beaten-path adventures across India.",
         inLanguage: "en-IN",
-        publisher: { "@id": "https://rasteaurrahein.com/#author" },
+        publisher: { "@id": `${SITE_URL}/#author` },
+        // potentialAction — SearchAction (only if the site has a /search route)
+        // Uncomment when /search is live:
+        // potentialAction: {
+        //   "@type": "SearchAction",
+        //   target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/trips?q={search_term_string}` },
+        //   "query-input": "required name=search_term_string",
+        // },
       },
       {
         "@type": "Person",
-        "@id": "https://rasteaurrahein.com/#author",
+        "@id": `${SITE_URL}/#author`,
         name: "Sumit Singh",
-        url: "https://rasteaurrahein.com/about",
+        url: `${SITE_URL}/about`,
         description:
           "Travel writer, photographer, and software engineer documenting the roads less taken across India.",
         sameAs: ["https://instagram.com", "https://twitter.com"],

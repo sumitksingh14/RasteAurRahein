@@ -3,8 +3,12 @@ import { getAllTrips } from "@/lib/queries";
 import { REGIONS } from "@/lib/regions";
 import { getTripImage } from "@/lib/data/tripImages";
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://rasteaurrahein.com";
+// Strip any trailing slash — the env var ships with one which causes double-
+// slashes in every <loc> element (e.g. "https://example.com//trips").
+const BASE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://raste-aur-rahein.vercel.app"
+).replace(/\/$/, "");
+
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static pages

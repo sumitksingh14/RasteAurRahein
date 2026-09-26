@@ -45,32 +45,42 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const trip = await getTripBySlug(slug);
   if (!trip) return {};
 
-  const durationDays =
-    trip.startDate && trip.endDate
-      ? Math.ceil(
-          (new Date(trip.endDate).getTime() -
-            new Date(trip.startDate).getTime()) /
-            (1000 * 60 * 60 * 24)
-        ) + 1
-      : trip.itinerary?.length || null;
+  const siteUrl = (
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://raste-aur-rahein.vercel.app"
+  ).replace(/\/$/, "");
+
+  // Clamp description to 155 chars for Google snippet display
+  const rawDescription = trip.excerpt ?? "";
+  const description =
+    rawDescription.length > 155
+      ? rawDescription.slice(0, 152) + "…"
+      : rawDescription || "A detailed travel itinerary on Raste Aur Raahein.";
+
+  const imageUrl = getTripImage(trip.slug);
+  // Make image absolute so OG scrapers (Slack, Twitter, etc.) don't 404
+  const absoluteImage = imageUrl.startsWith("http")
+    ? imageUrl
+    : `${siteUrl}${imageUrl}`;
 
   return {
-    title: trip.title,
-    description: trip.excerpt,
+    title: `${trip.title} — Raste Aur Raahein`,
+    description,
     keywords: trip.tags,
+    robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
     alternates: {
       canonical: `/trips/${trip.slug}`,
     },
     openGraph: {
-      title: trip.title,
-      description: trip.excerpt,
+      title: `${trip.title} — Raste Aur Raahein`,
+      description,
       type: "article",
+      siteName: "Raste Aur Raahein",
       publishedTime: trip._createdAt,
       modifiedTime: trip._updatedAt || trip._createdAt,
-      authors: trip.author?.name ? [trip.author.name] : undefined,
+      authors: trip.author?.name ? [trip.author.name] : ["Sumit Singh"],
       images: [
         {
-          url: getTripImage(trip.slug),
+          url: absoluteImage,
           width: 1200,
           height: 630,
           alt: trip.title,
@@ -79,11 +89,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: trip.title,
-      description: trip.excerpt || "A journey documented on Raste Aur Raahein.",
+      title: `${trip.title} — Raste Aur Raahein`,
+      description,
+      images: [absoluteImage],
     },
   };
 }
+
 
 export async function generateStaticParams() {
   const trips = await getAllTrips();
@@ -152,6 +164,9 @@ export default async function TripDetailPage({ params }: Props) {
           style={{ objectFit: "cover" }}
           priority
           quality={90}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDhwVFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAAUAB4DASIAAhEBAxEB/8QAGAABAAMBAAAAAAAAAAAAAAAABQMEBgL/xAAlEAABBAEDBAMBAAAAAAAAAAABAAIDEQQhMUFRExRhkaH/xAAWAQEBAQAAAAAAAAAAAAAAAAABAgP/xAAYEQEBAQEBAAAAAAAAAAAAAAAAARESIf/aAAwDAQACEQMRAD8AxiNcPuQJqy1b2RWQcS3GVNO5yTzRVN8lryWYjUKTRDlvAL9zIoCuCq2U1VG6OcurGgkKYMQhPWnlixU3FvuXv2xhRShVrQFWEJIqKCLkqVyT0H//2Q=="
         />
         {/* Gradient overlay */}
         <div
