@@ -24,6 +24,26 @@ export interface SanityImage {
   caption?: string;
 }
 
+/**
+ * Structured quick-reference facts shown at the top of every trip article.
+ * All fields optional — only show rows where the source article states a value.
+ * This is the ONE authoritative source; FAQPage JSON-LD and the QuickFacts UI
+ * both read from here.
+ */
+export interface QuickFacts {
+  bestTime?: string;          // e.g. "June – September"
+  durationDays?: number;      // total trip days
+  budgetRange?: string;       // e.g. "₹25,000 – ₹40,000 per person"
+  difficulty?: "Easy" | "Moderate" | "Hard" | "Extreme";
+  nearestTown?: string;       // nearest town/city with services
+  baseLocation?: string;      // typical starting point / base camp
+  idealFor?: string;          // e.g. "Bikers, backpackers, photographers"
+  permitsRequired?: string;   // "No" | "Yes — ILP required from Leh DC Office"
+  altitude?: string;          // max altitude, e.g. "5,359 m (Khardung La)"
+  roadCondition?: string;     // e.g. "Paved + gravel; 4WD recommended"
+  mobileNetwork?: string;     // e.g. "BSNL only beyond Kaza"
+}
+
 export interface Activity {
   _key: string;
   time?: string;
@@ -75,6 +95,8 @@ export interface Trip {
   difficulty?: "Easy" | "Moderate" | "Hard";
   readingTime?: number;
   generationStatus?: "generating" | "complete" | "failed";
+  /** Structured quick-reference metadata — single source of truth for QuickFacts box and FAQPage JSON-LD */
+  quickFacts?: QuickFacts;
   _createdAt: string;
   _updatedAt: string;
 }

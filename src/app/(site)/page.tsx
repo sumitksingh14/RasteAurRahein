@@ -95,7 +95,16 @@ export default async function HomePage() {
         className="homepage-ticker"
       >
         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexShrink: 0 }}>
+          <Link
+            href="/road-conditions"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              flexShrink: 0,
+              textDecoration: "none",
+            }}
+          >
             <span
               style={{
                 display: "inline-block",
@@ -117,7 +126,7 @@ export default async function HomePage() {
             >
               Telemetry Corridor:
             </span>
-          </div>
+          </Link>
           <div
             style={{
               display: "flex",
@@ -129,9 +138,23 @@ export default async function HomePage() {
             }}
             className="ticker-passes"
           >
-            <span>Spiti Valley, Kinnaur &amp; Zanskar Open</span>
+            <Link
+              href="/road-conditions"
+              style={{ color: "rgba(255,255,255,0.85)", textDecoration: "none" }}
+            >
+              Spiti, Kinnaur &amp; Zanskar Status
+            </Link>
             <span style={{ opacity: 0.3 }}>•</span>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem" }}>
+            <Link
+              href="/road-conditions/kunzum-pass"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.375rem",
+                color: "#fff",
+                textDecoration: "none",
+              }}
+            >
               <span
                 style={{
                   width: "6px",
@@ -142,9 +165,18 @@ export default async function HomePage() {
                 }}
               />
               Kunzum Pass: Clear
-            </span>
+            </Link>
             <span style={{ opacity: 0.3 }}>•</span>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem" }}>
+            <Link
+              href="/road-conditions/rohtang-pass"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.375rem",
+                color: "#fff",
+                textDecoration: "none",
+              }}
+            >
               <span
                 style={{
                   width: "6px",
@@ -155,9 +187,18 @@ export default async function HomePage() {
                 }}
               />
               Rohtang: Active
-            </span>
+            </Link>
             <span style={{ opacity: 0.3 }}>•</span>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem" }}>
+            <Link
+              href="/road-conditions/baralacha-la"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.375rem",
+                color: "#fff",
+                textDecoration: "none",
+              }}
+            >
               <span
                 style={{
                   width: "6px",
@@ -168,11 +209,12 @@ export default async function HomePage() {
                 }}
               />
               Baralacha La: Caution (Icing)
-            </span>
+            </Link>
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexShrink: 0 }} className="ticker-right">
-          <span
+          <Link
+            href="/road-conditions"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -185,6 +227,7 @@ export default async function HomePage() {
               letterSpacing: "0.06em",
               textTransform: "uppercase",
               color: "#fde68a",
+              textDecoration: "none",
             }}
           >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -193,7 +236,7 @@ export default async function HomePage() {
               <path d="M2 12l10 5 10-5" />
             </svg>
             BRO Network Live
-          </span>
+          </Link>
           <span style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.6875rem" }}>Lat 32.2464° N</span>
         </div>
       </div>

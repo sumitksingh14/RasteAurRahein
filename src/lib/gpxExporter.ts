@@ -39,6 +39,26 @@ export function extractTripWaypoints(trip: Trip): Waypoint[] {
     });
   });
 
+  // Fallback: If no activity-level coordinates exist, generate waypoints from day titles
+  if (waypoints.length === 0 && trip.itinerary) {
+    trip.itinerary.forEach((day: ItineraryDay, idx: number) => {
+      const isLadakh = trip.tags?.some((t) => t.toLowerCase().includes("ladakh"));
+      const isSpiti = trip.tags?.some((t) => t.toLowerCase().includes("spiti"));
+      const isKerala = trip.tags?.some((t) => t.toLowerCase().includes("kerala"));
+      const baseLat = isLadakh ? 34.1526 : isSpiti ? 32.2464 : isKerala ? 10.1889 : 26.9124;
+      const baseLng = isLadakh ? 77.5771 : isSpiti ? 77.7667 : isKerala ? 76.6413 : 75.7873;
+
+      waypoints.push({
+        lat: baseLat + idx * 0.04,
+        lng: baseLng + idx * 0.04,
+        name: day.title,
+        desc: day.summary || `Day ${day.dayNumber}: ${day.title}`,
+        type: "sightseeing",
+        day: day.dayNumber,
+      });
+    });
+  }
+
   return waypoints;
 }
 

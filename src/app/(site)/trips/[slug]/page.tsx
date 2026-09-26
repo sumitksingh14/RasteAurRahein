@@ -32,6 +32,9 @@ import TripSchema from "@/components/ui/TripSchema";
 import TravelerReviews from "@/components/ui/TravelerReviews";
 import TripCTABlock from "@/components/ui/TripCTABlock";
 import TripPartnerLinks from "@/components/ui/TripPartnerLinks";
+import QuickFactsBox from "@/components/ui/QuickFactsBox";
+import TripLeadCapture from "@/components/ui/TripLeadCapture";
+import { getGuidesForTrip } from "@/lib/data/guides";
 
 import { getTripImage } from "@/lib/data/tripImages";
 
@@ -119,13 +122,26 @@ export default async function TripDetailPage({ params }: Props) {
 
   const imageSrc = getTripImage(trip.slug);
 
+  // Ranked related trips: calculate tag overlap + category match
   const relatedTrips = allTrips
-    .filter(
-      (t) =>
-        t.slug !== trip.slug &&
-        t.tags?.some((tag) => trip.tags?.includes(tag))
-    )
-    .slice(0, 3);
+    .filter((t) => t.slug !== trip.slug)
+    .map((t) => {
+      let score = 0;
+      if (t.tripType && trip.tripType && t.tripType.toLowerCase() === trip.tripType.toLowerCase()) {
+        score += 3;
+      }
+      if (t.bestSuggestedMonth && trip.bestSuggestedMonth && t.bestSuggestedMonth === trip.bestSuggestedMonth) {
+        score += 2;
+      }
+      const sharedTags = t.tags?.filter((tag) => trip.tags?.includes(tag))?.length || 0;
+      score += sharedTags * 2;
+      return { trip: t, score };
+    })
+    .sort((a, b) => b.score - a.score)
+    .map((item) => item.trip)
+    .slice(0, 4);
+
+  const relatedGuides = getGuidesForTrip(trip.slug);
 
   const durationDays =
     trip.startDate && trip.endDate
@@ -220,7 +236,8 @@ export default async function TripDetailPage({ params }: Props) {
             <div className="trip-breadcrumb-hide-mobile">
               <Breadcrumb
                 items={[
-                  { label: "Trips", href: "/trips" },
+                  { label: "Home", href: "/" },
+                  { label: trip.tripType || trip.country || "Trips", href: "/trips" },
                   { label: trip.title },
                 ]}
               />
@@ -350,21 +367,44 @@ export default async function TripDetailPage({ params }: Props) {
           <div style={{ minWidth: 0, width: "100%", maxWidth: "100%" }}>
             <TripAlertBanner slug={trip.slug} />
             
+            {/* Quick Facts box — single source of truth from trip.quickFacts */}
+            <QuickFactsBox
+              quickFacts={trip.quickFacts ?? {}}
+              trip={{
+                bestSuggestedMonth: trip.bestSuggestedMonth,
+                itinerary: trip.itinerary,
+                difficulty: trip.difficulty,
+              }}
+            />
+
+            {/* Direct answer paragraph — Snippet-Winning Answer First Block */}
             {trip.excerpt && (
-              <p
+              <div
                 style={{
-                  fontSize: "1.1rem",
-                  color: "var(--text-secondary)",
-                  lineHeight: 1.7,
-                  marginBottom: "2rem",
-                  fontStyle: "italic",
-                  borderLeft: "3px solid var(--accent-gold)",
-                  paddingLeft: "1.1rem",
+                  padding: "1.25rem 1.5rem",
+                  background: "var(--bg-secondary, #f9fafb)",
+                  borderLeft: "4px solid var(--accent-gold, #b45309)",
+                  borderRadius: "0 0.5rem 0.5rem 0",
+                  margin: "1.5rem 0 2rem",
                 }}
               >
-                {trip.excerpt}
-              </p>
+                <p
+                  style={{
+                    fontSize: "1.0625rem",
+                    color: "var(--text-primary, #111827)",
+                    lineHeight: 1.7,
+                    margin: 0,
+                    fontWeight: 500,
+                  }}
+                >
+                  {trip.excerpt}
+                </p>
+              </div>
             )}
+
+            {/* Lead capture: Free GPX track & route map */}
+            <TripLeadCapture trip={trip} />
+
             <TripTabs trip={trip} />
 
             {/* FAQ — auto-generated from trip structured data */}
@@ -565,6 +605,78 @@ export default async function TripDetailPage({ params }: Props) {
       </div>
 
       {/* ============================================================
+          RECIPROCAL FEATURED IN GUIDES
+      ============================================================ */}
+      {relatedGuides.length > 0 && (
+        <section
+          style={{
+            borderTop: "1px solid var(--border)",
+            padding: "3.5rem 0 0",
+            background: "var(--bg-secondary)",
+          }}
+        >
+          <div className="container">
+            <span
+              style={{
+                fontSize: "0.75rem",
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "0.08em",
+                color: "var(--accent-gold, #b45309)",
+                display: "inline-block",
+                marginBottom: "0.5rem",
+              }}
+            >
+              ✦ Curated Playbooks
+            </span>
+            <h2
+              style={{
+                fontFamily: "var(--font-serif)",
+                color: "var(--text-primary)",
+                marginBottom: "1.25rem",
+                fontSize: "1.5rem",
+              }}
+            >
+              Featured in In-Depth Guides
+            </h2>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                gap: "1rem",
+              }}
+            >
+              {relatedGuides.map((guide) => (
+                <Link
+                  key={guide.slug}
+                  href={`/guides/${guide.slug}`}
+                  style={{
+                    display: "block",
+                    padding: "1.25rem",
+                    borderRadius: "0.75rem",
+                    background: "var(--bg-primary, #fff)",
+                    border: "1px solid var(--border, #e5e7eb)",
+                    textDecoration: "none",
+                    color: "inherit",
+                  }}
+                >
+                  <span style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", color: "var(--accent-gold, #b45309)" }}>
+                    {guide.category} • {guide.readTime}
+                  </span>
+                  <h3 style={{ fontSize: "1.05rem", fontWeight: 700, margin: "0.35rem 0 0.5rem", color: "var(--text-primary, #111827)" }}>
+                    {guide.title}
+                  </h3>
+                  <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-secondary, #4b5563)", lineHeight: 1.5 }}>
+                    {guide.excerpt}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ============================================================
           RELATED TRIPS
       ============================================================ */}
       {relatedTrips.length > 0 && (
@@ -580,12 +692,15 @@ export default async function TripDetailPage({ params }: Props) {
               style={{
                 fontFamily: "var(--font-serif)",
                 color: "var(--text-primary)",
-                marginBottom: "2rem",
+                marginBottom: "0.5rem",
                 fontSize: "1.75rem",
               }}
             >
-              You Might Also Like
+              Continue the Journey: Related Field Notes
             </h2>
+            <p style={{ color: "var(--text-secondary)", fontSize: "0.9375rem", marginBottom: "2rem" }}>
+              Explore connecting overland circuits, sister valleys, and seasonal alternates.
+            </p>
             <div
               style={{
                 display: "grid",

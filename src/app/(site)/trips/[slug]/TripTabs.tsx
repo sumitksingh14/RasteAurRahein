@@ -479,6 +479,9 @@ export default function TripTabs({ trip }: TripTabsProps) {
       {/* Tab Panels */}
       {activeTab === "itinerary" && (
         <div>
+          <h2 style={{ fontFamily: "var(--font-serif, Georgia, serif)", fontSize: "1.35rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 1.25rem" }}>
+            Detailed Itinerary: Day-by-Day Route &amp; Field Notes
+          </h2>
           {trip.itinerary && trip.itinerary.length > 0 ? (
             <ItineraryAccordion
               days={trip.itinerary}
@@ -506,6 +509,9 @@ export default function TripTabs({ trip }: TripTabsProps) {
 
       {activeTab === "map" && (
         <div>
+          <h2 style={{ fontFamily: "var(--font-serif, Georgia, serif)", fontSize: "1.35rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 1.25rem" }}>
+            Route Map &amp; Navigation Coordinates
+          </h2>
           <div
             style={{
               display: "flex",
@@ -570,6 +576,9 @@ export default function TripTabs({ trip }: TripTabsProps) {
 
       {activeTab === "costs" && (
         <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+          <h2 style={{ fontFamily: "var(--font-serif, Georgia, serif)", fontSize: "1.35rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 0.5rem" }}>
+            Costs, Daily Budget Breakdown &amp; Permits
+          </h2>
           {/* Smart Budget Estimator */}
           <BudgetEstimator trip={trip} baseDays={numDays} />
 
@@ -835,6 +844,9 @@ export default function TripTabs({ trip }: TripTabsProps) {
 
       {activeTab === "stay" && (
         <div>
+          <h2 style={{ fontFamily: "var(--font-serif, Georgia, serif)", fontSize: "1.35rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 1.25rem" }}>
+            Where to Stay: Homestays, Camps &amp; Accommodations
+          </h2>
           {enrichmentStatuses.stay_recommendations?.status === "ai_filled" && (
             <UnverifiedBadge
               field="stay_recommendations"
@@ -847,11 +859,19 @@ export default function TripTabs({ trip }: TripTabsProps) {
       )}
 
       {activeTab === "food" && (
-        <FoodRecommendations tripSlug={trip.slug} tripTitle={trip.title} />
+        <div>
+          <h2 style={{ fontFamily: "var(--font-serif, Georgia, serif)", fontSize: "1.35rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 1.25rem" }}>
+            Local Food, Dhaba Stops &amp; Regional Cuisine
+          </h2>
+          <FoodRecommendations tripSlug={trip.slug} tripTitle={trip.title} />
+        </div>
       )}
 
       {activeTab === "route" && (
         <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+          <h2 style={{ fontFamily: "var(--font-serif, Georgia, serif)", fontSize: "1.35rem", fontWeight: 700, color: "var(--text-primary)", margin: 0 }}>
+            Elevation Profile, Fuel Points &amp; Route Telemetry
+          </h2>
           <ElevationProfile tripSlug={trip.slug} tripTitle={trip.title} />
           <PermitVault tripSlug={trip.slug} />
           <FuelRestStops tripSlug={trip.slug} tripTitle={trip.title} />
@@ -859,7 +879,12 @@ export default function TripTabs({ trip }: TripTabsProps) {
       )}
 
       {activeTab === "packing" && (
-        <SmartPackingChecklist trip={trip} />
+        <div>
+          <h2 style={{ fontFamily: "var(--font-serif, Georgia, serif)", fontSize: "1.35rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 1.25rem" }}>
+            Packing Checklist &amp; Essential Expedition Gear
+          </h2>
+          <SmartPackingChecklist trip={trip} />
+        </div>
       )}
 
       {activeTab === "weather" && (() => {

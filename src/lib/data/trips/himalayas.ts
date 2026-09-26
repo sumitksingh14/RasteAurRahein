@@ -12,7 +12,7 @@ import type { Trip } from "@/lib/types";
 export const HIMALAYA_TRIPS: Trip[] = [
   {
     _id: "trip-leh-ladakh-9-days",
-    title: "Leh Ladakh — Land of High Passes",
+    title: "Leh Ladakh — 9-Day High Altitude Road Trip & Pass Guide",
     slug: "leh-ladakh-9-days",
     excerpt:
       "A 9-day odyssey through the world's highest motorable roads — Khardung La, Pangong Tso's ever-changing blue, Nubra Valley's sand dunes and Bactrian camels, Magnetic Hill, and ancient monasteries perched on cliff faces. Leh at 3,524 m is unlike anywhere else on Earth.",
@@ -30,6 +30,19 @@ export const HIMALAYA_TRIPS: Trip[] = [
     _createdAt: "2026-09-08T00:00:00Z",
     _updatedAt: "2026-09-08T00:00:00Z",
     coverImage: undefined,
+    quickFacts: {
+      bestTime: "June – September",
+      durationDays: 9,
+      budgetRange: "₹28,000 – ₹55,000 per person (excl. flights)",
+      difficulty: "Moderate",
+      nearestTown: "Leh",
+      baseLocation: "Leh (3,524 m)",
+      idealFor: "Road trippers, bikers, monastery seekers, high-altitude first-timers",
+      permitsRequired: "Yes — Inner Line Permit (ILP) for Nubra & Pangong; obtain at Leh DC Office (₹400 pp)",
+      altitude: "5,359 m (Khardung La)",
+      roadCondition: "Mix of tarmac, gravel, and high-altitude dirt track; 4WD recommended for Pangong",
+      mobileNetwork: "BSNL works in Leh, Nubra, Pangong; no signal on remote passes",
+    },
     itinerary: [
       {
         _key: "ll-day1",
@@ -41,7 +54,7 @@ export const HIMALAYA_TRIPS: Trip[] = [
           {
             _key: "ll1a",
             title: "Fly into Leh Kushok Bakula Rimpochhe Airport",
-            description: "Morning flight from Delhi (~1.5 hrs). Keep the entire first day for complete rest — no strenuous activities. Altitude sickness risk is real; drink 3–4 litres of water.",
+            description: "Morning flight from Delhi (~1.5 hrs). Keep the entire first day for complete rest — no strenuous activities. Altitude sickness risk is real; drink 3–4 litres of water. Comparing this journey with Spiti? Check out our detailed [Spiti vs Ladakh comparison guide](/guides/spiti-vs-ladakh).",
             location: { name: "Leh Airport (IXL)", lat: 34.1359, lng: 77.5465 },
             time: "09:00 AM",
             type: "transport",
@@ -152,7 +165,7 @@ export const HIMALAYA_TRIPS: Trip[] = [
           {
             _key: "ll3a",
             title: "Depart Leh for Khardung La (~40 km, 2 hrs)",
-            description: "Fill tank in Leh — last fuel station before Nubra. Inner Line Permit mandatory (collect from DC Office, Leh). Start early to avoid afternoon clouds.",
+            description: "Fill tank in Leh — last fuel station before Nubra. Inner Line Permit mandatory (collect from DC Office, Leh). If arriving overland via Manali, check live [Baralacha La road conditions](/road-conditions/baralacha-la); if via Srinagar, review [Zoji La pass status](/road-conditions/zoji-la) and our comprehensive [Himalayan Passes Explained guide](/guides/himalayan-passes-explained).",
             location: { name: "Leh", lat: 34.1642, lng: 77.5849 },
             time: "07:00 AM",
             type: "transport",
@@ -500,10 +513,10 @@ export const HIMALAYA_TRIPS: Trip[] = [
   },
   {
     _id: "trip-spiti-valley",
-    title: "Spiti Valley — The Cold Desert Odyssey",
+    title: "Spiti Valley — 10-Day Complete Circuit Road Trip Guide",
     slug: "spiti-valley",
     excerpt:
-      "A 10-day self-driven Himalayan road trip from Delhi through Manali, Spiti, Kinnaur, and Shimla — high passes, ancient monasteries, and the cold desert.",
+      "A complete 10-day self-drive circuit through Himachal's cold mountain desert, traversing Delhi, Manali, the treacherous Kunzum Pass (4,551 m), Chandratal Lake, Kaza's millennium-old Ki Monastery, and the Pin Valley before exiting through Kinnaur and Shimla. Field-tested with 4WD recommendations, fuel intervals, and high-altitude safety guidelines.",
     tags: ["Adventure", "Road Trip", "India", "Himalayas", "Spiti Valley"],
     country: "India",
     startDate: "2026-09-29",
@@ -518,6 +531,19 @@ export const HIMALAYA_TRIPS: Trip[] = [
     _createdAt: "2026-08-24T00:00:00Z",
     _updatedAt: "2026-08-24T00:00:00Z",
     coverImage: undefined,
+    quickFacts: {
+      bestTime: "June – September",
+      durationDays: 10,
+      budgetRange: "₹55,000 – ₹1,10,000 per person (self-drive, 2 sharing)",
+      difficulty: "Hard",
+      nearestTown: "Kaza",
+      baseLocation: "Delhi / Manali",
+      idealFor: "Experienced drivers, adventure bikers, cold-desert photographers",
+      permitsRequired: "No ILP required; carry vehicle RC, insurance, and Aadhaar",
+      altitude: "4,551 m (Kunzum Pass)",
+      roadCondition: "Gravel, river crossings, and snow patches on high passes; 4WD strongly recommended",
+      mobileNetwork: "BSNL only in Kaza; Airtel/Jio available only in Shimla side",
+    },
     itinerary: [
       {
         _key: "day1",
@@ -535,7 +561,7 @@ export const HIMALAYA_TRIPS: Trip[] = [
           {
             _key: "a2",
             title: "Fuel and camp check",
-            description: "Refuel completely in Manali—the next reliable fuel is 210 km away—and confirm Chandratal camp availability.",
+            description: "Refuel completely in Manali—the next reliable fuel is 210 km away—and confirm Chandratal camp availability. Deciding whether to tackle Spiti or Ladakh first? Read our in-depth [Spiti vs Ladakh comparison guide](/guides/spiti-vs-ladakh) for route terrain and season comparisons.",
             type: "activity",
           },
           {
@@ -556,7 +582,7 @@ export const HIMALAYA_TRIPS: Trip[] = [
           {
             _key: "b1",
             title: "Cross Atal Tunnel and Kunzum Pass (~120 km)",
-            description: "No Rohtang permit is needed. Keep the Kunzum stop brief—20 to 30 minutes maximum.",
+            description: "Check the latest verified [Kunzum Pass road conditions](/road-conditions/kunzum-pass) before departing Gramphu. No Rohtang permit is needed via Atal Tunnel. Keep the Kunzum top stop brief—20 to 30 minutes maximum to avoid AMS, as detailed in our [Himalayan Passes Explained guide](/guides/himalayan-passes-explained).",
             type: "transport",
           },
           {
@@ -708,6 +734,19 @@ export const HIMALAYA_TRIPS: Trip[] = [
     _createdAt: "2026-08-26T00:00:00Z",
     _updatedAt: "2026-08-26T00:00:00Z",
     coverImage: undefined,
+    quickFacts: {
+      bestTime: "April – June & September – November",
+      durationDays: 6,
+      budgetRange: "₹18,000 – ₹28,000 per person",
+      difficulty: "Moderate",
+      nearestTown: "Munsiyari town / Pithoragarh",
+      baseLocation: "Kathgodam / Pantnagar",
+      idealFor: "Trekkers, panoramic mountain photographers, Kumaon culture",
+      permitsRequired: "No permit for Munsiyari or Khaliya Top trek; ILP needed only beyond Milam glacier base",
+      altitude: "2,200 m (Munsiyari) – 3,500 m (Khaliya Top)",
+      roadCondition: "Paved 2-lane mountain highway with sharp hairpins via Birthi Falls",
+      mobileNetwork: "Jio & Airtel active in Munsiyari; patchy on Khaliya Top ridge",
+    },
     itinerary: [
       {
         _key: "mu-day1",
@@ -2494,9 +2533,9 @@ export const HIMALAYA_TRIPS: Trip[] = [
   },
   {
     _id: "trip-sach-pass-5-days",
-    title: "Sach Pass — The Ultimate Thrill",
+    title: "Sach Pass — Pangi Valley Extreme Mountain Road Trip (4,420 m)",
     slug: "sach-pass-5-days",
-    excerpt: "Conquer one of the most dangerous and thrilling mountain passes in India, connecting Chamba to the Pangi Valley.",
+    excerpt: "Conquer one of the most dangerous and thrilling mountain passes in India, connecting Chamba to the remote Pangi Valley across 4,420 meters of raw Himalayan cliffs.",
     tags: ["Mountains", "Road Trip", "Adventure", "Extreme", "Himachal"],
     country: "India",
     startDate: "2026-08-01",
@@ -2511,6 +2550,19 @@ export const HIMALAYA_TRIPS: Trip[] = [
     _createdAt: "2026-09-11T00:00:00Z",
     _updatedAt: "2026-09-11T00:00:00Z",
     coverImage: { _type: "image", asset: { _type: "reference", _ref: "/images/sach-pass.jpg" } } as any,
+    quickFacts: {
+      bestTime: "Late July – September",
+      durationDays: 5,
+      budgetRange: "₹18,000 – ₹28,000 per person",
+      difficulty: "Extreme",
+      nearestTown: "Killar (Pangi Valley) / Bairagarh",
+      baseLocation: "Pathankot / Dalhousie",
+      idealFor: "Experienced 4WD drivers, off-road motorcyclists",
+      permitsRequired: "No permit for Indians; police check-posts at Bairagarh and Killar",
+      altitude: "4,420 m (14,500 ft)",
+      roadCondition: "Unpaved single-lane cliff ledge, loose shale, waterfalls crossing road; high clearance 4WD",
+      mobileNetwork: "BSNL only in Killar; no network on pass approach",
+    },
     itinerary: [
       {
         _key: "sach-day1",
@@ -5491,9 +5543,21 @@ export const HIMALAYA_TRIPS: Trip[] = [
     totalBudget: 28500,
     currency: "INR",
     tripType: "Dark-Sky Astronomy & High-Altitude Safari",
-    readingTime: 10,
     _createdAt: "2026-08-28T00:00:00Z",
     _updatedAt: "2026-08-28T00:00:00Z",
+    quickFacts: {
+      bestTime: "May – October (New Moon week best for astronomy)",
+      durationDays: 5,
+      budgetRange: "₹25,000 – ₹42,000 per person",
+      difficulty: "Hard",
+      nearestTown: "Nyoma (70 km) / Leh (250 km)",
+      baseLocation: "Leh",
+      idealFor: "Astrophotographers, stargazers, Changthang wilderness lovers",
+      permitsRequired: "Inner Line Permit (ILP) / PAP mandatory for Hanle from Leh DC Office",
+      altitude: "4,500 m (14,760 ft) at Hanle village; 5,798 m at Umling La nearby",
+      roadCondition: "Excellent BRO tarmac along Indus river via Chumathang & Loma bridge",
+      mobileNetwork: "BSNL post-paid only; no private 4G networks",
+    },
     itinerary: [
       {
         _key: "han-day1",

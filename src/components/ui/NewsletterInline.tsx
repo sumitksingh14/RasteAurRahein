@@ -8,6 +8,8 @@ interface NewsletterInlineProps {
   variant?: "card" | "strip";
   /** Source label sent to GA4 */
   source?: string;
+  title?: string;
+  subtitle?: string;
 }
 
 /**
@@ -21,6 +23,8 @@ interface NewsletterInlineProps {
 export default function NewsletterInline({
   variant = "card",
   source = "inline",
+  title,
+  subtitle,
 }: NewsletterInlineProps) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -228,7 +232,7 @@ export default function NewsletterInline({
               margin: 0,
             }}
           >
-            Get new itineraries in your inbox
+            {title || "Get new itineraries in your inbox"}
           </h3>
         </div>
       </div>
@@ -241,8 +245,8 @@ export default function NewsletterInline({
           marginBottom: "1.25rem",
         }}
       >
-        Honest trip reports, cost breakdowns, and route maps — delivered whenever
-        a new journey gets documented. No filler, no spam.
+        {subtitle ||
+          "Honest trip reports, cost breakdowns, and route maps — delivered whenever a new journey gets documented. No filler, no spam."}
       </p>
 
       {status === "success" ? (

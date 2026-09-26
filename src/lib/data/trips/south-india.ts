@@ -131,6 +131,19 @@ export const SOUTH_INDIA_TRIPS: Trip[] = [
     _createdAt: "2026-08-26T00:00:00Z",
     _updatedAt: "2026-08-26T00:00:00Z",
     coverImage: undefined,
+    quickFacts: {
+      bestTime: "September – March",
+      durationDays: 7,
+      budgetRange: "₹20,000 – ₹35,000 per person (excl. flights)",
+      difficulty: "Easy",
+      nearestTown: "Kochi",
+      baseLocation: "Fort Kochi (fly in) → Munnar → Thekkady → Alleppey → Kovalam",
+      idealFor: "Couples, families, culture travellers, first-time South India visitors",
+      permitsRequired: "No",
+      altitude: "1,600 m (Munnar / Top Station)",
+      roadCondition: "Good highways; mountain road from Kochi to Munnar has hairpin bends",
+      mobileNetwork: "All networks available throughout Kerala",
+    },
     itinerary: [
       {
         _key: "kl-day1",
@@ -257,6 +270,18 @@ export const SOUTH_INDIA_TRIPS: Trip[] = [
     _createdAt: "2026-09-17T00:00:00Z",
     _updatedAt: "2026-09-17T00:00:00Z",
     coverImage: undefined,
+    quickFacts: {
+      bestTime: "June – January",
+      durationDays: 3,
+      budgetRange: "₹12,000 – ₹22,000 per person (incl. cab from Kochi)",
+      difficulty: "Easy",
+      nearestTown: "Chalakudy (30 km)",
+      baseLocation: "Kochi / Chalakudy",
+      idealFor: "Nature lovers, birdwatchers, road trippers",
+      permitsRequired: "No permit needed for waterfalls; Vazhachal check-post logs vehicles to Valparai",
+      roadCondition: "Paved state highway (SH 21); narrow rainforest curves along Chalakudy river",
+      mobileNetwork: "Jio & Airtel reliable; BSNL in dense forest patches",
+    },
     itinerary: [
       {
         _key: "vzh-d1",
@@ -310,7 +335,7 @@ export const SOUTH_INDIA_TRIPS: Trip[] = [
             _key: "vzh2a",
             title: "Athirappilly Falls Base Forest Trek",
             description:
-              "Descend the stone pathway through moist deciduous forest to stand right at the churning foot of Kerala's largest waterfall, affectionately called the 'Niagara of India'. Feel the cool monsoon mist drench the gorge.",
+              "Descend the stone pathway through moist deciduous forest to stand right at the churning foot of Kerala's largest waterfall, affectionately called the 'Niagara of India'. Feel the cool monsoon mist drench the gorge. For timing, safety and hidden stops across the region, explore our curated [Kerala Waterfalls Guide](/guides/kerala-waterfalls-guide).",
             location: { name: "Athirappilly Waterfalls", lat: 10.316, lng: 76.451 },
             type: "sightseeing",
           },
@@ -351,7 +376,7 @@ export const SOUTH_INDIA_TRIPS: Trip[] = [
             _key: "vzh3a",
             title: "Morning Hornbill Trail in Sholayar Reserve",
             description:
-              "Look out for all four South Indian hornbill species (Great Indian, Malabar Pied, Malabar Grey, and Indian Grey) nesting in the towering vatta and maruthu trees of the Sholayar jungle.",
+              "Look out for all four South Indian hornbill species (Great Indian, Malabar Pied, Malabar Grey, and Indian Grey) nesting in the towering vatta and maruthu trees of the Sholayar jungle. Continuing across the Tamil Nadu border into the Anamalai Hills? Read our [Valparai tea plateau road trip notes](/trips/valparai-4-days) and our [Best Monsoon Road Trips in South India guide](/guides/best-monsoon-road-trips-south-india).",
             location: { name: "Sholayar Reserve Forest", lat: 10.312, lng: 76.784 },
             type: "activity",
           },
@@ -594,6 +619,18 @@ export const SOUTH_INDIA_TRIPS: Trip[] = [
     _createdAt: "2026-09-17T00:00:00Z",
     _updatedAt: "2026-09-17T00:00:00Z",
     coverImage: undefined,
+    quickFacts: {
+      bestTime: "July – February",
+      durationDays: 3,
+      budgetRange: "₹8,000 – ₹15,000 per person",
+      difficulty: "Easy",
+      nearestTown: "Dharmapuri (46 km)",
+      baseLocation: "Bengaluru / Dharmapuri",
+      idealFor: "Canyon enthusiasts, coracle riders, day drivers",
+      permitsRequired: "No permit required; official boating ticket counter on site",
+      roadCondition: "Paved 4-lane NH 44 from Bangalore to Dharmapuri, followed by smooth 2-lane SH",
+      mobileNetwork: "Good 4G coverage (Jio/Airtel) in Hogenakkal town",
+    },
     itinerary: [
       {
         _key: "hgn-d1",
@@ -742,6 +779,19 @@ export const SOUTH_INDIA_TRIPS: Trip[] = [
     _createdAt: "2026-09-17T00:00:00Z",
     _updatedAt: "2026-09-17T00:00:00Z",
     coverImage: undefined,
+    quickFacts: {
+      bestTime: "October – June",
+      durationDays: 4,
+      budgetRange: "₹12,000 – ₹20,000 per person",
+      difficulty: "Easy",
+      nearestTown: "Salem (30 km)",
+      baseLocation: "Salem / Yercaud town",
+      idealFor: "Couples, families, relaxed road trips",
+      permitsRequired: "No permit required",
+      altitude: "1,515 m",
+      roadCondition: "Smooth 2-lane ghat road with 20 hairpin bends from Salem",
+      mobileNetwork: "Full 4G / 5G connectivity across Shevaroy Hills",
+    },
     itinerary: [
       {
         _key: "yrc-d1",
@@ -931,6 +981,19 @@ export const SOUTH_INDIA_TRIPS: Trip[] = [
     _createdAt: "2026-09-17T00:00:00Z",
     _updatedAt: "2026-09-17T00:00:00Z",
     coverImage: undefined,
+    quickFacts: {
+      bestTime: "August – February",
+      durationDays: 3,
+      budgetRange: "₹10,000 – ₹18,000 per person",
+      difficulty: "Moderate",
+      nearestTown: "Namakkal (55 km)",
+      baseLocation: "Semmedu / Kalappanaickenpatti",
+      idealFor: "Bikers, motorists, endurance hikers",
+      permitsRequired: "No permit required",
+      altitude: "1,300 m",
+      roadCondition: "Continuous 70 hairpin switchbacks; narrow single lane tarmac in good condition",
+      mobileNetwork: "Airtel & BSNL active; patchy internet on lower hairpin bends",
+    },
     itinerary: [
       {
         _key: "klh-d1",
@@ -951,7 +1014,7 @@ export const SOUTH_INDIA_TRIPS: Trip[] = [
             _key: "klh1b",
             title: "Conquer the 70 Continuous Hairpin Bends (~20 km, 1h 15m)",
             description:
-              "One of the most thrilling driving roads in Asia. 70 numbered hairpin switchbacks carved into sheer green cliffs, offering dizzying views as you climb from the plains into the clouds.",
+              "One of the most thrilling driving roads in Asia. 70 numbered hairpin switchbacks carved into sheer green cliffs, offering dizzying views as you climb from the plains into the clouds. Compare this against Tamil Nadu's other legendary mountain climbs in our [Best Monsoon Road Trips in South India guide](/guides/best-monsoon-road-trips-south-india) or the 20-hairpin climb to [Yercaud](/trips/yercaud-4-days).",
             location: { name: "Kolli Hills 70 Hairpins Road", lat: 11.23, lng: 78.31 },
             type: "transport",
           },
@@ -992,7 +1055,7 @@ export const SOUTH_INDIA_TRIPS: Trip[] = [
             _key: "klh2b",
             title: "The 1,025 Steps Descent to Agaya Gangai Falls",
             description:
-              "Hike down the steep iron and stone staircase into the forested abyss. The 300-foot vertical cascade crashes against massive boulders with ferocious deafening spray.",
+              "Hike down the steep iron and stone staircase into the forested abyss. The 300-foot vertical cascade crashes against massive boulders with ferocious deafening spray. For travelers exploring peninsular India's greatest cascades, check out our guide on [Hogenakkal Falls](/trips/hogenakkal-falls-3-days) and our [Kerala Waterfalls Guide](/guides/kerala-waterfalls-guide).",
             location: { name: "Agaya Gangai Waterfalls", lat: 11.285, lng: 78.353 },
             type: "activity",
           },
@@ -1457,6 +1520,19 @@ export const SOUTH_INDIA_TRIPS: Trip[] = [
     _createdAt: "2026-09-17T00:00:00Z",
     _updatedAt: "2026-09-17T00:00:00Z",
     coverImage: undefined,
+    quickFacts: {
+      bestTime: "September – March",
+      durationDays: 4,
+      budgetRange: "₹14,000 – ₹24,000 per person",
+      difficulty: "Moderate",
+      nearestTown: "Pollachi (64 km)",
+      baseLocation: "Pollachi / Valparai",
+      idealFor: "Wildlife photographers, tea estate seekers, road trippers",
+      permitsRequired: "Forest check-post entry at Aliyar; no special permit needed during day",
+      altitude: "1,067 m (3,500 ft)",
+      roadCondition: "Paved winding ghat road with 40 numbered switchbacks; excellent tarmac",
+      mobileNetwork: "Good 4G coverage in Valparai town; patchy in tea valley fringes",
+    },
     itinerary: [
       {
         _key: "vlp-d1",
@@ -3652,6 +3728,19 @@ export const SOUTH_INDIA_TRIPS: Trip[] = [
     _createdAt: "2026-09-17T00:00:00Z",
     _updatedAt: "2026-09-17T00:00:00Z",
     coverImage: undefined,
+    quickFacts: {
+      bestTime: "July – February",
+      durationDays: 3,
+      budgetRange: "₹10,000 – ₹18,000 per person",
+      difficulty: "Moderate",
+      nearestTown: "Thirthahalli (32 km) / Udupi (55 km)",
+      baseLocation: "Mangaluru / Shivamogga / Agumbe village",
+      idealFor: "Wildlife enthusiasts, rainforest trekkers, slow travel",
+      permitsRequired: "Forest department trek permission required for Barkana Falls & Onake Abbi",
+      altitude: "825 m",
+      roadCondition: "Paved 14-hairpin Someshwara Ghat; heavy rain and mist in monsoon",
+      mobileNetwork: "BSNL & Jio work in village; no connectivity inside deep forest trails",
+    },
     itinerary: [
       {
         _key: "agb-d1",

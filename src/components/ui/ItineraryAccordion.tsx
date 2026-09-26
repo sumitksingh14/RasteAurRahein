@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   ChevronDown,
   Clock,
@@ -17,6 +18,40 @@ import type { ItineraryDay, Activity } from "@/lib/types";
 import { format } from "date-fns";
 import GoogleMapsRouteButton from "@/components/ui/GoogleMapsRouteButton";
 import { extractWaypointsFromItinerary, type ItineraryActivity, type ItineraryDay as RouteDay } from "@/lib/googleMapsRoute";
+
+function renderFormattedText(text: string) {
+  const parts = [];
+  const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
+  let lastIndex = 0;
+  let match;
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.substring(lastIndex, match.index));
+    }
+    const [, label, href] = match;
+    parts.push(
+      <Link
+        key={match.index}
+        href={href}
+        style={{
+          color: "var(--accent-gold, #b45309)",
+          fontWeight: 600,
+          textDecoration: "underline",
+        }}
+      >
+        {label}
+      </Link>
+    );
+    lastIndex = regex.lastIndex;
+  }
+
+  if (lastIndex < text.length) {
+    parts.push(text.substring(lastIndex));
+  }
+
+  return parts.length > 0 ? parts : text;
+}
 
 const ACTIVITY_ICONS: Record<string, React.ElementType> = {
   transport: Car,

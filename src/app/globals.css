@@ -1948,3 +1948,78 @@ code {
     gap: 0.5rem;
   }
 }
+
+/* ============================================================
+   PRINT / OFFLINE ROUTE GUIDE STYLES
+   ============================================================ */
+@media print {
+  nav,
+  footer,
+  header,
+  .mobile-tab-bar,
+  .trip-hero-actions,
+  .trip-breadcrumb-hide-mobile,
+  .trip-tabs-nav,
+  .trip-mobile-quick-facts,
+  .newsletter-inline,
+  button {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #111827 !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+  }
+
+  .container {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .trip-layout {
+    display: block !important;
+  }
+
+  .trip-hero-content {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .trip-hero-content h1 {
+    color: #111827 !important;
+    font-size: 24pt !important;
+  }
+
+  .trip-lead-capture-box {
+    background: #f3f4f6 !important;
+    color: #111827 !important;
+    border: 1px solid #d1d5db !important;
+    box-shadow: none !important;
+  }
+
+  .trip-lead-capture-box * {
+    color: #111827 !important;
+  }
+
+  .itinerary-accordion-content {
+    display: block !important;
+    max-height: none !important;
+  }
+
+  .imported-itinerary table,
+  table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  th, td {
+    border: 1px solid #e5e7eb !important;
+    color: #111827 !important;
+    padding: 6px 10px !important;
+  }
+}
+

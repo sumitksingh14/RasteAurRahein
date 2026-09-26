@@ -260,10 +260,10 @@ export const RAJASTHAN_TRIPS: Trip[] = [
   },
   {
     _id: "trip-rajasthan",
-    title: "Rajasthan — The Desert Kingdom",
+    title: "Rajasthan Desert Kingdom — 10-Day Forts, Palaces & Thar Dunes Road Trip",
     slug: "rajasthan-desert-kingdom",
     excerpt:
-      "Forts, palaces, camel dunes, and the most vivid colors you'll ever see — a royal journey through India's legendary desert state.",
+      "A classic 10-day cultural overland journey across royal Rajasthan, linking the Amber and Nahargarh forts of the Pink City Jaipur, the blue alleys of Jodhpur, the golden Thar Desert dunes of Jaisalmer, and the serene lake palaces of Udaipur. Complete with heritage stays, desert driving advice, and winter seasonal timings.",
     tags: ["Culture", "Heritage", "Rajasthan", "India", "Desert"],
     country: "India",
     startDate: "2023-11-10",
@@ -278,6 +278,18 @@ export const RAJASTHAN_TRIPS: Trip[] = [
     _createdAt: "2023-12-01T00:00:00Z",
     _updatedAt: "2023-12-01T00:00:00Z",
     coverImage: undefined,
+    quickFacts: {
+      bestTime: "October – March",
+      durationDays: 10,
+      budgetRange: "₹25,000 – ₹40,000 per person (excl. flights/train)",
+      difficulty: "Easy",
+      nearestTown: "Jaipur",
+      baseLocation: "Jaipur (fly-in) or Delhi (road)",
+      idealFor: "Culture lovers, heritage seekers, photographers, families",
+      permitsRequired: "No",
+      roadCondition: "Excellent NH roads; city traffic in Jaipur/Jodhpur",
+      mobileNetwork: "All networks available across the circuit",
+    },
     itinerary: [
       {
         _key: "rajasthan-day1",
