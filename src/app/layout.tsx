@@ -39,10 +39,13 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   verification: {
-    // Read verification tokens from env so they can be rotated without code changes.
-    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
-      ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
-      : { google: "BIEenwmGrsRC5bsvFN9U6T7pYVD2082zfSkxi4CObA4" }),
+    // Read verification tokens from env with fallbacks
+    google: [
+      "J-9mLTBJXKKSwogSAo7iPNMfRCCY7xq1xPROBf0aYV8",
+      ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+        ? [process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION]
+        : ["BIEenwmGrsRC5bsvFN9U6T7pYVD2082zfSkxi4CObA4"]),
+    ],
     ...(process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
       ? { other: { "msvalidate.01": [process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION] } }
       : {}),
@@ -77,6 +80,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+        <meta name="google-site-verification" content="J-9mLTBJXKKSwogSAo7iPNMfRCCY7xq1xPROBf0aYV8" />
         <meta name="application-name" content="India Trip Itineraries" />
         {/* ── Android PWA: status-bar colour ── */}
         <meta name="theme-color" content="#006CE4" media="(prefers-color-scheme: light)" />
