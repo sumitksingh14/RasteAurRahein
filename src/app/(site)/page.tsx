@@ -6,10 +6,11 @@ import HeroSearchBar from "@/components/ui/HeroSearchBar";
 import BrandStorySection from "@/components/ui/BrandStorySection";
 
 export const metadata: Metadata = {
-  title: "Raste Aur Raahein — Raw Journeys Across India",
+  title: "India Trip Itineraries — Raste Aur Raahein",
   description:
     "Authentic guides, high-altitude treks, and open-highway road trips curated by Sumit Singh. Detailed itineraries, honest budgets, and GPS routes for India's greatest adventures.",
   keywords: [
+    "India Trip Itineraries",
     "India travel blog",
     "Himalayan road trip",
     "Spiti Valley itinerary",
@@ -24,7 +25,8 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Raste Aur Raahein — Raw Journeys Across India",
+    siteName: "India Trip Itineraries",
+    title: "India Trip Itineraries — Raste Aur Raahein",
     description:
       "Detailed travel itineraries, honest budgets, and route maps for India's greatest road trips and treks.",
     type: "website",
@@ -33,13 +35,13 @@ export const metadata: Metadata = {
         url: "/icons/icon-512.png",
         width: 512,
         height: 512,
-        alt: "Raste Aur Raahein — India Travel Blog",
+        alt: "India Trip Itineraries — Raste Aur Raahein",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Raste Aur Raahein — Raw Journeys Across India",
+    title: "India Trip Itineraries — Raste Aur Raahein",
     description:
       "Authentic travel guides for India — high altitudes, open highways, and roads less taken.",
     images: ["/icons/icon-512.png"],

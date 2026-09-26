@@ -20,13 +20,19 @@ const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || process.env.NEXT_PUBLIC_GA_MEAS
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  applicationName: "India Trip Itineraries",
+  appleWebApp: {
+    title: "India Trip Itineraries",
+    capable: true,
+    statusBarStyle: "default",
+  },
   title: {
-    default: "Raste Aur Raahein — India Travel Blog by Sumit Singh",
-    template: "%s | Raste Aur Raahein",
+    default: "India Trip Itineraries — Raste Aur Raahein",
+    template: "%s | India Trip Itineraries",
   },
   description:
     "India travel blog with detailed itineraries, budgets, and route maps for Himalayan treks, road trips, and off-the-beaten-path adventures.",
-  keywords: ["India travel blog", "travel itinerary India", "Himalayan road trip", "Spiti Valley", "Leh Ladakh guide", "adventure travel India"],
+  keywords: ["India Trip Itineraries", "India travel blog", "travel itinerary India", "Himalayan road trip", "Spiti Valley", "Leh Ladakh guide", "adventure travel India"],
   authors: [{ name: "Sumit Singh" }],
   creator: "Sumit Singh",
   alternates: {
@@ -45,14 +51,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    siteName: "Raste Aur Raahein",
-    title: "Raste Aur Raahein — India Travel Blog by Sumit Singh",
+    siteName: "India Trip Itineraries",
+    title: "India Trip Itineraries — Raste Aur Raahein",
     description:
       "Detailed travel itineraries, honest budgets, and route maps for India's greatest road trips and treks.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Raste Aur Raahein — India Travel Blog",
+    title: "India Trip Itineraries — Raste Aur Raahein",
     description: "Travel itineraries for India — high altitudes, ancient monasteries, and roads less taken.",
   },
   robots: {
@@ -71,6 +77,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+        <meta name="application-name" content="India Trip Itineraries" />
         {/* ── Android PWA: status-bar colour ── */}
         <meta name="theme-color" content="#006CE4" media="(prefers-color-scheme: light)" />
         <meta name="theme-color" content="#111318" media="(prefers-color-scheme: dark)" />
@@ -79,7 +86,7 @@ export default function RootLayout({
         {/* ── iOS standalone flags ── */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Raste Aur Raahein" />
+        <meta name="apple-mobile-web-app-title" content="India Trip Itineraries" />
         {/* ── iOS touch icon (shown when "Add to Home Screen") ── */}
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
         <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512.png" />

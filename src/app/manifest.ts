@@ -2,8 +2,8 @@ import { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Raste Aur Raahein",
-    short_name: "RasteAurRahein",
+    name: "India Trip Itineraries — Raste Aur Raahein",
+    short_name: "India Trips",
     description:
       "Discover India through curated travel itineraries, trip guides, and honest travel stories by Sumit Singh.",
     start_url: "/",

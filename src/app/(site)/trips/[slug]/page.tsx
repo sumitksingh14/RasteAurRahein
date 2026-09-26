@@ -77,7 +77,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${trip.title} — Raste Aur Raahein`,
       description,
       type: "article",
-      siteName: "Raste Aur Raahein",
+      siteName: "India Trip Itineraries",
       publishedTime: trip._createdAt,
       modifiedTime: trip._updatedAt || trip._createdAt,
       authors: trip.author?.name ? [trip.author.name] : ["Sumit Singh"],

@@ -52,51 +52,68 @@ export default function AuthorSchema({ author, url = SITE_URL }: AuthorSchemaPro
 
 /** Site-level WebSite + Person combo — use in the root layout once */
 export function WebSiteSchema() {
-  const schema = {
+  const websiteSchema = {
     "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebSite",
-        "@id": `${SITE_URL}/#website`,
-        url: SITE_URL,
-        name: "Raste Aur Raahein",
-        description:
-          "Portfolio-style travel blog documenting high-altitude treks, desert roads, and off-the-beaten-path adventures across India.",
-        inLanguage: "en-IN",
-        publisher: { "@id": `${SITE_URL}/#author` },
-        // potentialAction — SearchAction (only if the site has a /search route)
-        // Uncomment when /search is live:
-        // potentialAction: {
-        //   "@type": "SearchAction",
-        //   target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/trips?q={search_term_string}` },
-        //   "query-input": "required name=search_term_string",
-        // },
+    "@type": "WebSite",
+    "@id": `${SITE_URL}/#website`,
+    name: "India Trip Itineraries",
+    alternateName: [
+      "India Trip Itineraries",
+      "Raste Aur Raahein",
+      "India Trip Itineraries - Raste Aur Raahein",
+      "RasteAurRahein",
+    ],
+    url: `${SITE_URL}/`,
+    description:
+      "Curated India travel itineraries, high-altitude treks, road trips, and route guides by Sumit Singh.",
+    inLanguage: "en-IN",
+    publisher: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "India Trip Itineraries",
+      alternateName: "Raste Aur Raahein",
+      url: `${SITE_URL}/`,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/icons/icon-512.png`,
+        width: 512,
+        height: 512,
       },
-      {
-        "@type": "Person",
-        "@id": `${SITE_URL}/#author`,
-        name: "Sumit Singh",
-        url: `${SITE_URL}/about`,
-        description:
-          "Travel writer, photographer, and software engineer documenting the roads less taken across India.",
-        sameAs: ["https://instagram.com", "https://twitter.com"],
-        jobTitle: "Travel Writer & Photographer",
-        knowsAbout: [
-          "India travel",
-          "High-altitude road trips",
-          "Himalayan trekking",
-          "Budget travel",
-        ],
-      },
+    },
+  };
+
+  const authorSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${SITE_URL}/#author`,
+    name: "Sumit Singh",
+    url: `${SITE_URL}/about`,
+    description:
+      "Travel writer, photographer, and software engineer documenting the roads less taken across India.",
+    sameAs: ["https://instagram.com", "https://twitter.com"],
+    jobTitle: "Travel Writer & Photographer",
+    knowsAbout: [
+      "India travel",
+      "High-altitude road trips",
+      "Himalayan trekking",
+      "Budget travel",
     ],
   };
 
   return (
-    <script
-      id="website-schema"
-      type="application/ld+json"
-      suppressHydrationWarning
-      dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
-    />
+    <>
+      <script
+        id="website-schema"
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(websiteSchema) }}
+      />
+      <script
+        id="site-author-schema"
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(authorSchema) }}
+      />
+    </>
   );
 }
