@@ -39,12 +39,14 @@ export async function POST(req: NextRequest) {
     const userId = randomUUID();
     const passwordHash = await bcrypt.hash(password, 12);
 
+    const now = new Date().toISOString();
     await redis.hset(`user:${userId}`, {
       id: userId,
       username,
       email: email.toLowerCase(),
       passwordHash,
-      createdAt: new Date().toISOString(),
+      createdAt: now,
+      lastLoginAt: now,
     });
     await redis.set(`user:email:${email.toLowerCase()}`, userId);
     await redis.set(`user:username:${username.toLowerCase()}`, userId);

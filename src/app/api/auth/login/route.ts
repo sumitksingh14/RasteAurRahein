@@ -47,6 +47,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const now = new Date().toISOString();
+    await redis.hset(`user:${userHash.id}`, { lastLoginAt: now });
+
     await createSession({
       userId: userHash.id,
       username: userHash.username,
@@ -55,7 +58,12 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      user: { id: userHash.id, username: userHash.username, email: userHash.email },
+      user: {
+        id: userHash.id,
+        username: userHash.username,
+        email: userHash.email,
+        lastLoginAt: now,
+      },
     });
   } catch (err) {
     console.error("Login error:", err);

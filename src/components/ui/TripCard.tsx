@@ -11,6 +11,7 @@ import { TripAlertBadge } from "@/components/ui/TripAlertBanner";
 import { getTripDummyLikes } from "@/lib/likes";
 
 import { getTripImage } from "@/lib/data/tripImages";
+import { trackRelatedTripClick } from "@/lib/analytics";
 
 interface TripCardProps {
   trip: Trip;
@@ -18,6 +19,8 @@ interface TripCardProps {
   priority?: boolean;
   loading?: "eager" | "lazy";
   initialSaved?: boolean;
+  relatedPosition?: 1 | 2 | 3 | 4;
+  sourceSlug?: string;
 }
 
 export default function TripCard({
@@ -26,6 +29,8 @@ export default function TripCard({
   priority = false,
   loading,
   initialSaved = false,
+  relatedPosition,
+  sourceSlug,
 }: TripCardProps) {
   const imageSrc = getTripImage(trip.slug);
   const [isHovered, setIsHovered] = useState(false);
@@ -174,6 +179,11 @@ export default function TripCard({
       {/* Card Body */}
       <Link
         href={`/trips/${trip.slug}`}
+        onClick={() => {
+          if (relatedPosition && sourceSlug) {
+            trackRelatedTripClick(trip.slug, sourceSlug, relatedPosition);
+          }
+        }}
         style={{ textDecoration: "none", display: "block" }}
       >
         <div style={{ padding: "1.1rem 1.25rem 1.25rem" }}>

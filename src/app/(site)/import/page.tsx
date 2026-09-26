@@ -23,6 +23,7 @@ import {
 import { parseItineraryAction, confirmImportAction, getSuggestionsAction } from "./actions";
 import type { ImportSegment } from "@/lib/services/ImportService";
 import type { Suggestion } from "@/lib/services/SuggestionService";
+import { trackItineraryImport } from "@/lib/analytics";
 
 type Step = "input" | "parsing" | "preview" | "suggestions" | "error";
 
@@ -48,6 +49,16 @@ export default function ImportPage() {
       setSegments(res.segments || []);
       setWarnings(res.warnings || []);
       setStep("preview");
+
+      // Track itinerary import type
+      const lower = html.toLowerCase();
+      const importType: "gpx" | "mymaps" | "notes" =
+        lower.includes("<gpx") || lower.includes(".gpx")
+          ? "gpx"
+          : lower.includes("google.com/maps") || lower.includes("<kml")
+          ? "mymaps"
+          : "notes";
+      trackItineraryImport(importType);
     } catch (err) {
       setErrorMsg(err instanceof Error ? err.message : "Unknown error");
       setStep("error");

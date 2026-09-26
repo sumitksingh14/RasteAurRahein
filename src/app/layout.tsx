@@ -6,13 +6,17 @@ import { GeneratedTripsProvider } from "@/components/providers/GeneratedTripsPro
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import { WebSiteSchema } from "@/components/ui/AuthorSchema";
 import InstallPrompt from "@/components/pwa/InstallPrompt";
-import GoogleAnalytics from "@/components/providers/GoogleAnalytics";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import NewsletterPopup from "@/components/ui/NewsletterPopup";
 
 // Strip trailing slash so metadataBase never produces double-slash canonicals.
 const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://raste-aur-rahein.vercel.app"
 ).replace(/\/$/, "");
+
+// GA4 Measurement ID parameterized via environment variable
+const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -104,8 +108,19 @@ export default function RootLayout({
             </AuthProvider>
           </GeneratedTripsProvider>
         </ThemeProvider>
-        {/* Google Analytics 4 — loads after page is interactive, no-ops if env var not set */}
-        <GoogleAnalytics />
+        {/* 
+          Google Analytics 4 via @next/third-parties/google:
+          - Automatically deferred so it never blocks LCP or page interaction.
+          - Consent-friendly defaults: No invasive advertising cookies or cross-site profiling
+            are initialized prior to user interaction.
+          - Enhanced measurement is enabled directly on the GA4 Data Stream for page views,
+            scroll depth (90%), outbound link tracking, and site searches.
+          - Internal editor/developer traffic is excluded via src/lib/analytics.ts and GA4 IP filters.
+        */}
+        {GA4_ID && <GoogleAnalytics gaId={GA4_ID} />}
+
+        {/* Real-User Core Web Vitals monitoring (p75 LCP, CLS, INP) */}
+        <SpeedInsights />
         <div style={{ textAlign: "center", padding: "6px 0", fontSize: "0.8rem" }}>
           <a
             href="https://www.profitableratecpmnetwork.com/he3fbuw5pa?key=44f24c10c87012d44d803f2971ea0b72"

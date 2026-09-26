@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { X, Mail, ArrowRight, CheckCircle, Loader2 } from "lucide-react";
+import { trackEmailSignup } from "@/lib/analytics";
 
 const STORAGE_KEY = "rar_newsletter_dismissed";
 const COOLDOWN_DAYS = 30; // re-show after N days if not subscribed
@@ -94,10 +95,7 @@ export default function NewsletterPopup() {
       }
 
       setStatus("success");
-      window.gtag?.("event", "newsletter_signup", {
-        method: "exit_intent_popup",
-        event_category: "engagement",
-      });
+      trackEmailSignup("newsletter");
 
       // Dismiss after 2.5s so user can see the success state
       setTimeout(() => dismiss(true), 2500);

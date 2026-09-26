@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Download, Check, MapPin, Mail, User, Printer } from "lucide-react";
 import type { Trip } from "@/lib/types";
 import { extractTripWaypoints, generateGPXContent, downloadGPXFile } from "@/lib/gpxExporter";
+import { trackEmailSignup, trackGpxDownload } from "@/lib/analytics";
 
 interface TripLeadCaptureProps {
   trip: Trip;
@@ -46,6 +47,13 @@ export default function TripLeadCapture({ trip }: TripLeadCaptureProps) {
 
       setStatus("success");
 
+      // Track email signup and GPX download in GA4
+      trackEmailSignup("article_gpx", {
+        trip_slug: trip.slug,
+        route_report_optin: routeReportOptIn,
+      });
+      trackGpxDownload(trip.slug, trip.title);
+
       // Automatically trigger the GPX download upon successful submission
       const waypoints = extractTripWaypoints(trip);
       if (waypoints.length > 0) {
@@ -59,6 +67,7 @@ export default function TripLeadCapture({ trip }: TripLeadCaptureProps) {
   };
 
   const handleDownloadAgain = () => {
+    trackGpxDownload(trip.slug, trip.title);
     const waypoints = extractTripWaypoints(trip);
     if (waypoints.length > 0) {
       const gpx = generateGPXContent(trip.title, waypoints);

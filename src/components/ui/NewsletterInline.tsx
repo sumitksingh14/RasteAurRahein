@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { Mail, ArrowRight, CheckCircle, Loader2 } from "lucide-react";
+import { trackEmailSignup } from "@/lib/analytics";
 
 interface NewsletterInlineProps {
   /** Visual variant — 'card' shows a boxed card, 'strip' is a compact horizontal layout */
@@ -55,11 +56,10 @@ export default function NewsletterInline({
       setStatus("success");
       setEmail("");
 
-      // GA4 custom event
-      window.gtag?.("event", "newsletter_signup", {
-        method: source,
-        event_category: "engagement",
-      });
+      // GA4 custom event via shared analytics library
+      const eventSource =
+        source === "road-conditions-hub" ? "road_conditions" : "newsletter";
+      trackEmailSignup(eventSource);
     } catch {
       setErrorMsg("Network error. Please try again.");
       setStatus("error");

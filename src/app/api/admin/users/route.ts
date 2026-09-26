@@ -9,6 +9,7 @@ export interface AdminUser {
   username: string;
   email: string;
   createdAt: string;
+  lastLoginAt?: string;
   isAdmin: boolean;
 }
 
@@ -35,6 +36,7 @@ export async function GET() {
         username: hash.username || "",
         email,
         createdAt: hash.createdAt || "",
+        lastLoginAt: hash.lastLoginAt || undefined,
         isAdmin,
       });
     }

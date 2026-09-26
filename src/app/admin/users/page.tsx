@@ -18,6 +18,7 @@ import {
   Eye,
   EyeOff,
   KeyRound,
+  Clock,
 } from "lucide-react";
 
 interface AdminUser {
@@ -25,6 +26,7 @@ interface AdminUser {
   username: string;
   email: string;
   createdAt: string;
+  lastLoginAt?: string;
   isAdmin: boolean;
 }
 
@@ -223,6 +225,7 @@ export default function UsersPage() {
                 <th>USER</th>
                 <th>EMAIL</th>
                 <th>JOINED</th>
+                <th>LAST LOGIN</th>
                 <th>ROLE</th>
                 <th>ACTIONS</th>
               </tr>
@@ -252,6 +255,28 @@ export default function UsersPage() {
                           year: "numeric",
                         })
                       : "—"}
+                  </td>
+                  <td className="admin-muted">
+                    {user.lastLoginAt ? (
+                      <div>
+                        <div style={{ fontWeight: 500, color: "var(--admin-text, #111827)" }}>
+                          {new Date(user.lastLoginAt).toLocaleDateString("en-IN", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </div>
+                        <div style={{ fontSize: "0.75rem", opacity: 0.75, display: "flex", alignItems: "center", gap: "3px" }}>
+                          <Clock size={11} />
+                          {new Date(user.lastLoginAt).toLocaleTimeString("en-IN", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </div>
+                      </div>
+                    ) : (
+                      <span style={{ opacity: 0.5, fontStyle: "italic" }}>Never</span>
+                    )}
                   </td>
                   <td>
                     <span className={`admin-role-badge ${user.isAdmin ? "admin-role-badge--admin" : "admin-role-badge--user"}`}>

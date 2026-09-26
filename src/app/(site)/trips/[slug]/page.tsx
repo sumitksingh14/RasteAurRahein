@@ -708,8 +708,13 @@ export default async function TripDetailPage({ params }: Props) {
                 gap: "1.25rem",
               }}
             >
-              {relatedTrips.map((t) => (
-                <TripCard key={t._id} trip={t} />
+              {relatedTrips.map((t, index) => (
+                <TripCard
+                  key={t._id}
+                  trip={t}
+                  relatedPosition={(Math.min(index + 1, 4) as 1 | 2 | 3 | 4)}
+                  sourceSlug={trip.slug}
+                />
               ))}
             </div>
           </div>

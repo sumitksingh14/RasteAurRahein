@@ -1,6 +1,7 @@
 "use client";
 
 import { ExternalLink, Hotel, ShoppingBag, ShieldCheck, FileText } from "lucide-react";
+import { trackOutboundClick } from "@/lib/analytics";
 
 interface PartnerLink {
   icon: React.ElementType;
@@ -90,6 +91,11 @@ export default function TripPartnerLinks({ tripSlug, country }: TripPartnerLinks
               href={href}
               target={isExternal ? "_blank" : undefined}
               rel={isExternal ? "noopener noreferrer" : undefined}
+              onClick={() => {
+                if (isExternal) {
+                  trackOutboundClick(label, href);
+                }
+              }}
               className="glass-card"
               style={{
                 display: "flex", alignItems: "flex-start", gap: "0.75rem",
