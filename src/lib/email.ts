@@ -5,7 +5,17 @@
 
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazily instantiate so the build doesn't fail when RESEND_API_KEY is absent.
+// The client is only constructed at request time, never during static analysis.
+let _resend: Resend | null = null;
+function getResend(): Resend {
+  if (!_resend) {
+    const key = process.env.RESEND_API_KEY;
+    if (!key) throw new Error("RESEND_API_KEY environment variable is not set.");
+    _resend = new Resend(key);
+  }
+  return _resend;
+}
 
 // Use Resend's shared sender for now (replace with a verified domain later)
 const FROM = "Raste Aur Raahein <onboarding@resend.dev>";
@@ -28,7 +38,7 @@ export async function sendGroupJoinNotification({
   groupId: string;
 }) {
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from: FROM,
       to: organizerEmail,
       subject: `${joinerName} joined your trip: ${groupName}`,
@@ -74,7 +84,7 @@ export async function sendGroupInviteEmail({
 }) {
   const joinUrl = `${SITE_URL}/trips/group/${groupId}/join?token=${token}`;
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from: FROM,
       to: toEmail,
       subject: `${inviterName} invited you to join: ${groupName}`,
@@ -122,7 +132,7 @@ export async function sendEnquiryNotification({
 }) {
   const tripUrl = `${SITE_URL}/trips/${tripSlug}`;
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from: FROM,
       to: "zsumitksingh@gmail.com",
       replyTo: email,
