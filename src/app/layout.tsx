@@ -11,8 +11,9 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import NewsletterPopup from "@/components/ui/NewsletterPopup";
 
 // Strip trailing slash so metadataBase never produces double-slash canonicals.
+// Use || (not ??) so an empty-string env var also falls back to the default.
 const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://raste-aur-rahein.vercel.app"
+  process.env.NEXT_PUBLIC_SITE_URL || "https://raste-aur-rahein.vercel.app"
 ).replace(/\/$/, "");
 
 // GA4 Measurement ID parameterized via environment variable
