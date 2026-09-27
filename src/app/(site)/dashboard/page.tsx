@@ -1505,7 +1505,7 @@ function EmptyState({
   icon: React.ElementType;
   title: string;
   description: string;
-  cta: { label: string; href: string };
+  cta?: { label: string; href: string };
 }) {
   return (
     <div
@@ -1554,9 +1554,11 @@ function EmptyState({
       >
         {description}
       </p>
-      <Link href={cta.href} className="btn btn-primary">
-        {cta.label}
-      </Link>
+      {cta && (
+        <Link href={cta.href} className="btn btn-primary">
+          {cta.label}
+        </Link>
+      )}
     </div>
   );
 }
