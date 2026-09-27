@@ -1195,14 +1195,16 @@ export default function DashboardPage() {
                 Your saved trips, itineraries, and group adventures.
               </p>
             </div>
-            <Link
-              href="/ai-planner"
-              className="btn btn-primary"
-              style={{ display: "inline-flex", gap: 8, alignItems: "center", flexShrink: 0, textDecoration: "none" }}
-            >
-              <Sparkles size={16} />
-              Plan a new trip
-            </Link>
+            {user.isAdmin && (
+              <Link
+                href="/ai-planner"
+                className="btn btn-primary"
+                style={{ display: "inline-flex", gap: 8, alignItems: "center", flexShrink: 0, textDecoration: "none" }}
+              >
+                <Sparkles size={16} />
+                Plan a new trip
+              </Link>
+            )}
           </div>
         </div>
       </section>
@@ -1398,7 +1400,7 @@ export default function DashboardPage() {
                 icon={Sparkles}
                 title="No saved itineraries yet"
                 description="Generate a custom day-by-day itinerary with the AI Planner and save it to your account."
-                cta={{ label: "Open AI Planner", href: "/ai-planner" }}
+                cta={user.isAdmin ? { label: "Open AI Planner", href: "/ai-planner" } : undefined}
               />
             ) : (
               <div

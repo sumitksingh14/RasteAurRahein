@@ -703,6 +703,67 @@ export default function AIPlanner() {
     : params.model === "openai" ? "#10a37f"
     : "#c9a84c";
 
+  // ── Admin guard ────────────────────────────────────────────────────────────
+  if (authLoading) {
+    return (
+      <div style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Loader2 size={32} style={{ animation: "spin 1s linear infinite", color: "#6366f1" }} />
+      </div>
+    );
+  }
+
+  if (!user?.isAdmin) {
+    return (
+      <div style={{
+        minHeight: "60vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "1.25rem",
+        padding: "2rem",
+        textAlign: "center",
+      }}>
+        <div style={{
+          width: 64,
+          height: 64,
+          borderRadius: "50%",
+          background: "linear-gradient(135deg, #f59e0b22, #f9731622)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+          <AlertCircle size={30} style={{ color: "#f59e0b" }} />
+        </div>
+        <div>
+          <h2 style={{ margin: 0, fontSize: "1.4rem", fontWeight: 700, color: "#1f2937" }}>
+            Access Restricted
+          </h2>
+          <p style={{ margin: "0.5rem 0 0", color: "#6b7280", fontSize: "0.95rem" }}>
+            The AI Trip Planner is available to admins only.
+          </p>
+        </div>
+        <Link
+          href="/"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            padding: "0.6rem 1.4rem",
+            borderRadius: "100px",
+            background: "linear-gradient(135deg, #6366f1, #7c3aed)",
+            color: "#fff",
+            fontWeight: 600,
+            fontSize: "0.9rem",
+            textDecoration: "none",
+          }}
+        >
+          Go Home
+        </Link>
+      </div>
+    );
+  }
+
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <>

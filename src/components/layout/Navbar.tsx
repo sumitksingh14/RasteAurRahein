@@ -6,10 +6,10 @@ import { useState, useEffect } from "react";
 import { Search, User, Menu, X, ChevronDown, LogOut, Shield } from "lucide-react";
 import { REGIONS } from "@/lib/regions";
 import { useAuth } from "@/components/providers/AuthProvider";
+import AIItineraryButton from "@/components/ai/AIItineraryButton";
 
 const navLinks = [
   { href: "/trips", label: "Find a Trip" },
-  { href: "/ai-planner", label: "Generate Itinerary" },
   { href: "/regions", label: "Regions" },
   { href: "/journal", label: "Journal" },
   { href: "/weather", label: "Weather 🌤️" },
@@ -265,6 +265,9 @@ export default function Navbar() {
 
           {/* Right Actions */}
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            {/* AI Trip Planner — admin only */}
+            <AIItineraryButton />
+
             {/* Search */}
             <Link
               href="/trips"

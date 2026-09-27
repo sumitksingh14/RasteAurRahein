@@ -9,7 +9,7 @@ export default function AIItineraryButton() {
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
 
-  if (!user?.isAdmin) return null;
+  if (!user) return null;
 
   return (
     <>
@@ -17,58 +17,45 @@ export default function AIItineraryButton() {
         id="ai-generate-btn"
         onClick={() => setOpen(true)}
         aria-label="Generate AI itinerary"
+        title="AI Trip Planner"
         style={{
-          position: "fixed",
-          bottom: "2rem",
-          right: "2rem",
-          zIndex: 900,
           display: "flex",
           alignItems: "center",
-          gap: "8px",
-          padding: "0.75rem 1.25rem",
+          gap: "6px",
+          padding: "0.45rem 0.9rem",
           borderRadius: "100px",
-          background: "var(--accent-gold)",
+          background: "linear-gradient(135deg, #f59e0b, #f97316)",
           color: "#fff",
           border: "none",
           cursor: "pointer",
-          fontSize: "0.875rem",
-          fontWeight: 600,
+          fontSize: "0.8rem",
+          fontWeight: 700,
           fontFamily: "var(--font-sans)",
-          boxShadow: "0 8px 32px rgba(0,108,228,0.4), 0 2px 8px rgba(0,0,0,0.2)",
-          transition: "all 0.3s cubic-bezier(0.4,0,0.2,1)",
+          boxShadow: "var(--shadow-neo-raised)",
+          transition: "all 0.25s ease",
           letterSpacing: "0.01em",
           whiteSpace: "nowrap",
+          flexShrink: 0,
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.transform = "translateY(-3px) scale(1.04)";
-          e.currentTarget.style.boxShadow = "0 16px 48px rgba(0,108,228,0.5), 0 4px 12px rgba(0,0,0,0.25)";
+          e.currentTarget.style.boxShadow = "0 4px 16px rgba(245,158,11,0.5)";
+          e.currentTarget.style.transform = "translateY(-1px)";
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.transform = "translateY(0) scale(1)";
-          e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,108,228,0.4), 0 2px 8px rgba(0,0,0,0.2)";
+          e.currentTarget.style.boxShadow = "var(--shadow-neo-raised)";
+          e.currentTarget.style.transform = "translateY(0)";
         }}
       >
-        <Sparkles size={16} />
-        AI Trip Planner
+        <Sparkles size={13} />
+        <span className="ai-btn-label">AI Trip Planner</span>
       </button>
 
       {open && <AIItineraryModal onClose={() => setOpen(false)} />}
 
       <style>{`
-        @keyframes ai-pulse {
-          0%, 100% { box-shadow: 0 8px 32px rgba(0,108,228,0.4), 0 2px 8px rgba(0,0,0,0.2), 0 0 0 0 rgba(0,108,228,0.4); }
-          50%       { box-shadow: 0 8px 32px rgba(0,108,228,0.4), 0 2px 8px rgba(0,0,0,0.2), 0 0 0 10px rgba(0,108,228,0); }
-        }
-        #ai-generate-btn {
-          animation: ai-pulse 2.5s infinite;
-        }
-        #ai-generate-btn:hover {
-          animation: none;
-        }
-        @media (max-width: 767px) {
-          #ai-generate-btn {
-            display: none !important;
-          }
+        @media (max-width: 480px) {
+          .ai-btn-label { display: none; }
+          #ai-generate-btn { padding: 0.45rem 0.6rem; }
         }
       `}</style>
     </>
