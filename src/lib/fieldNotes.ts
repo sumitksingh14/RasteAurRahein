@@ -165,20 +165,317 @@ The Kunzum Pass and Rohtang Pass are where most closures happen. The Shimla rout
     _createdAt: "2025-06-01T00:00:00Z",
     _updatedAt: "2025-06-01T00:00:00Z",
   },
+  {
+    _id: "seed-004",
+    slug: "15-must-visit-national-parks-in-india",
+    title: "15 Must-Visit National Parks in India (and When to Go)",
+    category: "seasonal-advisory",
+    excerpt:
+      "A region-by-region field guide to 15 extraordinary Indian national parks — from trans-Himalayan snowfields and central sal forests to mangrove deltas — with optimal wildlife tracking windows and safari booking tips.",
+    body: `India's 106 national parks protect a dramatic ecological spectrum, compressing subalpine Himalayan valleys at 4,000 meters, dense sal corridors, arid volcanic plateaus, and mangrove deltas into one subcontinent. These biomes shelter over 70 percent of the world's wild tigers, the last Asiatic lions, and the great one-horned rhinoceros. Because seasonal climate shifts and forest department schedules vary sharply by region, timing your expedition to match park accessibility and wildlife movements is essential.
+
+---
+
+### 1. Jim Corbett National Park — Uttarakhand (North)
+
+India's oldest national park (est. 1936) hugs the Shivalik foothills along the Ramganga River basin, celebrated for riverine grasslands and dense sal canopies.
+
+- **Known For:** Bengal tigers, wild Asian elephants, gharials, and 600+ bird species.
+- **Best Months to Visit:** Mid-November to Mid-June (Dhikala core opens Nov 15–Jun 15; Bijrani opens mid-October).
+- **Practical Tip:** Book Dhikala Forest Rest House 46 days ahead on \`corbettgov.org\` for exclusive core night permits. Nearest railhead: Ramnagar (12 km).
+
+### 2. Kaziranga National Park — Assam (Northeast)
+
+A UNESCO World Heritage Site in the fertile Brahmaputra floodplains, characterized by tall elephant grass and marshland water bodies.
+
+- **Known For:** Two-thirds of the world's Great Indian one-horned rhinos, wild water buffalo, and eastern swamp deer.
+- **Best Months to Visit:** November to April (closed May–Oct due to monsoon flooding; visibility peaks Jan–Mar).
+- **Practical Tip:** Split game drives between Central (Kohora) range for rhinos and Western (Bagori) range for water birds. Fly to Jorhat (97 km) or Guwahati (220 km).
+
+### 3. Ranthambore National Park — Rajasthan (West)
+
+A former royal hunting ground where dry deciduous forests wrap around a 10th-century fortress, creating dramatic historical backdrops for wildlife.
+
+- **Known For:** Bengal tigers roaming amidst medieval ruins, marsh crocodiles in Padam Talao, and leopards.
+- **Best Months to Visit:** October to June (Nov–Feb brings pleasant weather; Mar–May offers peak tiger sightings around drying lakes).
+- **Practical Tip:** Book core Zones 1–5 Gypsy safaris 90 days ahead via Rajasthan Forest portal. Nearest railhead: Sawai Madhopur (11 km); Jaipur Airport: 160 km.
+
+### 4. Kanha National Park — Madhya Pradesh (Central)
+
+The central Indian wilderness that inspired Kipling's *The Jungle Book*, renowned for vast open meadows where morning mist settles over wildlife.
+
+- **Known For:** Rescued hard-ground barasingha (swamp deer), Bengal tigers, leopards, dhole (wild dogs), and vast sal maidans.
+- **Best Months to Visit:** Mid-October to June (Nov–Feb delivers misty landscapes; Apr–Jun yields top predator tracking; closed Jul–Sep).
+- **Practical Tip:** Book Mukki or Kanha gates online via MP Forest portal. Fly to Jabalpur (160 km) or train to Gondia (145 km).
+
+### 5. Bandhavgarh National Park — Madhya Pradesh (Central)
+
+Dominated by a sheer sandstone plateau crowned by an ancient 2,000-year-old fort, surrounded by vertical cliffs and bamboo thickets.
+
+- **Known For:** Exceptional tiger density, 10th-century reclining Vishnu statue (Shesh Shaiya), and steep cliff scenery.
+- **Best Months to Visit:** October 15 to June 30 (peak tiger tracking runs February through May; closed July to mid-October).
+- **Practical Tip:** Book Tala Zone (Zone 1) for fort vistas and historic cat territory. Nearest railhead: Umaria (35 km); Jabalpur Airport: 190 km.
+
+### 6. Sundarbans National Park — West Bengal (East)
+
+The world's largest mangrove river delta where the Ganges and Brahmaputra meet the Bay of Bengal, explored strictly by boat along tidal waterways.
+
+- **Known For:** Swimming Bengal tigers, estuarine crocodiles, Gangetic dolphins, and water monitor lizards.
+- **Best Months to Visit:** November to March (winter offers calm waters and basking reptiles; avoid April to September).
+- **Practical Tip:** Book licensed safari boats departing Godkhali Port (3 hours from Kolkata). Carry government photo ID for permits at Sajnekhali.
+
+### 7. Hemis National Park — Ladakh (North / Trans-Himalaya)
+
+South Asia's largest national park, spanning rugged high-altitude cold desert valleys between 3,300 and 6,000 meters in eastern Ladakh.
+
+- **Known For:** Snow leopards ("ghosts of the mountains"), Tibetan wolves, blue sheep (bharal), and golden eagles.
+- **Best Months to Visit:** Late December to mid-March for snow leopard tracking; June to September for alpine trekking.
+- **Practical Tip:** Acclimatize in Leh for 48 hours. Stay in Rumbak village homestays with skilled spotters. Wildlife permits issued in Leh.
+
+### 8. Gir National Park — Gujarat (West)
+
+An arid teak and thorny scrub haven in Gujarat's Kathiawar peninsula, representing a conservation miracle for endangered carnivores.
+
+- **Known For:** The last wild home of the Asiatic lion (*Panthera leo persica*), leopards, hyenas, and Maldhari pastoral communities.
+- **Best Months to Visit:** December to March for pleasant safaris; April–May for guaranteed waterhole sightings (closed June 16 to October 15).
+- **Practical Tip:** Book Gir Jungle Trail permits strictly via \`girlion.gujarat.gov.in\` 60 days ahead. Rajkot Airport is 160 km away.
+
+### 9. Periyar National Park — Kerala (South)
+
+A lush Western Ghats sanctuary nestled in the Cardamom Hills, centered on a picturesque 1895 reservoir lake fringed by tropical rainforest.
+
+- **Known For:** Wild Asian elephant herds bathing on the lake shore, gaur, sambar deer, and otters.
+- **Best Months to Visit:** October to March (cool mountain weather; April–May is warm but prime for elephant gatherings).
+- **Practical Tip:** Book the 7:30 AM KTDC boat cruise or a guided bamboo rafting trek through Thekkady forest office. Madurai Airport: 140 km.
+
+### 10. Nagarhole National Park (Kabini) — Karnataka (South)
+
+Part of the Nilgiri Biosphere Reserve along the scenic Kabini River, combining dense teak woods with fertile riverbanks.
+
+- **Known For:** Asian elephants, leopards, black panthers (melanistic leopards), Bengal tigers, and river crocodiles.
+- **Best Months to Visit:** October to May (Mar–May is prime as elephant herds gather on the dry riverbed; Nov–Feb offers misty drives).
+- **Practical Tip:** Choose Antharasanthe gate for Kabini river boat safaris via Karnataka Forest portal. Nearest airport: Mysore (80 km) or Bengaluru.
+
+### 11. Manas National Park — Assam (Northeast)
+
+A UNESCO World Heritage Site bordering Bhutan along the turquoise Manas River, protecting one of Asia's richest biodiversity corridors.
+
+- **Known For:** Endangered rarities: pygmy hog, golden langur, hispid hare, wild water buffalo, and Bengal florican.
+- **Best Months to Visit:** November to April (clear skies and mild 15°C–25°C temperatures; closed May–October for monsoons).
+- **Practical Tip:** Pair Bansbari jeep drives with a raft trip from Mathanguri lodge along the Bhutan border. Guwahati Airport: 140 km.
+
+### 12. Tadoba-Andhari Tiger Reserve — Maharashtra (West / Central)
+
+"The Jewel of Vidarbha" encompasses rugged dry teak hills, bamboo thickets, and deep ravines around the perennial Tadoba Lake.
+
+- **Known For:** Top-tier tiger sighting frequencies, sloth bears, dhole packs, and mugger crocodiles.
+- **Best Months to Visit:** October to June (Nov–Feb offers pleasant weather; Mar–May delivers daily waterhole sightings).
+- **Practical Tip:** Core gates (Moharli, Kolara) book out fast on \`mytadoba.org\`; buffer gates (Agarzari) offer great sightings. Nagpur Airport: 140 km.
+
+### 13. Great Himalayan National Park — Himachal Pradesh (North)
+
+A roadless UNESCO wilderness in Kullu protecting virgin temperate forests, glacial catchments, and subalpine glades explored purely on foot.
+
+- **Known For:** Rare western tragopan, musk deer, Himalayan brown bear, and pristine trekker-only valleys.
+- **Best Months to Visit:** April to June for wildflowers; September to November for clear skies and tracking (closed Dec–Mar and Jul–Aug).
+- **Practical Tip:** Secure trekking permits at Sai Ropa GHNP office; hire local guides through the community BTCO collective.
+
+### 14. Silent Valley National Park — Kerala (South)
+
+A virgin tract of tropical rainforest in the Nilgiris, celebrated for its haunting quiet due to the natural absence of cicadas.
+
+- **Known For:** Endangered lion-tailed macaques, Nilgiri langurs, great Indian hornbills, and the crystal Kunthi River.
+- **Best Months to Visit:** November to March (post-monsoon dry trails and low leech activity; avoid June–September monsoons).
+- **Practical Tip:** Board official 4x4 forest jeeps at Mukkali with an eco-guide for the 23-km drive to Sairandhri. Coimbatore Airport: 75 km.
+
+### 15. Keibul Lamjao National Park — Manipur (Northeast)
+
+The world's only floating national park, located on Loktak Lake, consisting of *phumdis* (thick floating mats of soil, peat, and vegetation).
+
+- **Known For:** Sole refuge of the endangered Sangai ("dancing deer"), living on floating biomass mats.
+- **Best Months to Visit:** November to March (stable lake levels and firm phumdi mats allow dependable Sangai viewing).
+- **Practical Tip:** Take an early wooden canoe safari to the Sendra watchtower at sunrise when deer graze. Imphal Airport is 53 km.
+
+---
+
+## Seasonal Overview: When to Plan Wildlife Safaris in India
+
+Wildlife tourism across India operates on distinct seasonal cycles dictated by climate and forest protocols:
+
+- **Core Season (Mid-October to Mid-June):** Lowland reserves across Central, North, West, and East India welcome visitors during this dry eight-month window.
+- **Summer Peak (March to May):** Scorching heat (38°C–44°C) withers forest vegetation and shrinks waterholes, forcing tigers, lions, and elephants into open clearings. This is the undisputed best window for serious predator sightings.
+- **Winter Window (November to February):** The most pleasant travel window, offering cool mornings, dramatic mist, and vibrant migratory bird arrivals, though dense greenery demands patient tracking.
+- **Monsoon Closures (July to September):** Most core tiger reserves in North, Central, and Northeast India shut completely for road repair and animal breeding. Southern reserves (like Kabini and Periyar) remain accessible year-round.
+- **Trans-Himalayan Exception:** High-altitude sanctuaries like Hemis invert this schedule: mid-winter (late December to March) is peak season for tracking snow leopards as freezing heights push them to valley floors.
+
+---
+
+## Quick Reference: National Parks → Best Months
+
+| National Park | Region & State | Best Months to Visit |
+|---|---|---|
+| Jim Corbett National Park | North (Uttarakhand) | Mid-November to Mid-June |
+| Kaziranga National Park | Northeast (Assam) | November to April |
+| Ranthambore National Park | West (Rajasthan) | October to June |
+| Kanha National Park | Central (Madhya Pradesh) | Mid-October to June |
+| Bandhavgarh National Park | Central (Madhya Pradesh) | October 15 to June 30 |
+| Sundarbans National Park | East (West Bengal) | November to March |
+| Hemis National Park | North / Trans-Himalaya (Ladakh) | Dec–Mar (Snow Leopard) / Jun–Sep (Treks) |
+| Gir National Park | West (Gujarat) | Dec–Mar (Comfort) / Apr–May (Sightings) |
+| Periyar National Park | South (Kerala) | October to March |
+| Nagarhole National Park (Kabini) | South (Karnataka) | October to May |
+| Manas National Park | Northeast (Assam) | November to April |
+| Tadoba-Andhari Tiger Reserve | West / Central (Maharashtra) | October to June |
+| Great Himalayan National Park | North (Himachal Pradesh) | Apr–Jun & Sep–Nov |
+| Silent Valley National Park | South (Kerala) | November to March |
+| Keibul Lamjao National Park | Northeast (Manipur) | November to March |
+`,
+    relatedTripSlug: "orchha-bundelkhand-heritage",
+    tags: ["wildlife", "national-parks", "safari", "india-travel", "seasonal-guide", "tigers"],
+    readingTime: 10,
+    _createdAt: "2026-09-20T08:00:00Z",
+    _updatedAt: "2026-09-20T08:00:00Z",
+  },
+  {
+    _id: "seed-005",
+    slug: "10-best-beaches-in-india-best-time-to-visit",
+    title: "10 Best Beaches in India (and the Best Time to Visit Each)",
+    category: "seasonal-advisory",
+    excerpt:
+      "From Andaman's powder-white silica sands and Goa's sheltered crescent coves to Kerala's dramatic laterite cliffs and Gujarat's Blue Flag waters — a complete coast-by-coast guide with monsoon timing and practical travel tips.",
+    body: `India's 7,500-kilometer coastline spans three major bodies of water: the Arabian Sea to the west, the Bay of Bengal to the east, and the Indian Ocean to the south. Along this vast perimeter lie radically diverse shores — from sheer red laterite cliffs and serene coconut lagoons to windswept sand spits, remote coral atolls, and certified Blue Flag sanctuaries. Because two distinct monsoon cycles dictate weather across opposing shores, knowing which coast is dry, calm, and swimmable during any given month is key to a memorable seaside escape.
+
+---
+
+### 1. Radhanagar Beach — Havelock Island (Swaraj Dweep), Andaman & Nicobar
+
+Ranked among Asia's finest shores, Radhanagar (Beach No. 7) unfurls as an expansive crescent of white silica sand backed by ancient Mahua trees.
+
+- **Distinctive Features:** Secluded tropical paradise, crystal-clear turquoise waters, gentle surf for swimming, and epic western sunsets without motorized jet skis.
+- **Best Time to Visit:** November to April (clear skies, minimal swells, and prime diving visibility; avoid May–September monsoons).
+- **Practical Tip:** Take a catamaran (Makruzz/Nautika) from Port Blair to Havelock (2 hours). Stay near Vijaynagar Beach and rent a scooter for Radhanagar.
+
+### 2. Palolem Beach — Canacona, South Goa
+
+A postcard-perfect 1.6-kilometer crescent bay cradled between rocky headlands and shaded by leaning coconut palms.
+
+- **Distinctive Features:** Laid-back bohemian beach life, calm swimming waters, paddleboarding, sea-kayaking to Butterfly Island, and silent headphone parties.
+- **Best Time to Visit:** November to March (warm, sunny 28°C–32°C days; beach huts dismantle completely during June–September monsoons).
+- **Practical Tip:** Canacona rail station is 3 km away; Dabolim Airport is 60 km. Reserve beach-facing wooden huts on the quieter southern end well ahead.
+
+### 3. Varkala Beach (Papanasam) — Kerala
+
+A dramatic geological marvel where sheer red laterite cliffs plunge directly into golden sands bordering the Arabian Sea.
+
+- **Distinctive Features:** Bohemian clifftop promenade, natural mineral springs, ancestral bathing rituals (*Papanasam*), Ayurveda centers, and clifftop yoga cafes.
+- **Best Time to Visit:** October to March (crisp skies and swimmable waters; heavy monsoon surf from June to August swallows the beach below).
+- **Practical Tip:** Varkala Sivagiri rail station is 4 km away; Trivandrum Airport is 45 km south. Book cliff-edge guesthouses along the tranquil North Cliff.
+
+### 4. Om Beach — Gokarna, Karnataka
+
+Named for its natural resemblance to the sacred 'ॐ' symbol, formed by two curved crescent bays divided by rugged rocky headlands.
+
+- **Distinctive Features:** Spiritual yet rugged backpacker haven, scenic cliffside coastal trekking to Half Moon and Paradise beaches, and beachside seafood cafes.
+- **Best Time to Visit:** October to March (clear dry days and gentle surf; May is intensely humid; June–September brings rough seas).
+- **Practical Tip:** Gokarna Road station is 9 km away; Dabolim Airport is 140 km north. From the Om Beach parking area, take a 10-minute downhill footpath to the sand.
+
+### 5. Dhanushkodi Beach & Arichal Munai — Rameswaram, Tamil Nadu
+
+A ghost town on the windswept eastern tip of Pamban Island, destroyed during the catastrophic 1964 cyclone.
+
+- **Distinctive Features:** Haunting ruins (church, railway station), mythic terminal point of *Ram Setu*, and the visual convergence of the Bay of Bengal and Indian Ocean.
+- **Best Time to Visit:** October to February (mild 22°C–28°C temperatures and pleasant sea breezes; April to June is searing with blowing sand).
+- **Practical Tip:** Fly to Madurai (175 km) or train to Rameswaram. A paved road runs to Arichal Munai (open 6 AM–6 PM). Stay in Rameswaram town; no lodging exists at Dhanushkodi.
+
+### 6. Kashid Beach — Raigad, Maharashtra (Konkan Coast)
+
+A three-kilometer expanse of silvery-white sand sheltered by whistling casuarina groves on the northern Konkan coastline.
+
+- **Distinctive Features:** Energetic surf for boogie boarding and water sports, uncrowded coastal strolls, fresh Malvani seafood, and proximity to Murud-Janjira sea fort.
+- **Best Time to Visit:** October to March (crisp winter coastal air and manageable waves; monsoons bring dangerous undertows).
+- **Practical Tip:** Board the Ro-Ro car ferry from Mumbai (Bhaucha Dhakka) to Mandwa jetty, followed by a 1.5-hour drive via Alibaug. Choose homestays near the southern end.
+
+### 7. Shivrajpur Beach — Dwarka, Gujarat
+
+A pristine Blue Flag-certified eco-beach on the Saurashtra coast meeting stringent international water quality and environmental standards.
+
+- **Distinctive Features:** Spotless white sand, calm shallow turquoise waters, frequent sightings of wild bottlenose dolphins, and family-friendly swimming.
+- **Best Time to Visit:** October to March (gentle sunshine and comfortable 20°C–28°C temperatures; summers bring dry heat over 40°C).
+- **Practical Tip:** Located 12 km from Dwarka pilgrimage town; Jamnagar Airport is 140 km away. A nominal fee (~₹30) covers solar showers and changing facilities.
+
+### 8. Marari Beach — Mararikulam, Kerala
+
+A tranquil fishing village shoreline framed by endless coconut palm groves, situated just 14 km from the Alleppey backwaters.
+
+- **Distinctive Features:** Serene seclusion with zero commercial shacks or noisy water sports, authentic village culture, traditional coir-making, and luxury eco-resorts.
+- **Best Time to Visit:** September to March (lush post-monsoon palms, gentle waves, and comfortable weather; June to August receives heavy rains).
+- **Practical Tip:** Kochi Airport is 75 km north (2 hours). Combine a 2-night backwater houseboat stay in Alleppey with a 3-night restorative stay at an eco-lodge in Marari.
+
+### 9. Chandrabhaga Beach — Konark / Puri, Odisha
+
+A sacred golden Bay of Bengal shoreline situated just 3 km from the 13th-century UNESCO World Heritage Konark Sun Temple.
+
+- **Distinctive Features:** Celebrated open-ocean sunrise views, rich cultural heritage hosting the annual Magha Saptami festival and Sand Art Festival, and Blue Flag clean zones.
+- **Best Time to Visit:** November to February (cool coastal breezes of 16°C–26°C, clear skies, and calm weather; May to October carries cyclonic risks).
+- **Practical Tip:** Fly to Bhubaneswar (65 km) or train to Puri (35 km). Drive the scenic Puri–Konark Marine Drive. Strong currents restrict swimming to lifeguarded zones.
+
+### 10. Agonda Beach — Canacona, South Goa
+
+A wide, quiet three-kilometer golden strand designated as a protected nesting sanctuary for endangered Olive Ridley sea turtles.
+
+- **Distinctive Features:** Peaceful sanctuary with a ban on loud music and motorized water sports, beachside yoga schools, sunset walks, and cozy wooden chalets.
+- **Best Time to Visit:** November to April (warm, sunny weather and active turtle nesting patrols from Dec–Mar; completely closed during monsoons).
+- **Practical Tip:** Located 15 minutes north of Palolem and 65 km from Dabolim Airport. Stay in wooden eco-cottages. Avoid flashlights near the northern turtle hatchery at night.
+
+---
+
+## Monsoon Dynamics: Understanding India's Dual Coastlines
+
+Timing an Indian beach trip requires understanding the two distinct monsoon systems influencing opposite shores:
+
+- **Southwest Monsoon (June to September):** Sweeps in from the Arabian Sea, impacting the entire West Coast (Kerala, Karnataka, Goa, Maharashtra, Gujarat). During these months, western beaches experience rough swells, strong undertows, constant rain, and dismantled beach shacks.
+- **Northeast / Retreating Monsoon (October to December):** Strikes the East Coast, particularly Tamil Nadu (including Chennai and Rameswaram) and southern Andhra Pradesh. While Goa and Maharashtra turn dry, sunny, and calm by late October, Tamil Nadu experiences its heaviest rainfall and cyclonic storms.
+- **Andaman & Nicobar Islands:** Receive rain from both monsoons, making November through April the only reliable window for calm seas and scuba diving.
+- **Traveler's Rule of Thumb:** From November to March, the West Coast, Andamans, and Odisha enjoy optimal dry weather. In September and October, Kerala and Gujarat clear up weeks earlier than Tamil Nadu.
+
+---
+
+## Quick Reference: Beaches → Best Months
+
+| Beach | Coastline / State | Best Months to Visit |
+|---|---|---|
+| Radhanagar Beach | Havelock Island, Andaman & Nicobar | November to April |
+| Palolem Beach | South Goa | November to March |
+| Varkala Beach (Papanasam) | Kerala (Arabian Sea) | October to March |
+| Om Beach | Gokarna, Karnataka | October to March |
+| Dhanushkodi Beach | Rameswaram, Tamil Nadu | October to February |
+| Kashid Beach | Raigad, Maharashtra (Konkan) | October to March |
+| Shivrajpur Beach | Dwarka, Gujarat | October to March |
+| Marari Beach | Mararikulam, Kerala | September to March |
+| Chandrabhaga Beach | Konark / Puri, Odisha | November to February |
+| Agonda Beach | South Goa | November to April |
+`,
+    relatedTripSlug: "goa-beyond-beaches",
+    tags: ["beaches", "coastal-india", "andaman", "goa", "kerala", "seasonal-guide"],
+    readingTime: 8,
+    _createdAt: "2026-09-22T08:00:00Z",
+    _updatedAt: "2026-09-22T08:00:00Z",
+  },
 ];
 
 // ---------------------------------------------------------------------------
 // CRUD helpers
 // ---------------------------------------------------------------------------
 
-/** Seed the journal into Redis if not already present */
+/** Seed any missing starter notes into Redis */
 async function ensureSeeded(): Promise<void> {
   try {
-    const count = await redis.scard("journal:index");
-    if (count > 0) return;
     for (const note of SEED_NOTES) {
-      await redis.sadd("journal:index", note.slug);
-      await redis.set(`journal:${note.slug}`, JSON.stringify(note), TTL);
+      const exists = await redis.sismember("journal:index", note.slug);
+      if (!exists) {
+        await redis.sadd("journal:index", note.slug);
+        await redis.set(`journal:${note.slug}`, JSON.stringify(note), TTL);
+      }
     }
   } catch {
     // Redis unavailable — fall through to static seed data

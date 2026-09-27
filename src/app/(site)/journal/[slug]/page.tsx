@@ -49,23 +49,45 @@ export async function generateStaticParams() {
 }
 
 function renderMarkdown(md: string): string {
-  return md
-    .replace(/^### (.+)$/gm, '<h3 style="font-family:var(--font-serif);color:var(--text-primary);margin:1.5rem 0 0.5rem;font-size:1.1rem">$1</h3>')
-    .replace(/^## (.+)$/gm, '<h2 style="font-family:var(--font-serif);color:var(--text-primary);margin:2rem 0 0.75rem;font-size:1.35rem">$1</h2>')
-    .replace(/^# (.+)$/gm, '<h1 style="font-family:var(--font-serif);color:var(--text-primary);margin:2rem 0 1rem;font-size:1.75rem">$1</h1>')
+  // 1. Process Markdown tables before any other replacements
+  const html = md.replace(/(?:^\|[^\n]+\|(?:\r?\n|$))+/gm, (tableBlock) => {
+    const lines = tableBlock.trim().split(/\r?\n/);
+    const rows = lines
+      .filter((line) => !/^\|[\s\-:|]+\|$/.test(line))
+      .map((line, idx) => {
+        const cells = line
+          .split("|")
+          .slice(1, -1)
+          .map((c) =>
+            c
+              .trim()
+              .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+              .replace(/`([^`]+)`/g, "<code>$1</code>")
+          );
+        const tag = idx === 0 ? "th" : "td";
+        const style =
+          idx === 0
+            ? "padding:0.6rem 0.85rem;border:1px solid var(--border);font-size:0.85rem;color:var(--text-primary);font-weight:600;background:var(--bg-secondary);text-align:left;"
+            : "padding:0.55rem 0.85rem;border:1px solid var(--border);font-size:0.82rem;color:var(--text-secondary);";
+        return `<tr>${cells.map((c) => `<${tag} style="${style}">${c}</${tag}>`).join("")}</tr>`;
+      })
+      .join("");
+    return `<div style="overflow-x:auto;margin:1.5rem 0"><table style="width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:6px;overflow:hidden">${rows}</table></div>\n\n`;
+  });
+
+  return html
+    .replace(/^### (.+)$/gm, '<h3 style="font-family:var(--font-serif);color:var(--text-primary);margin:1.75rem 0 0.5rem;font-size:1.15rem;font-weight:600">$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2 style="font-family:var(--font-serif);color:var(--text-primary);margin:2.25rem 0 0.75rem;font-size:1.35rem;font-weight:600">$1</h2>')
+    .replace(/^# (.+)$/gm, '<h1 style="font-family:var(--font-serif);color:var(--text-primary);margin:2rem 0 1rem;font-size:1.75rem;font-weight:700">$1</h1>')
     .replace(/\*\*(.+?)\*\*/g, '<strong style="color:var(--text-primary)">$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`([^`]+)`/g, '<code style="background:var(--bg-secondary);padding:0.15rem 0.35rem;border-radius:4px;font-size:0.85em;border:1px solid var(--border)">$1</code>')
     .replace(/^---$/gm, '<hr style="border:none;border-top:1px solid var(--border);margin:2rem 0"/>')
-    .replace(/^\| (.+) \|$/gm, (line) => {
-      const cells = line.split("|").slice(1, -1).map(c => c.trim());
-      return `<tr>${cells.map(c => `<td style="padding:0.5rem 0.75rem;border:1px solid var(--border);font-size:0.82rem;color:var(--text-secondary)">${c}</td>`).join("")}</tr>`;
-    })
-    .replace(/^(\| .+ \|\n)+/gm, (table) => `<div style="overflow-x:auto;margin:1.5rem 0"><table style="width:100%;border-collapse:collapse">${table}</table></div>`)
-    .replace(/^\d+\. (.+)$/gm, '<li style="margin:0.3rem 0;color:var(--text-secondary);line-height:1.6">$1</li>')
-    .replace(/^- (.+)$/gm, '<li style="margin:0.3rem 0;color:var(--text-secondary);line-height:1.6">$1</li>')
+    .replace(/^\d+\. (.+)$/gm, '<li style="margin:0.35rem 0;color:var(--text-secondary);line-height:1.6">$1</li>')
+    .replace(/^- (.+)$/gm, '<li style="margin:0.35rem 0;color:var(--text-secondary);line-height:1.6">$1</li>')
     .replace(/(<li[^>]*>.*<\/li>\n?)+/g, (list) => `<ul style="padding-left:1.5rem;margin:1rem 0">${list}</ul>`)
     .replace(/\n\n/g, '</p><p style="color:var(--text-secondary);line-height:1.8;margin:0 0 1rem">')
-    .replace(/^(.+)$/gm, (line) => line.startsWith("<") ? line : line);
+    .replace(/^(.+)$/gm, (line) => (line.startsWith("<") ? line : line));
 }
 
 export default async function JournalSlugPage({ params }: PageProps) {

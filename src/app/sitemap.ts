@@ -3,6 +3,7 @@ import { getAllTrips } from "@/lib/queries";
 import { REGIONS } from "@/lib/regions";
 import { getTripImage } from "@/lib/data/tripImages";
 import { PASS_CONDITIONS } from "@/lib/data/pass-conditions";
+import { getAllFieldNotes } from "@/lib/fieldNotes";
 
 // Strip any trailing slash — prevents double-slashes in <loc> elements
 const BASE_URL = (
@@ -137,5 +138,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // If trips can't be fetched at build time, sitemap still builds
   }
 
-  return [...staticRoutes, ...passRoutes, ...guideRoutes, ...regionRoutes, ...tripRoutes];
+  // Journal / Field Notes routes
+  let journalRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const notes = await getAllFieldNotes();
+    journalRoutes = [
+      {
+        url: `${BASE_URL}/journal`,
+        lastModified: now,
+        changeFrequency: "weekly" as const,
+        priority: 0.85,
+      },
+      ...notes.map((note) => ({
+        url: `${BASE_URL}/journal/${note.slug}`,
+        lastModified: note._updatedAt ? new Date(note._updatedAt) : now,
+        changeFrequency: "monthly" as const,
+        priority: 0.8,
+      })),
+    ];
+  } catch {
+    // If journal notes cannot be fetched, continue
+  }
+
+  return [...staticRoutes, ...passRoutes, ...guideRoutes, ...regionRoutes, ...tripRoutes, ...journalRoutes];
 }
