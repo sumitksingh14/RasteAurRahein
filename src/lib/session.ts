@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.AUTH_JWT_SECRET || "fallback-secret-change-me";
 const COOKIE_NAME = "rar_session";
-const COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
+// No maxAge → session cookie; browser clears it when the window/tab is closed.
 
 export interface SessionPayload {
   userId: string;
@@ -11,15 +11,18 @@ export interface SessionPayload {
   email: string;
 }
 
-/** Sign a JWT and set it as an HTTP-only cookie */
+/** Sign a JWT and set it as an HTTP-only session cookie.
+ *  Omitting maxAge/expires makes the cookie a browser session cookie —
+ *  it is automatically deleted when the browser window is closed.
+ */
 export async function createSession(payload: SessionPayload): Promise<void> {
-  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "30d" });
+  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "24h" });
   const cookieStore = await cookies();
   cookieStore.set(COOKIE_NAME, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    maxAge: COOKIE_MAX_AGE,
+    // No maxAge / expires → session cookie (cleared on browser close)
     path: "/",
   });
 }
