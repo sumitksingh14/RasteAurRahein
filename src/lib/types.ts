@@ -97,6 +97,8 @@ export interface Trip {
   generationStatus?: "generating" | "complete" | "failed";
   /** Structured quick-reference metadata — single source of truth for QuickFacts box and FAQPage JSON-LD */
   quickFacts?: QuickFacts;
+  lastVerified?: string;
+  verifiedAt?: string;
   _createdAt: string;
   _updatedAt: string;
 }

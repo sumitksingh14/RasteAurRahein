@@ -15,7 +15,6 @@ import {
   Binoculars,
 } from "lucide-react";
 import type { ItineraryDay, Activity } from "@/lib/types";
-import { format } from "date-fns";
 import GoogleMapsRouteButton from "@/components/ui/GoogleMapsRouteButton";
 import { extractWaypointsFromItinerary, type ItineraryActivity, type ItineraryDay as RouteDay } from "@/lib/googleMapsRoute";
 
@@ -473,17 +472,15 @@ export default function ItineraryAccordion({ days, origin, destination }: Itiner
                   >
                     {day.title}
                   </h3>
-                  {day.date && (
-                    <span
-                      style={{
-                        fontSize: "0.75rem",
-                        color: "var(--text-muted)",
-                        display: "block",
-                      }}
-                    >
-                      {format(new Date(day.date), "EEEE, MMMM d, yyyy")}
-                    </span>
-                  )}
+                  <span
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "var(--text-muted)",
+                      display: "block",
+                    }}
+                  >
+                    Day {day.dayNumber} · Route &amp; Highlights
+                  </span>
                 </div>
 
                 <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexShrink: 0 }}>

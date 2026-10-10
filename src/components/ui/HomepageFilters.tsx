@@ -431,11 +431,18 @@ function GlassyCarousel({ trips }: { trips: Trip[] }) {
                   <span style={{ display: "flex", alignItems: "center", gap: "0.22rem" }}>
                     <Clock /> {readTime} min read
                   </span>
-                  {trip.totalBudget && (
+                  {(trip.quickFacts?.budgetRange || trip.totalBudget) && (
                     <>
                       <span style={{ opacity: 0.4 }}>•</span>
-                      <span style={{ color: "#059669", fontWeight: 700 }}>
-                        &#8377;{trip.totalBudget.toLocaleString("en-IN")}
+                      <span
+                        style={{ color: "#059669", fontWeight: 700 }}
+                        title="Estimated budget per person (excl. flights)"
+                      >
+                        {trip.quickFacts?.budgetRange
+                          ? trip.quickFacts.budgetRange
+                              .replace(" per person (excl. flights)", " pp")
+                              .replace(" per person", " pp")
+                          : `₹${trip.totalBudget!.toLocaleString("en-IN")} pp`}
                       </span>
                     </>
                   )}

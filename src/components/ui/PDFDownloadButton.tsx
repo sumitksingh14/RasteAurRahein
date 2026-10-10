@@ -263,16 +263,7 @@ export default function PDFDownloadButton({ trip }: PDFDownloadButtonProps) {
                 <View key={day._key} style={styles.dayCard} wrap={false}>
                   <Text style={styles.dayBadge}>Day {day.dayNumber}</Text>
                   <Text style={styles.dayTitle}>{day.title}</Text>
-                  {day.date && (
-                    <Text style={styles.dayDate}>
-                      {new Date(day.date).toLocaleDateString("en-IN", {
-                        weekday: "long",
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </Text>
-                  )}
+                  <Text style={styles.dayDate}>Day {day.dayNumber} · Suggested Schedule</Text>
                   {day.summary && (
                     <Text style={{ ...styles.daySummary, marginTop: 6 }}>
                       {day.summary}

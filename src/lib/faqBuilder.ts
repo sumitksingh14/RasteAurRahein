@@ -1,7 +1,5 @@
-/**
- * Pure helper — no React, no "use client".
- * Can be safely imported from Server Components.
- */
+import type { QuickFacts } from "./types";
+
 export interface FAQItem {
   question: string;
   answer: string;
@@ -10,6 +8,7 @@ export interface FAQItem {
 /**
  * Auto-generates FAQ items from a trip's structured data fields.
  * Call from the server component and pass the result as the `items` prop to FAQSchema.
+ * Generates FAQs strictly when real data is available (permits, best time, difficulty, budget).
  */
 export function buildTripFAQ({
   title,
@@ -17,8 +16,9 @@ export function buildTripFAQ({
   totalBudget,
   startDate,
   endDate,
-  country,
   tripType,
+  quickFacts,
+  difficulty,
 }: {
   title: string;
   bestSuggestedMonth?: string;
@@ -27,58 +27,71 @@ export function buildTripFAQ({
   endDate?: string;
   country?: string;
   tripType?: string;
+  quickFacts?: QuickFacts;
+  difficulty?: string;
 }): FAQItem[] {
   const items: FAQItem[] = [];
+  const cleanTitle = title.split("—")[0].trim();
 
+  // 1. Best Time To Visit
+  const bestTime = quickFacts?.bestTime || bestSuggestedMonth;
+  if (bestTime) {
+    items.push({
+      question: `When is the best time to visit for a ${cleanTitle} trip?`,
+      answer: `The recommended window is ${bestTime}. Weather and high-altitude road conditions vary significantly across seasons — check route notes before departing.`,
+    });
+  }
+
+  // 2. Duration / Days
   const durationDays =
-    startDate && endDate
+    quickFacts?.durationDays ||
+    (startDate && endDate
       ? Math.ceil(
           (new Date(endDate).getTime() - new Date(startDate).getTime()) /
             (1000 * 60 * 60 * 24)
         ) + 1
-      : null;
-
-  if (bestSuggestedMonth) {
-    items.push({
-      question: `When is the best time to visit for a ${title.split("—")[0].trim()} trip?`,
-      answer: `The best time to visit is ${bestSuggestedMonth}. Weather and road conditions vary significantly by season — check the itinerary notes for season-specific advice.`,
-    });
-  }
+      : null);
 
   if (durationDays) {
     items.push({
-      question: `How many days do you need for ${title.split("—")[0].trim()}?`,
-      answer: `This itinerary covers ${durationDays} days. You can compress it to ${Math.max(
-        durationDays - 2,
-        1
-      )}–${durationDays - 1} days by skipping optional stops, or extend it by adding rest days at key locations.`,
+      question: `How many days do you need for ${cleanTitle}?`,
+      answer: `This itinerary covers ${durationDays} days to ensure safe travel pacing and adequate time at key stops without rushing.`,
     });
   }
 
-  if (totalBudget) {
+  // 3. Permits & Documentation (Only when explicitly specified in quick facts)
+  if (quickFacts?.permitsRequired && quickFacts.permitsRequired.trim().length > 0) {
+    items.push({
+      question: `Are permits required for ${cleanTitle}?`,
+      answer: quickFacts.permitsRequired,
+    });
+  }
+
+  // 4. Budget (Unified with Quick Facts & Card: per-person vs total)
+  if (quickFacts?.budgetRange) {
     items.push({
       question: `What is the approximate budget for this trip?`,
-      answer: `The estimated budget for this trip is ₹${totalBudget.toLocaleString()} for a group of 2–4 people, covering accommodation, fuel, food, and entry fees. Solo travellers should budget roughly 20–30% more.`,
+      answer: `The estimated cost is ${quickFacts.budgetRange}. This covers accommodation, permits, local transport, and meals. Flights and personal gear are excluded.`,
+    });
+  } else if (totalBudget) {
+    items.push({
+      question: `What is the approximate budget for this trip?`,
+      answer: `The estimated cost is ₹${totalBudget.toLocaleString("en-IN")} per person (excluding flights), covering accommodation, local fuel/transport, permits, and food.`,
     });
   }
 
-  if (tripType) {
+  // 5. Difficulty & Suitability (No 'an adventure adventure' grammar bug; uses real data)
+  const effectiveDifficulty = quickFacts?.difficulty || difficulty;
+  if (effectiveDifficulty || tripType) {
+    const diffDesc = effectiveDifficulty ? `${effectiveDifficulty} difficulty` : `${tripType} journey`;
+    const altitudeInfo = quickFacts?.altitude ? ` with a maximum altitude of ${quickFacts.altitude}` : "";
+    const idealForInfo = quickFacts?.idealFor ? ` It is best suited for ${quickFacts.idealFor.toLowerCase()}.` : "";
     items.push({
-      question: `Is this trip suitable for beginners?`,
-      answer: `This is classified as a${tripType === "Adventure" ? "n adventure" : ""} ${tripType.toLowerCase()} trip. ${
-        tripType === "Adventure"
-          ? "Some sections require prior experience or a reliable 4WD vehicle. Read the route notes carefully before booking."
-          : "It is suitable for most travellers with basic fitness and planning."
-      }`,
-    });
-  }
-
-  if (country) {
-    items.push({
-      question: `Do I need a permit or special documentation?`,
-      answer: `Permit requirements depend on the specific route. Check the itinerary notes for each day — restricted areas in ${country} may require Inner Line Permits (ILP) or Protected Area Permits (PAP) obtained in advance.`,
+      question: `How difficult is this trip, and who is it ideal for?`,
+      answer: `This route is rated as ${diffDesc}${altitudeInfo}.${idealForInfo} Proper hydration and route preparation are recommended.`,
     });
   }
 
   return items;
 }
+

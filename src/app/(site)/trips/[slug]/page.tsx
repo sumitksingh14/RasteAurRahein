@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Clock, Eye, MapPin, Tag, ArrowLeft, RefreshCw } from "lucide-react";
+import { Calendar, Clock, Eye, MapPin, Tag, ArrowLeft, RefreshCw, ShieldCheck } from "lucide-react";
 import { getTripBySlug, getAllTrips, DEMO_AUTHOR } from "@/lib/queries";
 import TripTabs from "./TripTabs";
 import ShareButton from "./ShareButton";
@@ -310,6 +310,27 @@ export default async function TripDetailPage({ params }: Props) {
                 Updated {format(new Date(trip._updatedAt), "MMM yyyy")}
               </span>
             )}
+            {(trip.lastVerified || trip.verifiedAt) && (
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  background: "rgba(16, 185, 129, 0.2)",
+                  color: "#34d399",
+                  border: "1px solid rgba(16, 185, 129, 0.35)",
+                  padding: "2px 8px",
+                  borderRadius: "9999px",
+                  fontWeight: 600,
+                  fontSize: "0.75rem",
+                }}
+              >
+                <ShieldCheck size={12} color="#34d399" />
+                Last verified:{" "}
+                {trip.lastVerified ||
+                  (trip.verifiedAt ? format(new Date(trip.verifiedAt), "MMMM yyyy") : "")}
+              </span>
+            )}
           </div>
 
           {/* Hero Action Toolbar */}
@@ -347,7 +368,9 @@ export default async function TripDetailPage({ params }: Props) {
           </div>
           <div className="quick-fact-item">
             <span className="qf-label">BUDGET</span>
-            <span className="qf-value">{trip.totalBudget ? `₹${trip.totalBudget.toLocaleString()}` : "–"}</span>
+            <span className="qf-value">
+              {trip.quickFacts?.budgetRange || (trip.totalBudget ? `₹${trip.totalBudget.toLocaleString()} pp` : "–")}
+            </span>
           </div>
           <div className="quick-fact-item">
             <span className="qf-label">BEST SEASON</span>
@@ -417,6 +440,8 @@ export default async function TripDetailPage({ params }: Props) {
                 endDate: trip.endDate,
                 country: trip.country,
                 tripType: trip.tripType,
+                quickFacts: trip.quickFacts,
+                difficulty: trip.difficulty,
               })}
             />
           </div>

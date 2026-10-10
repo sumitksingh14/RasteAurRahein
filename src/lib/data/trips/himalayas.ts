@@ -27,6 +27,8 @@ export const HIMALAYA_TRIPS: Trip[] = [
     currency: "INR",
     tripType: "Adventure",
     readingTime: 14,
+    lastVerified: "May 2026",
+    verifiedAt: "2026-05-01",
     _createdAt: "2026-09-08T00:00:00Z",
     _updatedAt: "2026-09-08T00:00:00Z",
     coverImage: undefined,
