@@ -2,9 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getAllTrips } from "@/lib/queries";
 import HomepageFilters from "@/components/ui/HomepageFilters";
-import HeroSearchBar from "@/components/ui/HeroSearchBar";
+import TripFinderHero from "@/components/home/TripFinderHero";
 import BrandStorySection from "@/components/ui/BrandStorySection";
 import PlanTripCTA from "@/components/ui/PlanTripCTA";
+import {
+  PASS_CONDITIONS,
+  getStatusColor,
+  getStatusLabel,
+  isConditionStale,
+} from "@/lib/data/pass-conditions";
+
 
 export const revalidate = 3600; // Hourly ISR revalidation to update daily featured rotations
 
@@ -85,6 +92,7 @@ export default async function HomePage() {
       }}
     >
       {/* ── LIVE TELEMETRY TICKER BAR ──────────────────────────────── */}
+      {/* ── LIVE ROAD CONDITIONS TICKER BAR ───────────────────────── */}
       <div
         style={{
           width: "100%",
@@ -116,7 +124,7 @@ export default async function HomePage() {
                 width: "8px",
                 height: "8px",
                 borderRadius: "50%",
-                background: "#d97706",
+                background: "#10b981",
                 animation: "pulse 2s infinite",
               }}
             />
@@ -129,7 +137,7 @@ export default async function HomePage() {
                 fontSize: "0.6875rem",
               }}
             >
-              Telemetry Corridor:
+              Pass Status:
             </span>
           </Link>
           <div
@@ -143,81 +151,54 @@ export default async function HomePage() {
             }}
             className="ticker-passes"
           >
-            <Link
-              href="/road-conditions"
-              style={{ color: "rgba(255,255,255,0.85)", textDecoration: "none" }}
-            >
-              Spiti, Kinnaur &amp; Zanskar Status
-            </Link>
-            <span style={{ opacity: 0.3 }}>•</span>
-            <Link
-              href="/road-conditions/kunzum-pass"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.375rem",
-                color: "#fff",
-                textDecoration: "none",
-              }}
-            >
-              <span
-                style={{
-                  width: "6px",
-                  height: "6px",
-                  borderRadius: "50%",
-                  background: "#34d399",
-                  display: "inline-block",
-                }}
-              />
-              Kunzum Pass: Clear
-            </Link>
-            <span style={{ opacity: 0.3 }}>•</span>
-            <Link
-              href="/road-conditions/rohtang-pass"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.375rem",
-                color: "#fff",
-                textDecoration: "none",
-              }}
-            >
-              <span
-                style={{
-                  width: "6px",
-                  height: "6px",
-                  borderRadius: "50%",
-                  background: "#34d399",
-                  display: "inline-block",
-                }}
-              />
-              Rohtang: Active
-            </Link>
-            <span style={{ opacity: 0.3 }}>•</span>
-            <Link
-              href="/road-conditions/baralacha-la"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.375rem",
-                color: "#fff",
-                textDecoration: "none",
-              }}
-            >
-              <span
-                style={{
-                  width: "6px",
-                  height: "6px",
-                  borderRadius: "50%",
-                  background: "#fbbf24",
-                  display: "inline-block",
-                }}
-              />
-              Baralacha La: Caution (Icing)
-            </Link>
+            {PASS_CONDITIONS.slice(0, 4).map((pass, index) => {
+              const stale = isConditionStale(pass.lastVerified);
+              const color = getStatusColor(pass.status);
+              const label = getStatusLabel(pass.status);
+              return (
+                <span
+                  key={pass.slug}
+                  style={{ display: "inline-flex", alignItems: "center", gap: "0.75rem" }}
+                >
+                  {index > 0 && <span style={{ opacity: 0.3 }}>•</span>}
+                  <Link
+                    href={`/road-conditions/${pass.slug}`}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "0.375rem",
+                      color: "#fff",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: "6px",
+                        height: "6px",
+                        borderRadius: "50%",
+                        background: color,
+                        display: "inline-block",
+                      }}
+                    />
+                    {pass.name}: {label}
+                    {stale && (
+                      <span
+                        title="Condition advisory older than 48h"
+                        style={{ fontSize: "0.625rem", opacity: 0.7 }}
+                      >
+                        ⚠️
+                      </span>
+                    )}
+                  </Link>
+                </span>
+              );
+            })}
           </div>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexShrink: 0 }} className="ticker-right">
+        <div
+          style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexShrink: 0 }}
+          className="ticker-right"
+        >
           <Link
             href="/road-conditions"
             style={{
@@ -235,18 +216,26 @@ export default async function HomePage() {
               textDecoration: "none",
             }}
           >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <path d="M12 2L2 7l10 5 10-5-10-5z" />
               <path d="M2 17l10 5 10-5" />
               <path d="M2 12l10 5 10-5" />
             </svg>
-            Himalayan Pass Status
+            Road Conditions
           </Link>
-          <span style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.6875rem" }}>Lat 32.2464° N</span>
         </div>
       </div>
 
-      {/* ── HERO SECTION ─────────────────────────────────────────────── */}
+      {/* ── SHORTENED HERO SECTION ───────────────────────────────────── */}
       <section
         style={{
           position: "relative",
@@ -254,15 +243,15 @@ export default async function HomePage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          minHeight: "580px",
-          padding: "4rem 1.5rem 3rem",
+          minHeight: "440px",
+          padding: "3rem 1.25rem 2.5rem",
           overflow: "hidden",
           backgroundImage:
-            'linear-gradient(rgba(30,27,75,0.50) 0%, rgba(30,27,75,0.80) 100%), url("/images/hero-mount-kailash.jpg")',
+            'linear-gradient(rgba(30,27,75,0.52) 0%, rgba(30,27,75,0.82) 100%), url("/images/hero-mount-kailash.jpg")',
           backgroundSize: "cover",
           backgroundPosition: "center 38%",
           backgroundRepeat: "no-repeat",
-          gap: "1.5rem",
+          gap: "1.25rem",
           margin: "1rem 1rem 0",
           borderRadius: "1rem",
         }}
@@ -285,7 +274,16 @@ export default async function HomePage() {
             border: "1px solid rgba(255,255,255,0.15)",
           }}
         >
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#d97706"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <circle cx="12" cy="12" r="10" />
             <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
           </svg>
@@ -297,11 +295,11 @@ export default async function HomePage() {
           <h1
             style={{
               color: "#fff",
-              fontSize: "clamp(2.25rem, 5vw, 3.25rem)",
+              fontSize: "clamp(2rem, 4.5vw, 3rem)",
               fontWeight: 900,
-              lineHeight: 1.1,
-              letterSpacing: "-0.033em",
-              margin: "0 0 0.875rem",
+              lineHeight: 1.15,
+              letterSpacing: "-0.03em",
+              margin: "0 0 0.75rem",
               textShadow: "0 2px 16px rgba(0,0,0,0.25)",
               fontFamily: "'Source Serif 4', Georgia, serif",
             }}
@@ -311,9 +309,9 @@ export default async function HomePage() {
           <p
             style={{
               color: "rgba(255,255,255,0.85)",
-              fontSize: "1.05rem",
+              fontSize: "1rem",
               fontWeight: 400,
-              lineHeight: 1.65,
+              lineHeight: 1.6,
               margin: 0,
               fontFamily: "'Source Serif 4', Georgia, serif",
             }}
@@ -322,15 +320,48 @@ export default async function HomePage() {
           </p>
         </div>
 
-        {/* Search bar + trending links — interactive client component */}
-        <HeroSearchBar trendingTrips={trendingTrips} />
+        {/* ── Compact Trip Finder in Hero ────────────────────────── */}
+        <TripFinderHero trendingTrips={trendingTrips} />
       </section>
 
-      {/* ── BRAND STORY ──────────────────────────────────────────────── */}
-      <BrandStorySection />
+      {/* ── 2-LINE EDITORIAL TEASER ───────────────────────────────────── */}
+      <div
+        style={{
+          textAlign: "center",
+          padding: "1.25rem 1.5rem 0.5rem",
+          maxWidth: "680px",
+          margin: "0 auto",
+        }}
+      >
+        <p
+          style={{
+            margin: 0,
+            fontSize: "0.875rem",
+            color: "#475569",
+            lineHeight: 1.6,
+          }}
+        >
+          High-altitude routes, live pass reports, and battle-tested road itineraries.
+          {" "}
+          <Link
+            href="/about"
+            style={{
+              color: "#4f46e5",
+              fontWeight: 600,
+              textDecoration: "underline",
+              textUnderlineOffset: "3px",
+            }}
+          >
+            Read our mission &amp; dispatch notes &rarr;
+          </Link>
+        </p>
+      </div>
 
       {/* ── FILTER BAR + TRIP CARDS (client-side, filterable) ─────────── */}
       <HomepageFilters allTrips={allTrips} tripCount={tripCount} />
+
+      {/* ── BRAND STORY & MISSION (Moved below featured trips) ────────── */}
+      <BrandStorySection />
 
       {/* ── HIGH-CONVERTING CLEAR CTA SECTION ──────────────────────── */}
       <PlanTripCTA />
