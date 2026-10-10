@@ -22,6 +22,18 @@ const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || process.env.NEXT_PUBLIC_GA_MEAS
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   applicationName: "India Trip Itineraries",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icons/icon-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/icons/icon-512.png", type: "image/png", sizes: "512x512" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [
+      { url: "/icons/icon-192.png", sizes: "192x192" },
+      { url: "/icons/icon-512.png", sizes: "512x512" },
+    ],
+  },
   appleWebApp: {
     title: "India Trip Itineraries",
     capable: true,

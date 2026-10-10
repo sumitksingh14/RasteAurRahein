@@ -4,6 +4,7 @@ import { getAllTrips } from "@/lib/queries";
 import HomepageFilters from "@/components/ui/HomepageFilters";
 import HeroSearchBar from "@/components/ui/HeroSearchBar";
 import BrandStorySection from "@/components/ui/BrandStorySection";
+import PlanTripCTA from "@/components/ui/PlanTripCTA";
 
 export const metadata: Metadata = {
   title: "India Trip Itineraries — Raste Aur Raahein",
@@ -328,6 +329,9 @@ export default async function HomePage() {
 
       {/* ── FILTER BAR + TRIP CARDS (client-side, filterable) ─────────── */}
       <HomepageFilters allTrips={allTrips} tripCount={tripCount} />
+
+      {/* ── HIGH-CONVERTING CLEAR CTA SECTION ──────────────────────── */}
+      <PlanTripCTA />
 
       {/* ── IMPORT ITINERARY CTA ─────────────────────────────────────── */}
       <div style={{ padding: "0 1.5rem 2.5rem" }}>

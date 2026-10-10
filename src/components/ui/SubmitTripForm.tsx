@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Send, MapPin, Calendar, DollarSign, FileText, Upload, Image, CheckCircle } from "lucide-react";
+import { Send, MapPin, Calendar, DollarSign, FileText, Upload, Image as ImageIcon, CheckCircle } from "lucide-react";
 
 const INDIA_REGIONS = [
   "Himachal Pradesh", "Uttarakhand", "Jammu & Kashmir", "Ladakh",
@@ -210,7 +210,7 @@ export default function SubmitTripForm() {
 
       {/* Cover Image URL */}
       <div>
-        <label style={labelStyle}><Image size={12} /> Cover Image URL (optional)</label>
+        <label style={labelStyle}><ImageIcon size={12} /> Cover Image URL (optional)</label>
         <input
           type="url"
           value={coverImageUrl}

@@ -18,10 +18,10 @@ const companyLinks = [
 const helpLinks = [
   { href: "/journal", label: "Field Notes & Journal" },
   { href: "/import", label: "How To Import?" },
+  { href: "/faq", label: "FAQs" },
   { href: "/about", label: "Why Us?" },
-  { href: "/contact", label: "FAQs" },
+  { href: "/contact", label: "Contact Us" },
   { href: "/trips", label: "Travel Guides" },
-  { href: "/trips", label: "Offline Route Packs" },
 ];
 
 // Social link icons as simple SVGs to avoid extra icon library dependency
@@ -358,9 +358,34 @@ export default function Footer() {
             © {new Date().getFullYear()} Raste Aur Raahein · All rights reserved
           </p>
           <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", flexWrap: "wrap" }}>
-            <span style={{ color: "#4B5563", fontSize: "0.8rem" }}>60k+ km Documented</span>
+            <Link
+              href="/privacy-policy"
+              style={{ color: "#4B5563", fontSize: "0.8rem", textDecoration: "none", transition: "color 0.2s" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#6366f1")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#4B5563")}
+            >
+              Privacy Policy
+            </Link>
             <span style={{ color: "rgba(99,102,241,0.15)" }}>•</span>
-            <span style={{ color: "#4B5563", fontSize: "0.8rem" }}>Works Offline</span>
+            <Link
+              href="/terms"
+              style={{ color: "#4B5563", fontSize: "0.8rem", textDecoration: "none", transition: "color 0.2s" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#6366f1")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#4B5563")}
+            >
+              Terms &amp; Conditions
+            </Link>
+            <span style={{ color: "rgba(99,102,241,0.15)" }}>•</span>
+            <Link
+              href="/faq"
+              style={{ color: "#4B5563", fontSize: "0.8rem", textDecoration: "none", transition: "color 0.2s" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#6366f1")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#4B5563")}
+            >
+              FAQs
+            </Link>
+            <span style={{ color: "rgba(99,102,241,0.15)" }}>•</span>
+            <span style={{ color: "#4B5563", fontSize: "0.8rem" }}>60k+ km Documented</span>
             <span style={{ color: "rgba(99,102,241,0.15)" }}>•</span>
             <p style={{ color: "#4B5563", fontSize: "0.8rem", margin: 0 }}>
               Built with ♥ by{" "}
