@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Camera, Code2, Mountain, ArrowRight, AtSign, Globe, Mail, Shield, Award, BookOpen, FileCheck, Clock } from "lucide-react";
+import { MapPin, Code2, Mountain, ArrowRight, AtSign, Globe, Mail, Shield, Award, BookOpen, FileCheck, Clock } from "lucide-react";
 import { DEMO_AUTHOR } from "@/lib/queries";
+import { getActiveSocialLinks } from "@/lib/site-config";
 
 const TRAVEL_STATS = [
   { value: "8+", label: "Years Travelling India", Icon: Clock },
@@ -184,17 +185,19 @@ export default function AboutPage() {
               {/* Social */}
               <div style={{ display: "flex", gap: "0.75rem" }}>
                 {[
-                  { Icon: AtSign, href: "https://instagram.com", label: "Instagram" },
-                  { Icon: Globe, href: "https://twitter.com", label: "Twitter" },
+                  ...getActiveSocialLinks().map((s) => ({
+                    Icon: s.id === "x" ? Globe : s.id === "github" ? Code2 : AtSign,
+                    href: s.href,
+                    label: s.label,
+                  })),
                   { Icon: Mail, href: "/contact", label: "Email" },
-                  { Icon: Code2, href: "https://github.com", label: "GitHub" },
                 ].map(({ Icon, href, label }) => (
                   <Link
                     key={label}
                     href={href}
                     aria-label={label}
                     target={href.startsWith("http") ? "_blank" : undefined}
-                    rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                    rel={href.startsWith("http") ? "noopener noreferrer me" : undefined}
                     style={{
                       width: 42,
                       height: 42,

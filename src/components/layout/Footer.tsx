@@ -58,12 +58,6 @@ function RssIcon() {
   );
 }
 
-const socialLinks = [
-  { Icon: InstagramIcon, href: "https://instagram.com", label: "Instagram" },
-  { Icon: TwitterIcon, href: "https://twitter.com", label: "Twitter" },
-  { Icon: YoutubeIcon, href: "https://youtube.com", label: "YouTube" },
-  { Icon: RssIcon, href: "/sitemap.xml", label: "RSS" },
-];
 
 export default function Footer() {
   const { user } = useAuth();
@@ -124,40 +118,79 @@ export default function Footer() {
 
             {/* Social icons */}
             <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem" }}>
-              {socialLinks.map(({ Icon, href, label }) => (
-                <Link
-                  key={label}
-                  href={href}
-                  aria-label={label}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#4B5563",
-                    background: "#e8eaf0",
-                    border: "1px solid rgba(99,102,241,0.15)",
-                    transition: "all 0.2s ease",
-                    textDecoration: "none",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "#1e1b4b";
-                    e.currentTarget.style.color = "#ffffff";
-                    e.currentTarget.style.borderColor = "#1e1b4b";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "#e8eaf0";
-                    e.currentTarget.style.color = "#4B5563";
-                    e.currentTarget.style.borderColor = "rgba(99,102,241,0.15)";
-                  }}
-                >
-                  <Icon />
-                </Link>
-              ))}
+              {getActiveSocialLinks().map(({ id, href, label }) => {
+                const Icon =
+                  id === "x"
+                    ? TwitterIcon
+                    : id === "youtube"
+                    ? YoutubeIcon
+                    : id === "github"
+                    ? GithubIcon
+                    : InstagramIcon;
+                return (
+                  <a
+                    key={id}
+                    href={href}
+                    aria-label={label}
+                    target="_blank"
+                    rel="noopener noreferrer me"
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#4B5563",
+                      background: "#e8eaf0",
+                      border: "1px solid rgba(99,102,241,0.15)",
+                      transition: "all 0.2s ease",
+                      textDecoration: "none",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "#1e1b4b";
+                      e.currentTarget.style.color = "#ffffff";
+                      e.currentTarget.style.borderColor = "#1e1b4b";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "#e8eaf0";
+                      e.currentTarget.style.color = "#4B5563";
+                      e.currentTarget.style.borderColor = "rgba(99,102,241,0.15)";
+                    }}
+                  >
+                    <Icon />
+                  </a>
+                );
+              })}
+              <Link
+                href="/sitemap.xml"
+                aria-label="View Sitemap"
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#4B5563",
+                  background: "#e8eaf0",
+                  border: "1px solid rgba(99,102,241,0.15)",
+                  transition: "all 0.2s ease",
+                  textDecoration: "none",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "#1e1b4b";
+                  e.currentTarget.style.color = "#ffffff";
+                  e.currentTarget.style.borderColor = "#1e1b4b";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "#e8eaf0";
+                  e.currentTarget.style.color = "#4B5563";
+                  e.currentTarget.style.borderColor = "rgba(99,102,241,0.15)";
+                }}
+              >
+                <RssIcon />
+              </Link>
             </div>
           </div>
 

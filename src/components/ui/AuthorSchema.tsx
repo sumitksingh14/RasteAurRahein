@@ -1,5 +1,6 @@
 import type { Author } from "@/lib/types";
 import { safeJsonLd } from "@/lib/jsonld";
+import { getValidSocialUrls, isValidSocialUrl } from "@/lib/site-config";
 
 // Strip trailing slash — env var ships with one ("https://…vercel.app/")
 const SITE_URL = (
@@ -16,7 +17,14 @@ interface AuthorSchemaProps {
  * Drop this into any page that has an author to signal expertise and authority.
  */
 export default function AuthorSchema({ author, url = SITE_URL }: AuthorSchemaProps) {
-  const sameAs: string[] = (author.socialLinks ?? []).map((l) => l.url).filter(Boolean);
+  const sameAs: string[] = Array.from(
+    new Set(
+      [
+        ...getValidSocialUrls(),
+        ...(author.socialLinks ?? []).map((l) => l.url),
+      ].filter(isValidSocialUrl)
+    )
+  );
 
   const personSchema = {
     "@context": "https://schema.org",
@@ -90,7 +98,7 @@ export function WebSiteSchema() {
     url: `${SITE_URL}/about`,
     description:
       "Travel writer, photographer, and software engineer documenting the roads less taken across India.",
-    sameAs: ["https://instagram.com", "https://twitter.com"],
+    sameAs: getValidSocialUrls(),
     jobTitle: "Travel Writer & Photographer",
     knowsAbout: [
       "India travel",
