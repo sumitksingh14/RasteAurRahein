@@ -43,6 +43,20 @@ export interface PassCondition {
   permit?: string; // permit info if required for this pass
 }
 
+export const ROAD_SAFETY_DISCLAIMER =
+  "Advisory data based on recent traveler reports and seasonal norms. Always verify locally with BRO / District Administration before travel.";
+
+/**
+ * Returns true if the lastVerified date is older than 48 hours from the current time.
+ */
+export function isConditionStale(lastVerified: string): boolean {
+  if (!lastVerified) return true;
+  const verifiedTime = new Date(lastVerified).getTime();
+  if (isNaN(verifiedTime)) return true;
+  const hoursElapsed = (Date.now() - verifiedTime) / (1000 * 60 * 60);
+  return hoursElapsed > 48;
+}
+
 export const PASS_CONDITIONS: PassCondition[] = [
   {
     slug: "kunzum-pass",

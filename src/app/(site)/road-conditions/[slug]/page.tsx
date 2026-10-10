@@ -6,6 +6,8 @@ import {
   getPassBySlug,
   getStatusColor,
   getStatusLabel,
+  isConditionStale,
+  ROAD_SAFETY_DISCLAIMER,
   type PassStatus,
 } from "@/lib/data/pass-conditions";
 import { DEMO_TRIPS } from "@/lib/data/trips";
@@ -228,6 +230,23 @@ export default async function PassDetailPage({ params }: PageProps) {
               <span>
                 <strong>Last Verified:</strong> {new Date(pass.lastVerified).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}
               </span>
+              {isConditionStale(pass.lastVerified) && (
+                <span
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "4px",
+                    background: "rgba(245, 158, 11, 0.25)",
+                    color: "#fde68a",
+                    border: "1px solid rgba(245, 158, 11, 0.5)",
+                    padding: "2px 8px",
+                    borderRadius: "4px",
+                    fontWeight: 700,
+                  }}
+                >
+                  ⚠ May be outdated
+                </span>
+              )}
               <span style={{ opacity: 0.4 }}>•</span>
               <span>
                 <strong>Source:</strong> {pass.lastVerifiedSource}
@@ -238,6 +257,23 @@ export default async function PassDetailPage({ params }: PageProps) {
 
         {/* Content Body */}
         <div style={{ maxWidth: "960px", margin: "0 auto", padding: "2.5rem 1.5rem" }}>
+          {/* Explicit Safety Advisory Disclaimer */}
+          <div
+            style={{
+              padding: "1rem 1.25rem",
+              borderRadius: "0.5rem",
+              background: "rgba(217, 119, 6, 0.08)",
+              border: "1px solid rgba(217, 119, 6, 0.25)",
+              color: "var(--text-secondary, #4b5563)",
+              fontSize: "0.85rem",
+              lineHeight: 1.6,
+              marginBottom: "1.5rem",
+            }}
+          >
+            <strong style={{ color: "var(--text-primary, #111827)" }}>⚠ Safety Advisory:</strong>{" "}
+            {ROAD_SAFETY_DISCLAIMER} Always check local police checkpoints and BRO stations before proceeding.
+          </div>
+
           {/* Status Note Highlight */}
           <div
             style={{

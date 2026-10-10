@@ -4,19 +4,21 @@ import {
   PASS_CONDITIONS,
   getStatusColor,
   getStatusLabel,
+  isConditionStale,
+  ROAD_SAFETY_DISCLAIMER,
 } from "@/lib/data/pass-conditions";
 import type { PassStatus } from "@/lib/data/pass-conditions";
 import NewsletterInline from "@/components/ui/NewsletterInline";
 
 export const metadata: Metadata = {
-  title: "Himalayan Road Conditions & Pass Status — Live Tracker | Raste Aur Raahein",
+  title: "Himalayan Road Conditions & Pass Status — Route Advisory | Raste Aur Raahein",
   description:
-    "Manually curated, field-verified status of Kunzum Pass, Rohtang, Baralacha La, Zoji La, and Sela Pass. Updated before and after every major expedition.",
+    "Curated, field-verified status of Kunzum Pass, Rohtang, Baralacha La, Zoji La, and Sela Pass. Advisory data based on recent traveler reports and seasonal norms.",
   alternates: { canonical: "/road-conditions" },
   openGraph: {
-    title: "Himalayan Pass Status — Live Tracker | Raste Aur Raahein",
+    title: "Himalayan Pass Status — Route Advisory | Raste Aur Raahein",
     description:
-      "Current road & pass conditions for Kunzum, Rohtang, Baralacha La, Zoji La, and Sela Pass — field-verified, not API-scraped.",
+      "Pass status and route advisories for Kunzum, Rohtang, Baralacha La, Zoji La, and Sela Pass.",
     type: "website",
   },
 };
@@ -143,14 +145,12 @@ export default function RoadConditionsPage() {
             marginBottom: "2.5rem",
           }}
         >
-          <strong style={{ color: "var(--text-primary)" }}>⚠ Field Report Disclaimer:</strong> These conditions reflect
-          our most recent field intelligence and published BRO/PWD advisories. Road status can
-          change within hours due to snowfall, landslides, or military operations. Always verify
-          with{" "}
+          <strong style={{ color: "var(--text-primary)" }}>⚠ Safety Advisory:</strong> {ROAD_SAFETY_DISCLAIMER} Official
+          road status changes quickly due to sudden snowfall, landslides, or administrative closures. Check with{" "}
           <a href="https://www.bro.gov.in" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-gold)", textDecoration: "underline" }}>
             BRO (bro.gov.in)
           </a>{" "}
-          or local district administration before departure.
+          or the local District Magistrate office before commencing high-altitude travel.
         </div>
 
         {/* Status Cards */}
@@ -163,7 +163,7 @@ export default function RoadConditionsPage() {
             color: "var(--text-primary)",
           }}
         >
-          Current Pass Status
+          Himalayan Pass Status &amp; Advisory
         </h2>
 
         <div
@@ -177,6 +177,7 @@ export default function RoadConditionsPage() {
           {PASS_CONDITIONS.map((pass) => {
             const color = getStatusColor(pass.status);
             const label = getStatusLabel(pass.status);
+            const isStale = isConditionStale(pass.lastVerified);
             const verifiedDate = new Date(pass.lastVerified).toLocaleDateString("en-IN", {
               day: "numeric",
               month: "short",
@@ -203,24 +204,41 @@ export default function RoadConditionsPage() {
                   }}
                 >
                   {/* Status badge */}
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <span
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "0.375rem",
-                        fontSize: "0.72rem",
-                        fontWeight: 700,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.06em",
-                        color,
-                      }}
-                    >
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                       <span
-                        style={{ width: 7, height: 7, borderRadius: "50%", background: color, display: "inline-block" }}
-                      />
-                      {label}
-                    </span>
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "0.375rem",
+                          fontSize: "0.72rem",
+                          fontWeight: 700,
+                          textTransform: "uppercase",
+                          letterSpacing: "0.06em",
+                          color,
+                        }}
+                      >
+                        <span
+                          style={{ width: 7, height: 7, borderRadius: "50%", background: color, display: "inline-block" }}
+                        />
+                        {label}
+                      </span>
+                      {isStale && (
+                        <span
+                          style={{
+                            fontSize: "0.65rem",
+                            fontWeight: 700,
+                            color: "#b45309",
+                            background: "rgba(245, 158, 11, 0.2)",
+                            border: "1px solid rgba(245, 158, 11, 0.4)",
+                            padding: "1px 6px",
+                            borderRadius: "4px",
+                          }}
+                        >
+                          ⚠ May be outdated
+                        </span>
+                      )}
+                    </div>
                     <span style={{ fontSize: "0.68rem", color: "var(--text-muted)" }}>
                       {pass.elevation.toLocaleString()} m
                     </span>

@@ -238,7 +238,7 @@ export default async function HomePage() {
               <path d="M2 17l10 5 10-5" />
               <path d="M2 12l10 5 10-5" />
             </svg>
-            BRO Network Live
+            Himalayan Pass Status
           </Link>
           <span style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.6875rem" }}>Lat 32.2464° N</span>
         </div>

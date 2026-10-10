@@ -246,7 +246,7 @@ export default function PlanTripCTA() {
                 <ShieldCheck size={16} />
               </div>
               <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.8)", fontWeight: 500 }}>
-                BRO &amp; Police Verified Alerts
+                Community &amp; Route Updates
               </span>
             </div>
           </div>
