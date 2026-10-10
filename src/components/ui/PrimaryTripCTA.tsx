@@ -46,6 +46,7 @@ export default function PrimaryTripCTA({ trip, className = "", style = {} }: Pri
             savedAt: new Date().toISOString(),
           };
           window.localStorage.setItem(`offline-trip-${trip.slug}`, JSON.stringify(offlineSnapshot));
+          window.dispatchEvent(new CustomEvent("rar:offline-pack-downloaded", { detail: { slug: trip.slug } }));
         } catch {
           // ignore localStorage errors
         }

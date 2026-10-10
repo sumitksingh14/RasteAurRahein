@@ -8,9 +8,10 @@ type BeforeInstallPromptEvent = Event & {
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 };
 
-// Re-show the prompt after 7 days if dismissed (not permanently suppressed)
+// Suppress the prompt for 30 days if dismissed
 const DISMISSED_KEY = "rar_pwa_install_dismissed_at";
-const DISMISS_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+const DISMISS_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+const PAGEVIEW_COUNT_KEY = "rar_pageview_count";
 
 export default function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] =
@@ -30,37 +31,81 @@ export default function InstallPrompt() {
       return;
     }
 
-    // Check if dismissed recently
+    // Check if dismissed recently (30 days TTL)
     const dismissedAt = localStorage.getItem(DISMISSED_KEY);
     if (dismissedAt && Date.now() - Number(dismissedAt) < DISMISS_TTL_MS) {
       return;
     }
 
-    // Check viewed trips count
-    const checkViewedTrips = () => {
-      try {
-        const stored = localStorage.getItem("rar_viewed_trips");
-        const trips: string[] = stored ? JSON.parse(stored) : [];
-        const lastRegion = localStorage.getItem("rar_last_viewed_region") || "Himachal";
-        setNudgeRegion(lastRegion);
+    // Track total pageviews / visits across sessions
+    let pageviews = 1;
+    try {
+      const storedCount = localStorage.getItem(PAGEVIEW_COUNT_KEY);
+      pageviews = (storedCount ? parseInt(storedCount, 10) : 0) + 1;
+      localStorage.setItem(PAGEVIEW_COUNT_KEY, String(pageviews));
+    } catch {}
 
-        if (trips.length >= 2) {
-          setShowNudgeBanner(true);
-        }
-      } catch {
-        // ignore
+    // Engagement tracking flags
+    let minDwellElapsed = false;
+    let positiveSignalMet = false;
+
+    // Signal 1: User is on 2nd+ visit/pageview
+    if (pageviews >= 2) {
+      positiveSignalMet = true;
+    }
+
+    // Check previously viewed trips count
+    try {
+      const stored = localStorage.getItem("rar_viewed_trips");
+      const trips: string[] = stored ? JSON.parse(stored) : [];
+      const lastRegion = localStorage.getItem("rar_last_viewed_region") || "Himachal";
+      setNudgeRegion(lastRegion);
+
+      if (trips.length >= 2) {
+        positiveSignalMet = true;
+      }
+    } catch {}
+
+    const checkAndTrigger = () => {
+      if (minDwellElapsed && positiveSignalMet) {
+        setShowNudgeBanner(true);
       }
     };
 
-    checkViewedTrips();
+    // Rule: Don't show within the first 30 seconds of the visit
+    const dwellTimer = setTimeout(() => {
+      minDwellElapsed = true;
+      checkAndTrigger();
+    }, 30000);
+
+    // Signal 2: 40%+ scroll depth on an itinerary or long page
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 300) {
+        const scrollPercent = window.scrollY / totalHeight;
+        if (scrollPercent >= 0.40) {
+          positiveSignalMet = true;
+          checkAndTrigger();
+        }
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    // Signal 3: Trip saved or offline pack downloaded
+    const handleEngagementAction = () => {
+      positiveSignalMet = true;
+      checkAndTrigger();
+    };
+    window.addEventListener("rar:trip-saved", handleEngagementAction);
+    window.addEventListener("rar:offline-pack-downloaded", handleEngagementAction);
 
     // Listen for custom trigger from TripViewTracker
     const handleNudgeEvent = (e: Event) => {
       const detail = (e as CustomEvent).detail;
       if (detail?.region) setNudgeRegion(detail.region);
-      setShowNudgeBanner(true);
+      positiveSignalMet = true;
+      checkAndTrigger();
     };
-
     window.addEventListener("rar:trigger-install-nudge", handleNudgeEvent);
 
     // iOS detection (Safari "Add to Home Screen" path)
@@ -79,7 +124,12 @@ export default function InstallPrompt() {
     };
 
     window.addEventListener("beforeinstallprompt", handler);
+
     return () => {
+      clearTimeout(dwellTimer);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("rar:trip-saved", handleEngagementAction);
+      window.removeEventListener("rar:offline-pack-downloaded", handleEngagementAction);
       window.removeEventListener("beforeinstallprompt", handler);
       window.removeEventListener("rar:trigger-install-nudge", handleNudgeEvent);
     };
@@ -120,9 +170,10 @@ export default function InstallPrompt() {
         <div
           role="region"
           aria-label="Install app recommendation"
+          className="install-nudge-banner"
           style={{
             position: "fixed",
-            bottom: "calc(var(--mobile-tab-height, 0px) + 16px)",
+            bottom: "calc(var(--tab-bar-height, 64px) + env(safe-area-inset-bottom, 0px) + 16px)",
             left: "50%",
             transform: "translateX(-50%)",
             width: "min(540px, calc(100% - 24px))",
@@ -519,6 +570,11 @@ export default function InstallPrompt() {
       </div>
 
       <style>{`
+        @media (min-width: 768px) {
+          .install-nudge-banner {
+            bottom: 24px !important;
+          }
+        }
         @media (min-width: 600px) {
           /* On wider screens, constrain the sheet to a card-like width */
           [aria-label="Install Raste Aur Raahein app"] {

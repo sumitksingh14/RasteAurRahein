@@ -60,6 +60,9 @@ export default function BookmarkButton({
           if (data.saved) {
             setShowToast(true);
             setTimeout(() => setShowToast(false), 2500);
+            if (typeof window !== "undefined") {
+              window.dispatchEvent(new CustomEvent("rar:trip-saved", { detail: { tripSlug } }));
+            }
           }
         } else {
           // Revert on failure
