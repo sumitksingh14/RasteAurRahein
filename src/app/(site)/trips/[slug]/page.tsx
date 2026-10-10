@@ -20,6 +20,7 @@ import CommentSection from "@/components/ui/CommentSection";
 import { format } from "date-fns";
 import { getSession } from "@/lib/session";
 import { isTripSaved } from "@/lib/savedTrips";
+import PrimaryTripCTA from "@/components/ui/PrimaryTripCTA";
 import BookmarkButton from "@/components/ui/BookmarkButton";
 import StartTripButton from "@/components/ui/StartTripButton";
 import RemixTripButton from "@/components/ui/RemixTripButton";
@@ -333,18 +334,15 @@ export default async function TripDetailPage({ params }: Props) {
             )}
           </div>
 
-          {/* Hero Action Toolbar */}
+          {/* Hero Action Toolbar: Substantial Single Primary CTA + Secondary Icon Toolbar */}
           <div className="trip-hero-actions">
-            <div className="trip-hero-actions-primary">
-              <StartTripButton tripSlug={trip.slug} tripTitle={trip.title} />
-              <RemixTripButton trip={trip} />
-            </div>
-            <div className="trip-hero-actions-secondary">
-              <div className="trip-hero-tools">
-                <BookmarkButton tripSlug={trip.slug} initialSaved={initialSaved} />
-                <ShareButton title={trip.title} excerpt={trip.excerpt} />
-              </div>
-              <AddToCalendarButton trip={trip} />
+            <PrimaryTripCTA trip={trip} />
+            <div className="trip-hero-secondary-icons">
+              <RemixTripButton trip={trip} iconOnly />
+              <AddToCalendarButton trip={trip} iconOnly />
+              <ShareButton title={trip.title} excerpt={trip.excerpt} iconOnly />
+              <BookmarkButton tripSlug={trip.slug} initialSaved={initialSaved} size="lg" />
+              <StartTripButton tripSlug={trip.slug} tripTitle={trip.title} iconOnly />
             </div>
           </div>
         </div>

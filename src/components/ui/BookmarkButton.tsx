@@ -9,7 +9,7 @@ interface BookmarkButtonProps {
   tripSlug: string;
   initialSaved?: boolean;
   /** Size variant */
-  size?: "sm" | "md";
+  size?: "sm" | "md" | "lg";
   className?: string;
 }
 
@@ -74,8 +74,9 @@ export default function BookmarkButton({
     [user, openAuthModal, tripSlug, loading]
   );
 
-  const iconSize = size === "sm" ? 14 : 16;
-  const btnSize = size === "sm" ? 30 : 36;
+  const iconSize = size === "sm" ? 14 : size === "lg" ? 18 : 16;
+  const btnSize = size === "sm" ? 30 : size === "lg" ? 42 : 36;
+  const isLg = size === "lg";
 
   return (
     <div style={{ position: "relative", display: "inline-block" }}>
@@ -88,14 +89,27 @@ export default function BookmarkButton({
         style={{
           width: btnSize,
           height: btnSize,
-          borderRadius: "50%",
-          background: saved ? "rgba(0,108,228,0.12)" : "rgba(255,255,255,0.92)",
-          border: saved ? "1.5px solid rgba(0,108,228,0.3)" : "none",
+          borderRadius: isLg ? "0.625rem" : "50%",
+          background: isLg
+            ? saved
+              ? "rgba(0,108,228,0.3)"
+              : "rgba(255,255,255,0.12)"
+            : saved
+            ? "rgba(0,108,228,0.12)"
+            : "rgba(255,255,255,0.92)",
+          border: isLg
+            ? saved
+              ? "1px solid rgba(0,108,228,0.6)"
+              : "1px solid rgba(255,255,255,0.2)"
+            : saved
+            ? "1.5px solid rgba(0,108,228,0.3)"
+            : "none",
           cursor: loading ? "default" : "pointer",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
+          backdropFilter: isLg ? "blur(8px)" : undefined,
+          boxShadow: isLg ? "none" : "0 2px 8px rgba(0,0,0,0.12)",
           transition: "transform 0.2s ease, background 0.2s ease",
           opacity: loading ? 0.6 : 1,
           flexShrink: 0,

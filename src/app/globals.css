@@ -1863,6 +1863,13 @@ code {
   gap: 0.5rem;
 }
 
+.trip-hero-secondary-icons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 @media (max-width: 900px) {
   .trip-mobile-quick-facts {
     display: grid;
@@ -1906,6 +1913,23 @@ code {
     flex-direction: column;
     align-items: stretch !important;
     gap: 0.75rem !important;
+  }
+
+  .primary-trip-cta-wrapper {
+    width: 100%;
+  }
+
+  .primary-gpx-pack-btn {
+    width: 100%;
+  }
+
+  .trip-hero-secondary-icons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    width: 100%;
   }
 
   .trip-hero-actions-primary {

@@ -13,9 +13,14 @@ import {
 interface AddToCalendarButtonProps {
   trip: Trip;
   style?: React.CSSProperties;
+  iconOnly?: boolean;
 }
 
-export default function AddToCalendarButton({ trip, style = {} }: AddToCalendarButtonProps) {
+export default function AddToCalendarButton({
+  trip,
+  style = {},
+  iconOnly = false,
+}: AddToCalendarButtonProps) {
   const [open, setOpen] = useState(false);
   const [icsDownloaded, setIcsDownloaded] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -59,34 +64,73 @@ export default function AddToCalendarButton({ trip, style = {} }: AddToCalendarB
     <div ref={menuRef} style={{ position: "relative", display: "inline-block", ...style }}>
       <button
         onClick={() => setOpen((prev) => !prev)}
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "6px",
-          padding: "0.5rem 0.9rem",
-          borderRadius: "var(--radius-sm)",
-          border: "1px solid var(--border)",
-          background: "var(--bg-card)",
-          color: icsDownloaded ? "#10b981" : "var(--text-secondary)",
-          fontSize: "0.85rem",
-          fontWeight: 500,
-          fontFamily: "var(--font-sans)",
-          cursor: "pointer",
-          transition: "all var(--transition)",
-          whiteSpace: "nowrap",
-        }}
+        title={icsDownloaded ? "Calendar Exported!" : "Add to Calendar"}
+        aria-label="Add to Calendar"
+        aria-expanded={open}
+        style={
+          iconOnly
+            ? {
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "42px",
+                height: "42px",
+                borderRadius: "0.625rem",
+                border: "1px solid rgba(255,255,255,0.20)",
+                background: open ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.12)",
+                color: icsDownloaded ? "#34d399" : "white",
+                cursor: "pointer",
+                backdropFilter: "blur(8px)",
+                transition: "all var(--transition)",
+              }
+            : {
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                padding: "0.5rem 0.9rem",
+                borderRadius: "var(--radius-sm)",
+                border: "1px solid var(--border)",
+                background: "var(--bg-card)",
+                color: icsDownloaded ? "#10b981" : "var(--text-secondary)",
+                fontSize: "0.85rem",
+                fontWeight: 500,
+                fontFamily: "var(--font-sans)",
+                cursor: "pointer",
+                transition: "all var(--transition)",
+                whiteSpace: "nowrap",
+              }
+        }
         onMouseEnter={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border-accent)";
-          (e.currentTarget as HTMLButtonElement).style.color = "var(--accent-gold)";
+          if (iconOnly) {
+            (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.22)";
+            (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border-accent)";
+          } else {
+            (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border-accent)";
+            (e.currentTarget as HTMLButtonElement).style.color = "var(--accent-gold)";
+          }
         }}
         onMouseLeave={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border)";
-          (e.currentTarget as HTMLButtonElement).style.color = icsDownloaded ? "#10b981" : "var(--text-secondary)";
+          if (iconOnly) {
+            (e.currentTarget as HTMLButtonElement).style.background = open ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.12)";
+            (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.20)";
+          } else {
+            (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border)";
+            (e.currentTarget as HTMLButtonElement).style.color = icsDownloaded ? "#10b981" : "var(--text-secondary)";
+          }
         }}
       >
-        {icsDownloaded ? <Check size={14} color="#10b981" /> : <Calendar size={14} />}
-        <span>{icsDownloaded ? "Calendar Exported!" : "Add to Calendar"}</span>
-        <ChevronDown size={13} style={{ opacity: 0.6, transform: open ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
+        {icsDownloaded ? <Check size={16} color="#34d399" /> : <Calendar size={16} />}
+        {!iconOnly && <span>{icsDownloaded ? "Calendar Exported!" : "Add to Calendar"}</span>}
+        {!iconOnly && (
+          <ChevronDown
+            size={13}
+            style={{
+              opacity: 0.6,
+              transform: open ? "rotate(180deg)" : "none",
+              transition: "transform 0.2s",
+            }}
+          />
+        )}
       </button>
 
       {open && (

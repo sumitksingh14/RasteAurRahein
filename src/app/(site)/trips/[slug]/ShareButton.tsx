@@ -29,13 +29,14 @@ function TwitterIcon() {
 interface ShareButtonProps {
   title: string;
   excerpt?: string;
+  iconOnly?: boolean;
 }
 
 const WHATSAPP_GREEN = "#25D366";
 const FACEBOOK_BLUE = "#1877F2";
 const X_BLACK = "#000000";
 
-export default function ShareButton({ title, excerpt }: ShareButtonProps) {
+export default function ShareButton({ title, excerpt, iconOnly = false }: ShareButtonProps) {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -107,14 +108,16 @@ export default function ShareButton({ title, excerpt }: ShareButtonProps) {
         id="share-trip-btn"
         onClick={() => setOpen((v) => !v)}
         style={{
-          marginLeft: "auto",
-          display: "flex",
+          display: "inline-flex",
           alignItems: "center",
+          justifyContent: "center",
+          width: iconOnly ? "42px" : undefined,
+          height: iconOnly ? "42px" : undefined,
           gap: "6px",
-          padding: "0.5rem 1rem",
-          borderRadius: "var(--radius-sm)",
+          padding: iconOnly ? "0" : "0.5rem 1rem",
+          borderRadius: iconOnly ? "0.625rem" : "var(--radius-sm)",
           border: "1px solid rgba(255,255,255,0.2)",
-          background: open ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.1)",
+          background: open ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.12)",
           color: "white",
           fontSize: "0.8rem",
           cursor: "pointer",
@@ -122,11 +125,12 @@ export default function ShareButton({ title, excerpt }: ShareButtonProps) {
           backdropFilter: "blur(8px)",
           transition: "all var(--transition)",
         }}
+        title="Share this trip"
         aria-label="Share this trip"
         aria-expanded={open}
       >
-        {open ? <X size={13} /> : <Share2 size={13} />}
-        {open ? "Close" : "Share"}
+        {open ? <X size={iconOnly ? 17 : 13} /> : <Share2 size={iconOnly ? 17 : 13} />}
+        {!iconOnly && (open ? "Close" : "Share")}
       </button>
 
       {open && (

@@ -10,9 +10,14 @@ import { useGeneratedTrips, type GeneratedTrip, type GeneratedDay } from "@/comp
 interface RemixTripButtonProps {
   trip: Trip;
   style?: React.CSSProperties;
+  iconOnly?: boolean;
 }
 
-export default function RemixTripButton({ trip, style = {} }: RemixTripButtonProps) {
+export default function RemixTripButton({
+  trip,
+  style = {},
+  iconOnly = false,
+}: RemixTripButtonProps) {
   const router = useRouter();
   const { user, openAuthModal } = useAuth();
   const { addTrip } = useGeneratedTrips();
@@ -85,11 +90,52 @@ export default function RemixTripButton({ trip, style = {} }: RemixTripButtonPro
     }
   };
 
+  if (iconOnly) {
+    return (
+      <button
+        onClick={handleRemix}
+        disabled={loading}
+        title="Customize Itinerary"
+        aria-label="Customize Itinerary"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "42px",
+          height: "42px",
+          borderRadius: "0.625rem",
+          border: "1px solid rgba(255,255,255,0.20)",
+          background: "rgba(255,255,255,0.12)",
+          color: "white",
+          cursor: loading ? "wait" : "pointer",
+          backdropFilter: "blur(8px)",
+          transition: "all var(--transition)",
+          ...style,
+        }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.22)";
+          (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border-accent)";
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.12)";
+          (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.20)";
+        }}
+      >
+        {loading ? (
+          <Loader2 size={16} className="animate-spin" />
+        ) : (
+          <Sparkles size={16} />
+        )}
+      </button>
+    );
+  }
+
   return (
     <button
       onClick={handleRemix}
       disabled={loading}
       title="Clone and customize this itinerary in your planner"
+      aria-label="Customize itinerary"
       style={{
         display: "inline-flex",
         alignItems: "center",

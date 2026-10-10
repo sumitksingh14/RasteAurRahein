@@ -9,6 +9,7 @@ interface StartTripButtonProps {
   tripSlug?: string;
   itineraryId?: string;
   tripTitle: string;
+  iconOnly?: boolean;
 }
 
 /**
@@ -22,6 +23,7 @@ export default function StartTripButton({
   tripSlug,
   itineraryId,
   tripTitle,
+  iconOnly = false,
 }: StartTripButtonProps) {
   const { user, openAuthModal } = useAuth();
   const router = useRouter();
@@ -79,34 +81,61 @@ export default function StartTripButton({
     <>
       <button
         onClick={handleClick}
-        className="btn btn-outline"
+        className={iconOnly ? undefined : "btn btn-outline"}
         id={`start-trip-btn-${tripSlug || itineraryId}`}
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "8px",
-          padding: "0.5rem 1.25rem",
-          fontSize: "0.875rem",
-          fontWeight: 600,
-          borderRadius: "100px",
-          border: "1.5px solid #006CE4",
-          background: "rgba(0,108,228,0.05)",
-          color: "#006CE4",
-          cursor: "pointer",
-          transition: "all 0.2s ease",
-          fontFamily: "var(--font-sans)",
-        }}
+        title="Plan with Friends (Group Trip)"
+        aria-label="Start group trip"
+        style={
+          iconOnly
+            ? {
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "42px",
+                height: "42px",
+                borderRadius: "0.625rem",
+                border: "1px solid rgba(255,255,255,0.20)",
+                background: "rgba(255,255,255,0.12)",
+                color: "white",
+                cursor: "pointer",
+                backdropFilter: "blur(8px)",
+                transition: "all var(--transition)",
+              }
+            : {
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "0.5rem 1.25rem",
+                fontSize: "0.875rem",
+                fontWeight: 600,
+                borderRadius: "100px",
+                border: "1.5px solid #006CE4",
+                background: "rgba(0,108,228,0.05)",
+                color: "#006CE4",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+                fontFamily: "var(--font-sans)",
+              }
+        }
         onMouseEnter={(e) => {
-          e.currentTarget.style.background = "#006CE4";
-          e.currentTarget.style.color = "#fff";
+          if (iconOnly) {
+            e.currentTarget.style.background = "rgba(255,255,255,0.22)";
+          } else {
+            e.currentTarget.style.background = "#006CE4";
+            e.currentTarget.style.color = "#fff";
+          }
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.background = "rgba(0,108,228,0.05)";
-          e.currentTarget.style.color = "#006CE4";
+          if (iconOnly) {
+            e.currentTarget.style.background = "rgba(255,255,255,0.12)";
+          } else {
+            e.currentTarget.style.background = "rgba(0,108,228,0.05)";
+            e.currentTarget.style.color = "#006CE4";
+          }
         }}
       >
-        <Users size={15} />
-        Start a Trip
+        <Users size={iconOnly ? 17 : 15} />
+        {!iconOnly && "Start a Trip"}
       </button>
 
       {/* ── Inline drawer ── */}
