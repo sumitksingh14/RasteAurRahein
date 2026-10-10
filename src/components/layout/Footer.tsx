@@ -6,7 +6,7 @@ import { Mail, MapPin } from "lucide-react";
 import { REGIONS } from "@/lib/regions";
 import { useAuth } from "@/components/providers/AuthProvider";
 import NewsletterInline from "@/components/ui/NewsletterInline";
-import { getActiveSocialLinks, PUBLIC_CONTACT_EMAIL } from "@/lib/site-config";
+import { getActiveSocialLinks } from "@/lib/site-config";
 
 const companyLinks = [
   { href: "/about", label: "About Us" },
