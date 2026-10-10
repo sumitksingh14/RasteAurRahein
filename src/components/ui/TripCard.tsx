@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin, BedDouble, Users, Heart } from "lucide-react";
+import { MapPin, CalendarDays, Heart, Flame } from "lucide-react";
 import type { Trip } from "@/lib/types";
 import { format } from "date-fns";
 import { useState } from "react";
 import BookmarkButton from "@/components/ui/BookmarkButton";
 import { TripAlertBadge } from "@/components/ui/TripAlertBanner";
 import { getTripDummyLikes } from "@/lib/likes";
-
 import { getTripImage } from "@/lib/data/tripImages";
 import { trackRelatedTripClick } from "@/lib/analytics";
 
@@ -22,6 +21,19 @@ interface TripCardProps {
   relatedPosition?: 1 | 2 | 3 | 4;
   sourceSlug?: string;
 }
+
+// ── Difficulty badge config ────────────────────────────────────────────────
+type Difficulty = "Easy" | "Moderate" | "Hard" | "Extreme";
+
+const DIFFICULTY_CONFIG: Record<
+  Difficulty,
+  { label: string; bg: string; color: string }
+> = {
+  Easy: { label: "Easy", bg: "rgba(16,185,129,0.90)", color: "#fff" },
+  Moderate: { label: "Moderate", bg: "rgba(245,158,11,0.92)", color: "#fff" },
+  Hard: { label: "Hard", bg: "rgba(239,68,68,0.90)", color: "#fff" },
+  Extreme: { label: "Extreme", bg: "rgba(124,58,237,0.92)", color: "#fff" },
+};
 
 export default function TripCard({
   trip,
@@ -36,32 +48,50 @@ export default function TripCard({
   const [isHovered, setIsHovered] = useState(false);
   const likes = trip.likes ?? getTripDummyLikes(trip.slug);
 
-  const dateLabel =
-    trip.startDate && trip.endDate
-      ? `${format(new Date(trip.startDate), "MMM yyyy")}`
-      : trip.startDate
-      ? format(new Date(trip.startDate), "MMM yyyy")
-      : null;
-
+  // ── Duration ──────────────────────────────────────────────────────────────
   const durationDays =
-    trip.startDate && trip.endDate
+    trip.quickFacts?.durationDays ??
+    (trip.startDate && trip.endDate
       ? Math.ceil(
           (new Date(trip.endDate).getTime() -
             new Date(trip.startDate).getTime()) /
             (1000 * 60 * 60 * 24)
         ) + 1
-      : trip.itinerary?.length || null;
+      : trip.itinerary?.length ?? null);
+
+  const dateLabel =
+    trip.startDate
+      ? format(new Date(trip.startDate), "MMM yyyy")
+      : null;
+
+  const durationLabel = durationDays
+    ? `${durationDays} days`
+    : dateLabel ?? "Multi-day";
+
+  // ── Best season ───────────────────────────────────────────────────────────
+  // Reads from schema; never invented. Renders nothing when absent.
+  const bestSeason = trip.quickFacts?.bestTime ?? trip.bestSuggestedMonth ?? null;
+
+  // ── Difficulty ────────────────────────────────────────────────────────────
+  // quickFacts is the authoritative source; trip.difficulty is legacy fallback
+  const difficulty = (trip.quickFacts?.difficulty ?? trip.difficulty ?? null) as Difficulty | null;
+  const diffConf = difficulty ? DIFFICULTY_CONFIG[difficulty] : null;
+
+  // ── Ideal for ─────────────────────────────────────────────────────────────
+  // Short excerpt from quickFacts.idealFor or tripType — no invented values
+  const idealFor = trip.quickFacts?.idealFor ?? trip.tripType ?? null;
+  const idealForShort = idealFor ? idealFor.split(",")[0].trim() : null;
 
   return (
     <div
       style={{
         borderRadius: "var(--radius-lg)",
         overflow: "hidden",
-        background: "#FFFFFF",
-        border: "1px solid #E5E7EB",
+        background: "var(--bg-card)",
+        border: "1px solid var(--border)",
         boxShadow: isHovered
-          ? "0 8px 32px rgba(0,0,0,0.14)"
-          : "0 2px 12px rgba(0,0,0,0.06)",
+          ? "var(--shadow-neo-raised-lg)"
+          : "var(--shadow-neo-raised)",
         transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
         position: "relative",
         transform: isHovered ? "translateY(-4px)" : "translateY(0)",
@@ -70,7 +100,7 @@ export default function TripCard({
       onMouseLeave={() => setIsHovered(false)}
       id={`trip-card-${trip.slug}`}
     >
-      {/* Image */}
+      {/* ── Image ────────────────────────────────────────────────────────── */}
       <div
         style={{
           position: "relative",
@@ -93,17 +123,17 @@ export default function TripCard({
           loading={priority ? "eager" : loading}
         />
 
-        {/* Subtle bottom gradient for readability */}
+        {/* Bottom scrim for readability */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(0deg, rgba(0,0,0,0.30) 0%, transparent 50%)",
+              "linear-gradient(0deg, rgba(0,0,0,0.38) 0%, transparent 55%)",
           }}
         />
 
-        {/* Bookmark / Save button — top right */}
+        {/* Bookmark — top right */}
         <div
           style={{
             position: "absolute",
@@ -115,7 +145,7 @@ export default function TripCard({
           <BookmarkButton tripSlug={trip.slug} initialSaved={initialSaved} />
         </div>
 
-        {/* Tags */}
+        {/* Tags — top left */}
         {trip.tags && trip.tags.length > 0 && (
           <div
             style={{
@@ -126,57 +156,63 @@ export default function TripCard({
               gap: "0.35rem",
               flexWrap: "wrap",
               zIndex: 2,
+              maxWidth: "calc(100% - 3.5rem)",
             }}
           >
             {trip.tags.slice(0, 2).map((tag) => (
-              <span
+              <Link
                 key={tag}
+                href={`/trips?tag=${encodeURIComponent(tag)}`}
+                onClick={(e) => e.stopPropagation()}
                 style={{
                   padding: "0.2rem 0.6rem",
                   borderRadius: "100px",
                   fontSize: "0.65rem",
                   fontWeight: 600,
                   background: "rgba(255,255,255,0.92)",
-                  color: "#006CE4",
+                  color: "#6366f1",
                   letterSpacing: "0.02em",
                   textTransform: "uppercase",
+                  textDecoration: "none",
+                  backdropFilter: "blur(4px)",
                 }}
               >
                 {tag}
-              </span>
+              </Link>
             ))}
             <TripAlertBadge slug={trip.slug} />
           </div>
         )}
 
-        {/* Image dots indicator */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: "0.75rem",
-            left: "50%",
-            transform: "translateX(-50%)",
-            display: "flex",
-            gap: "5px",
-            zIndex: 2,
-          }}
-        >
-          {[0, 1, 2, 3].map((i) => (
-            <div
-              key={i}
-              style={{
-                width: i === 0 ? 20 : 7,
-                height: 7,
-                borderRadius: "100px",
-                background: i === 0 ? "#FEBB02" : "rgba(255,255,255,0.6)",
-                transition: "width 0.2s ease",
-              }}
-            />
-          ))}
-        </div>
+        {/* Difficulty badge — bottom left, overlaid on image */}
+        {diffConf && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: "0.75rem",
+              left: "0.75rem",
+              zIndex: 2,
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+              padding: "0.2rem 0.6rem",
+              borderRadius: "100px",
+              fontSize: "0.65rem",
+              fontWeight: 700,
+              background: diffConf.bg,
+              color: diffConf.color,
+              letterSpacing: "0.04em",
+              textTransform: "uppercase",
+              backdropFilter: "blur(4px)",
+            }}
+          >
+            <Flame size={10} />
+            {diffConf.label}
+          </div>
+        )}
       </div>
 
-      {/* Card Body */}
+      {/* ── Card Body ────────────────────────────────────────────────────── */}
       <Link
         href={`/trips/${trip.slug}`}
         onClick={() => {
@@ -193,21 +229,21 @@ export default function TripCard({
               fontFamily: "var(--font-sans)",
               fontSize: featured ? "1.15rem" : "1rem",
               fontWeight: 700,
-              color: "#262729",
-              marginBottom: "0.3rem",
+              color: "var(--text-primary)",
+              marginBottom: "0.25rem",
               lineHeight: 1.35,
             }}
           >
             {trip.title}
           </h3>
 
-          {/* Location — yellow text */}
+          {/* Location */}
           <p
             style={{
-              color: "#FEBB02",
+              color: "#6366f1",
               fontSize: "0.82rem",
               fontWeight: 500,
-              marginBottom: "0.5rem",
+              marginBottom: "0.6rem",
               display: "flex",
               alignItems: "center",
               gap: "4px",
@@ -217,7 +253,29 @@ export default function TripCard({
             {trip.country || "India"}
           </p>
 
-          {/* Price / Duration row — blue price */}
+          {/* Best season pill — only when data exists */}
+          {bestSeason && (
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "5px",
+                padding: "0.2rem 0.65rem",
+                borderRadius: "100px",
+                fontSize: "0.7rem",
+                fontWeight: 600,
+                background: "rgba(99,102,241,0.10)",
+                color: "#6366f1",
+                marginBottom: "0.7rem",
+                letterSpacing: "0.01em",
+              }}
+            >
+              <CalendarDays size={11} />
+              {bestSeason}
+            </div>
+          )}
+
+          {/* Duration row */}
           <div
             style={{
               display: "flex",
@@ -231,54 +289,48 @@ export default function TripCard({
                 fontFamily: "var(--font-sans)",
                 fontSize: "1.15rem",
                 fontWeight: 800,
-                color: "#006CE4",
+                color: "#6366f1",
               }}
             >
-              {durationDays ? `${durationDays} days` : dateLabel ? dateLabel : "Multi-day"}
+              {durationLabel}
             </span>
             {trip.readingTime && (
-              <span style={{ fontSize: "0.8rem", color: "#6B7280", fontWeight: 400 }}>
+              <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontWeight: 400 }}>
                 · {trip.readingTime} min read
               </span>
             )}
           </div>
 
-          {/* Details row — icons for beds/sleeps/size */}
+          {/* Footer row */}
           <div
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "1rem",
-              borderTop: "1px solid #F3F4F6",
+              gap: "0.75rem",
+              borderTop: "1px solid var(--border)",
               paddingTop: "0.75rem",
+              flexWrap: "wrap",
             }}
           >
-            <span
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "5px",
-                fontSize: "0.78rem",
-                color: "#374151",
-                fontWeight: 500,
-              }}
-            >
-              <BedDouble size={14} color="#6B7280" />
-              {durationDays ? `${durationDays} days` : "Multi-day"}
-            </span>
-            <span
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "5px",
-                fontSize: "0.78rem",
-                color: "#374151",
-                fontWeight: 500,
-              }}
-            >
-              <Users size={14} color="#6B7280" />
-              Solo / Group
-            </span>
+            {/* Best season (compact icon) if present, else idealFor */}
+            {idealForShort && (
+              <span
+                style={{
+                  fontSize: "0.75rem",
+                  color: "var(--text-secondary)",
+                  fontWeight: 500,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  maxWidth: "55%",
+                }}
+                title={idealFor ?? undefined}
+              >
+                {idealForShort}
+              </span>
+            )}
+
+            {/* Likes — pushed right */}
             <span
               style={{
                 display: "flex",
@@ -288,6 +340,7 @@ export default function TripCard({
                 color: "#E11D48",
                 fontWeight: 600,
                 marginLeft: "auto",
+                flexShrink: 0,
               }}
               title={`${likes} traveler likes`}
             >
