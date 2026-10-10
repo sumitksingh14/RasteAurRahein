@@ -81,6 +81,25 @@ export default async function TripsPage(props: PageProps) {
     else if (bStr.includes("1l") || bStr.includes("100k")) initialBudgetIdx = 4;
   }
 
+  const initialType = typeof sp.type === "string" ? sp.type : "all";
+  let initialMaxDays = 21;
+  if (typeof sp.days === "string") {
+    const d = parseInt(sp.days, 10);
+    if (!isNaN(d) && d >= 1 && d <= 21) initialMaxDays = d;
+  } else if (initialDurationIdx > 0) {
+    const limits = [21, 3, 7, 14, 21];
+    initialMaxDays = limits[initialDurationIdx] || 21;
+  }
+
+  let initialMaxBudget = 150000;
+  if (typeof sp.budget === "string") {
+    const b = parseInt(sp.budget, 10);
+    if (!isNaN(b) && b >= 10000 && b <= 150000) initialMaxBudget = b;
+  } else if (initialBudgetIdx > 0) {
+    const limits = [150000, 20000, 50000, 100000, 150000];
+    initialMaxBudget = limits[initialBudgetIdx] || 150000;
+  }
+
   const initialRegion = typeof sp.region === "string" ? sp.region : "Any";
   const initialSortBy = (sp.sortBy === "views" || sp.sortBy === "title" || sp.sortBy === "date") ? sp.sortBy : "date";
   const initialDifficulty = (sp.difficulty === "Easy" || sp.difficulty === "Moderate" || sp.difficulty === "Hard") ? sp.difficulty : "Any";
@@ -126,10 +145,11 @@ export default async function TripsPage(props: PageProps) {
       <TripsClient 
         trips={trips} 
         initialQuery={initialQuery}
+        initialType={initialType}
         initialTag={initialTag}
         initialSeason={initialSeason}
-        initialDurationIdx={initialDurationIdx}
-        initialBudgetIdx={initialBudgetIdx}
+        initialMaxDays={initialMaxDays}
+        initialMaxBudget={initialMaxBudget}
         initialRegion={initialRegion}
         initialSortBy={initialSortBy}
         initialDifficulty={initialDifficulty as "Any" | "Easy" | "Moderate" | "Hard"}
