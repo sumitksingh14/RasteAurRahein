@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { GeneratedTripsProvider } from "@/components/providers/GeneratedTripsProvider";
@@ -116,9 +115,6 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://cdn.sanity.io" />
         <link rel="preconnect" href="https://images.unsplash.com" />
-        {/* DNS prefetch for non-critical third parties */}
-        <link rel="dns-prefetch" href="https://pl31319807.profitableratecpmnetwork.com" />
-        <link rel="dns-prefetch" href="https://www.profitableratecpmnetwork.com" />
         <WebSiteSchema />
       </head>
       <body>
@@ -145,21 +141,6 @@ export default function RootLayout({
 
         {/* Real-User Core Web Vitals monitoring (p75 LCP, CLS, INP) */}
         <SpeedInsights />
-        <div style={{ textAlign: "center", padding: "6px 0", fontSize: "0.8rem" }}>
-          <a
-            href="https://www.profitableratecpmnetwork.com/he3fbuw5pa?key=44f24c10c87012d44d803f2971ea0b72"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: "#6B7280", textDecoration: "underline" }}
-          >
-            Special Offers & Deals
-          </a>
-        </div>
-        {/* Non-critical ad script — deferred with lazyOnload so it never blocks LCP */}
-        <Script
-          src="https://pl31319807.profitableratecpmnetwork.com/fd/f2/38/fdf238329b112aaad98a01270319e6cd.js"
-          strategy="lazyOnload"
-        />
       </body>
     </html>
   );

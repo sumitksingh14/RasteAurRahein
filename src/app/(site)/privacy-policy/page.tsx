@@ -179,7 +179,7 @@ export default function PrivacyPolicyPage() {
               lineHeight: 1.7,
             }}
           >
-            This Privacy Policy applies to <strong style={{ color: "var(--text-primary)" }}>{SITE_NAME}</strong> ("{SITE_URL}") operated by Sumit Singh. By using our site, you agree to this policy. If you do not agree, please discontinue use of the site.
+            This Privacy Policy applies to <strong style={{ color: "var(--text-primary)" }}>{SITE_NAME}</strong> (&quot;{SITE_URL}&quot;) operated by Sumit Singh. By using our site, you agree to this policy. If you do not agree, please discontinue use of the site.
           </div>
 
           <Section id="information-we-collect" title="1. Information We Collect">
@@ -234,7 +234,6 @@ export default function PrivacyPolicyPage() {
                     { type: "Essential", purpose: "Authentication, session management, saved itineraries (offline)", provider: "First-party" },
                     { type: "Analytics", purpose: "Aggregate page-view statistics, scroll depth, and outbound click tracking", provider: "Google Analytics 4" },
                     { type: "Performance", purpose: "Core Web Vitals monitoring (LCP, CLS, INP) — no PII", provider: "Vercel Speed Insights" },
-                    { type: "Advertising", purpose: "Contextual ads served by our ad network partner", provider: "Profitable Rate CPM Network" },
                   ].map((row, i) => (
                     <tr key={i} style={{ borderBottom: "1px solid var(--border)" }}>
                       <td style={{ padding: "0.75rem 1rem", fontWeight: 600, color: "var(--text-primary)" }}>{row.type}</td>
@@ -257,7 +256,6 @@ export default function PrivacyPolicyPage() {
               <Li><strong>Resend</strong> — transactional email delivery for newsletter and contact form. <a href="https://resend.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-gold)" }}>Resend Privacy Policy</a></Li>
               <Li><strong>Vercel</strong> — hosting, edge functions, and speed insights. <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-gold)" }}>Vercel Privacy Policy</a></Li>
               <Li><strong>Upstash Redis</strong> — rate limiting and caching layer (no PII stored). <a href="https://upstash.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-gold)" }}>Upstash Privacy Policy</a></Li>
-              <Li><strong>Profitable Rate CPM Network</strong> — contextual advertising. Ad network may set cookies for frequency capping.</Li>
               <Li><strong>Unsplash</strong> — landscape photography embedded in itineraries. No tracking cookies from Unsplash embeds.</Li>
             </ul>
           </Section>
@@ -279,17 +277,17 @@ export default function PrivacyPolicyPage() {
             <ul style={{ listStyle: "none", padding: 0 }}>
               <Li><strong>Access</strong> — Request a copy of the personal data we hold about you</Li>
               <Li><strong>Correction</strong> — Request correction of inaccurate data</Li>
-              <Li><strong>Deletion</strong> — Request erasure of your data ("right to be forgotten")</Li>
+              <Li><strong>Deletion</strong> — Request erasure of your data (&quot;right to be forgotten&quot;)</Li>
               <Li><strong>Portability</strong> — Request your data in a machine-readable format</Li>
               <Li><strong>Objection</strong> — Object to processing based on legitimate interests</Li>
-              <Li><strong>Opt-out of newsletter</strong> — Click "Unsubscribe" in any email</Li>
+              <Li><strong>Opt-out of newsletter</strong> — Click &quot;Unsubscribe&quot; in any email</Li>
             </ul>
             <p style={{ marginTop: "1rem" }}>
               To exercise any right, email us at{" "}
               <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: "var(--accent-gold)", fontWeight: 600 }}>
                 {CONTACT_EMAIL}
               </a>{" "}
-              with subject line "Privacy Request". We will respond within 30 days.
+              with subject line &quot;Privacy Request&quot;. We will respond within 30 days.
             </p>
           </Section>
 
@@ -311,7 +309,7 @@ export default function PrivacyPolicyPage() {
 
           <Section id="changes" title="9. Changes to This Policy">
             <p>
-              We may update this Privacy Policy from time to time. When we make material changes, we will update the "Last updated" date at the top of this page and, where appropriate, notify newsletter subscribers. Your continued use of {SITE_NAME} after the update constitutes acceptance of the revised policy.
+              We may update this Privacy Policy from time to time. When we make material changes, we will update the &quot;Last updated&quot; date at the top of this page and, where appropriate, notify newsletter subscribers. Your continued use of {SITE_NAME} after the update constitutes acceptance of the revised policy.
             </p>
           </Section>
 
