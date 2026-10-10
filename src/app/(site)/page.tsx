@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { getAllTrips } from "@/lib/queries";
 import HomepageFilters from "@/components/ui/HomepageFilters";
 import TripFinderHero from "@/components/home/TripFinderHero";
@@ -246,19 +247,37 @@ export default async function HomePage() {
           minHeight: "440px",
           padding: "3rem 1.25rem 2.5rem",
           overflow: "hidden",
-          backgroundImage:
-            'linear-gradient(rgba(30,27,75,0.52) 0%, rgba(30,27,75,0.82) 100%), url("/images/hero-mount-kailash.jpg")',
-          backgroundSize: "cover",
-          backgroundPosition: "center 38%",
-          backgroundRepeat: "no-repeat",
           gap: "1.25rem",
           margin: "1rem 1rem 0",
           borderRadius: "1rem",
         }}
       >
+        <Image
+          src="/images/hero-mount-kailash.jpg"
+          alt="Mount Kailash Himalayan road trip"
+          fill
+          priority
+          quality={75}
+          sizes="(max-width: 768px) 100vw, 1920px"
+          style={{ objectFit: "cover", objectPosition: "center 38%", zIndex: 0 }}
+        />
+        {/* Dark gradient overlay */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(rgba(30,27,75,0.52) 0%, rgba(30,27,75,0.82) 100%)",
+            zIndex: 1,
+            pointerEvents: "none",
+          }}
+        />
+
         {/* Badge */}
         <span
           style={{
+            position: "relative",
+            zIndex: 2,
             display: "inline-flex",
             alignItems: "center",
             gap: "0.5rem",
@@ -291,7 +310,7 @@ export default async function HomePage() {
         </span>
 
         {/* Heading */}
-        <div style={{ textAlign: "center", maxWidth: "720px" }}>
+        <div style={{ textAlign: "center", maxWidth: "720px", position: "relative", zIndex: 2 }}>
           <h1
             style={{
               color: "#fff",
@@ -321,7 +340,9 @@ export default async function HomePage() {
         </div>
 
         {/* ── Compact Trip Finder in Hero ────────────────────────── */}
-        <TripFinderHero trendingTrips={trendingTrips} />
+        <div style={{ width: "100%", position: "relative", zIndex: 2 }}>
+          <TripFinderHero trendingTrips={trendingTrips} />
+        </div>
       </section>
 
       {/* ── 2-LINE EDITORIAL TEASER ───────────────────────────────────── */}

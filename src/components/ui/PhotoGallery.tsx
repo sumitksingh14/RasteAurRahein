@@ -141,7 +141,9 @@ export default function PhotoGallery({ images, title }: PhotoGalleryProps) {
                 objectFit: "cover",
                 transition: "transform 0.5s ease",
               }}
-              sizes="(max-width: 768px) 50vw, 33vw"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              quality={75}
+              loading="lazy"
               onMouseEnter={(e) =>
                 ((e.target as HTMLImageElement).style.transform = "scale(1.08)")
               }

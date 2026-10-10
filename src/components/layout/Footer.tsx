@@ -106,8 +106,10 @@ export default function Footer() {
               <Image
                 src="/logo.png"
                 alt="Raste Aur Rahein Logo"
-                width={806}
-                height={592}
+                width={44}
+                height={32}
+                quality={75}
+                loading="lazy"
                 style={{ width: "auto", height: "32px", objectFit: "contain", flexShrink: 0, borderRadius: "6px" }}
               />
               Raste Aur Raahein

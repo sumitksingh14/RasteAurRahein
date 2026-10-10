@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import type { Trip } from "@/lib/types";
 import { getTripImage } from "@/lib/data/tripImages";
 import { shouldDisplayPublicViewCount } from "@/lib/site-config";
@@ -267,18 +268,18 @@ function GlassyCarousel({ trips }: { trips: Trip[] }) {
             >
               {/* Image */}
               <div style={{ position: "relative", height: "210px", flexShrink: 0, overflow: "hidden" }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={imgSrc}
                   alt={trip.title}
+                  fill
                   style={{
-                    width: "100%",
-                    height: "100%",
                     objectFit: "cover",
                     transition: "transform 0.55s ease",
                   }}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 340px"
+                  quality={75}
+                  loading="lazy"
                   className="glassy-card-img"
-                  loading={idx < 3 ? "eager" : "lazy"}
                 />
                 {/* Gradient overlay for glass feel */}
                 <div

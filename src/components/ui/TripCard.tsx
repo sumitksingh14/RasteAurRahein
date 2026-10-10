@@ -117,10 +117,10 @@ export default function TripCard({
             transition: "transform 0.5s ease",
             transform: isHovered ? "scale(1.04)" : "scale(1)",
           }}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          quality={80}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px"
+          quality={75}
           priority={priority}
-          loading={priority ? "eager" : loading}
+          loading={priority ? "eager" : (loading ?? "lazy")}
         />
 
         {/* Bottom scrim for readability */}

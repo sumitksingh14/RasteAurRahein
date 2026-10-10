@@ -179,8 +179,8 @@ export default async function TripDetailPage({ params }: Props) {
           fill
           style={{ objectFit: "cover" }}
           priority
-          quality={90}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+          quality={75}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1920px"
           placeholder="blur"
           blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDhwVFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAAUAB4DASIAAhEBAxEB/8QAGAABAAMBAAAAAAAAAAAAAAAABQMEBgL/xAAlEAABBAEDBAMBAAAAAAAAAAABAAIDEQQhMUFRExRhkaH/xAAWAQEBAQAAAAAAAAAAAAAAAAABAgP/xAAYEQEBAQEBAAAAAAAAAAAAAAAAARESIf/aAAwDAQACEQMRAD8AxiNcPuQJqy1b2RWQcS3GVNO5yTzRVN8lryWYjUKTRDlvAL9zIoCuCq2U1VG6OcurGgkKYMQhPWnlixU3FvuXv2xhRShVrQFWEJIqKCLkqVyT0H//2Q=="
         />

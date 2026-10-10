@@ -121,6 +121,8 @@ export default function Navbar({ searchIndex = [] }: NavbarProps) {
             <img 
               src="/logo.png" 
               alt="Raste Aur Rahein Logo" 
+              width={49}
+              height={36}
               style={{ height: "36px", width: "auto", objectFit: "contain", flexShrink: 0 }} 
             />
             Raste Aur Rahein

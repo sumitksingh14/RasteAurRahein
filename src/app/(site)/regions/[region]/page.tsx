@@ -92,7 +92,8 @@ export default async function RegionHubPage({ params }: Props) {
           fill
           style={{ objectFit: "cover" }}
           priority
-          quality={85}
+          quality={75}
+          sizes="100vw"
         />
         {/* Gradient */}
         <div

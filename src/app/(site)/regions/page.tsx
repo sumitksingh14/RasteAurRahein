@@ -118,7 +118,9 @@ export default async function RegionsIndexPage() {
                         alt={region.heroAlt}
                         fill
                         style={{ objectFit: "cover", transition: "transform 0.4s ease" }}
-                        sizes="(max-width: 768px) 100vw, 500px"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 380px"
+                        quality={75}
+                        loading="lazy"
                       />
                       <div
                         style={{
