@@ -24,7 +24,6 @@ import BookmarkButton from "@/components/ui/BookmarkButton";
 import StartTripButton from "@/components/ui/StartTripButton";
 import RemixTripButton from "@/components/ui/RemixTripButton";
 import AddToCalendarButton from "@/components/ui/AddToCalendarButton";
-import GPXDownloadButton from "@/components/ui/GPXDownloadButton";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 import NewsletterInline from "@/components/ui/NewsletterInline";
 import TripAlertBanner from "@/components/ui/TripAlertBanner";
@@ -37,6 +36,7 @@ import TripLeadCapture from "@/components/ui/TripLeadCapture";
 import { getGuidesForTrip } from "@/lib/data/guides";
 
 import { getTripImage } from "@/lib/data/tripImages";
+import { shouldDisplayPublicViewCount } from "@/lib/site-config";
 
 
 interface Props {
@@ -298,7 +298,7 @@ export default async function TripDetailPage({ params }: Props) {
                 {durationDays} days
               </span>
             )}
-            {(trip.viewCount ?? 0) > 0 && (
+            {shouldDisplayPublicViewCount(trip.viewCount) && (
               <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
                 <Eye size={13} />
                 {trip.viewCount!.toLocaleString()} views

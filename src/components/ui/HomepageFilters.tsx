@@ -4,6 +4,7 @@ import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
 import type { Trip } from "@/lib/types";
 import { getTripImage } from "@/lib/data/tripImages";
+import { shouldDisplayPublicViewCount } from "@/lib/site-config";
 
 // ── Filter categories with keyword matchers ───────────────────────────────────
 const FILTER_CATEGORIES = [
@@ -438,11 +439,11 @@ function GlassyCarousel({ trips }: { trips: Trip[] }) {
                       </span>
                     </>
                   )}
-                  {trip.viewCount !== undefined && trip.viewCount > 0 && (
+                  {shouldDisplayPublicViewCount(trip.viewCount) && (
                     <>
                       <span style={{ opacity: 0.4 }}>•</span>
                       <span style={{ display: "flex", alignItems: "center", gap: "0.22rem", color: "#d97706", fontWeight: 700 }}>
-                        <Eye size={12} /> {trip.viewCount.toLocaleString()} views
+                        <Eye size={12} /> {trip.viewCount!.toLocaleString()} views
                       </span>
                     </>
                   )}
