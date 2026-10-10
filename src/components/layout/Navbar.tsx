@@ -2,27 +2,42 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
-import { Search, User, Menu, X, ChevronDown, LogOut, Shield } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { User, Menu, X, ChevronDown, LogOut, Shield, CloudSun, BookOpen, Mail, Map } from "lucide-react";
 import { REGIONS } from "@/lib/regions";
 import { useAuth } from "@/components/providers/AuthProvider";
 import AIItineraryButton from "@/components/ai/AIItineraryButton";
+import NavSearchBar from "@/components/ui/NavSearchBar";
+import type { SearchIndexEntry } from "@/components/ui/NavSearchBar";
 
-const navLinks = [
+/** Primary desktop nav — ≤ 4 items so the bar never wraps */
+const PRIMARY_NAV = [
   { href: "/trips", label: "Find a Trip" },
-  { href: "/regions", label: "Regions" },
   { href: "/journal", label: "Journal" },
-  { href: "/weather", label: "Weather 🌤️" },
-  { href: "/about", label: "Share Stories" },
-  { href: "/contact", label: "Contact" },
+  { href: "/road-conditions", label: "Road Conditions" },
 ];
 
-export default function Navbar() {
+/** Secondary links moved into the "More" dropdown */
+const MORE_NAV = [
+  { href: "/weather", label: "Weather", icon: CloudSun },
+  { href: "/regions", label: "All Regions", icon: Map },
+  { href: "/about", label: "Share Stories", icon: BookOpen },
+  { href: "/contact", label: "Contact", icon: Mail },
+];
+
+interface NavbarProps {
+  /** Minimal trip index for the typeahead search — built server-side in layout */
+  searchIndex?: SearchIndexEntry[];
+}
+
+export default function Navbar({ searchIndex = [] }: NavbarProps) {
   const pathname = usePathname();
   const { user, logout, openAuthModal } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const moreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let ticking = false;
@@ -43,7 +58,19 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => setMenuOpen(false), [pathname]);
+  useEffect(() => { setMenuOpen(false); setMoreOpen(false); }, [pathname]);
+
+  // Close More dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
+        setMoreOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
 
   return (
     <>
@@ -108,79 +135,73 @@ export default function Navbar() {
             }}
             className="desktop-nav"
           >
-            {navLinks.map((link) => {
-              const isActive =
-                link.href === "/"
-                  ? pathname === "/"
-                  : pathname.startsWith(link.href);
+            {/* Regions hover dropdown */}
+            <div className="nav-regions-wrapper" style={{ position: "relative" }}>
+              <Link
+                href="/regions"
+                style={{
+                  fontSize: "0.9rem",
+                  fontWeight: 500,
+                  color: pathname.startsWith("/regions") ? "#6366f1" : "#374151",
+                  transition: "color 0.2s ease",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  textDecoration: "none",
+                  position: "relative",
+                  paddingBottom: "4px",
+                }}
+              >
+                Regions
+                <ChevronDown size={13} style={{ opacity: 0.6 }} />
+                {pathname.startsWith("/regions") && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      bottom: -2,
+                      left: 0,
+                      right: 0,
+                      height: 2,
+                      background: "#6366f1",
+                      borderRadius: 1,
+                    }}
+                  />
+                )}
+              </Link>
+              {/* Hover dropdown */}
+              <div className="nav-regions-dropdown">
+                {REGIONS.map((r) => (
+                  <Link
+                    key={r.slug}
+                    href={`/regions/${r.slug}`}
+                    style={{
+                      display: "block",
+                      padding: "0.6rem 1rem",
+                      fontSize: "0.85rem",
+                      color: "#374151",
+                      borderRadius: "var(--radius-sm)",
+                      transition: "all var(--transition)",
+                      whiteSpace: "nowrap",
+                      textDecoration: "none",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = "#6366f1";
+                      e.currentTarget.style.background = "rgba(99,102,241,0.06)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = "#374151";
+                      e.currentTarget.style.background = "transparent";
+                    }}
+                  >
+                    {r.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
 
-              if (link.href === "/regions") {
-                return (
-                  <div key={link.href} className="nav-regions-wrapper" style={{ position: "relative" }}>
-                    <Link
-                      href="/regions"
-                      style={{
-                        fontSize: "0.9rem",
-                        fontWeight: 500,
-                        color: isActive ? "#6366f1" : "#374151",
-                        transition: "color 0.2s ease",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "4px",
-                        textDecoration: "none",
-                        position: "relative",
-                        paddingBottom: "4px",
-                      }}
-                    >
-                      {link.label}
-                      <ChevronDown size={13} style={{ opacity: 0.6 }} />
-                      {isActive && (
-                        <span
-                          style={{
-                            position: "absolute",
-                            bottom: -2,
-                            left: 0,
-                            right: 0,
-                            height: 2,
-                            background: "#6366f1",
-                            borderRadius: 1,
-                          }}
-                        />
-                      )}
-                    </Link>
-                    {/* Dropdown */}
-                    <div className="nav-regions-dropdown">
-                      {REGIONS.map((r) => (
-                        <Link
-                          key={r.slug}
-                          href={`/regions/${r.slug}`}
-                          style={{
-                            display: "block",
-                            padding: "0.6rem 1rem",
-                            fontSize: "0.85rem",
-                            color: "#374151",
-                            borderRadius: "var(--radius-sm)",
-                            transition: "all var(--transition)",
-                            whiteSpace: "nowrap",
-                            textDecoration: "none",
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.color = "#006CE4";
-                            e.currentTarget.style.background = "rgba(0,108,228,0.06)";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.color = "#374151";
-                            e.currentTarget.style.background = "transparent";
-                          }}
-                        >
-                          {r.label}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                );
-              }
-
+            {/* Primary nav links */}
+            {PRIMARY_NAV.map((link) => {
+              const isActive = pathname.startsWith(link.href);
               return (
                 <Link
                   key={link.href}
@@ -188,19 +209,16 @@ export default function Navbar() {
                   style={{
                     fontSize: "0.9rem",
                     fontWeight: 500,
-                    color: isActive ? "#006CE4" : "#374151",
+                    color: isActive ? "#6366f1" : "#374151",
                     transition: "color 0.2s ease",
                     position: "relative",
                     paddingBottom: "4px",
                     textDecoration: "none",
+                    whiteSpace: "nowrap",
                   }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.color = "#6366f1")
-                  }
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#6366f1")}
                   onMouseLeave={(e) =>
-                    (e.currentTarget.style.color = isActive
-                      ? "#006CE4"
-                      : "#374151")
+                    (e.currentTarget.style.color = isActive ? "#6366f1" : "#374151")
                   }
                 >
                   {link.label}
@@ -212,7 +230,7 @@ export default function Navbar() {
                         left: 0,
                         right: 0,
                         height: 2,
-                        background: "#006CE4",
+                        background: "#6366f1",
                         borderRadius: 1,
                       }}
                     />
@@ -220,6 +238,93 @@ export default function Navbar() {
                 </Link>
               );
             })}
+
+            {/* ── More dropdown ── */}
+            <div ref={moreRef} style={{ position: "relative" }}>
+              <button
+                id="nav-more-btn"
+                onClick={() => setMoreOpen((o) => !o)}
+                aria-haspopup="true"
+                aria-expanded={moreOpen}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  fontSize: "0.9rem",
+                  fontWeight: 500,
+                  color: moreOpen ? "#6366f1" : "#374151",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: "0 0 4px",
+                  fontFamily: "var(--font-sans)",
+                  transition: "color 0.2s ease",
+                }}
+              >
+                More
+                <ChevronDown
+                  size={13}
+                  style={{
+                    opacity: 0.6,
+                    transform: moreOpen ? "rotate(180deg)" : "rotate(0deg)",
+                    transition: "transform 0.2s ease",
+                  }}
+                />
+              </button>
+
+              {moreOpen && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "calc(100% + 12px)",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    minWidth: 200,
+                    background: "#FFFFFF",
+                    border: "1px solid #E5E7EB",
+                    borderRadius: "var(--radius-md)",
+                    padding: "0.5rem",
+                    boxShadow: "0 8px 32px rgba(0,0,0,0.10)",
+                    zIndex: 2000,
+                  }}
+                >
+                  {MORE_NAV.map(({ href, label, icon: Icon }) => {
+                    const active = pathname.startsWith(href);
+                    return (
+                      <Link
+                        key={href}
+                        href={href}
+                        onClick={() => setMoreOpen(false)}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                          padding: "0.6rem 1rem",
+                          fontSize: "0.875rem",
+                          color: active ? "#6366f1" : "#374151",
+                          borderRadius: "var(--radius-sm)",
+                          transition: "all var(--transition)",
+                          textDecoration: "none",
+                          fontWeight: active ? 600 : 400,
+                          background: active ? "rgba(99,102,241,0.06)" : "transparent",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.color = "#6366f1";
+                          e.currentTarget.style.background = "rgba(99,102,241,0.06)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.color = active ? "#6366f1" : "#374151";
+                          e.currentTarget.style.background = active ? "rgba(99,102,241,0.06)" : "transparent";
+                        }}
+                      >
+                        <Icon size={15} style={{ opacity: 0.7 }} />
+                        {label}
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
 
             {/* Dashboard — logged-in only */}
             {user && (() => {
@@ -237,11 +342,9 @@ export default function Navbar() {
                     textDecoration: "none",
                     whiteSpace: "nowrap",
                   }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.color = "#006CE4")
-                  }
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#6366f1")}
                   onMouseLeave={(e) =>
-                    (e.currentTarget.style.color = isActive ? "#006CE4" : "#374151")
+                    (e.currentTarget.style.color = isActive ? "#6366f1" : "#374151")
                   }
                 >
                   Dashboard
@@ -261,6 +364,7 @@ export default function Navbar() {
                 </Link>
               );
             })()}
+
           </div>
 
           {/* Right Actions */}
@@ -268,35 +372,10 @@ export default function Navbar() {
             {/* AI Trip Planner — admin only */}
             <AIItineraryButton />
 
-            {/* Search */}
-            <Link
-              href="/trips"
-              aria-label="Search trips"
-              style={{
-                width: 38,
-                height: 38,
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#6366f1",
-                transition: "all var(--transition)",
-                border: "none",
-                background: "#e8eaf0",
-                textDecoration: "none",
-                boxShadow: "var(--shadow-neo-raised)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = "#7c3aed";
-                e.currentTarget.style.boxShadow = "var(--shadow-neo-raised-lg)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = "#6366f1";
-                e.currentTarget.style.boxShadow = "var(--shadow-neo-raised)";
-              }}
-            >
-              <Search size={16} />
-            </Link>
+
+            {/* Typeahead Search */}
+            <NavSearchBar index={searchIndex} />
+
 
             {/* Auth */}
             {user ? (
@@ -507,11 +586,13 @@ export default function Navbar() {
             transition: "transform var(--transition)",
           }}
         >
-          {navLinks.map((link) => {
-            const isActive =
-              link.href === "/"
-                ? pathname === "/"
-                : pathname.startsWith(link.href);
+          {/* All nav links in mobile drawer */}
+          {[
+            ...PRIMARY_NAV,
+            { href: "/regions", label: "Regions" },
+            ...MORE_NAV.map(({ href, label }) => ({ href, label })),
+          ].map((link) => {
+            const isActive = pathname.startsWith(link.href);
             return (
               <Link
                 key={link.href}
@@ -533,6 +614,7 @@ export default function Navbar() {
               </Link>
             );
           })}
+
 
           <Link
             href="/dashboard"
