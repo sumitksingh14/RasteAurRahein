@@ -1,26 +1,72 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
+// In-memory rate limiting map: IP -> { count, firstRequest }
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
+const MAX_REQUESTS_PER_WINDOW = 3;
+const ipRequestMap = new Map<string, { count: number; firstRequest: number }>();
+
 export async function POST(req: NextRequest) {
   try {
-    if (!process.env.RESEND_API_KEY) {
-      console.error("RESEND_API_KEY is not set");
-      return NextResponse.json({ error: "Email service not configured" }, { status: 500 });
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      req.headers.get("x-real-ip") ||
+      "anonymous";
+
+    const now = Date.now();
+    const rateRecord = ipRequestMap.get(ip);
+    if (rateRecord) {
+      if (now - rateRecord.firstRequest < RATE_LIMIT_WINDOW_MS) {
+        if (rateRecord.count >= MAX_REQUESTS_PER_WINDOW) {
+          return NextResponse.json(
+            { error: "Too many messages sent. Please wait a minute before trying again." },
+            { status: 429 }
+          );
+        }
+        rateRecord.count++;
+      } else {
+        ipRequestMap.set(ip, { count: 1, firstRequest: now });
+      }
+    } else {
+      ipRequestMap.set(ip, { count: 1, firstRequest: now });
     }
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    // Periodic cleanup of stale rate-limit records
+    if (ipRequestMap.size > 500) {
+      for (const [key, val] of ipRequestMap.entries()) {
+        if (now - val.firstRequest > RATE_LIMIT_WINDOW_MS) {
+          ipRequestMap.delete(key);
+        }
+      }
+    }
 
-    const { name, email, subject, message } = await req.json();
+    const { name, email, subject, message, hp } = await req.json();
+
+    // Honeypot bot protection: if hidden field is filled, silently succeed without sending
+    if (hp && String(hp).trim().length > 0) {
+      return NextResponse.json({ success: true });
+    }
 
     if (!name || !email || !message) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
+    const recipient = process.env.CONTACT_EMAIL || process.env.ADMIN_EMAIL;
+
+    if (!process.env.RESEND_API_KEY || !recipient) {
+      console.warn("RESEND_API_KEY or CONTACT_EMAIL not configured. Form submission logged.");
+      return NextResponse.json({
+        success: true,
+        message: "Message received (offline dev mode).",
+      });
+    }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const subjectLabel = subject ? subject.charAt(0).toUpperCase() + subject.slice(1) : "General Inquiry";
 
     const { error } = await resend.emails.send({
       from: "RasteAurRahein Contact <onboarding@resend.dev>",
-      to: ["zsumitksingh@gmail.com"],
+      to: [recipient.trim()],
       replyTo: email,
       subject: `[Contact] ${subjectLabel} — message from ${name}`,
       text: `Name: ${name}\nEmail: ${email}\nSubject: ${subjectLabel}\n\n${message}`,
@@ -52,4 +98,5 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
+
 

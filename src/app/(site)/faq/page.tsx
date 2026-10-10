@@ -101,7 +101,7 @@ const FAQ_CATEGORIES = [
       {
         question: "How do I delete my account and data?",
         answer:
-          "Email us at zsumitksingh@gmail.com with subject 'Account Deletion Request'. We will permanently delete your account and associated personal data within 7 working days. Trip contributions you've made will be anonymised unless you request full removal.",
+          "Submit a request via our Contact form (/contact) with subject 'Account Deletion Request'. We will permanently delete your account and associated personal data within 7 working days. Trip contributions you've made will be anonymised unless you request full removal.",
       },
     ],
   },

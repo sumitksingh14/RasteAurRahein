@@ -22,7 +22,11 @@ export default function TripCTABlock({ trip }: TripCTABlockProps) {
   const waMessage = encodeURIComponent(
     `Hi! I found your guide "${trip.title}" on Raste Aur Raahein and would love help planning this trip. Could you help me customise it?`
   );
-  const waUrl = `https://wa.me/919619191109?text=${waMessage}`;
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/[^0-9]/g, "");
+  const waUrl =
+    whatsappNumber && whatsappNumber.length >= 10
+      ? `https://wa.me/${whatsappNumber}?text=${waMessage}`
+      : null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -109,26 +113,28 @@ export default function TripCTABlock({ trip }: TripCTABlockProps) {
         gridTemplateColumns: "repeat(auto-fit, minmax(min(200px, 100%), 1fr))",
         gap: "1rem",
       }}>
-        <a
-          href={waUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          id="cta-whatsapp-btn"
-          style={{
-            display: "flex", alignItems: "center", justifyContent: "center", gap: "0.6rem",
-            padding: "0.8rem 1.25rem",
-            background: "linear-gradient(135deg, #25d366 0%, #1da851 100%)",
-            borderRadius: "var(--radius-md)", textDecoration: "none", color: "#fff",
-            fontWeight: 700, fontSize: "0.875rem", fontFamily: "var(--font-sans)",
-            transition: "opacity var(--transition), transform var(--transition)",
-            boxShadow: "0 4px 16px rgba(37,211,102,0.25)",
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.9"; e.currentTarget.style.transform = "translateY(-1px)"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = "translateY(0)"; }}
-        >
-          <MessageCircle size={17} />
-          Chat on WhatsApp
-        </a>
+        {waUrl && (
+          <a
+            href={waUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            id="cta-whatsapp-btn"
+            style={{
+              display: "flex", alignItems: "center", justifyContent: "center", gap: "0.6rem",
+              padding: "0.8rem 1.25rem",
+              background: "linear-gradient(135deg, #25d366 0%, #1da851 100%)",
+              borderRadius: "var(--radius-md)", textDecoration: "none", color: "#fff",
+              fontWeight: 700, fontSize: "0.875rem", fontFamily: "var(--font-sans)",
+              transition: "opacity var(--transition), transform var(--transition)",
+              boxShadow: "0 4px 16px rgba(37,211,102,0.25)",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.9"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = "translateY(0)"; }}
+          >
+            <MessageCircle size={17} />
+            Chat on WhatsApp
+          </a>
+        )}
 
         <PDFDownloadButton trip={trip} />
 

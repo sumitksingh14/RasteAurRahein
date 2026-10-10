@@ -4,7 +4,7 @@ import { redis } from "@/lib/redis";
 
 /** The hardcoded seed admin email — always has admin access regardless of Redis. */
 export const SEED_ADMIN_EMAIL =
-  process.env.ADMIN_EMAIL || "zsumitksingh@gmail.com";
+  process.env.ADMIN_EMAIL || "admin@rasteaurrahein.com";
 
 /**
  * Returns true if the given email is admin.

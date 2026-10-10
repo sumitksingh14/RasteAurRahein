@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 import { REGIONS } from "@/lib/regions";
 import { useAuth } from "@/components/providers/AuthProvider";
 import NewsletterInline from "@/components/ui/NewsletterInline";
@@ -319,27 +319,8 @@ export default function Footer() {
             {/* Contact links below newsletter */}
             <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.6rem", marginTop: "0.5rem", padding: 0, margin: 0 }}>
               <li>
-                <a
-                  href="tel:+919196191109"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.5rem",
-                    color: "#4B5563",
-                    fontSize: "0.8125rem",
-                    textDecoration: "none",
-                    transition: "color 0.2s ease",
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#6366f1")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "#4B5563")}
-                >
-                  <Phone size={14} color="#6366f1" />
-                  Phone: +91 91961 91109
-                </a>
-              </li>
-              <li>
-                <a
-                  href="mailto:zsumitksingh@gmail.com"
+                <Link
+                  href="/contact"
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -353,8 +334,8 @@ export default function Footer() {
                   onMouseLeave={(e) => (e.currentTarget.style.color = "#4B5563")}
                 >
                   <Mail size={14} color="#6366f1" />
-                  Email: zsumitksingh@gmail.com
-                </a>
+                  Contact Us / Get in Touch
+                </Link>
               </li>
               <li>
                 <span

@@ -134,7 +134,7 @@ export async function sendEnquiryNotification({
   try {
     await getResend().emails.send({
       from: FROM,
-      to: "zsumitksingh@gmail.com",
+      to: process.env.CONTACT_EMAIL || process.env.ADMIN_EMAIL || "admin@rasteaurrahein.com",
       replyTo: email,
       subject: `New Custom Trip Enquiry — ${tripTitle}`,
       html: `

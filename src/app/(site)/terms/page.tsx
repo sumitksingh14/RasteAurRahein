@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import SilkPageHeader from "@/components/ui/SilkPageHeader";
 import Link from "next/link";
+import { PUBLIC_CONTACT_EMAIL } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Terms & Conditions",
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 
 const LAST_UPDATED = "October 1, 2026";
 const SITE_NAME = "Raste Aur Raahein";
-const CONTACT_EMAIL = "zsumitksingh@gmail.com";
+const CONTACT_EMAIL = PUBLIC_CONTACT_EMAIL;
 
 interface SectionProps {
   id: string;
@@ -181,7 +182,7 @@ export default function TermsPage() {
               lineHeight: 1.7,
             }}
           >
-            These Terms and Conditions ("Terms") govern your access to and use of <strong style={{ color: "var(--text-primary)" }}>{SITE_NAME}</strong> ("the Site"). By accessing the Site, you agree to be bound by these Terms. If you do not agree, please discontinue use immediately.
+            These Terms and Conditions (&quot;Terms&quot;) govern your access to and use of <strong style={{ color: "var(--text-primary)" }}>{SITE_NAME}</strong> (&quot;the Site&quot;). By accessing the Site, you agree to be bound by these Terms. If you do not agree, please discontinue use immediately.
           </div>
 
           <Section id="acceptance" title="1. Acceptance of Terms">
@@ -223,7 +224,7 @@ export default function TermsPage() {
 
           <Section id="user-content" title="4. User-Submitted Content">
             <p style={{ marginBottom: "1rem" }}>
-              When you submit trip itineraries, field reports, comments, or reviews ("User Content"), you grant {SITE_NAME} a worldwide, non-exclusive, royalty-free licence to use, reproduce, modify, publish, and distribute that content on the Site and associated social channels.
+              When you submit trip itineraries, field reports, comments, or reviews (&quot;User Content&quot;), you grant {SITE_NAME} a worldwide, non-exclusive, royalty-free licence to use, reproduce, modify, publish, and distribute that content on the Site and associated social channels.
             </p>
             <p style={{ marginBottom: "1rem" }}>You represent and warrant that:</p>
             <ul style={{ listStyle: "none", padding: 0 }}>
@@ -294,7 +295,7 @@ export default function TermsPage() {
 
           <Section id="changes" title="12. Changes to Terms">
             <p>
-              We reserve the right to modify these Terms at any time. Changes will be effective immediately upon posting the updated Terms with a revised "Last updated" date. Your continued use of the Site after changes are posted constitutes your acceptance of the revised Terms. We recommend reviewing this page periodically.
+              We reserve the right to modify these Terms at any time. Changes will be effective immediately upon posting the updated Terms with a revised &quot;Last updated&quot; date. Your continued use of the Site after changes are posted constitutes your acceptance of the revised Terms. We recommend reviewing this page periodically.
             </p>
           </Section>
 

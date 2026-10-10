@@ -78,3 +78,7 @@ export function getActiveSocialLinks(): SocialLinkItem[] {
 export function getValidSocialUrls(): string[] {
   return getActiveSocialLinks().map((item) => item.href);
 }
+
+// ─── Public Contact Info ────────────────────────────────────────────────────
+export const PUBLIC_CONTACT_EMAIL =
+  process.env.NEXT_PUBLIC_CONTACT_EMAIL || "contact@rasteaurrahein.com";

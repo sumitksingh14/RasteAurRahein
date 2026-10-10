@@ -108,7 +108,7 @@ export async function POST(req: NextRequest) {
         // Notify blog curator
         await resend.emails.send({
           from: "Raste Aur Raahein <onboarding@resend.dev>",
-          to: ["zsumitksingh@gmail.com"],
+          to: [process.env.CONTACT_EMAIL || process.env.ADMIN_EMAIL || "admin@rasteaurrahein.com"],
           subject: `[Lead Capture] ${subscriberName} downloaded ${leadSource}`,
           text: `New subscriber: ${subscriberName} (${email})\nSource: ${leadSource}\nMonthly Report Opt-in: ${Boolean(subscribeRouteReport)}\nTimestamp: ${new Date().toISOString()}`,
         });

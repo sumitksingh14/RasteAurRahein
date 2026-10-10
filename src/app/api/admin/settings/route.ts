@@ -17,7 +17,7 @@ export interface SiteSettings {
 const DEFAULT_SETTINGS: SiteSettings = {
   siteName: "Raste Aur Raahein",
   tagline: "Travel Blog by Sumit Singh",
-  contactEmail: "zsumitksingh@gmail.com",
+  contactEmail: process.env.CONTACT_EMAIL || "admin@rasteaurrahein.com",
   instagramUrl: "",
   twitterUrl: "",
   youtubeUrl: "",

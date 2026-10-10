@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Send, Mail, AtSign, Globe, CheckCircle, AlertCircle } from "lucide-react";
 import SilkPageHeader from "@/components/ui/SilkPageHeader";
+import { getActiveSocialLinks } from "@/lib/site-config";
 
 // ─── WhatsApp SVG Icon ──────────────────────────────────────────────────────
 function WhatsAppIcon({ size = 17 }: { size?: number }) {
@@ -19,12 +20,13 @@ function WhatsAppIcon({ size = 17 }: { size?: number }) {
   );
 }
 
-const WHATSAPP_NUMBER = "919619191109";
+const rawWhatsApp = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/[^0-9]/g, "");
+const WHATSAPP_NUMBER = rawWhatsApp && rawWhatsApp.length >= 10 ? rawWhatsApp : null;
 
 // ─── Middle-asterisk masking ────────────────────────────────────────────────
 function maskValue(value: string): string {
   const MASK = "••••••••";
-  // Email  e.g. zsumitksingh@gmail.com → zsum••••••••@gmail.com
+  // Email  e.g. contact@example.com → cont••••••••@example.com
   if (!value.startsWith("@") && value.includes("@") && value.includes(".")) {
     const atIdx = value.indexOf("@");
     const local = value.slice(0, atIdx);
@@ -57,6 +59,7 @@ function buildWhatsAppUrl(form: {
   subject: string;
   message: string;
 }) {
+  if (!WHATSAPP_NUMBER) return "";
   const subjectLabel = form.subject
     ? form.subject.charAt(0).toUpperCase() + form.subject.slice(1)
     : "General Inquiry";
@@ -77,6 +80,7 @@ function buildWhatsAppUrl(form: {
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [hp, setHp] = useState("");
   const [emailStatus, setEmailStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [whatsappSent, setWhatsappSent] = useState(false);
 
@@ -97,7 +101,7 @@ export default function ContactPage() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, hp }),
       });
       setEmailStatus(res.ok ? "success" : "error");
     } catch {
@@ -106,7 +110,7 @@ export default function ContactPage() {
   };
 
   const handleWhatsApp = () => {
-    if (!isFormValid) return;
+    if (!isFormValid || !WHATSAPP_NUMBER) return;
     window.open(buildWhatsAppUrl(form), "_blank", "noopener,noreferrer");
     setWhatsappSent(true);
   };
@@ -115,6 +119,7 @@ export default function ContactPage() {
     setEmailStatus("idle");
     setWhatsappSent(false);
     setForm({ name: "", email: "", subject: "", message: "" });
+    setHp("");
   };
 
   const inputStyle = {
@@ -263,6 +268,20 @@ export default function ContactPage() {
                   />
                 </div>
 
+                {/* Honeypot field for bot protection */}
+                <div style={{ display: "none" }} aria-hidden="true">
+                  <label htmlFor="contact-hp-field">Leave empty</label>
+                  <input
+                    id="contact-hp-field"
+                    type="text"
+                    name="hp"
+                    value={hp}
+                    onChange={(e) => setHp(e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
+
                 {emailStatus === "error" && (
                   <div
                     style={{
@@ -278,12 +297,14 @@ export default function ContactPage() {
                     }}
                   >
                     <AlertCircle size={16} />
-                    Something went wrong. Please try again or reach out via WhatsApp.
+                    Something went wrong. Please try again later.
                   </div>
                 )}
 
                 <p style={{ fontSize: "0.78rem", color: "var(--text-muted)", margin: 0, lineHeight: 1.5 }}>
-                  Choose how you&apos;d like to send your message:
+                  {WHATSAPP_NUMBER
+                    ? "Choose how you'd like to send your message:"
+                    : "Send your message directly via email:"}
                 </p>
 
                 <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
@@ -305,47 +326,49 @@ export default function ContactPage() {
                     {emailStatus === "sending" ? "Sending…" : "Send via Email"}
                   </button>
 
-                  {/* WhatsApp button */}
-                  <button
-                    type="button"
-                    id="contact-whatsapp-btn"
-                    disabled={!isFormValid}
-                    onClick={handleWhatsApp}
-                    style={{
-                      flex: "1 1 auto",
-                      minWidth: 158,
-                      display: "inline-flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: "0.5rem",
-                      padding: "0.65rem 1.25rem",
-                      borderRadius: "var(--radius-sm)",
-                      border: "none",
-                      background: isFormValid
-                        ? "linear-gradient(135deg, #25d366 0%, #128c7e 100%)"
-                        : "rgba(128,128,128,0.3)",
-                      color: "#fff",
-                      fontWeight: 600,
-                      fontSize: "0.875rem",
-                      cursor: isFormValid ? "pointer" : "not-allowed",
-                      opacity: isFormValid ? 1 : 0.55,
-                      transition: "filter 0.2s ease, transform 0.15s ease",
-                      letterSpacing: "0.02em",
-                    }}
-                    onMouseEnter={(e) => {
-                      if (isFormValid) {
-                        (e.currentTarget as HTMLButtonElement).style.filter = "brightness(1.1)";
-                        (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-1px)";
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.filter = "";
-                      (e.currentTarget as HTMLButtonElement).style.transform = "";
-                    }}
-                  >
-                    <WhatsAppIcon size={17} />
-                    Send via WhatsApp
-                  </button>
+                  {/* WhatsApp button — only if WHATSAPP_NUMBER is configured */}
+                  {WHATSAPP_NUMBER && (
+                    <button
+                      type="button"
+                      id="contact-whatsapp-btn"
+                      disabled={!isFormValid}
+                      onClick={handleWhatsApp}
+                      style={{
+                        flex: "1 1 auto",
+                        minWidth: 158,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "0.5rem",
+                        padding: "0.65rem 1.25rem",
+                        borderRadius: "var(--radius-sm)",
+                        border: "none",
+                        background: isFormValid
+                          ? "linear-gradient(135deg, #25d366 0%, #128c7e 100%)"
+                          : "rgba(128,128,128,0.3)",
+                        color: "#fff",
+                        fontWeight: 600,
+                        fontSize: "0.875rem",
+                        cursor: isFormValid ? "pointer" : "not-allowed",
+                        opacity: isFormValid ? 1 : 0.55,
+                        transition: "filter 0.2s ease, transform 0.15s ease",
+                        letterSpacing: "0.02em",
+                      }}
+                      onMouseEnter={(e) => {
+                        if (isFormValid) {
+                          (e.currentTarget as HTMLButtonElement).style.filter = "brightness(1.1)";
+                          (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-1px)";
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLButtonElement).style.filter = "";
+                        (e.currentTarget as HTMLButtonElement).style.transform = "";
+                      }}
+                    >
+                      <WhatsAppIcon size={17} />
+                      Send via WhatsApp
+                    </button>
+                  )}
                 </div>
 
                 {!isFormValid && (
@@ -367,86 +390,106 @@ export default function ContactPage() {
                 fontSize: "1.5rem",
               }}
             >
-              Other Ways to Reach Me
+              Other Ways to Connect
             </h3>
 
-            {[
-              {
-                icon: <Mail size={17} />,
-                label: "Email",
-                value: "zsumitksingh@gmail.com",
-                href: "mailto:zsumitksingh@gmail.com",
-                accentColor: "var(--accent-gold)",
-                accentBg: "var(--accent-gold-dim)",
-                accentBorder: "var(--border-accent)",
-              },
-              {
-                icon: <AtSign size={17} />,
-                label: "Instagram",
-                value: "@the_unpredictable_sum_1",
-                href: "https://instagram.com/the_unpredictable_sum_1",
-                accentColor: "var(--accent-gold)",
-                accentBg: "var(--accent-gold-dim)",
-                accentBorder: "var(--border-accent)",
-              },
-              {
-                icon: <Globe size={17} />,
-                label: "Twitter / X",
-                value: "@SumitKumarouip",
-                href: "https://twitter.com/SumitKumarouip",
-                accentColor: "var(--accent-gold)",
-                accentBg: "var(--accent-gold-dim)",
-                accentBorder: "var(--border-accent)",
-              },
-              {
-                icon: <WhatsAppIcon size={18} />,
-                label: "WhatsApp",
-                value: "+91 96191 91109",
-                href: `https://wa.me/${WHATSAPP_NUMBER}`,
-                accentColor: "#25d366",
-                accentBg: "rgba(37,211,102,0.1)",
-                accentBorder: "rgba(37,211,102,0.35)",
-              },
-            ].map(({ icon, label, value, href, accentColor, accentBg, accentBorder }) => (
-              <a
-                key={label}
-                href={href}
-                target={href.startsWith("http") ? "_blank" : undefined}
-                rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-                title={`Open ${label}`}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "1rem",
-                  padding: "1rem",
-                  borderRadius: "var(--radius-sm)",
-                  border: `1px solid ${accentBorder}`,
-                  background: accentBg,
-                  marginBottom: "0.75rem",
-                  transition: "opacity var(--transition)",
-                  textDecoration: "none",
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.82"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
-              >
-                {/* Icon badge */}
-                <span
+            {(() => {
+              const channels = [];
+              const publicEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL;
+              if (publicEmail) {
+                channels.push({
+                  icon: <Mail size={17} />,
+                  label: "Email",
+                  value: maskValue(publicEmail),
+                  href: `mailto:${publicEmail}`,
+                  accentColor: "var(--accent-gold)",
+                  accentBg: "var(--accent-gold-dim)",
+                  accentBorder: "var(--border-accent)",
+                });
+              }
+
+              for (const s of getActiveSocialLinks()) {
+                channels.push({
+                  icon: s.id === "x" ? <Globe size={17} /> : <AtSign size={17} />,
+                  label: s.id === "x" ? "Twitter / X" : s.id === "instagram" ? "Instagram" : s.id === "youtube" ? "YouTube" : "GitHub",
+                  value: s.href.replace(/^https?:\/\/(www\.)?/, ""),
+                  href: s.href,
+                  accentColor: "var(--accent-gold)",
+                  accentBg: "var(--accent-gold-dim)",
+                  accentBorder: "var(--border-accent)",
+                });
+              }
+
+              if (WHATSAPP_NUMBER) {
+                channels.push({
+                  icon: <WhatsAppIcon size={18} />,
+                  label: "WhatsApp",
+                  value: maskValue(WHATSAPP_NUMBER),
+                  href: `https://wa.me/${WHATSAPP_NUMBER}`,
+                  accentColor: "#25d366",
+                  accentBg: "rgba(37,211,102,0.1)",
+                  accentBorder: "rgba(37,211,102,0.35)",
+                });
+              }
+
+              if (channels.length === 0) {
+                return (
+                  <div
+                    style={{
+                      padding: "1.25rem",
+                      borderRadius: "var(--radius-sm)",
+                      border: "1px solid var(--border)",
+                      background: "var(--bg-card)",
+                      color: "var(--text-secondary)",
+                      fontSize: "0.875rem",
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    Send your message using the form. For route consultations and field inquiries, we typically respond within 1–2 business days.
+                  </div>
+                );
+              }
+
+              return channels.map(({ icon, label, value, href, accentColor, accentBg, accentBorder }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel={href.startsWith("http") ? "noopener noreferrer me" : undefined}
+                  title={`Open ${label}`}
                   style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: "50%",
-                    background: accentBg,
-                    border: `1px solid ${accentBorder}`,
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
-                    color: accentColor,
-                    flexShrink: 0,
+                    gap: "1rem",
+                    padding: "1rem",
+                    borderRadius: "var(--radius-sm)",
+                    border: `1px solid ${accentBorder}`,
+                    background: accentBg,
+                    marginBottom: "0.75rem",
+                    transition: "opacity var(--transition)",
+                    textDecoration: "none",
+                    cursor: "pointer",
                   }}
+                  onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.82"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
                 >
-                  {icon}
-                </span>
+                  {/* Icon badge */}
+                  <span
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: "50%",
+                      background: accentBg,
+                      border: `1px solid ${accentBorder}`,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: accentColor,
+                      flexShrink: 0,
+                    }}
+                  >
+                    {icon}
+                  </span>
 
                 {/* Label + masked value */}
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -468,7 +511,8 @@ export default function ContactPage() {
                   </div>
                 </div>
               </a>
-            ))}
+            ));
+          })()}
 
             <div
               style={{

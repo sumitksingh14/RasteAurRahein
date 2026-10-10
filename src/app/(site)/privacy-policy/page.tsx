@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import SilkPageHeader from "@/components/ui/SilkPageHeader";
 import Link from "next/link";
+import { PUBLIC_CONTACT_EMAIL } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 
 const LAST_UPDATED = "October 1, 2026";
 const SITE_NAME = "Raste Aur Raahein";
-const CONTACT_EMAIL = "zsumitksingh@gmail.com";
+const CONTACT_EMAIL = PUBLIC_CONTACT_EMAIL;
 const SITE_URL = "https://raste-aur-rahein.vercel.app";
 
 interface SectionProps {
