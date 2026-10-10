@@ -4,86 +4,84 @@ import { useState } from "react";
 import { Share2, Loader2, Check, Copy } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
 import type { GeneratedTrip } from "@/components/providers/GeneratedTripsProvider";
-import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+async function generateItineraryPdfBlob(trip: GeneratedTrip): Promise<Blob> {
+  const { pdf, Document, Page, Text, View, StyleSheet } = await import("@react-pdf/renderer");
 
-// ---------------------------------------------------------------------------
-// PDF document styles (mirrored from ExportPDFButton)
-// ---------------------------------------------------------------------------
-const pdfStyles = StyleSheet.create({
-  page: { padding: 40, fontFamily: "Helvetica", backgroundColor: "#ffffff" },
-  header: { marginBottom: 24 },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 12, color: "#111827" },
-  overview: { fontSize: 12, color: "#4B5563", marginBottom: 16, lineHeight: 1.6 },
-  meta: { fontSize: 10, color: "#6B7280", marginBottom: 20 },
-  dayContainer: {
-    marginBottom: 20,
-    padding: 16,
-    border: "1pt solid #E5E7EB",
-    borderRadius: 6,
-    backgroundColor: "#F9FAFB",
-  },
-  dayHeader: { fontSize: 14, fontWeight: "bold", marginBottom: 6, color: "#111827" },
-  daySummary: { fontSize: 11, fontStyle: "italic", color: "#4B5563", marginBottom: 12 },
-  activity: { marginBottom: 12 },
-  activityHeader: { fontSize: 11, fontWeight: "bold", color: "#111827", marginBottom: 4 },
-  activityTime: { fontSize: 10, color: "#C9A84C", marginRight: 8 },
-  activityDesc: { fontSize: 10, color: "#4B5563", lineHeight: 1.5 },
-  activityNotes: { fontSize: 10, color: "#D97706", marginTop: 4, fontStyle: "italic" },
-  footer: {
-    position: "absolute",
-    bottom: 30,
-    left: 40,
-    right: 40,
-    textAlign: "center",
-    color: "grey",
-    fontSize: 10,
-  },
-});
+  const pdfStyles = StyleSheet.create({
+    page: { padding: 40, fontFamily: "Helvetica", backgroundColor: "#ffffff" },
+    header: { marginBottom: 24 },
+    title: { fontSize: 24, fontWeight: "bold", marginBottom: 12, color: "#111827" },
+    overview: { fontSize: 12, color: "#4B5563", marginBottom: 16, lineHeight: 1.6 },
+    meta: { fontSize: 10, color: "#6B7280", marginBottom: 20 },
+    dayContainer: {
+      marginBottom: 20,
+      padding: 16,
+      border: "1pt solid #E5E7EB",
+      borderRadius: 6,
+      backgroundColor: "#F9FAFB",
+    },
+    dayHeader: { fontSize: 14, fontWeight: "bold", marginBottom: 6, color: "#111827" },
+    daySummary: { fontSize: 11, fontStyle: "italic", color: "#4B5563", marginBottom: 12 },
+    activity: { marginBottom: 12 },
+    activityHeader: { fontSize: 11, fontWeight: "bold", color: "#111827", marginBottom: 4 },
+    activityTime: { fontSize: 10, color: "#C9A84C", marginRight: 8 },
+    activityDesc: { fontSize: 10, color: "#4B5563", lineHeight: 1.5 },
+    activityNotes: { fontSize: 10, color: "#D97706", marginTop: 4, fontStyle: "italic" },
+    footer: {
+      position: "absolute",
+      bottom: 30,
+      left: 40,
+      right: 40,
+      textAlign: "center",
+      color: "grey",
+      fontSize: 10,
+    },
+  });
 
-// ---------------------------------------------------------------------------
-// PDF document component
-// ---------------------------------------------------------------------------
-const ItineraryDocument = ({ trip }: { trip: GeneratedTrip }) => (
-  <Document>
-    <Page size="A4" style={pdfStyles.page}>
-      <View style={pdfStyles.header}>
-        <Text style={pdfStyles.title}>{trip.title}</Text>
-        {trip.overview && <Text style={pdfStyles.overview}>{trip.overview}</Text>}
-        <Text style={pdfStyles.meta}>
-          {trip.destination} • {trip.days?.length || 0} Days • {trip.month}
-          {trip.totalBudgetEstimate ? ` • Budget: ${trip.totalBudgetEstimate}` : ""}
-        </Text>
-      </View>
-
-      {trip.days?.map((day) => (
-        <View key={day.dayNumber} style={pdfStyles.dayContainer} wrap={false}>
-          <Text style={pdfStyles.dayHeader}>
-            Day {day.dayNumber}: {day.title}
+  const doc = (
+    <Document>
+      <Page size="A4" style={pdfStyles.page}>
+        <View style={pdfStyles.header}>
+          <Text style={pdfStyles.title}>{trip.title}</Text>
+          {trip.overview && <Text style={pdfStyles.overview}>{trip.overview}</Text>}
+          <Text style={pdfStyles.meta}>
+            {trip.destination} • {trip.days?.length || 0} Days • {trip.month}
+            {trip.totalBudgetEstimate ? ` • Budget: ${trip.totalBudgetEstimate}` : ""}
           </Text>
-          {day.summary && <Text style={pdfStyles.daySummary}>{day.summary}</Text>}
-
-          {day.activities?.map((act, i) => (
-            <View key={i} style={pdfStyles.activity}>
-              <Text style={pdfStyles.activityHeader}>
-                {act.time && <Text style={pdfStyles.activityTime}>{act.time} </Text>}
-                {act.title}
-              </Text>
-              {act.description && (
-                <Text style={pdfStyles.activityDesc}>{act.description}</Text>
-              )}
-              {act.notes && (
-                <Text style={pdfStyles.activityNotes}>💡 {act.notes}</Text>
-              )}
-            </View>
-          ))}
         </View>
-      ))}
-      <Text style={pdfStyles.footer} fixed>
-        Generated by AI Trip Planner - Raste Aur Raahein
-      </Text>
-    </Page>
-  </Document>
-);
+
+        {trip.days?.map((day) => (
+          <View key={day.dayNumber} style={pdfStyles.dayContainer} wrap={false}>
+            <Text style={pdfStyles.dayHeader}>
+              Day {day.dayNumber}: {day.title}
+            </Text>
+            {day.summary && <Text style={pdfStyles.daySummary}>{day.summary}</Text>}
+
+            {day.activities?.map((act, i) => (
+              <View key={i} style={pdfStyles.activity}>
+                <Text style={pdfStyles.activityHeader}>
+                  {act.time && <Text style={pdfStyles.activityTime}>{act.time} </Text>}
+                  {act.title}
+                </Text>
+                {act.description && (
+                  <Text style={pdfStyles.activityDesc}>{act.description}</Text>
+                )}
+                {act.notes && (
+                  <Text style={pdfStyles.activityNotes}>💡 {act.notes}</Text>
+                )}
+              </View>
+            ))}
+          </View>
+        ))}
+        <Text style={pdfStyles.footer} fixed>
+          Generated by AI Trip Planner - Raste Aur Raahein
+        </Text>
+      </Page>
+    </Document>
+  );
+
+  return pdf(doc).toBlob();
+}
 
 // ---------------------------------------------------------------------------
 // Plain-text builder for non-logged-in users
@@ -148,8 +146,7 @@ export default function ShareItineraryButton({
     try {
       if (isLoggedIn) {
         // ── Logged-in: share as PDF ──────────────────────────────────────
-        const { pdf } = await import("@react-pdf/renderer");
-        const blob = await pdf(<ItineraryDocument trip={trip} />).toBlob();
+        const blob = await generateItineraryPdfBlob(trip);
         const fileName = `${trip.title.replace(/\s+/g, "_").toLowerCase()}_itinerary.pdf`;
         const file = new File([blob], fileName, { type: "application/pdf" });
 

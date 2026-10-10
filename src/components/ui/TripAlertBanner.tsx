@@ -165,17 +165,72 @@ export default function TripAlertBanner({ slug, initialAlert }: TripAlertBannerP
   );
 }
 
+// ---------------------------------------------------------------------------
+// Client-side batching & caching to prevent N+1 requests on pages with many cards
+// ---------------------------------------------------------------------------
+const alertCache = new Map<string, TripAlert | null>();
+let batchQueue: Array<{ slug: string; resolve: (alert: TripAlert | null) => void }> = [];
+let batchTimeout: ReturnType<typeof setTimeout> | null = null;
+
+function fetchAlertBatched(slug: string): Promise<TripAlert | null> {
+  if (alertCache.has(slug)) {
+    return Promise.resolve(alertCache.get(slug)!);
+  }
+
+  return new Promise((resolve) => {
+    batchQueue.push({ slug, resolve });
+
+    if (!batchTimeout) {
+      batchTimeout = setTimeout(async () => {
+        const currentBatch = batchQueue;
+        batchQueue = [];
+        batchTimeout = null;
+
+        const uniqueSlugs = Array.from(new Set(currentBatch.map((item) => item.slug)));
+        try {
+          const res = await fetch(`/api/alerts?slugs=${encodeURIComponent(uniqueSlugs.join(","))}`);
+          if (!res.ok) throw new Error("Failed to fetch alerts");
+          const data = await res.json();
+          const alertsMap: Record<string, TripAlert> = data.alerts || {};
+
+          uniqueSlugs.forEach((s) => {
+            alertCache.set(s, alertsMap[s] || null);
+          });
+
+          currentBatch.forEach((item) => {
+            item.resolve(alertsMap[item.slug] || null);
+          });
+        } catch {
+          currentBatch.forEach((item) => {
+            item.resolve(null);
+          });
+        }
+      }, 25);
+    }
+  });
+}
+
 /**
- * Compact badge for use on TripCard — fetched lazily client-side.
+ * Compact badge for use on TripCard — fetched lazily client-side with batching & caching.
  */
 export function TripAlertBadge({ slug }: { slug: string }) {
-  const [alert, setAlert] = useState<TripAlert | null | "loading">("loading");
+  const [alert, setAlert] = useState<TripAlert | null | "loading">(() => {
+    return alertCache.has(slug) ? alertCache.get(slug)! : "loading";
+  });
 
   useEffect(() => {
-    fetch(`/api/alerts?slug=${encodeURIComponent(slug)}`)
-      .then((r) => r.json())
-      .then((d) => setAlert(d.alert ?? null))
-      .catch(() => setAlert(null));
+    let isMounted = true;
+    fetchAlertBatched(slug)
+      .then((data) => {
+        if (isMounted) setAlert(data);
+      })
+      .catch(() => {
+        if (isMounted) setAlert(null);
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, [slug]);
 
   if (alert === "loading" || alert === null) return null;

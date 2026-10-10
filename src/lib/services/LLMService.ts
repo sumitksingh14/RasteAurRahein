@@ -5,44 +5,51 @@ export type LLMModelProvider = "gemini" | "nvidia" | "groq" | "openai";
 // ---------------------------------------------------------------------------
 // Module-scoped SDK clients (lazy-initialized singletons)
 // ---------------------------------------------------------------------------
-let nvidiaClient: OpenAI | null = null;
-let groqClient: OpenAI | null = null;
-let openaiClient: OpenAI | null = null;
+const clientCache: Partial<Record<"nvidia" | "groq" | "openai", OpenAI>> = {};
 
-function getNvidiaClient(): OpenAI {
-  if (!nvidiaClient) {
-    const apiKey = process.env.NVIDIA_API_KEY;
-    if (!apiKey) throw new Error("NVIDIA_API_KEY is not configured. Add it to .env.local.");
-    nvidiaClient = new OpenAI({
-      apiKey,
-      baseURL: "https://integrate.api.nvidia.com/v1",
-    });
+function getOpenAIClientInstance(provider: "nvidia" | "groq" | "openai"): OpenAI {
+  if (clientCache[provider]) {
+    return clientCache[provider]!;
   }
-  return nvidiaClient;
+
+  let apiKey: string | undefined;
+  let baseURL: string | undefined;
+
+  switch (provider) {
+    case "nvidia":
+      apiKey = process.env.NVIDIA_API_KEY;
+      baseURL = "https://integrate.api.nvidia.com/v1";
+      if (!apiKey) throw new Error("NVIDIA_API_KEY is not configured. Add it to .env.local.");
+      break;
+    case "groq":
+      apiKey = process.env.GROQ_API_KEY;
+      baseURL = "https://api.groq.com/openai/v1";
+      if (!apiKey) throw new Error("GROQ_API_KEY is not configured. Add it to .env.local.");
+      break;
+    case "openai":
+      apiKey = process.env.OPENAI_API_KEY;
+      if (!apiKey) throw new Error("OPENAI_API_KEY is not configured. Add it to .env.local.");
+      break;
+  }
+
+  const client = new OpenAI({
+    apiKey,
+    ...(baseURL ? { baseURL } : {}),
+  });
+
+  clientCache[provider] = client;
+  return client;
 }
 
-function getGroqClient(): OpenAI {
-  if (!groqClient) {
-    const apiKey = process.env.GROQ_API_KEY;
-    if (!apiKey) throw new Error("GROQ_API_KEY is not configured. Add it to .env.local.");
-    groqClient = new OpenAI({
-      apiKey,
-      baseURL: "https://api.groq.com/openai/v1",
-    });
-  }
-  return groqClient;
+/**
+ * Strips <think>...</think> reasoning blocks emitted by thinking/reasoning models.
+ */
+function stripReasoningTokens(raw: string): string {
+  const cleaned = raw.replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
+  return cleaned || raw;
 }
 
-function getOpenAIClient(): OpenAI {
-  if (!openaiClient) {
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) throw new Error("OPENAI_API_KEY is not configured. Add it to .env.local.");
-    openaiClient = new OpenAI({ apiKey });
-  }
-  return openaiClient;
-}
-
-interface NvidiaModelConfig {
+export interface NvidiaModelConfig {
   id: string;
   label: string;
   streaming: boolean;
@@ -89,7 +96,7 @@ export const NVIDIA_MODELS: NvidiaModelConfig[] = [
 
 export const DEFAULT_NVIDIA_MODEL_ID = NVIDIA_MODELS[0].id;
 
-interface OpenAIModelConfig {
+export interface OpenAIModelConfig {
   id: string;
   label: string;
   maxTokens: number;
@@ -107,6 +114,17 @@ export interface GenerateOptions {
   model: LLMModelProvider;
   specificModelId?: string; // used for nvidia, groq, or openai specific models
   jsonMode?: boolean; // if true, forces the output to be JSON
+}
+
+interface GeminiCandidate {
+  finishReason?: string;
+  content?: {
+    parts?: Array<{ text?: string }>;
+  };
+}
+
+interface GeminiApiResponse {
+  candidates?: GeminiCandidate[];
 }
 
 export class LLMService {
@@ -134,11 +152,15 @@ export class LLMService {
       throw new Error("GEMINI_API_KEY is not configured. Add it to .env.local.");
     }
 
+    // Pass API key via header instead of URL query string to prevent leakage in logs/proxies
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`,
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": apiKey,
+        },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: {
@@ -157,8 +179,8 @@ export class LLMService {
       throw new Error(`Gemini API error ${res.status}: ${errText}`);
     }
 
-    const data = await res.json();
-    const candidate = data?.candidates?.[0];
+    const data = (await res.json()) as GeminiApiResponse;
+    const candidate = data.candidates?.[0];
     const finishReason = candidate?.finishReason;
     if (finishReason && finishReason !== "STOP") {
       // MAX_TOKENS means the output was truncated; SAFETY means it was blocked
@@ -174,20 +196,17 @@ export class LLMService {
   // ---------------------------------------------------------------------------
   private static async callNvidia(prompt: string, modelId: string, jsonMode = false): Promise<string> {
     const config = NVIDIA_MODELS.find((m) => m.id === modelId) ?? NVIDIA_MODELS[0];
-    const openai = getNvidiaClient();
+    const openai = getOpenAIClientInstance("nvidia");
 
-    const baseParams: any = {
+    const baseParams: OpenAI.Chat.ChatCompletionCreateParams = {
       model: config.id,
-      messages: [{ role: "user" as const, content: prompt }],
+      messages: [{ role: "user", content: prompt }],
       temperature: 0.7,
       top_p: 0.95,
       max_tokens: config.maxTokens,
+      ...(jsonMode ? { response_format: { type: "json_object" } } : {}),
       ...(config.extraParams ?? {}),
     };
-    
-    if (jsonMode) {
-      baseParams.response_format = { type: "json_object" };
-    }
 
     let raw: string;
 
@@ -195,12 +214,12 @@ export class LLMService {
       const stream = await openai.chat.completions.create({
         ...baseParams,
         stream: true,
-      } as any);
+      });
 
       const parts: string[] = [];
-      for await (const chunk of stream as any) {
-        const delta = chunk.choices?.[0]?.delta;
-        const piece: string = delta?.content ?? "";
+      for await (const chunk of stream) {
+        const delta = chunk.choices[0]?.delta;
+        const piece = delta?.content ?? "";
         if (piece) parts.push(piece);
       }
       raw = parts.join("");
@@ -208,37 +227,33 @@ export class LLMService {
       const completion = await openai.chat.completions.create({
         ...baseParams,
         stream: false,
-      } as any);
+      });
 
       const choice = completion.choices[0];
       if (!choice) throw new Error("Nvidia returned no choices.");
-      raw = (choice.message as any).content ?? "";
+      raw = choice.message.content ?? "";
     }
 
     if (!raw.trim()) throw new Error("Nvidia returned an empty response.");
 
     // Strip <think>...</think> reasoning blocks embedded inline before the JSON
-    const cleaned = raw.replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
-    return cleaned || raw;
+    return stripReasoningTokens(raw);
   }
 
   // ---------------------------------------------------------------------------
   // Groq call helper
   // ---------------------------------------------------------------------------
   private static async callGroq(prompt: string, modelId: string, jsonMode = false): Promise<string> {
-    const openai = getGroqClient();
-    
-    const params: any = {
+    const openai = getOpenAIClientInstance("groq");
+
+    const params: OpenAI.Chat.ChatCompletionCreateParamsNonStreaming = {
       model: modelId,
       messages: [{ role: "user", content: prompt }],
       temperature: 0.7,
       max_tokens: 4096,
       stream: false,
+      ...(jsonMode ? { response_format: { type: "json_object" } } : {}),
     };
-    
-    if (jsonMode) {
-      params.response_format = { type: "json_object" };
-    }
 
     const completion = await openai.chat.completions.create(params);
 
@@ -246,32 +261,23 @@ export class LLMService {
     if (!text?.trim()) throw new Error("Groq returned an empty response.");
 
     // Strip any accidental <think>...</think> blocks
-    return text.replace(/<think>[\s\S]*?<\/think>/gi, "").trim() || text;
+    return stripReasoningTokens(text);
   }
 
   // ---------------------------------------------------------------------------
   // OpenAI call helper
   // ---------------------------------------------------------------------------
   private static async callOpenAI(prompt: string, modelId: string, jsonMode = false): Promise<string> {
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) {
-      throw new Error("OPENAI_API_KEY is not configured. Add it to .env.local.");
-    }
-
     const config = OPENAI_MODELS.find((m) => m.id === modelId) ?? OPENAI_MODELS[0];
+    const openai = getOpenAIClientInstance("openai");
 
-    const openai = new OpenAI({ apiKey });
-
-    const params: any = {
+    const params: OpenAI.Chat.ChatCompletionCreateParamsNonStreaming = {
       model: config.id,
-      messages: [{ role: "user" as const, content: prompt }],
+      messages: [{ role: "user", content: prompt }],
       max_tokens: config.maxTokens,
       stream: false,
+      ...(jsonMode ? { response_format: { type: "json_object" } } : {}),
     };
-
-    if (jsonMode) {
-      params.response_format = { type: "json_object" };
-    }
 
     const completion = await openai.chat.completions.create(params);
     const text = completion.choices[0]?.message?.content;
@@ -304,11 +310,15 @@ export class LLMService {
       throw new Error("GEMINI_API_KEY is not configured. Add it to .env.local.");
     }
 
+    // Pass API key via header instead of URL query string to prevent leakage in logs/proxies
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:streamGenerateContent?alt=sse&key=${apiKey}`,
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:streamGenerateContent?alt=sse",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": apiKey,
+        },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: { temperature: 0.8, topK: 40, topP: 0.9, maxOutputTokens: 65536 },
@@ -336,7 +346,7 @@ export class LLMService {
         const jsonStr = trimmed.slice(5).trim();
         if (!jsonStr || jsonStr === "[DONE]") continue;
         try {
-          const obj = JSON.parse(jsonStr);
+          const obj = JSON.parse(jsonStr) as GeminiApiResponse;
           const candidate = obj?.candidates?.[0];
           // Detect early termination (truncation)
           if (candidate?.finishReason && candidate.finishReason !== "STOP") {
@@ -344,26 +354,21 @@ export class LLMService {
           }
           const text = candidate?.content?.parts?.[0]?.text;
           if (text) yield text;
-        } catch (e: any) {
+        } catch (e: unknown) {
           // Re-throw finishReason errors; ignore partial SSE parse errors
-          if (e?.message?.includes("Gemini stopped early")) throw e;
+          if (e instanceof Error && e.message.includes("Gemini stopped early")) throw e;
         }
       }
     }
   }
 
   private static async *streamNvidia(prompt: string, modelId: string): AsyncGenerator<string> {
-    const apiKey = process.env.NVIDIA_API_KEY;
-    if (!apiKey) {
-      throw new Error("NVIDIA_API_KEY is not configured. Add it to .env.local.");
-    }
-
     const config = NVIDIA_MODELS.find((m) => m.id === modelId) ?? NVIDIA_MODELS[0];
-    const openai = new OpenAI({ apiKey, baseURL: "https://integrate.api.nvidia.com/v1" });
+    const openai = getOpenAIClientInstance("nvidia");
 
-    const params: Record<string, unknown> = {
+    const params: OpenAI.Chat.ChatCompletionCreateParamsStreaming = {
       model: config.id,
-      messages: [{ role: "user" as const, content: prompt }],
+      messages: [{ role: "user", content: prompt }],
       temperature: 0.7,
       top_p: 0.95,
       max_tokens: config.maxTokens,
@@ -371,23 +376,16 @@ export class LLMService {
       ...(config.extraParams ?? {}),
     };
 
-    const stream = await openai.chat.completions.create(
-      params as unknown as Parameters<typeof openai.chat.completions.create>[0]
-    );
+    const stream = await openai.chat.completions.create(params);
 
-    for await (const chunk of stream as unknown as AsyncIterable<{ choices?: { delta?: { content?: string } }[] }>) {
-      const piece: string = chunk.choices?.[0]?.delta?.content ?? "";
+    for await (const chunk of stream) {
+      const piece = chunk.choices[0]?.delta?.content ?? "";
       if (piece) yield piece;
     }
   }
 
   private static async *streamGroq(prompt: string, modelId: string): AsyncGenerator<string> {
-    const apiKey = process.env.GROQ_API_KEY;
-    if (!apiKey) {
-      throw new Error("GROQ_API_KEY is not configured. Add it to .env.local.");
-    }
-
-    const openai = new OpenAI({ apiKey, baseURL: "https://api.groq.com/openai/v1" });
+    const openai = getOpenAIClientInstance("groq");
     const stream = await openai.chat.completions.create({
       model: modelId,
       messages: [{ role: "user", content: prompt }],
@@ -405,26 +403,28 @@ export class LLMService {
       thinkBuf += piece;
       if (!inThink) {
         const openIdx = thinkBuf.search(/<think>/i);
-        if (openIdx !== -1) { inThink = true; thinkBuf = thinkBuf.slice(openIdx + 7); continue; }
+        if (openIdx !== -1) {
+          inThink = true;
+          thinkBuf = thinkBuf.slice(openIdx + 7);
+          continue;
+        }
         const emit = thinkBuf;
         thinkBuf = "";
         if (emit) yield emit;
       } else {
         const closeIdx = thinkBuf.search(/<\/think>/i);
-        if (closeIdx !== -1) { inThink = false; thinkBuf = thinkBuf.slice(closeIdx + 8); }
+        if (closeIdx !== -1) {
+          inThink = false;
+          thinkBuf = thinkBuf.slice(closeIdx + 8);
+        }
       }
     }
     if (thinkBuf && !inThink) yield thinkBuf;
   }
 
   private static async *streamOpenAI(prompt: string, modelId: string): AsyncGenerator<string> {
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) {
-      throw new Error("OPENAI_API_KEY is not configured. Add it to .env.local.");
-    }
-
     const config = OPENAI_MODELS.find((m) => m.id === modelId) ?? OPENAI_MODELS[0];
-    const openai = new OpenAI({ apiKey });
+    const openai = getOpenAIClientInstance("openai");
 
     const stream = await openai.chat.completions.create({
       model: config.id,
@@ -439,3 +439,4 @@ export class LLMService {
     }
   }
 }
+

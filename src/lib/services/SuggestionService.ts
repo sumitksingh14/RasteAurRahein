@@ -84,7 +84,7 @@ Output ONLY valid JSON matching this schema.
     const rawResponse = await LLMService.generateContent(prompt, { model: "gemini", jsonMode: true });
 
     try {
-      let parsed = JSON.parse(rawResponse);
+      const parsed = JSON.parse(rawResponse);
       return parsed as { suggestions: Suggestion[] };
     } catch {
       const jsonMatch = rawResponse.match(/```(?:json)?\s*([\s\S]*?)```/);
@@ -97,11 +97,16 @@ Output ONLY valid JSON matching this schema.
 
   static async acceptSuggestion(tripId: string, suggestionId: string): Promise<boolean> {
     // Stub: accept logic
+    void tripId;
+    void suggestionId;
     return true;
   }
 
   static async dismissSuggestion(tripId: string, suggestionId: string, suppressSimilar: boolean): Promise<boolean> {
     // Stub: dismiss logic
+    void tripId;
+    void suggestionId;
+    void suppressSimilar;
     return true;
   }
 }

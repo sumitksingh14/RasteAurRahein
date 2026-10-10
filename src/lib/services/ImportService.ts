@@ -97,7 +97,7 @@ Output ONLY valid JSON matching this schema. Do not include markdown code blocks
     const rawResponse = await LLMService.generateContent(prompt, { model: "gemini", jsonMode: true });
 
     try {
-      let parsed = JSON.parse(rawResponse);
+      const parsed = JSON.parse(rawResponse);
       return parsed as ImportResult;
     } catch {
       // Fallback if markdown block is present
