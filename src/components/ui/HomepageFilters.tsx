@@ -3,6 +3,7 @@
 import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
 import type { Trip } from "@/lib/types";
+import { getTripImage } from "@/lib/data/tripImages";
 
 // ── Filter categories with keyword matchers ───────────────────────────────────
 const FILTER_CATEGORIES = [
@@ -103,6 +104,14 @@ function Clock() {
   return (
     <svg fill="currentColor" height={13} viewBox="0 0 256 256" width={13}>
       <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z" />
+    </svg>
+  );
+}
+function Eye({ size = 12 }: { size?: number }) {
+  return (
+    <svg fill="none" height={size} viewBox="0 0 24 24" width={size} stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+      <circle cx="12" cy="12" r="3" />
     </svg>
   );
 }
@@ -244,7 +253,8 @@ function GlassyCarousel({ trips }: { trips: Trip[] }) {
           const seasonBadge = getSeasonBadge(trip);
           const days = trip.itinerary?.length ?? 0;
           const readTime = trip.readingTime ?? Math.max(5, days * 2);
-          const imgSrc = PLACEHOLDER_IMAGES[realIdx % PLACEHOLDER_IMAGES.length];
+          const imgSrc = getTripImage(trip.slug) || PLACEHOLDER_IMAGES[realIdx % PLACEHOLDER_IMAGES.length];
+          const isTopRanked = realIdx === 0 && (trip.viewCount ?? 0) > 0;
 
           return (
             <div
@@ -322,6 +332,28 @@ function GlassyCarousel({ trips }: { trips: Trip[] }) {
                 >
                   {typeBadge}
                 </span>
+                {/* Top Viewed Badge */}
+                {isTopRanked && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "2.4rem",
+                      left: "0.75rem",
+                      background: "linear-gradient(135deg, #d97706 0%, #b45309 100%)",
+                      color: "#fff",
+                      padding: "0.22rem 0.55rem",
+                      borderRadius: "6px",
+                      fontSize: "0.65rem",
+                      fontWeight: 800,
+                      letterSpacing: "0.05em",
+                      textTransform: "uppercase",
+                      boxShadow: "0 2px 8px rgba(217,119,6,0.45)",
+                      border: "1px solid rgba(255,255,255,0.25)",
+                    }}
+                  >
+                    ★ Top Viewed
+                  </span>
+                )}
                 {/* Season badge */}
                 <span
                   style={{
@@ -403,6 +435,14 @@ function GlassyCarousel({ trips }: { trips: Trip[] }) {
                       <span style={{ opacity: 0.4 }}>•</span>
                       <span style={{ color: "#059669", fontWeight: 700 }}>
                         &#8377;{trip.totalBudget.toLocaleString("en-IN")}
+                      </span>
+                    </>
+                  )}
+                  {trip.viewCount !== undefined && trip.viewCount > 0 && (
+                    <>
+                      <span style={{ opacity: 0.4 }}>•</span>
+                      <span style={{ display: "flex", alignItems: "center", gap: "0.22rem", color: "#d97706", fontWeight: 700 }}>
+                        <Eye size={12} /> {trip.viewCount.toLocaleString()} views
                       </span>
                     </>
                   )}
@@ -623,21 +663,52 @@ function GlassyCarousel({ trips }: { trips: Trip[] }) {
 // ── Component ─────────────────────────────────────────────────────────────────
 export default function HomepageFilters({ allTrips, tripCount }: { allTrips: Trip[]; tripCount: number }) {
   const [activeFilter, setActiveFilter] = useState<FilterKey>("all");
+  const [liveViews, setLiveViews] = useState<Record<string, number>>({});
+
+  // Dynamically fetch latest real-time view counts from Redis API
+  useEffect(() => {
+    fetch("/api/view-count")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.views && Object.keys(data.views).length > 0) {
+          setLiveViews(data.views);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  // Enrich trips with live view counts
+  const enrichedTrips = useMemo(() => {
+    if (Object.keys(liveViews).length === 0) return allTrips;
+    return allTrips.map((trip) => ({
+      ...trip,
+      viewCount: liveViews[trip.slug] ?? trip.viewCount ?? 0,
+    }));
+  }, [allTrips, liveViews]);
 
   const filterCounts = useMemo(() => {
     const map = {} as Record<FilterKey, number>;
     for (const cat of FILTER_CATEGORIES) {
       map[cat.key] = cat.key === "all"
-        ? allTrips.length
-        : allTrips.filter((t) => matchesFilter(t, cat.key)).length;
+        ? enrichedTrips.length
+        : enrichedTrips.filter((t) => matchesFilter(t, cat.key)).length;
     }
     return map;
-  }, [allTrips]);
+  }, [enrichedTrips]);
 
-  const visibleTrips = useMemo(
-    () => allTrips.filter((t) => matchesFilter(t, activeFilter)).slice(0, MAX_CARDS),
-    [allTrips, activeFilter]
-  );
+  // Dynamically rank visible trips in this section based on top views in All trips
+  const visibleTrips = useMemo(() => {
+    return [...enrichedTrips]
+      .filter((t) => matchesFilter(t, activeFilter))
+      .sort((a, b) => {
+        const viewsDiff = (b.viewCount || 0) - (a.viewCount || 0);
+        if (viewsDiff !== 0) return viewsDiff;
+        const likesDiff = (b.likes || 0) - (a.likes || 0);
+        if (likesDiff !== 0) return likesDiff;
+        return new Date(b._createdAt).getTime() - new Date(a._createdAt).getTime();
+      })
+      .slice(0, MAX_CARDS);
+  }, [enrichedTrips, activeFilter]);
 
   const activeLabel = FILTER_CATEGORIES.find((c) => c.key === activeFilter)?.label ?? "";
 
@@ -740,22 +811,41 @@ export default function HomepageFilters({ allTrips, tripCount }: { allTrips: Tri
 
       {/* ── Section Header ── */}
       <div style={{ marginBottom: "1.5rem" }}>
-        <h2
-          style={{
-            margin: "0 0 0.25rem",
-            fontSize: "1.5rem",
-            fontWeight: 700,
-            color: "#1e1b4b",
-            letterSpacing: "-0.015em",
-            fontFamily: "'Source Serif 4', Georgia, serif",
-          }}
-        >
-          Featured Expeditions &amp; Road Trips
-        </h2>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.35rem", flexWrap: "wrap" }}>
+          <h2
+            style={{
+              margin: 0,
+              fontSize: "1.5rem",
+              fontWeight: 700,
+              color: "#1e1b4b",
+              letterSpacing: "-0.015em",
+              fontFamily: "'Source Serif 4', Georgia, serif",
+            }}
+          >
+            Featured Expeditions &amp; Road Trips
+          </h2>
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.3rem",
+              background: "linear-gradient(135deg, rgba(201,168,76,0.18) 0%, rgba(245,158,11,0.12) 100%)",
+              color: "#b45309",
+              padding: "0.2rem 0.6rem",
+              borderRadius: "9999px",
+              fontSize: "0.7rem",
+              fontWeight: 700,
+              border: "1px solid rgba(245,158,11,0.25)",
+              letterSpacing: "0.02em",
+            }}
+          >
+            🔥 Top Viewed
+          </span>
+        </div>
         <p style={{ margin: 0, fontSize: "0.9rem", color: "#4B5563" }}>
           {activeFilter === "all"
-            ? "Tested overland routes and self-supported hiking expeditions across India"
-            : `${visibleTrips.length} of ${filterCounts[activeFilter]} ${activeLabel} trips`}
+            ? "Top-viewed expeditions and self-supported routes ranked dynamically by traveler popularity across India"
+            : `Top ${visibleTrips.length} most viewed of ${filterCounts[activeFilter]} ${activeLabel} trips`}
         </p>
       </div>
 

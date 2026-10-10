@@ -50,6 +50,22 @@ async function getRedisTrips(): Promise<Trip[]> {
   }
 }
 
+async function getTripsViewsMap(slugs: string[]): Promise<Record<string, number>> {
+  if (slugs.length === 0) return {};
+  try {
+    const keys = slugs.map((slug) => `views:${slug}`);
+    const rawViews = await redis.mget(...keys);
+    const map: Record<string, number> = {};
+    slugs.forEach((slug, idx) => {
+      const val = rawViews[idx];
+      map[slug] = val ? parseInt(typeof val === "string" ? val : String(val), 10) || 0 : 0;
+    });
+    return map;
+  } catch {
+    return {};
+  }
+}
+
 // ──────────────────────────────────────────────────
 // Query Layer (with React.cache for request-level memoization)
 // ──────────────────────────────────────────────────
@@ -58,9 +74,14 @@ export const getAllTrips = cache(async (): Promise<Trip[]> => {
   const redisTrips = await getRedisTrips();
   const redisSlugs = new Set(redisTrips.map((t) => t.slug));
   const filteredDemo = DEMO_TRIPS.filter((t) => !redisSlugs.has(t.slug));
-  return [...redisTrips, ...filteredDemo]
+  const combined = [...redisTrips, ...filteredDemo];
+
+  const viewsMap = await getTripsViewsMap(combined.map((t) => t.slug));
+
+  return combined
     .map((trip) => ({
       ...trip,
+      viewCount: viewsMap[trip.slug] ?? trip.viewCount ?? 0,
       likes: trip.likes ?? getTripDummyLikes(trip.slug),
     }))
     .sort(
@@ -78,8 +99,16 @@ export const getTripBySlug = cache(async (slug: string): Promise<Trip | null> =>
   }
   if (!trip) trip = getStaticTripBySlug(slug);
   if (trip) {
+    let vc = trip.viewCount;
+    try {
+      const live = await redis.get(`views:${slug}`);
+      if (live) vc = parseInt(live, 10);
+    } catch {
+      // ignore
+    }
     trip = {
       ...trip,
+      viewCount: vc ?? trip.viewCount ?? 0,
       likes: trip.likes ?? getTripDummyLikes(trip.slug),
     };
   }
@@ -95,7 +124,10 @@ export const getTripsByRegion = cache(async (regionSlug: string): Promise<Trip[]
 
 export const getFeaturedTrips = cache(async (): Promise<Trip[]> => {
   const all = await getAllTrips();
-  return all.filter((t) => t.status === "published").slice(0, 3);
+  return [...all]
+    .filter((t) => t.status === "published")
+    .sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0))
+    .slice(0, 6);
 });
 
 export const searchTrips = cache(async (queryText: string): Promise<Trip[]> => {
