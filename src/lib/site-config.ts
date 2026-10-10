@@ -25,6 +25,7 @@ export const SOCIAL_LINKS = {
   instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL,
   youtube: process.env.NEXT_PUBLIC_YOUTUBE_URL,
   x: process.env.NEXT_PUBLIC_X_URL,
+  github: process.env.NEXT_PUBLIC_GITHUB_URL,
 };
 
 /**
@@ -44,7 +45,7 @@ export function isValidSocialUrl(url?: string | null): boolean {
 }
 
 export interface SocialLinkItem {
-  id: "instagram" | "x" | "youtube";
+  id: "instagram" | "x" | "youtube" | "github";
   label: string;
   href: string;
 }
@@ -70,6 +71,13 @@ export function getActiveSocialLinks(): SocialLinkItem[] {
       id: "youtube",
       label: "Subscribe to Raste Aur Raahein on YouTube",
       href: SOCIAL_LINKS.youtube!.trim(),
+    });
+  }
+  if (isValidSocialUrl(SOCIAL_LINKS.github)) {
+    items.push({
+      id: "github",
+      label: "Follow Raste Aur Raahein on GitHub",
+      href: SOCIAL_LINKS.github!.trim(),
     });
   }
   return items;

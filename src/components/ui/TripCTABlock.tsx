@@ -167,7 +167,9 @@ export default function TripCTABlock({ trip }: TripCTABlockProps) {
               </h3>
               <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", margin: 0, lineHeight: 1.6 }}>
                 I&apos;ll get back to you within 24–48 hours.
-                For a faster response, <a href={waUrl} target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-gold)" }}>WhatsApp me directly</a>.
+                {waUrl && (
+                  <> For a faster response, <a href={waUrl} target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-gold)" }}>WhatsApp me directly</a>.</>
+                )}
               </p>
             </div>
           ) : (
