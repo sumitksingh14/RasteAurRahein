@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { Trip } from "@/lib/types";
 import { getTripImage } from "@/lib/data/tripImages";
 import { shouldDisplayPublicViewCount } from "@/lib/site-config";
+import { getDailyFeaturedTrips } from "@/lib/featured-rotation";
 
 // ── Filter categories with keyword matchers ───────────────────────────────────
 const FILTER_CATEGORIES = [
@@ -77,7 +78,7 @@ const PLACEHOLDER_IMAGES = [
   "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80",
 ];
 
-const MAX_CARDS = 6;
+const MAX_CARDS = 8;
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 function Arrow({ size = 14 }: { size?: number }) {
@@ -117,16 +118,11 @@ function Eye({ size = 12 }: { size?: number }) {
   );
 }
 
-// ── Glassy Carousel (infinite loop) ─────────────────────────────────────────
+// ── Glassy Carousel (single row, scroll snapping, deterministic daily rotation) ─
 function GlassyCarousel({ trips }: { trips: Trip[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
-  // We render [set0, set1(real), set2] — 3 copies. activeIdx tracks position within set1 (0-based).
   const total = trips.length;
-  // tripled list: clones at both ends
-  const tripled = useMemo(() => [...trips, ...trips, ...trips], [trips]);
   const [activeIdx, setActiveIdx] = useState(0);
-  const isScrollingRef = useRef(false);
-  const autoTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const hoverRef = useRef(false);
 
   /** Return the offsetWidth of one card (first child in the track) */
@@ -138,63 +134,49 @@ function GlassyCarousel({ trips }: { trips: Trip[] }) {
     return child.offsetWidth + gap;
   }, []);
 
-  /** Jump to a specific position in the MIDDLE set without animation */
-  const jumpToMiddle = useCallback((realIdx: number) => {
+  /** Scroll smoothly to a specific card index */
+  const scrollToIndex = useCallback((index: number) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const clamped = Math.max(0, Math.min(index, trips.length - 1));
+    const cw = getCardWidth();
+    track.scrollTo({ left: clamped * cw, behavior: "smooth" });
+    setActiveIdx(clamped);
+  }, [getCardWidth, trips.length]);
+
+  /** Smooth previous navigation with wrap-around */
+  const prev = useCallback(() => {
     const track = trackRef.current;
     if (!track) return;
     const cw = getCardWidth();
-    track.scrollLeft = cw * (total + realIdx); // middle set offset
-  }, [getCardWidth, total]);
+    if (track.scrollLeft <= 10) {
+      scrollToIndex(trips.length - 1);
+    } else {
+      track.scrollBy({ left: -cw, behavior: "smooth" });
+    }
+  }, [getCardWidth, scrollToIndex, trips.length]);
 
-  /** Scroll smoothly to a real index (always operates in middle set) */
-  const scrollToReal = useCallback((realIdx: number) => {
+  /** Smooth next navigation with wrap-around */
+  const next = useCallback(() => {
     const track = trackRef.current;
     if (!track) return;
     const cw = getCardWidth();
-    isScrollingRef.current = true;
-    track.scrollTo({ left: cw * (total + realIdx), behavior: "smooth" });
-    setActiveIdx(((realIdx % total) + total) % total);
-    // Release lock after animation completes
-    setTimeout(() => { isScrollingRef.current = false; }, 450);
-  }, [getCardWidth, total]);
+    if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
+      scrollToIndex(0);
+    } else {
+      track.scrollBy({ left: cw, behavior: "smooth" });
+    }
+  }, [getCardWidth, scrollToIndex]);
 
-  /** Initialise scroll to middle set on mount */
-  useEffect(() => {
-    jumpToMiddle(0);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [trips]);
-
-  /** Detect edge crossing and silently teleport */
+  /** Update active index based on current scroll position */
   const handleScroll = useCallback(() => {
-    if (isScrollingRef.current) return;
     const track = trackRef.current;
     if (!track) return;
     const cw = getCardWidth();
     if (cw === 0) return;
-    const sl = track.scrollLeft;
-    const setWidth = cw * total;
-
-    // Reached start-clone zone → jump to end of real set
-    if (sl < setWidth * 0.5) {
-      const offsetIntoSet = sl; // how far into the first (clone) set
-      const realIdx = Math.round(offsetIntoSet / cw);
-      // silently teleport to middle set equivalent
-      track.scrollLeft = setWidth + offsetIntoSet;
-      setActiveIdx(((realIdx % total) + total) % total);
-      return;
-    }
-    // Reached end-clone zone → jump to start of real set
-    if (sl > setWidth * 2 - cw * 0.5) {
-      const offsetBeyond = sl - setWidth * 2;
-      track.scrollLeft = setWidth + offsetBeyond;
-      setActiveIdx(Math.round(offsetBeyond / cw) % total);
-      return;
-    }
-    // Normal scroll within middle set
-    const posInMiddle = sl - setWidth;
-    const newIdx = Math.round(posInMiddle / cw);
-    setActiveIdx(((newIdx % total) + total) % total);
-  }, [getCardWidth, total]);
+    const newIdx = Math.round(track.scrollLeft / cw);
+    setActiveIdx(Math.max(0, Math.min(newIdx, trips.length - 1)));
+  }, [getCardWidth, trips.length]);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -203,28 +185,25 @@ function GlassyCarousel({ trips }: { trips: Trip[] }) {
     return () => track.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  /** Auto-advance every 4 s, pauses on hover */
+  // Reset scroll on trips filter change
   useEffect(() => {
-    autoTimerRef.current = setInterval(() => {
-      if (!hoverRef.current) {
-        setActiveIdx((prev) => {
-          const next = (prev + 1) % total;
-          scrollToReal(next);
-          return next;
-        });
-      }
-    }, 4000);
-    return () => { if (autoTimerRef.current) clearInterval(autoTimerRef.current); };
-  }, [scrollToReal, total]);
+    const track = trackRef.current;
+    if (track) {
+      track.scrollLeft = 0;
+      setActiveIdx(0);
+    }
+  }, [trips]);
 
-  const prev = () => {
-    const newIdx = ((activeIdx - 1) + total) % total;
-    scrollToReal(newIdx);
-  };
-  const next = () => {
-    const newIdx = (activeIdx + 1) % total;
-    scrollToReal(newIdx);
-  };
+  /** Auto-advance every 5 s, pauses on hover */
+  useEffect(() => {
+    if (total <= 1) return;
+    const timer = setInterval(() => {
+      if (!hoverRef.current) {
+        next();
+      }
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [next, total]);
 
   return (
     <div
@@ -248,18 +227,17 @@ function GlassyCarousel({ trips }: { trips: Trip[] }) {
           cursor: "grab",
         }}
       >
-        {tripled.map((trip, idx) => {
-          const realIdx = idx % total;
+        {trips.map((trip, idx) => {
           const typeBadge = getTypeBadge(trip);
           const seasonBadge = getSeasonBadge(trip);
           const days = trip.itinerary?.length ?? 0;
           const readTime = trip.readingTime ?? Math.max(5, days * 2);
-          const imgSrc = getTripImage(trip.slug) || PLACEHOLDER_IMAGES[realIdx % PLACEHOLDER_IMAGES.length];
-          const isTopRanked = realIdx === 0 && (trip.viewCount ?? 0) > 0;
+          const imgSrc = getTripImage(trip.slug) || PLACEHOLDER_IMAGES[idx % PLACEHOLDER_IMAGES.length];
+          const isTopRanked = idx === 0;
 
           return (
             <div
-              key={`${Math.floor(idx / total)}-${trip._id}`}
+              key={trip._id || trip.slug || idx}
               className="glassy-card"
               style={{
                 flex: "0 0 clamp(280px, 80vw, 340px)",
@@ -352,7 +330,7 @@ function GlassyCarousel({ trips }: { trips: Trip[] }) {
                       border: "1px solid rgba(255,255,255,0.25)",
                     }}
                   >
-                    ★ Top Viewed
+                    ★ Daily Spotlight
                   </span>
                 )}
                 {/* Season badge */}
@@ -393,7 +371,7 @@ function GlassyCarousel({ trips }: { trips: Trip[] }) {
                     border: "1px solid rgba(255,255,255,0.22)",
                   }}
                 >
-                  {realIdx + 1} / {total}
+                  {idx + 1} / {total}
                 </span>
               </div>
 
@@ -649,7 +627,7 @@ function GlassyCarousel({ trips }: { trips: Trip[] }) {
             <button
               key={i}
               aria-label={`Go to expedition ${i + 1}`}
-              onClick={() => scrollToReal(i)}
+              onClick={() => scrollToIndex(i)}
               style={{
                 width: i === activeIdx ? "24px" : "8px",
                 height: "8px",
@@ -704,18 +682,13 @@ export default function HomepageFilters({ allTrips, tripCount }: { allTrips: Tri
     return map;
   }, [enrichedTrips]);
 
-  // Dynamically rank visible trips in this section based on top views in All trips
+  // Dynamically compute daily deterministic rotation with regional and seasonal balance
   const visibleTrips = useMemo(() => {
-    return [...enrichedTrips]
-      .filter((t) => matchesFilter(t, activeFilter))
-      .sort((a, b) => {
-        const viewsDiff = (b.viewCount || 0) - (a.viewCount || 0);
-        if (viewsDiff !== 0) return viewsDiff;
-        const likesDiff = (b.likes || 0) - (a.likes || 0);
-        if (likesDiff !== 0) return likesDiff;
-        return new Date(b._createdAt).getTime() - new Date(a._createdAt).getTime();
-      })
-      .slice(0, MAX_CARDS);
+    if (activeFilter === "all") {
+      return getDailyFeaturedTrips(enrichedTrips, MAX_CARDS);
+    }
+    const filtered = enrichedTrips.filter((t) => matchesFilter(t, activeFilter));
+    return getDailyFeaturedTrips(filtered, MAX_CARDS);
   }, [enrichedTrips, activeFilter]);
 
   const activeLabel = FILTER_CATEGORIES.find((c) => c.key === activeFilter)?.label ?? "";
@@ -837,23 +810,23 @@ export default function HomepageFilters({ allTrips, tripCount }: { allTrips: Tri
               display: "inline-flex",
               alignItems: "center",
               gap: "0.3rem",
-              background: "linear-gradient(135deg, rgba(201,168,76,0.18) 0%, rgba(245,158,11,0.12) 100%)",
-              color: "#b45309",
+              background: "linear-gradient(135deg, rgba(99,102,241,0.14) 0%, rgba(139,92,246,0.10) 100%)",
+              color: "#4338ca",
               padding: "0.2rem 0.6rem",
               borderRadius: "9999px",
               fontSize: "0.7rem",
               fontWeight: 700,
-              border: "1px solid rgba(245,158,11,0.25)",
+              border: "1px solid rgba(99,102,241,0.22)",
               letterSpacing: "0.02em",
             }}
           >
-            🔥 Top Viewed
+            ✨ Daily Curated
           </span>
         </div>
         <p style={{ margin: 0, fontSize: "0.9rem", color: "#4B5563" }}>
           {activeFilter === "all"
-            ? "Top-viewed expeditions and self-supported routes ranked dynamically by traveler popularity across India"
-            : `Top ${visibleTrips.length} most viewed of ${filterCounts[activeFilter]} ${activeLabel} trips`}
+            ? "Daily rotation of self-supported routes, high-altitude treks, and road trips balanced by season and region"
+            : `Daily selection of ${visibleTrips.length} ${activeLabel} expeditions`}
         </p>
       </div>
 

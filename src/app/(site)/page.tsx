@@ -6,6 +6,8 @@ import HeroSearchBar from "@/components/ui/HeroSearchBar";
 import BrandStorySection from "@/components/ui/BrandStorySection";
 import PlanTripCTA from "@/components/ui/PlanTripCTA";
 
+export const revalidate = 3600; // Hourly ISR revalidation to update daily featured rotations
+
 export const metadata: Metadata = {
   title: "India Trip Itineraries — Raste Aur Raahein",
   description:
