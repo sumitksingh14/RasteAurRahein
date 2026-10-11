@@ -127,7 +127,7 @@ export default function TripLeadCapture({ trip }: TripLeadCaptureProps) {
             color: "#fde68a",
           }}
         >
-          Overland Telemetry Asset
+          Free GPX Track &amp; Offline Pack
         </span>
       </div>
 

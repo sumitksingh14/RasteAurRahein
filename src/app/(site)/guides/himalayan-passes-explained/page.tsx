@@ -172,7 +172,7 @@ export default function HimalayanPassesExplainedGuide() {
             </h2>
             <ol style={{ paddingLeft: "1.25rem", margin: 0, lineHeight: 1.8, fontSize: "0.9375rem" }}>
               <li><a href="#what-makes-a-pass" style={{ color: "var(--accent-gold, #b45309)", textDecoration: "none" }}>What Makes a Himalayan Pass Dangerous?</a></li>
-              <li><a href="#the-five-critical-passes" style={{ color: "var(--accent-gold, #b45309)", textDecoration: "none" }}>The 5 Strategic Passes: Deep Dives &amp; Live Telemetry</a></li>
+              <li><a href="#the-five-critical-passes" style={{ color: "var(--accent-gold, #b45309)", textDecoration: "none" }}>The 5 Strategic Passes: Deep Dives &amp; Live Road Status</a></li>
               <li><a href="#vehicle-demands" style={{ color: "var(--accent-gold, #b45309)", textDecoration: "none" }}>Vehicle Demands: Ground Clearance, 4WD &amp; Turbo Lag</a></li>
               <li><a href="#tunnels-vs-passes" style={{ color: "var(--accent-gold, #b45309)", textDecoration: "none" }}>The Era of Strategic Tunnels: Atal, Z-Morh &amp; Sela</a></li>
               <li><a href="#black-ice-and-water" style={{ color: "var(--accent-gold, #b45309)", textDecoration: "none" }}>Black Ice Physics &amp; Glacial Melt Timers</a></li>
@@ -196,7 +196,7 @@ export default function HimalayanPassesExplainedGuide() {
           {/* Section 2: The 5 Passes */}
           <section id="the-five-critical-passes" style={{ marginBottom: "3rem" }}>
             <h2 style={{ fontFamily: "var(--font-serif, Georgia, serif)", fontSize: "1.75rem", marginBottom: "1.5rem", color: "var(--text-primary, #111827)" }}>
-              The 5 Strategic Passes: Deep Dives &amp; Live Telemetry
+              The 5 Strategic Passes: Deep Dives &amp; Live Road Status
             </h2>
 
             {/* Pass 1: Kunzum */}
@@ -379,7 +379,7 @@ export default function HimalayanPassesExplainedGuide() {
                 fontSize: "0.9375rem",
               }}
             >
-              Open Live Telemetry Tracker →
+              Check Mountain Pass Live Status →
             </Link>
           </section>
 

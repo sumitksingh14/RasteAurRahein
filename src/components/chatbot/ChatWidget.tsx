@@ -563,7 +563,7 @@ export default function ChatWidget() {
                       style={{ color: "#a1a1aa" }}
                     >
                       <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#22c55e" }} />
-                      Live Telemetry &amp; BRO Synced
+                      Live Road Status &amp; BRO Synced
                     </p>
                   </div>
                 </div>

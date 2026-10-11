@@ -592,7 +592,7 @@ export default function TripTabs({ trip }: TripTabsProps) {
         <div id="altitude" style={{ scrollMarginTop: "calc(var(--nav-height, 60px) + 70px)" }} />
         <h2 id="heading-map" className="trip-section-header">
           <Map size={22} style={{ color: "var(--accent-teal, #2dd4bf)" }} />
-          Route Map, Elevation Profile &amp; Telemetry
+          Route Map, Elevation Profile &amp; Road Info
         </h2>
         <div
           style={{

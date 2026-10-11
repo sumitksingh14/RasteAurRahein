@@ -74,7 +74,7 @@ export default function RoadConditionsPage() {
             marginBottom: "1rem",
           }}
         >
-          ⛰ Telemetry Corridor
+          ⛰ Mountain Road Status
         </span>
         <h1
           style={{

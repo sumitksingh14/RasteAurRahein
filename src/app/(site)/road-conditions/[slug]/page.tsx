@@ -449,7 +449,7 @@ export default async function PassDetailPage({ params }: PageProps) {
                 textDecoration: "none",
               }}
             >
-              ← Back to All Himalayan Passes &amp; Live Telemetry
+              ← Back to All Himalayan Passes &amp; Road Status
             </Link>
           </div>
         </div>
