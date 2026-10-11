@@ -1,10 +1,8 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { ShieldCheck, ArrowRight, UserCheck } from "lucide-react";
 import type { Author } from "@/lib/types";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 
 interface AuthorCardProps {
   author?: Author;

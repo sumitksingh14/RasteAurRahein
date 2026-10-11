@@ -6,8 +6,6 @@ export const DEMO_AUTHOR: Author = {
   name: "Sumit Singh",
   slug: "sumit-singh",
   bio: "Sumit Singh is a storyteller of roads and a builder of systems. As a travel writer and photographer, he captures the raw beauty of India’s untamed landscapes — from high-altitude deserts and forgotten monasteries to bustling bazaars and coastal trails. As an IT professional, he brings the same curiosity and problem-solving mindset to the digital world, navigating code and architecture with the precision of someone who has learned to read both maps and machines.",
-  get socialLinks() {
-    return getActiveSocialLinks().map((s) => ({ platform: s.id, url: s.href }));
-  },
+  socialLinks: getActiveSocialLinks().map((s) => ({ platform: s.id, url: s.href })),
 };
 
