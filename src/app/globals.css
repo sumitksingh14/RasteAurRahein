@@ -85,7 +85,7 @@
 }
 
 /* Dark mode — Silk uses a deeper clay surface in dark */
-.dark {
+.dark, [data-theme="dark"] {
   --bg-clay: #1e1b4b;
   --bg-primary: #1e1b4b;
   --bg-secondary: #211e54;
@@ -115,6 +115,39 @@
   --shadow-glow: 0 0 24px rgba(129, 140, 248, 0.25);
 }
 
+/* Outdoor mode — high-contrast black/amber tokens for direct sunlight readability */
+.outdoor, [data-theme="outdoor"] {
+  --bg-clay: #000000;
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-card: #0d0d0d;
+  --bg-card-hover: #171717;
+  --bg-glass: rgba(0, 0, 0, 0.96);
+
+  --text-primary: #ffffff;
+  --text-secondary: #f3f4f6;
+  --text-muted: #d1d5db;
+
+  --accent-gold: #fbbf24;
+  --accent-gold-light: #fde68a;
+  --accent-gold-dim: rgba(251, 191, 36, 0.20);
+  --accent-yellow: #f59e0b;
+  --accent-yellow-dim: rgba(245, 158, 11, 0.20);
+  --accent-teal: #38bdf8;
+  --accent-rose: #f43f5e;
+
+  --border: rgba(255, 255, 255, 0.30);
+  --border-accent: #fbbf24;
+
+  --shadow-neo-raised: 0 0 0 1px rgba(255, 255, 255, 0.30), 0 4px 12px rgba(0, 0, 0, 0.9);
+  --shadow-neo-raised-lg: 0 0 0 2px #fbbf24, 0 8px 24px rgba(0, 0, 0, 0.95);
+  --shadow-neo-inset: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+  --shadow-sm: var(--shadow-neo-raised);
+  --shadow-md: var(--shadow-neo-raised);
+  --shadow-lg: var(--shadow-neo-raised-lg);
+  --shadow-glow: 0 0 24px rgba(251, 191, 36, 0.40);
+}
+
 /* Force Dark context for sections with dark backgrounds */
 .force-dark {
   --text-primary: #ffffff;
@@ -142,7 +175,7 @@ html {
   -webkit-text-size-adjust: 100%;
   overflow-x: hidden;
   max-width: 100vw;
-  background-color: #e8eaf0; /* Silk clay base */
+  background-color: var(--bg-primary, #1e1b4b);
 }
 
 body {

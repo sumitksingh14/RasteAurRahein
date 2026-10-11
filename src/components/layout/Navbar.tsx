@@ -9,6 +9,7 @@ import { useAuth } from "@/components/providers/AuthProvider";
 import AIItineraryButton from "@/components/ai/AIItineraryButton";
 import NavSearchBar from "@/components/ui/NavSearchBar";
 import type { SearchIndexEntry } from "@/components/ui/NavSearchBar";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 /** Primary desktop nav — ≤ 4 items so the bar never wraps */
 const PRIMARY_NAV = [
@@ -84,12 +85,14 @@ export default function Navbar({ searchIndex = [] }: NavbarProps) {
           height: "var(--nav-height)",
           display: "flex",
           alignItems: "center",
-          backgroundColor: "#e8eaf0",
-          borderBottom: "none",
+          backgroundColor: "var(--bg-glass, var(--bg-primary, #e8eaf0))",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          borderBottom: "1px solid var(--border, rgba(0,0,0,0.06))",
           boxShadow: scrolled
-            ? "6px 6px 12px rgba(0,0,0,0.08), -6px -6px 12px rgba(255,255,255,0.60)"
+            ? "var(--shadow-neo-raised, 6px 6px 12px rgba(0,0,0,0.08))"
             : "0 2px 8px rgba(0,0,0,0.04)",
-          transition: "box-shadow 0.25s ease",
+          transition: "box-shadow 0.25s ease, background-color 0.25s ease",
         }}
       >
         <div
@@ -378,6 +381,8 @@ export default function Navbar({ searchIndex = [] }: NavbarProps) {
             {/* Typeahead Search */}
             <NavSearchBar index={searchIndex} />
 
+            {/* Display Theme Toggle */}
+            <ThemeToggle variant="compact" />
 
             {/* Auth */}
             {user ? (
@@ -578,8 +583,8 @@ export default function Navbar({ searchIndex = [] }: NavbarProps) {
             right: 0,
             bottom: 0,
             width: "min(320px, 85vw)",
-            background: "#e8eaf0",
-            borderLeft: "none",
+            background: "var(--bg-card, #1e1b4b)",
+            borderLeft: "1px solid var(--border, rgba(255, 255, 255, 0.1))",
             padding: "calc(var(--nav-height) + 2rem) 2rem 2rem",
             display: "flex",
             flexDirection: "column",
@@ -643,14 +648,19 @@ export default function Navbar({ searchIndex = [] }: NavbarProps) {
             Dashboard
           </Link>
 
-          <div style={{ marginTop: "auto", paddingTop: "2rem", borderTop: "1px solid rgba(99,102,241,0.12)" }}>
+          {/* Theme Toggle (Mobile) */}
+          <div style={{ marginTop: "1rem", paddingTop: "1rem", borderTop: "1px solid var(--border, rgba(99,102,241,0.12))" }}>
+            <ThemeToggle variant="segmented" />
+          </div>
+
+          <div style={{ marginTop: "auto", paddingTop: "1.5rem", borderTop: "1px solid var(--border, rgba(99,102,241,0.12))" }}>
             <Link
               href="/import"
               style={{
                 display: "flex",
                 alignItems: "center",
                 gap: "8px",
-                color: "#68726b",
+                color: "var(--text-muted, #68726b)",
                 fontSize: "0.875rem",
                 padding: "0.5rem 0",
                 textDecoration: "none",

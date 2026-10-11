@@ -116,6 +116,12 @@ export default function RootLayout({
         <link rel="preconnect" href="https://cdn.sanity.io" />
         <link rel="preconnect" href="https://images.unsplash.com" />
         <WebSiteSchema />
+        {/* Zero-FOWT: execute theme initialization before paint */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var s=localStorage.getItem('rar_theme')||localStorage.getItem('theme');var t=(s==='light'||s==='outdoor')?s:'dark';var d=document.documentElement;d.setAttribute('data-theme',t);if(t==='dark'){d.classList.add('dark');d.classList.remove('outdoor');}else if(t==='outdoor'){d.classList.add('dark','outdoor');}else{d.classList.remove('dark','outdoor');}}catch(e){}})();`,
+          }}
+        />
       </head>
       <body>
         <ThemeProvider>

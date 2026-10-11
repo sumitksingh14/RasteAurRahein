@@ -2,46 +2,75 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
-type Theme = "light" | "dark";
+export type Theme = "dark" | "light" | "outdoor";
 
-const ThemeContext = createContext<{
+interface ThemeContextType {
   theme: Theme;
+  setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
-}>({
-  theme: "light",
+}
+
+const ThemeContext = createContext<ThemeContextType>({
+  theme: "dark",
+  setTheme: () => {},
   toggleTheme: () => {},
 });
 
+function applyThemeToDocument(theme: Theme) {
+  if (typeof document === "undefined") return;
+  const root = document.documentElement;
+  root.setAttribute("data-theme", theme);
+  if (theme === "dark") {
+    root.classList.add("dark");
+    root.classList.remove("outdoor");
+  } else if (theme === "outdoor") {
+    root.classList.add("dark", "outdoor");
+  } else {
+    root.classList.remove("dark", "outdoor");
+  }
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  // Default to light theme (Figma design is light-first)
-  const [theme, setTheme] = useState<Theme>("light");
+  // Default to dark theme per site design specifications
+  const [theme, setThemeState] = useState<Theme>("dark");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const stored = localStorage.getItem("theme") as Theme | null;
-    if (stored === "light" || stored === "dark") {
-      setTheme(stored);
-      document.documentElement.classList.toggle("dark", stored === "dark");
-    } else {
-      // Default: light (no class needed since :root is light)
-      document.documentElement.classList.remove("dark");
+    try {
+      const stored = (localStorage.getItem("rar_theme") || localStorage.getItem("theme")) as Theme | null;
+      if (stored === "light" || stored === "dark" || stored === "outdoor") {
+        setThemeState(stored);
+        applyThemeToDocument(stored);
+      } else {
+        setThemeState("dark");
+        applyThemeToDocument("dark");
+      }
+    } catch {
+      setThemeState("dark");
+      applyThemeToDocument("dark");
     }
   }, []);
 
-  const toggleTheme = () => {
-    const next = theme === "light" ? "dark" : "light";
-    setTheme(next);
-    localStorage.setItem("theme", next);
-    document.documentElement.classList.toggle("dark", next === "dark");
+  const setTheme = (next: Theme) => {
+    setThemeState(next);
+    try {
+      localStorage.setItem("rar_theme", next);
+      localStorage.setItem("theme", next);
+    } catch {
+      // Ignore quota/private browsing issues
+    }
+    applyThemeToDocument(next);
   };
 
-  if (!mounted) {
-    return <>{children}</>;
-  }
+  const toggleTheme = () => {
+    // Cycles: dark -> outdoor -> light -> dark
+    const next: Theme = theme === "dark" ? "outdoor" : theme === "outdoor" ? "light" : "dark";
+    setTheme(next);
+  };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
