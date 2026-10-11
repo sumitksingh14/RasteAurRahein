@@ -655,7 +655,7 @@ export default function TripTabs({ trip }: TripTabsProps) {
         />
 
         <div style={{ marginTop: "2rem", display: "flex", flexDirection: "column", gap: "2rem" }}>
-          <ElevationProfile tripSlug={trip.slug} tripTitle={trip.title} />
+          <ElevationProfile tripSlug={trip.slug} tripTitle={trip.title} itinerary={trip.itinerary} />
           <PermitVault tripSlug={trip.slug} />
           <FuelRestStops tripSlug={trip.slug} tripTitle={trip.title} />
         </div>
