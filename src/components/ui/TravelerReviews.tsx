@@ -258,17 +258,95 @@ function ReviewCard({ review }: { review: Review }) {
 
 // ─── Main Export ──────────────────────────────────────────────────────────────
 export default function TravelerReviews({ tripSlug }: { tripSlug: string }) {
-  // First, try trip-specific reviews. Fall back to generic site testimonials.
+  // Check for trip-specific reviews
   const tripReviews = SEED_REVIEWS.filter((r) =>
     r.tripSlugs.some(
       (s) => s === tripSlug || tripSlug.includes(s) || s.includes(tripSlug)
     )
   );
-  const fallbackReviews = SEED_REVIEWS.filter((r) => r.tripSlugs.length === 0);
-  const reviews = tripReviews.length > 0 ? tripReviews : fallbackReviews.slice(0, 2);
 
-  // Compute aggregate rating for display
-  const avgRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+  // If no reviews exist for this trip, render compact "Be the first to share" prompt
+  if (tripReviews.length === 0) {
+    return (
+      <section aria-label="Traveler reviews and testimonials">
+        <div
+          className="glass-card"
+          style={{
+            padding: "1.5rem 1.75rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "1.25rem",
+            flexWrap: "wrap",
+            borderRadius: "var(--radius-md)",
+            border: "1px dashed var(--border)",
+            background: "var(--bg-secondary)",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem", flex: "1 1 260px" }}>
+            <div
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: "50%",
+                background: "var(--accent-gold-dim)",
+                border: "1px solid var(--border-accent)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "1.25rem",
+                flexShrink: 0,
+              }}
+              aria-hidden="true"
+            >
+              ✍️
+            </div>
+            <div>
+              <h3
+                style={{
+                  fontSize: "1rem",
+                  fontWeight: 700,
+                  color: "var(--text-primary)",
+                  margin: 0,
+                  fontFamily: "var(--font-sans)",
+                }}
+              >
+                Traveled this route recently?
+              </h3>
+              <p
+                style={{
+                  fontSize: "0.82rem",
+                  color: "var(--text-muted)",
+                  margin: "0.2rem 0 0",
+                  lineHeight: 1.4,
+                }}
+              >
+                Be the first to share road updates, homestay notes, or tips for fellow travelers.
+              </p>
+            </div>
+          </div>
+
+          <Link
+            href={`/stories/submit?trip=${encodeURIComponent(tripSlug)}`}
+            className="btn btn-secondary"
+            style={{
+              fontSize: "0.82rem",
+              padding: "0.55rem 1.25rem",
+              textDecoration: "none",
+              whiteSpace: "nowrap",
+              flexShrink: 0,
+            }}
+          >
+            Be the First to Share
+          </Link>
+        </div>
+      </section>
+    );
+  }
+
+  // Flag-driven: show review count only when there are at least 3 reviews
+  const showReviewCount = tripReviews.length >= 3;
+  const avgRating = tripReviews.reduce((sum, r) => sum + r.rating, 0) / tripReviews.length;
   const roundedAvg = Math.round(avgRating * 10) / 10;
 
   return (
@@ -319,15 +397,17 @@ export default function TravelerReviews({ tripSlug }: { tripSlug: string }) {
             }}
           >
             <StarRating rating={Math.round(avgRating)} size={13} />
-            <span
-              style={{
-                fontSize: "0.8rem",
-                color: "var(--text-muted)",
-                fontWeight: 500,
-              }}
-            >
-              {roundedAvg}/5 &middot; {reviews.length} review{reviews.length !== 1 ? "s" : ""}
-            </span>
+            {showReviewCount && (
+              <span
+                style={{
+                  fontSize: "0.8rem",
+                  color: "var(--text-muted)",
+                  fontWeight: 500,
+                }}
+              >
+                {roundedAvg}/5 &middot; {tripReviews.length} reviews
+              </span>
+            )}
           </div>
         </div>
 
@@ -354,7 +434,7 @@ export default function TravelerReviews({ tripSlug }: { tripSlug: string }) {
           gap: "1.25rem",
         }}
       >
-        {reviews.map((review) => (
+        {tripReviews.map((review) => (
           <ReviewCard key={review.id} review={review} />
         ))}
       </div>

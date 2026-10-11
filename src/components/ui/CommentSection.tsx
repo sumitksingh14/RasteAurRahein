@@ -108,7 +108,22 @@ export default function CommentSection({ tripSlug }: CommentSectionProps) {
           <div>
             <h2 className="comment-section-title">Traveller Comments</h2>
             <p className="comment-section-count">
-              {loading ? "Loading…" : `${comments.length} ${comments.length === 1 ? "comment" : "comments"}`}
+              {loading ? (
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "72px",
+                    height: "12px",
+                    borderRadius: "4px",
+                    background: "var(--border)",
+                    animation: "pulse 1.5s infinite",
+                    verticalAlign: "middle",
+                  }}
+                  aria-label="Loading comment count"
+                />
+              ) : (
+                `${comments.length} ${comments.length === 1 ? "comment" : "comments"}`
+              )}
             </p>
           </div>
         </div>
