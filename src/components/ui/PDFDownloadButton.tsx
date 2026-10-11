@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Download, Lock } from "lucide-react";
+import { Download, Check, Loader2, Mail, FileText, ArrowRight } from "lucide-react";
 import type { Trip } from "@/lib/types";
 import { useAuth } from "@/components/providers/AuthProvider";
 
@@ -15,16 +15,18 @@ interface PDFDownloadButtonProps {
  */
 export default function PDFDownloadButton({ trip }: PDFDownloadButtonProps) {
   const [loading, setLoading] = useState(false);
-  const { user, openAuthModal } = useAuth();
+  const [downloaded, setDownloaded] = useState(false);
+  const [showEmailGate, setShowEmailGate] = useState(false);
+  const [email, setEmail] = useState("");
+  const [honeypot, setHoneypot] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [attempts, setAttempts] = useState(0);
+  const { user } = useAuth();
 
-  const handleDownload = async () => {
-    // If not logged in, open auth modal instead
-    if (!user) {
-      openAuthModal();
-      return;
-    }
+  const executePdfGeneration = async () => {
     if (loading) return;
     setLoading(true);
+    setErrorMsg("");
     try {
       // Dynamic import so PDF libs don't bloat the initial JS bundle
       const { pdf, Document, Page, Text, View, StyleSheet, Font } =
@@ -363,21 +365,178 @@ export default function PDFDownloadButton({ trip }: PDFDownloadButtonProps) {
       a.download = `${trip.slug}-itinerary.pdf`;
       a.click();
       URL.revokeObjectURL(url);
+      setDownloaded(true);
+      setTimeout(() => setDownloaded(false), 4000);
     } catch (err) {
       console.error("PDF generation failed:", err);
-      alert("Could not generate PDF. Please try again.");
+      setErrorMsg("Could not generate PDF. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
+  const handleInitialClick = () => {
+    // If logged in, generate immediately
+    if (user) {
+      executePdfGeneration();
+      return;
+    }
+    // Check if user already provided email previously
+    try {
+      const stored = localStorage.getItem("rar_captured_email");
+      if (stored && stored.includes("@")) {
+        executePdfGeneration();
+        return;
+      }
+    } catch {
+      // ignore
+    }
+    setShowEmailGate(true);
+  };
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Honeypot bot protection
+    if (honeypot) return;
+
+    // Rate limiting (max 4 tries)
+    if (attempts >= 4) {
+      setErrorMsg("Too many attempts. Please try again in a few minutes.");
+      return;
+    }
+    setAttempts((prev) => prev + 1);
+
+    if (!email || !email.includes("@")) {
+      setErrorMsg("Please enter a valid email address.");
+      return;
+    }
+
+    try {
+      await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.trim(),
+          source: `pdf-${trip.slug}`,
+        }),
+      });
+      try {
+        localStorage.setItem("rar_captured_email", email.trim());
+      } catch {
+        // ignore
+      }
+      setShowEmailGate(false);
+      executePdfGeneration();
+    } catch (err) {
+      console.warn("Newsletter lead sync notice:", err);
+      // Still allow PDF download even if newsletter endpoint temporarily errs
+      setShowEmailGate(false);
+      executePdfGeneration();
+    }
+  };
+
+  if (showEmailGate) {
+    return (
+      <div
+        className="glass-card"
+        style={{
+          marginTop: "0.75rem",
+          padding: "1rem 1.25rem",
+          borderRadius: "var(--radius-md)",
+          border: "1px solid var(--border-accent)",
+          background: "var(--bg-secondary)",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "0.35rem" }}>
+          <Mail size={15} color="var(--accent-gold)" />
+          <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-primary)" }}>
+            Get PDF Itinerary Guide
+          </span>
+        </div>
+        <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", margin: "0 0 0.75rem", lineHeight: 1.4 }}>
+          Enter your email to download the offline PDF itinerary.
+        </p>
+
+        <form onSubmit={handleFormSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          {/* Honeypot field */}
+          <input
+            type="text"
+            name="b_url"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            style={{ display: "none" }}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+          />
+
+          <div style={{ display: "flex", gap: "6px" }}>
+            <input
+              type="email"
+              required
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (errorMsg) setErrorMsg("");
+              }}
+              style={{
+                flex: 1,
+                minWidth: 0,
+                padding: "0.55rem 0.75rem",
+                borderRadius: "var(--radius-sm)",
+                border: "1px solid var(--border)",
+                background: "var(--bg-card)",
+                color: "var(--text-primary)",
+                fontSize: "0.82rem",
+                outline: "none",
+              }}
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "4px",
+                padding: "0.55rem 0.85rem",
+                borderRadius: "var(--radius-sm)",
+                border: "none",
+                background: "var(--accent-gold)",
+                color: "var(--bg-primary)",
+                fontSize: "0.8rem",
+                fontWeight: 700,
+                cursor: loading ? "wait" : "pointer",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {loading ? <Loader2 size={13} className="animate-spin" /> : <ArrowRight size={13} />}
+              <span>{loading ? "Exporting…" : "Get PDF"}</span>
+            </button>
+          </div>
+
+          {errorMsg && (
+            <div style={{ fontSize: "0.72rem", color: "#ef4444", marginTop: "2px" }}>
+              {errorMsg}
+            </div>
+          )}
+
+          <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", marginTop: "2px", lineHeight: 1.3 }}>
+            🔒 Free download • We never sell your data • Unsubscribe anytime
+          </div>
+        </form>
+      </div>
+    );
+  }
+
   return (
     <button
-      onClick={handleDownload}
+      onClick={handleInitialClick}
       disabled={loading}
       id="pdf-download-btn"
       className="btn btn-outline"
-      title={!user ? "Sign in to download the itinerary PDF" : undefined}
+      aria-label="Download itinerary PDF"
       style={{
         width: "100%",
         justifyContent: "center",
@@ -388,8 +547,14 @@ export default function PDFDownloadButton({ trip }: PDFDownloadButtonProps) {
         position: "relative",
       }}
     >
-      {!user ? <Lock size={14} style={{ opacity: 0.7 }} /> : <Download size={15} />}
-      {loading ? "Generating PDF…" : !user ? "Sign in to Export PDF" : "Download Itinerary PDF"}
+      {loading ? (
+        <Loader2 size={15} className="animate-spin" />
+      ) : downloaded ? (
+        <Check size={15} color="#10b981" />
+      ) : (
+        <Download size={15} />
+      )}
+      {loading ? "Generating PDF…" : downloaded ? "PDF Downloaded!" : "Download Itinerary PDF"}
     </button>
   );
 }
