@@ -35,6 +35,7 @@ import TripPartnerLinks from "@/components/ui/TripPartnerLinks";
 import QuickFactsBox from "@/components/ui/QuickFactsBox";
 import TripLeadCapture from "@/components/ui/TripLeadCapture";
 import { getGuidesForTrip } from "@/lib/data/guides";
+import TripMobileActionBar from "@/components/ui/TripMobileActionBar";
 
 import { getTripImage } from "@/lib/data/tripImages";
 import { shouldDisplayPublicViewCount } from "@/lib/site-config";
@@ -765,7 +766,7 @@ export default async function TripDetailPage({ params }: Props) {
       {/* ============================================================
           CUSTOM PLANNING CTA
       ============================================================ */}
-      <section style={{ padding: "3rem 0", borderTop: "1px solid var(--border)" }}>
+      <section id="plan-trip" style={{ padding: "3rem 0", borderTop: "1px solid var(--border)" }}>
         <div className="container" style={{ maxWidth: 860 }}>
           <TripCTABlock trip={trip} />
         </div>
@@ -791,6 +792,8 @@ export default async function TripDetailPage({ params }: Props) {
           }
         }
       `}</style>
+      {/* Mobile-only sticky bottom bar past hero */}
+      <TripMobileActionBar trip={trip} />
     </article>
   );
 }
