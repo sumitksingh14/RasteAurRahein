@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Mail, MapPin } from "lucide-react";
 import { REGIONS } from "@/lib/regions";
 import { useAuth } from "@/components/providers/AuthProvider";
@@ -103,12 +102,11 @@ export default function Footer() {
                 letterSpacing: "-0.02em",
               }}
             >
-              <Image
+              <img
                 src="/logo.png"
                 alt="Raste Aur Rahein Logo"
                 width={44}
                 height={32}
-                quality={75}
                 loading="lazy"
                 style={{ width: "auto", height: "32px", objectFit: "contain", flexShrink: 0, borderRadius: "6px" }}
               />

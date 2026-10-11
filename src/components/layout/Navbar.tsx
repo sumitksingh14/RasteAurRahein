@@ -597,12 +597,12 @@ export default function Navbar({ searchIndex = [] }: NavbarProps) {
           {[
             ...PRIMARY_NAV,
             { href: "/regions", label: "Regions" },
-            ...MORE_NAV.map(({ href, label }) => ({ href, label })),
+            ...MORE_NAV.filter((item) => item.href !== "/regions").map(({ href, label }) => ({ href, label })),
           ].map((link) => {
             const isActive = pathname.startsWith(link.href);
             return (
               <Link
-                key={link.href}
+                key={`mobile-nav-${link.href}`}
                 href={link.href}
                 style={{
                   display: "block",
