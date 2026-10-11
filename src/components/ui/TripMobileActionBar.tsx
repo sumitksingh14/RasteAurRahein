@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Download, Check, Loader2, Sparkles } from "lucide-react";
 import type { Trip } from "@/lib/types";
 import { extractTripWaypoints, generateGPXContent, downloadGPXFile } from "@/lib/gpxExporter";
@@ -10,6 +11,7 @@ interface TripMobileActionBarProps {
 }
 
 export default function TripMobileActionBar({ trip }: TripMobileActionBarProps) {
+  const router = useRouter();
   const [visible, setVisible] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
@@ -20,8 +22,11 @@ export default function TripMobileActionBar({ trip }: TripMobileActionBarProps) 
 
     const handleScroll = () => {
       // Appear once scrolled past the hero (~420px)
-      const shouldShow = window.scrollY > 420;
-      setVisible(shouldShow);
+      const scrolledPastHero = window.scrollY > 420;
+      // Hide when near the bottom/footer so it does not obstruct comments or footer
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const nearBottom = maxScroll - window.scrollY < 120;
+      setVisible(scrolledPastHero && !nearBottom);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -61,9 +66,14 @@ export default function TripMobileActionBar({ trip }: TripMobileActionBarProps) 
   const handlePlanWithMe = () => {
     const planSection = document.getElementById("plan-trip");
     if (planSection) {
-      planSection.scrollIntoView({ behavior: "smooth" });
+      const navHeight =
+        parseInt(
+          getComputedStyle(document.documentElement).getPropertyValue("--nav-height")
+        ) || 60;
+      const y = planSection.getBoundingClientRect().top + window.scrollY - navHeight - 16;
+      window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
     } else {
-      window.location.href = `/ai-planner?destination=${encodeURIComponent(trip.title)}`;
+      router.push(`/ai-planner?destination=${encodeURIComponent(trip.title)}`);
     }
   };
 

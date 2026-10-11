@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Map, List, DollarSign, Hotel, Utensils, Gauge, Cloud, Sparkles, ExternalLink, CheckSquare, BookOpen, FileText } from "lucide-react";
+import { Map, List, DollarSign, Hotel, Sparkles, ExternalLink, CheckSquare, BookOpen } from "lucide-react";
 import ItineraryAccordion from "@/components/ui/ItineraryAccordion";
 import MapView from "@/components/ui/MapView";
 import StaySuggestions from "@/components/ui/StaySuggestions";
@@ -10,7 +10,7 @@ import FuelRestStops from "@/components/ui/FuelRestStops";
 import WeatherPanel from "@/components/ui/WeatherPanel";
 import GPXDownloadButton from "@/components/ui/GPXDownloadButton";
 import GoogleMapsRouteButton from "@/components/ui/GoogleMapsRouteButton";
-import { extractWaypointsFromItinerary, type ItineraryActivity, type ItineraryDay as RouteDay } from "@/lib/googleMapsRoute";
+import { extractWaypointsFromItinerary } from "@/lib/googleMapsRoute";
 import BudgetEstimator from "@/components/ui/BudgetEstimator";
 import ElevationProfile from "@/components/ui/ElevationProfile";
 import PermitVault from "@/components/ui/PermitVault";
@@ -457,35 +457,54 @@ export default function TripTabs({ trip }: TripTabsProps) {
       reports: "stories",
     };
 
+    // Helper: horizontally center tab button inside sticky tabs container without touching window scroll
+    const centerTabButton = (tabId: SectionId) => {
+      const container = document.getElementById("trip-tabs-container");
+      const btn = document.getElementById(`tab-${tabId}`);
+      if (container && btn) {
+        const containerRect = container.getBoundingClientRect();
+        const btnRect = btn.getBoundingClientRect();
+        const leftOffset = btnRect.left - containerRect.left + container.scrollLeft;
+        const targetScrollLeft = leftOffset - (container.clientWidth / 2 - btnRect.width / 2);
+        container.scrollTo({ left: targetScrollLeft, behavior: "smooth" });
+      }
+    };
+
     if (hash && hashMapping[hash]) {
       const secId = hashMapping[hash];
-      setActiveSection(secId);
-      const targetEl = document.getElementById(hash) || document.getElementById(secId);
-      if (targetEl) {
-        setTimeout(() => {
-          targetEl.scrollIntoView({ behavior: "smooth" });
-        }, 150);
-      }
+      setTimeout(() => {
+        setActiveSection(secId);
+        centerTabButton(secId);
+        const targetEl = document.getElementById(hash) || document.getElementById(secId);
+        if (targetEl) {
+          const navHeight =
+            parseInt(
+              getComputedStyle(document.documentElement).getPropertyValue("--nav-height")
+            ) || 60;
+          const totalOffset = navHeight + 70;
+          const y = targetEl.getBoundingClientRect().top + window.scrollY - totalOffset;
+          window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+        }
+      }, 50);
     }
 
     // 2. Scroll-spy tracking via IntersectionObserver
     const observer = new IntersectionObserver(
       (entries) => {
         if (isClickScrolling.current) return;
-        const visible = entries.find((e) => e.isIntersecting);
-        if (visible) {
-          const id = visible.target.getAttribute("id") as SectionId;
+        const intersecting = entries.filter((e) => e.isIntersecting);
+        if (intersecting.length > 0) {
+          // Sort by top offset so topmost visible section is chosen
+          intersecting.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+          const id = intersecting[0].target.getAttribute("id") as SectionId;
           if (id && SECTIONS.some((s) => s.id === id)) {
             setActiveSection(id);
-            const btn = document.getElementById(`tab-${id}`);
-            if (btn) {
-              btn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-            }
+            centerTabButton(id);
           }
         }
       },
       {
-        rootMargin: "-100px 0px -55% 0px",
+        rootMargin: "-110px 0px -40% 0px",
         threshold: 0,
       }
     );
@@ -500,10 +519,26 @@ export default function TripTabs({ trip }: TripTabsProps) {
 
   const handleNavClick = (id: SectionId) => {
     setActiveSection(id);
+    const container = document.getElementById("trip-tabs-container");
+    const btn = document.getElementById(`tab-${id}`);
+    if (container && btn) {
+      const containerRect = container.getBoundingClientRect();
+      const btnRect = btn.getBoundingClientRect();
+      const leftOffset = btnRect.left - containerRect.left + container.scrollLeft;
+      const targetScrollLeft = leftOffset - (container.clientWidth / 2 - btnRect.width / 2);
+      container.scrollTo({ left: targetScrollLeft, behavior: "smooth" });
+    }
+
     isClickScrolling.current = true;
     const targetEl = document.getElementById(id);
     if (targetEl) {
-      targetEl.scrollIntoView({ behavior: "smooth" });
+      const navHeight =
+        parseInt(
+          getComputedStyle(document.documentElement).getPropertyValue("--nav-height")
+        ) || 60;
+      const totalOffset = navHeight + 70;
+      const y = targetEl.getBoundingClientRect().top + window.scrollY - totalOffset;
+      window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
       if (typeof window !== "undefined") {
         history.replaceState(null, "", `#${id}`);
       }

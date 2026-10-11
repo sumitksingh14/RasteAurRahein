@@ -776,7 +776,14 @@ export default async function TripDetailPage({ params }: Props) {
       {/* ============================================================
           CUSTOM PLANNING CTA
       ============================================================ */}
-      <section id="plan-trip" style={{ padding: "3rem 0", borderTop: "1px solid var(--border)" }}>
+      <section
+        id="plan-trip"
+        style={{
+          padding: "3rem 0",
+          borderTop: "1px solid var(--border)",
+          scrollMarginTop: "calc(var(--nav-height, 60px) + 20px)",
+        }}
+      >
         <div className="container" style={{ maxWidth: 860 }}>
           <TripCTABlock trip={trip} />
         </div>
@@ -785,7 +792,14 @@ export default async function TripDetailPage({ params }: Props) {
       {/* ============================================================
           COMMENTS
       ============================================================ */}
-      <section style={{ padding: "4rem 0", borderTop: "1px solid var(--border)" }}>
+      <section
+        id="comments"
+        style={{
+          padding: "4rem 0",
+          borderTop: "1px solid var(--border)",
+          scrollMarginTop: "calc(var(--nav-height, 60px) + 20px)",
+        }}
+      >
         <div className="container" style={{ maxWidth: 760 }}>
           <CommentSection tripSlug={trip.slug} />
         </div>
