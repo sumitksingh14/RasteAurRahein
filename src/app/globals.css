@@ -1776,12 +1776,20 @@ code {
    ============================================================ */
 
 /* Tab bar container with edge fade indicators */
+/* Sticky section navigation bar */
 .trip-tabs-wrapper {
-  position: relative;
-  margin-bottom: 2rem;
+  position: sticky;
+  top: calc(var(--nav-height, 60px) + 0.5rem);
+  z-index: 30;
+  margin-bottom: 2.25rem;
+  padding: 0.4rem 0;
   width: 100%;
   max-width: 100%;
   min-width: 0;
+  background: rgba(15, 17, 23, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 100px;
 }
 
 .trip-tabs-bar {
@@ -1828,6 +1836,31 @@ code {
 .trip-tab-label {
   display: inline !important;
   white-space: nowrap;
+}
+
+/* Scrolling Section Blocks */
+.trip-section-block {
+  scroll-margin-top: calc(var(--nav-height, 60px) + 70px);
+  margin-bottom: 3.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.trip-section-block:last-child {
+  border-bottom: none;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0;
+}
+
+.trip-section-header {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
 /* Mobile Quick Facts Bar (< 900px) */

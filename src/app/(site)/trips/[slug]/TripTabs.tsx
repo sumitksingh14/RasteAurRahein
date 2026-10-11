@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Map, List, DollarSign, Hotel, Utensils, Gauge, Cloud, Sparkles, ExternalLink, CheckSquare, BookOpen, FileText } from "lucide-react";
 import ItineraryAccordion from "@/components/ui/ItineraryAccordion";
 import MapView from "@/components/ui/MapView";
@@ -135,19 +135,15 @@ function useEnrichmentStatuses(tripSlug: string) {
   return statuses;
 }
 
-type TabId = "itinerary" | "map" | "costs" | "stay" | "food" | "route" | "packing" | "weather" | "stories" | "reports";
+type SectionId = "itinerary" | "map" | "costs" | "stay-food" | "packing-weather" | "stories";
 
-const TABS: { id: TabId; label: string; Icon: React.ElementType }[] = [
+const SECTIONS: { id: SectionId; label: string; Icon: React.ElementType }[] = [
   { id: "itinerary", label: "Itinerary", Icon: List },
-  { id: "map", label: "Map", Icon: Map },
+  { id: "map", label: "Map & Altitude", Icon: Map },
   { id: "costs", label: "Costs", Icon: DollarSign },
-  { id: "stay", label: "Stay", Icon: Hotel },
-  { id: "food", label: "Food", Icon: Utensils },
-  { id: "route", label: "Route & Altitude", Icon: Gauge },
-  { id: "packing", label: "Packing", Icon: CheckSquare },
-  { id: "weather", label: "Weather", Icon: Cloud },
-  { id: "stories", label: "Stories & Reviews", Icon: BookOpen },
-  { id: "reports", label: "Field Reports", Icon: FileText },
+  { id: "stay-food", label: "Stay & Food", Icon: Hotel },
+  { id: "packing-weather", label: "Packing & Weather", Icon: CheckSquare },
+  { id: "stories", label: "Stories & Reports", Icon: BookOpen },
 ];
 
 // AI-estimated budget ranges per trip slug (derived from trip type & destination)
@@ -401,9 +397,10 @@ interface TripTabsProps {
 }
 
 export default function TripTabs({ trip }: TripTabsProps) {
-  const [activeTab, setActiveTab] = useState<TabId>("itinerary");
+  const [activeSection, setActiveSection] = useState<SectionId>("itinerary");
   const [reportRefreshKey, setReportRefreshKey] = useState(0);
   const enrichmentStatuses = useEnrichmentStatuses(trip.slug);
+  const isClickScrolling = useRef(false);
 
   // Collect all map pins from itinerary
   const mapPins: MapPin[] =
@@ -441,25 +438,104 @@ export default function TripTabs({ trip }: TripTabsProps) {
   const aiBudget = AI_BUDGET_ESTIMATES[trip.slug] || DEFAULT_BUDGET;
   const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(aiBudget.searchQuery || `${trip.title} budget per day 2024`)}`;
 
+  useEffect(() => {
+    // 1. Deep link hash on initial mount
+    const hash = window.location.hash.replace("#", "");
+    const hashMapping: Record<string, SectionId> = {
+      itinerary: "itinerary",
+      map: "map",
+      route: "map",
+      altitude: "map",
+      costs: "costs",
+      stay: "stay-food",
+      food: "stay-food",
+      "stay-food": "stay-food",
+      packing: "packing-weather",
+      weather: "packing-weather",
+      "packing-weather": "packing-weather",
+      stories: "stories",
+      reports: "stories",
+    };
+
+    if (hash && hashMapping[hash]) {
+      const secId = hashMapping[hash];
+      setActiveSection(secId);
+      const targetEl = document.getElementById(hash) || document.getElementById(secId);
+      if (targetEl) {
+        setTimeout(() => {
+          targetEl.scrollIntoView({ behavior: "smooth" });
+        }, 150);
+      }
+    }
+
+    // 2. Scroll-spy tracking via IntersectionObserver
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (isClickScrolling.current) return;
+        const visible = entries.find((e) => e.isIntersecting);
+        if (visible) {
+          const id = visible.target.getAttribute("id") as SectionId;
+          if (id && SECTIONS.some((s) => s.id === id)) {
+            setActiveSection(id);
+            const btn = document.getElementById(`tab-${id}`);
+            if (btn) {
+              btn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+            }
+          }
+        }
+      },
+      {
+        rootMargin: "-100px 0px -55% 0px",
+        threshold: 0,
+      }
+    );
+
+    SECTIONS.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const handleNavClick = (id: SectionId) => {
+    setActiveSection(id);
+    isClickScrolling.current = true;
+    const targetEl = document.getElementById(id);
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: "smooth" });
+      if (typeof window !== "undefined") {
+        history.replaceState(null, "", `#${id}`);
+      }
+    }
+    setTimeout(() => {
+      isClickScrolling.current = false;
+    }, 800);
+  };
+
   return (
-    <div>
-      {/* Tab Bar — horizontally scrollable pill container with smooth touch scrolling */}
-      <div className="trip-tabs-wrapper">
-        <div className="trip-tabs-bar" id="trip-tabs-container">
-          {TABS.map(({ id, label, Icon }) => {
-            const isActive = activeTab === id;
+    <div className="trip-sections-container">
+      {/* Sticky Section Bar */}
+      <nav
+        className="trip-tabs-wrapper"
+        aria-label="Trip sections navigation"
+        style={{
+          position: "sticky",
+          top: "calc(var(--nav-height, 60px) + 0.5rem)",
+          zIndex: 30,
+        }}
+      >
+        <div className="trip-tabs-bar" id="trip-tabs-container" role="tablist">
+          {SECTIONS.map(({ id, label, Icon }) => {
+            const isActive = activeSection === id;
             return (
               <button
                 key={id}
-                onClick={(e) => {
-                  setActiveTab(id);
-                  e.currentTarget.scrollIntoView({
-                    behavior: "smooth",
-                    inline: "center",
-                    block: "nearest",
-                  });
-                }}
+                onClick={() => handleNavClick(id)}
                 id={`tab-${id}`}
+                role="tab"
+                aria-selected={isActive}
+                aria-controls={id}
                 className="trip-tab-btn"
                 style={{
                   background: isActive ? "var(--bg-card, #1e293b)" : "transparent",
@@ -474,379 +550,403 @@ export default function TripTabs({ trip }: TripTabsProps) {
             );
           })}
         </div>
-      </div>
+      </nav>
 
-      {/* Tab Panels */}
-      {activeTab === "itinerary" && (
-        <div>
-          <h2 style={{ fontFamily: "var(--font-serif, Georgia, serif)", fontSize: "1.35rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 1.25rem" }}>
-            Detailed Itinerary: Day-by-Day Route &amp; Field Notes
-          </h2>
-          {trip.itinerary && trip.itinerary.length > 0 ? (
-            <ItineraryAccordion
-              days={trip.itinerary}
-              destination={trip.title}
-              origin={
-                trip.itinerary[0]?.activities?.find((a) => a.type === "transport")?.location?.name ||
-                ""
-              }
-            />
-          ) : (
-            <div
-              style={{
-                textAlign: "center",
-                padding: "3rem",
-                color: "var(--text-muted)",
-                border: "1px dashed var(--border)",
-                borderRadius: "var(--radius-md)",
-              }}
-            >
-              No detailed itinerary available for this trip.
-            </div>
-          )}
-        </div>
-      )}
-
-      {activeTab === "map" && (
-        <div>
-          <h2 style={{ fontFamily: "var(--font-serif, Georgia, serif)", fontSize: "1.35rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 1.25rem" }}>
-            Route Map &amp; Navigation Coordinates
-          </h2>
+      {/* ──────────────────────────────────────────────────────────
+          1. ITINERARY SECTION
+      ────────────────────────────────────────────────────────── */}
+      <section id="itinerary" className="trip-section-block" aria-labelledby="heading-itinerary">
+        <h2 id="heading-itinerary" className="trip-section-header">
+          <List size={22} style={{ color: "var(--accent-gold)" }} />
+          Detailed Itinerary: Day-by-Day Route &amp; Field Notes
+        </h2>
+        {trip.itinerary && trip.itinerary.length > 0 ? (
+          <ItineraryAccordion
+            days={trip.itinerary}
+            destination={trip.title}
+            origin={
+              trip.itinerary[0]?.activities?.find((a) => a.type === "transport")?.location?.name ||
+              ""
+            }
+          />
+        ) : (
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-              gap: "0.75rem",
-              marginBottom: "1rem",
+              textAlign: "center",
+              padding: "3rem",
+              color: "var(--text-muted)",
+              border: "1px dashed var(--border)",
+              borderRadius: "var(--radius-md)",
             }}
           >
-            <p
+            No detailed itinerary available for this trip.
+          </div>
+        )}
+      </section>
+
+      {/* ──────────────────────────────────────────────────────────
+          2. MAP & ALTITUDE SECTION
+      ────────────────────────────────────────────────────────── */}
+      <section id="map" className="trip-section-block" aria-labelledby="heading-map">
+        <div id="route" style={{ scrollMarginTop: "calc(var(--nav-height, 60px) + 70px)" }} />
+        <div id="altitude" style={{ scrollMarginTop: "calc(var(--nav-height, 60px) + 70px)" }} />
+        <h2 id="heading-map" className="trip-section-header">
+          <Map size={22} style={{ color: "var(--accent-teal, #2dd4bf)" }} />
+          Route Map, Elevation Profile &amp; Telemetry
+        </h2>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "0.75rem",
+            marginBottom: "1rem",
+          }}
+        >
+          <p
+            style={{
+              color: "var(--text-muted)",
+              fontSize: "0.875rem",
+              margin: 0,
+            }}
+          >
+            {mapPins.length > 0
+              ? `${mapPins.length} location${mapPins.length !== 1 ? "s" : ""} pinned along this route`
+              : "Route overview & navigation checkpoints"}
+          </p>
+          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "wrap" }}>
+            <GoogleMapsRouteButton
+              origin={
+                trip.itinerary?.[0]?.activities?.find((a) => a.type === "transport")?.location?.name ||
+                (trip.title.includes("Mumbai") ? "Mumbai" : "Pune")
+              }
+              destination={TRIP_WEATHER_COORDS[trip.slug]?.name || trip.title}
+              waypoints={extractWaypointsFromItinerary(
+                (trip.itinerary || []).map((d) => ({
+                  activities: (d.activities ?? []).map((a) => ({
+                    title: a.title,
+                    type: a.type,
+                    location: a.location
+                      ? { name: a.location.name, lat: a.location.lat, lng: a.location.lng }
+                      : undefined,
+                  })),
+                }))
+              )}
+              compact
+            />
+            <GPXDownloadButton trip={trip} variant="pill" />
+          </div>
+        </div>
+
+        <MapView
+          pins={
+            mapPins.length > 0
+              ? mapPins
+              : [
+                  { lat: 31.42, lng: 77.45, label: "Narkanda", day: 1 },
+                  { lat: 31.59, lng: 78.24, label: "Sangla", day: 2 },
+                  { lat: 31.35, lng: 78.44, label: "Chitkul", day: 3 },
+                  { lat: 32.07, lng: 78.57, label: "Kaza", day: 4 },
+                  { lat: 32.3, lng: 78.02, label: "Chandratal", day: 5 },
+                ]
+          }
+          height={480}
+        />
+
+        <div style={{ marginTop: "2rem", display: "flex", flexDirection: "column", gap: "2rem" }}>
+          <ElevationProfile tripSlug={trip.slug} tripTitle={trip.title} />
+          <PermitVault tripSlug={trip.slug} />
+          <FuelRestStops tripSlug={trip.slug} tripTitle={trip.title} />
+        </div>
+      </section>
+
+      {/* ──────────────────────────────────────────────────────────
+          3. COSTS & BUDGET SECTION
+      ────────────────────────────────────────────────────────── */}
+      <section id="costs" className="trip-section-block" aria-labelledby="heading-costs">
+        <h2 id="heading-costs" className="trip-section-header">
+          <DollarSign size={22} style={{ color: "var(--accent-gold)" }} />
+          Costs, Daily Budget Breakdown &amp; Permits
+        </h2>
+        {/* Smart Budget Estimator */}
+        <BudgetEstimator trip={trip} baseDays={numDays} />
+
+        {grandTotal > 0 ? (
+          /* ── Structured cost data from itinerary ── */
+          <div style={{ marginTop: "1.5rem" }}>
+            {/* Grand Total */}
+            <div
               style={{
-                color: "var(--text-muted)",
-                fontSize: "0.875rem",
-                margin: 0,
+                background: "var(--accent-gold-dim)",
+                border: "1px solid var(--border-accent)",
+                borderRadius: "var(--radius-md)",
+                padding: "1.5rem",
+                marginBottom: "1.5rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                gap: "1rem",
               }}
             >
-              {mapPins.length > 0
-                ? `${mapPins.length} location${mapPins.length !== 1 ? "s" : ""} pinned along this route`
-                : "Route overview — Spiti Valley circuit"}
-            </p>
-            <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "wrap" }}>
-              <GoogleMapsRouteButton
-                origin={
-                  trip.itinerary?.[0]?.activities?.find((a) => a.type === "transport")?.location?.name ||
-                  (trip.title.includes("Mumbai") ? "Mumbai" : "Pune")
-                }
-                destination={TRIP_WEATHER_COORDS[trip.slug]?.name || trip.title}
-                waypoints={extractWaypointsFromItinerary(
-                  (trip.itinerary || []).map((d) => ({
-                    activities: (d.activities ?? []).map((a) => ({
-                      title: a.title,
-                      type: a.type,
-                      location: a.location
-                        ? { name: a.location.name, lat: a.location.lat, lng: a.location.lng }
-                        : undefined,
-                    })),
-                  }))
-                )}
-                compact
-              />
-              <GPXDownloadButton trip={trip} variant="pill" />
+              <div>
+                <div
+                  style={{
+                    fontSize: "0.75rem",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.1em",
+                    color: "var(--accent-gold)",
+                    fontWeight: 600,
+                    marginBottom: "0.25rem",
+                  }}
+                >
+                  Total Trip Cost
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-serif)",
+                    fontSize: "2.5rem",
+                    fontWeight: 700,
+                    color: "var(--accent-gold)",
+                    lineHeight: 1,
+                  }}
+                >
+                  ₹{grandTotal.toLocaleString()}
+                </div>
+              </div>
+              <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", textAlign: "right" }}>
+                <div>{costsByDay.length} days tracked</div>
+                <div>Avg ₹{Math.round(grandTotal / Math.max(costsByDay.length, 1)).toLocaleString()} / day</div>
+              </div>
             </div>
-          </div>
 
-          <MapView
-            pins={
-              mapPins.length > 0
-                ? mapPins
-                : [
-                    { lat: 31.42, lng: 77.45, label: "Narkanda", day: 1 },
-                    { lat: 31.59, lng: 78.24, label: "Sangla", day: 2 },
-                    { lat: 31.35, lng: 78.44, label: "Chitkul", day: 3 },
-                    { lat: 32.07, lng: 78.57, label: "Kaza", day: 4 },
-                    { lat: 32.3, lng: 78.02, label: "Chandratal", day: 5 },
-                  ]
-            }
-            height={480}
-          />
-        </div>
-      )}
-
-      {activeTab === "costs" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-          <h2 style={{ fontFamily: "var(--font-serif, Georgia, serif)", fontSize: "1.35rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 0.5rem" }}>
-            Costs, Daily Budget Breakdown &amp; Permits
-          </h2>
-          {/* Smart Budget Estimator */}
-          <BudgetEstimator trip={trip} baseDays={numDays} />
-
-          {grandTotal > 0 ? (
-            /* ── Structured cost data from itinerary ── */
-            <div>
-              {/* Grand Total */}
+            {/* Day-by-day breakdown */}
+            {costsByDay.filter((d) => d.total > 0).map((day) => (
               <div
+                key={day.dayNumber}
                 style={{
-                  background: "var(--accent-gold-dim)",
-                  border: "1px solid var(--border-accent)",
+                  border: "1px solid var(--border)",
                   borderRadius: "var(--radius-md)",
-                  padding: "1.5rem",
-                  marginBottom: "1.5rem",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  flexWrap: "wrap",
-                  gap: "1rem",
+                  marginBottom: "0.75rem",
+                  overflow: "hidden",
                 }}
               >
-                <div>
-                  <div
-                    style={{
-                      fontSize: "0.75rem",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.1em",
-                      color: "var(--accent-gold)",
-                      fontWeight: 600,
-                      marginBottom: "0.25rem",
-                    }}
-                  >
-                    Total Trip Cost
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: "var(--font-serif)",
-                      fontSize: "2.5rem",
-                      fontWeight: 700,
-                      color: "var(--accent-gold)",
-                      lineHeight: 1,
-                    }}
-                  >
-                    ₹{grandTotal.toLocaleString()}
-                  </div>
-                </div>
-                <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", textAlign: "right" }}>
-                  <div>{costsByDay.length} days tracked</div>
-                  <div>Avg ₹{Math.round(grandTotal / Math.max(costsByDay.length, 1)).toLocaleString()} / day</div>
-                </div>
-              </div>
-
-              {/* Day-by-day breakdown */}
-              {costsByDay.filter((d) => d.total > 0).map((day) => (
                 <div
-                  key={day.dayNumber}
                   style={{
-                    border: "1px solid var(--border)",
-                    borderRadius: "var(--radius-md)",
-                    marginBottom: "0.75rem",
-                    overflow: "hidden",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "1rem 1.25rem",
+                    background: "var(--bg-card)",
+                    borderBottom: "1px solid var(--border)",
                   }}
                 >
+                  <span style={{ fontWeight: 600, color: "var(--text-primary)", fontSize: "0.9rem" }}>
+                    Day {day.dayNumber} — {day.day}
+                  </span>
+                  <span style={{ color: "var(--accent-teal)", fontWeight: 600, fontSize: "0.9rem" }}>
+                    ₹{day.total.toLocaleString()}
+                  </span>
+                </div>
+                {day.activities.map((item, i) => (
                   <div
+                    key={i}
                     style={{
                       display: "flex",
-                      alignItems: "center",
                       justifyContent: "space-between",
-                      padding: "1rem 1.25rem",
-                      background: "var(--bg-card)",
-                      borderBottom: "1px solid var(--border)",
+                      padding: "0.625rem 1.25rem",
+                      borderBottom: i < day.activities.length - 1 ? "1px solid var(--border)" : "none",
+                      background: "var(--bg-secondary)",
                     }}
                   >
-                    <span style={{ fontWeight: 600, color: "var(--text-primary)", fontSize: "0.9rem" }}>
-                      Day {day.dayNumber} — {day.day}
+                    <span style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
+                      {item.name}
                     </span>
-                    <span style={{ color: "var(--accent-teal)", fontWeight: 600, fontSize: "0.9rem" }}>
-                      ₹{day.total.toLocaleString()}
+                    <span style={{ color: "var(--text-primary)", fontSize: "0.875rem", fontWeight: 500 }}>
+                      ₹{item.cost.toLocaleString()}
                     </span>
                   </div>
-                  {day.activities.map((item, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        padding: "0.625rem 1.25rem",
-                        borderBottom: i < day.activities.length - 1 ? "1px solid var(--border)" : "none",
-                        background: "var(--bg-secondary)",
-                      }}
-                    >
-                      <span style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
-                        {item.name}
-                      </span>
-                      <span style={{ color: "var(--text-primary)", fontSize: "0.875rem", fontWeight: 500 }}>
-                        ₹{item.cost.toLocaleString()}
-                      </span>
-                    </div>
-                  ))}
+                ))}
+              </div>
+            ))}
+          </div>
+        ) : (
+          /* ── AI-estimated budget when no structured cost data ── */
+          <div style={{ marginTop: "1.5rem" }}>
+            {/* AI Badge Header */}
+            <div style={{
+              display: "flex", alignItems: "center", gap: "0.6rem",
+              marginBottom: "1.25rem",
+              padding: "0.75rem 1rem",
+              borderRadius: "var(--radius-md)",
+              background: "rgba(139,92,246,0.08)",
+              border: "1px solid rgba(139,92,246,0.25)",
+            }}>
+              <Sparkles size={16} style={{ color: "#a78bfa", flexShrink: 0 }} />
+              <div>
+                <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#a78bfa" }}>
+                  AI-Estimated Budget Range
                 </div>
-              ))}
+                <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginTop: 2 }}>
+                  {aiBudget.source} · per person per day
+                </div>
+              </div>
+              <a
+                href={googleSearchUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  marginLeft: "auto", display: "flex", alignItems: "center", gap: "0.3rem",
+                  fontSize: "0.72rem", color: "var(--accent-teal)", fontWeight: 600,
+                  textDecoration: "none", flexShrink: 0,
+                }}
+              >
+                <ExternalLink size={11} /> Verify
+              </a>
             </div>
-          ) : (
-            /* ── AI-estimated budget when no structured cost data ── */
-            <div>
-              {/* AI Badge Header */}
-              <div style={{
-                display: "flex", alignItems: "center", gap: "0.6rem",
-                marginBottom: "1.25rem",
-                padding: "0.75rem 1rem",
-                borderRadius: "var(--radius-md)",
-                background: "rgba(139,92,246,0.08)",
-                border: "1px solid rgba(139,92,246,0.25)",
-              }}>
-                <Sparkles size={16} style={{ color: "#a78bfa", flexShrink: 0 }} />
-                <div>
-                  <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#a78bfa" }}>
-                    AI-Estimated Budget Range
-                  </div>
-                  <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginTop: 2 }}>
-                    {aiBudget.source} · per person per day
-                  </div>
-                </div>
-                <a
-                  href={googleSearchUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    marginLeft: "auto", display: "flex", alignItems: "center", gap: "0.3rem",
-                    fontSize: "0.72rem", color: "var(--accent-teal)", fontWeight: 600,
-                    textDecoration: "none", flexShrink: 0,
-                  }}
-                >
-                  <ExternalLink size={11} /> Verify
-                </a>
-              </div>
 
-              {/* Category cards */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", marginBottom: "1.5rem" }}>
-                {BUDGET_CATS.map(({ key, label, color }) => {
-                  const [lo, hi] = (aiBudget[key as keyof typeof aiBudget] as [number, number]) || [0, 0];
-                  const midPct = Math.round(((lo + hi) / 2) / (
-                    (BUDGET_CATS.reduce((s, c) => {
-                      const [l, h] = (aiBudget[c.key as keyof typeof aiBudget] as [number, number]) || [0, 0];
-                      return s + (l + h) / 2;
-                    }, 0)) || 1
-                  ) * 100);
-                  return (
-                    <div
-                      key={key}
-                      style={{
-                        border: "1px solid var(--border)",
-                        borderRadius: "var(--radius-md)",
-                        padding: "0.85rem 1rem",
-                        background: "var(--bg-card)",
-                      }}
-                    >
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.45rem" }}>
-                        <span style={{ fontSize: "0.88rem", fontWeight: 600, color: "var(--text-primary)" }}>
-                          {label}
-                        </span>
-                        <span style={{ fontSize: "0.88rem", fontWeight: 700, color }}>
-                          ₹{lo.toLocaleString()} – ₹{hi.toLocaleString()}
-                        </span>
-                      </div>
-                      {/* Mini bar */}
-                      <div style={{ height: 4, borderRadius: 2, background: "var(--border)", overflow: "hidden" }}>
-                        <div style={{ height: "100%", width: `${midPct}%`, background: color, borderRadius: 2, opacity: 0.75 }} />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Daily & total summary */}
-              <div style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(min(160px, 100%), 1fr))",
-                gap: "0.75rem",
-                marginBottom: "1.25rem",
-              }}>
-                {[
-                  {
-                    label: "Daily Budget (budget traveller)",
-                    value: `₹${BUDGET_CATS.reduce((s, c) => s + ((aiBudget[c.key as keyof typeof aiBudget] as [number, number])?.[0] || 0), 0).toLocaleString()}`,
-                    sub: "per person/day",
-                    color: "#4ade80",
-                  },
-                  {
-                    label: "Daily Budget (mid-range)",
-                    value: `₹${BUDGET_CATS.reduce((s, c) => s + ((aiBudget[c.key as keyof typeof aiBudget] as [number, number])?.[1] || 0), 0).toLocaleString()}`,
-                    sub: "per person/day",
-                    color: "#60a5fa",
-                  },
-                  {
-                    label: `${numDays}-Day Trip (budget)`,
-                    value: `₹${(BUDGET_CATS.reduce((s, c) => s + ((aiBudget[c.key as keyof typeof aiBudget] as [number, number])?.[0] || 0), 0) * numDays).toLocaleString()}`,
-                    sub: "estimated total",
-                    color: "#fbbf24",
-                  },
-                  {
-                    label: `${numDays}-Day Trip (mid-range)`,
-                    value: `₹${(BUDGET_CATS.reduce((s, c) => s + ((aiBudget[c.key as keyof typeof aiBudget] as [number, number])?.[1] || 0), 0) * numDays).toLocaleString()}`,
-                    sub: "estimated total",
-                    color: "#f9a8d4",
-                  },
-                ].map((card) => (
+            {/* Category cards */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", marginBottom: "1.5rem" }}>
+              {BUDGET_CATS.map(({ key, label, color }) => {
+                const [lo, hi] = (aiBudget[key as keyof typeof aiBudget] as [number, number]) || [0, 0];
+                const midPct = Math.round(((lo + hi) / 2) / (
+                  (BUDGET_CATS.reduce((s, c) => {
+                    const [l, h] = (aiBudget[c.key as keyof typeof aiBudget] as [number, number]) || [0, 0];
+                    return s + (l + h) / 2;
+                  }, 0)) || 1
+                ) * 100);
+                return (
                   <div
-                    key={card.label}
+                    key={key}
                     style={{
                       border: "1px solid var(--border)",
                       borderRadius: "var(--radius-md)",
-                      padding: "1rem",
-                      background: "var(--bg-secondary)",
-                      textAlign: "center",
-                    }}
-                  >
-                    <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginBottom: "0.35rem" }}>{card.label}</div>
-                    <div style={{ fontFamily: "var(--font-serif)", fontSize: "1.5rem", fontWeight: 700, color: card.color }}>{card.value}</div>
-                    <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", marginTop: 2 }}>{card.sub}</div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Search engine links */}
-              <div style={{
-                padding: "0.85rem 1rem",
-                borderRadius: "var(--radius-md)",
-                border: "1px dashed var(--border)",
-                display: "flex", flexWrap: "wrap", gap: "0.6rem", alignItems: "center",
-              }}>
-                <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>
-                  🔍 Get latest estimates:
-                </span>
-                {[
-                  { label: "Google", url: googleSearchUrl },
-                  { label: "TripAdvisor", url: `https://www.tripadvisor.in/Search?q=${encodeURIComponent(trip.title + " travel budget")}` },
-                  { label: "MakeMyTrip", url: `https://www.makemytrip.com/holidays-india/` },
-                  { label: "IndiaMike", url: `https://www.indiamike.com/india/search/?q=${encodeURIComponent(trip.title + " budget")}` },
-                ].map(({ label, url }) => (
-                  <a
-                    key={label}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: "inline-flex", alignItems: "center", gap: "0.3rem",
-                      padding: "0.3rem 0.7rem", borderRadius: 20,
-                      border: "1px solid var(--border)",
+                      padding: "0.85rem 1rem",
                       background: "var(--bg-card)",
-                      color: "var(--text-secondary)", fontSize: "0.75rem", fontWeight: 500,
-                      textDecoration: "none", transition: "all 0.2s",
                     }}
                   >
-                    <ExternalLink size={10} /> {label}
-                  </a>
-                ))}
-              </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.45rem" }}>
+                      <span style={{ fontSize: "0.88rem", fontWeight: 600, color: "var(--text-primary)" }}>
+                        {label}
+                      </span>
+                      <span style={{ fontSize: "0.88rem", fontWeight: 700, color }}>
+                        ₹{lo.toLocaleString()} – ₹{hi.toLocaleString()}
+                      </span>
+                    </div>
+                    {/* Mini bar */}
+                    <div style={{ height: 4, borderRadius: 2, background: "var(--border)", overflow: "hidden" }}>
+                      <div style={{ height: "100%", width: `${midPct}%`, background: color, borderRadius: 2, opacity: 0.75 }} />
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          )}
-        </div>
-      )}
 
-      {activeTab === "stay" && (
-        <div>
-          <h2 style={{ fontFamily: "var(--font-serif, Georgia, serif)", fontSize: "1.35rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 1.25rem" }}>
-            Where to Stay: Homestays, Camps &amp; Accommodations
-          </h2>
+            {/* Daily & total summary */}
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(160px, 100%), 1fr))",
+              gap: "0.75rem",
+              marginBottom: "1.25rem",
+            }}>
+              {[
+                {
+                  label: "Daily Budget (budget traveller)",
+                  value: `₹${BUDGET_CATS.reduce((s, c) => s + ((aiBudget[c.key as keyof typeof aiBudget] as [number, number])?.[0] || 0), 0).toLocaleString()}`,
+                  sub: "per person/day",
+                  color: "#4ade80",
+                },
+                {
+                  label: "Daily Budget (mid-range)",
+                  value: `₹${BUDGET_CATS.reduce((s, c) => s + ((aiBudget[c.key as keyof typeof aiBudget] as [number, number])?.[1] || 0), 0).toLocaleString()}`,
+                  sub: "per person/day",
+                  color: "#60a5fa",
+                },
+                {
+                  label: `${numDays}-Day Trip (budget)`,
+                  value: `₹${(BUDGET_CATS.reduce((s, c) => s + ((aiBudget[c.key as keyof typeof aiBudget] as [number, number])?.[0] || 0), 0) * numDays).toLocaleString()}`,
+                  sub: "estimated total",
+                  color: "#fbbf24",
+                },
+                {
+                  label: `${numDays}-Day Trip (mid-range)`,
+                  value: `₹${(BUDGET_CATS.reduce((s, c) => s + ((aiBudget[c.key as keyof typeof aiBudget] as [number, number])?.[1] || 0), 0) * numDays).toLocaleString()}`,
+                  sub: "estimated total",
+                  color: "#f9a8d4",
+                },
+              ].map((card) => (
+                <div
+                  key={card.label}
+                  style={{
+                    border: "1px solid var(--border)",
+                    borderRadius: "var(--radius-md)",
+                    padding: "1rem",
+                    background: "var(--bg-secondary)",
+                    textAlign: "center",
+                  }}
+                >
+                  <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginBottom: "0.35rem" }}>{card.label}</div>
+                  <div style={{ fontFamily: "var(--font-serif)", fontSize: "1.5rem", fontWeight: 700, color: card.color }}>{card.value}</div>
+                  <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", marginTop: 2 }}>{card.sub}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Search engine links */}
+            <div style={{
+              padding: "0.85rem 1rem",
+              borderRadius: "var(--radius-md)",
+              border: "1px dashed var(--border)",
+              display: "flex", flexWrap: "wrap", gap: "0.6rem", alignItems: "center",
+            }}>
+              <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>
+                🔍 Get latest estimates:
+              </span>
+              {[
+                { label: "Google", url: googleSearchUrl },
+                { label: "TripAdvisor", url: `https://www.tripadvisor.in/Search?q=${encodeURIComponent(trip.title + " travel budget")}` },
+                { label: "MakeMyTrip", url: `https://www.makemytrip.com/holidays-india/` },
+                { label: "IndiaMike", url: `https://www.indiamike.com/india/search/?q=${encodeURIComponent(trip.title + " budget")}` },
+              ].map(({ label, url }) => (
+                <a
+                  key={label}
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "inline-flex", alignItems: "center", gap: "0.3rem",
+                    padding: "0.3rem 0.7rem", borderRadius: 20,
+                    border: "1px solid var(--border)",
+                    background: "var(--bg-card)",
+                    color: "var(--text-secondary)", fontSize: "0.75rem", fontWeight: 500,
+                    textDecoration: "none", transition: "all 0.2s",
+                  }}
+                >
+                  <ExternalLink size={10} /> {label}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* ──────────────────────────────────────────────────────────
+          4. STAY & FOOD SECTION
+      ────────────────────────────────────────────────────────── */}
+      <section id="stay-food" className="trip-section-block" aria-labelledby="heading-stay-food">
+        <div id="stay" style={{ scrollMarginTop: "calc(var(--nav-height, 60px) + 70px)" }} />
+        <div id="food" style={{ scrollMarginTop: "calc(var(--nav-height, 60px) + 70px)" }} />
+        <h2 id="heading-stay-food" className="trip-section-header">
+          <Hotel size={22} style={{ color: "#60a5fa" }} />
+          Where to Stay &amp; Local Food Recommendations
+        </h2>
+
+        {/* Stay recommendations */}
+        <div style={{ marginBottom: "2.5rem" }}>
+          <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "var(--text-primary)", marginBottom: "1rem" }}>
+            Accommodations, Homestays &amp; Camps
+          </h3>
           {enrichmentStatuses.stay_recommendations?.status === "ai_filled" && (
             <UnverifiedBadge
               field="stay_recommendations"
@@ -856,67 +956,83 @@ export default function TripTabs({ trip }: TripTabsProps) {
           )}
           <StaySuggestions tripSlug={trip.slug} tripTitle={trip.title} />
         </div>
-      )}
 
-      {activeTab === "food" && (
+        {/* Food recommendations */}
         <div>
-          <h2 style={{ fontFamily: "var(--font-serif, Georgia, serif)", fontSize: "1.35rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 1.25rem" }}>
+          <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "var(--text-primary)", marginBottom: "1rem" }}>
             Local Food, Dhaba Stops &amp; Regional Cuisine
-          </h2>
+          </h3>
           <FoodRecommendations tripSlug={trip.slug} tripTitle={trip.title} />
         </div>
-      )}
+      </section>
 
-      {activeTab === "route" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-          <h2 style={{ fontFamily: "var(--font-serif, Georgia, serif)", fontSize: "1.35rem", fontWeight: 700, color: "var(--text-primary)", margin: 0 }}>
-            Elevation Profile, Fuel Points &amp; Route Telemetry
-          </h2>
-          <ElevationProfile tripSlug={trip.slug} tripTitle={trip.title} />
-          <PermitVault tripSlug={trip.slug} />
-          <FuelRestStops tripSlug={trip.slug} tripTitle={trip.title} />
-        </div>
-      )}
+      {/* ──────────────────────────────────────────────────────────
+          5. PACKING & WEATHER SECTION
+      ────────────────────────────────────────────────────────── */}
+      <section id="packing-weather" className="trip-section-block" aria-labelledby="heading-packing-weather">
+        <div id="packing" style={{ scrollMarginTop: "calc(var(--nav-height, 60px) + 70px)" }} />
+        <div id="weather" style={{ scrollMarginTop: "calc(var(--nav-height, 60px) + 70px)" }} />
+        <h2 id="heading-packing-weather" className="trip-section-header">
+          <CheckSquare size={22} style={{ color: "#34d399" }} />
+          Packing Checklist &amp; Live Weather Conditions
+        </h2>
 
-      {activeTab === "packing" && (
-        <div>
-          <h2 style={{ fontFamily: "var(--font-serif, Georgia, serif)", fontSize: "1.35rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 1.25rem" }}>
-            Packing Checklist &amp; Essential Expedition Gear
-          </h2>
+        {/* Smart packing checklist */}
+        <div style={{ marginBottom: "2.5rem" }}>
           <SmartPackingChecklist trip={trip} />
         </div>
-      )}
 
-      {activeTab === "weather" && (() => {
-        const coords = TRIP_WEATHER_COORDS[trip.slug];
-        if (!coords) return (
-          <div style={{ padding: "2rem", textAlign: "center", color: "#6B7280" }}>
-            Weather data not available for this destination yet.
-          </div>
-        );
-        return (
-          <WeatherPanel
-            slug={trip.slug}
-            lat={coords.lat}
-            lon={coords.lon}
-            locationName={coords.name}
-          />
-        );
-      })()}
+        {/* Weather panel */}
+        <div>
+          <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "var(--text-primary)", marginBottom: "1rem" }}>
+            Real-Time Climate &amp; Weather Tracker
+          </h3>
+          {(() => {
+            const coords = TRIP_WEATHER_COORDS[trip.slug];
+            if (!coords) return (
+              <div style={{ padding: "2rem", textAlign: "center", color: "#6B7280" }}>
+                Weather telemetry not available for this destination yet.
+              </div>
+            );
+            return (
+              <WeatherPanel
+                slug={trip.slug}
+                lat={coords.lat}
+                lon={coords.lon}
+                locationName={coords.name}
+              />
+            );
+          })()}
+        </div>
+      </section>
 
-      {activeTab === "stories" && (
-        <TripStories tripSlug={trip.slug} />
-      )}
+      {/* ──────────────────────────────────────────────────────────
+          6. STORIES & COMMUNITY REPORTS SECTION
+      ────────────────────────────────────────────────────────── */}
+      <section id="stories" className="trip-section-block" aria-labelledby="heading-stories">
+        <div id="reports" style={{ scrollMarginTop: "calc(var(--nav-height, 60px) + 70px)" }} />
+        <h2 id="heading-stories" className="trip-section-header">
+          <BookOpen size={22} style={{ color: "#c084fc" }} />
+          Traveler Stories, Community Reviews &amp; Field Reports
+        </h2>
 
-      {activeTab === "reports" && (
+        {/* Stories & Reviews */}
+        <div style={{ marginBottom: "2.5rem" }}>
+          <TripStories tripSlug={trip.slug} />
+        </div>
+
+        {/* Field Reports */}
         <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+          <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "var(--text-primary)", margin: 0 }}>
+            Live Field Reports from Travelers
+          </h3>
           <FieldReportList tripSlug={trip.slug} refreshKey={reportRefreshKey} />
           <FieldReportForm
             tripSlug={trip.slug}
             onSubmitted={() => setReportRefreshKey((k) => k + 1)}
           />
         </div>
-      )}
+      </section>
     </div>
   );
 }
