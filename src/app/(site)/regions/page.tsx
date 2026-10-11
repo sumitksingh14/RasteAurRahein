@@ -6,6 +6,7 @@ import { REGIONS, filterTripsByRegion } from "@/lib/regions";
 import { getAllTrips } from "@/lib/queries";
 import { safeJsonLd } from "@/lib/jsonld";
 import SilkPageHeader from "@/components/ui/SilkPageHeader";
+import InteractiveRegionsMap from "@/components/ui/InteractiveRegionsMap";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://rasteaurrahein.com";
@@ -81,6 +82,9 @@ export default async function RegionsIndexPage() {
       {/* ── Region Cards ── */}
       <section className="section">
         <div className="container">
+          {/* Interactive SVG Subcontinent Circuit Map */}
+          <InteractiveRegionsMap regions={REGIONS} allTrips={allTrips} />
+
           <div
             style={{
               display: "grid",
