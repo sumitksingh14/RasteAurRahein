@@ -36,6 +36,7 @@ import QuickFactsBox from "@/components/ui/QuickFactsBox";
 import TripLeadCapture from "@/components/ui/TripLeadCapture";
 import { getGuidesForTrip } from "@/lib/data/guides";
 import TripMobileActionBar from "@/components/ui/TripMobileActionBar";
+import AuthorCard from "@/components/ui/AuthorCard";
 
 import { getTripImage } from "@/lib/data/tripImages";
 import { shouldDisplayPublicViewCount } from "@/lib/site-config";
@@ -428,6 +429,13 @@ export default async function TripDetailPage({ params }: Props) {
             <TripLeadCapture trip={trip} />
 
             <TripTabs trip={trip} />
+
+            {/* Author Attribution & Verification Card */}
+            <AuthorCard
+              author={trip.author ?? DEMO_AUTHOR}
+              lastVerified={trip.lastVerified}
+              verifiedAt={trip.verifiedAt}
+            />
 
             {/* FAQ — auto-generated from trip structured data */}
             <FAQSchema
