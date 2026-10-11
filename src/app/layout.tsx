@@ -9,6 +9,8 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import NewsletterPopup from "@/components/ui/NewsletterPopup";
 
+import ServiceWorkerRegister from "@/components/pwa/ServiceWorkerRegister";
+
 // Strip trailing slash so metadataBase never produces double-slash canonicals.
 // Use || (not ??) so an empty-string env var also falls back to the default.
 const SITE_URL = (
@@ -129,6 +131,7 @@ export default function RootLayout({
             <AuthProvider>
               {children}
               <InstallPrompt />
+              <ServiceWorkerRegister />
               {/* Exit-intent newsletter popup — mounts once, self-manages visibility */}
               <NewsletterPopup />
             </AuthProvider>

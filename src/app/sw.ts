@@ -47,6 +47,19 @@ const serwist = new Serwist({
         ],
       }),
     },
+    // ── Next.js optimized images: cache-first ─────────────────────────────
+    {
+      matcher: /^\/_next\/image\?/,
+      handler: new CacheFirst({
+        cacheName: "next-images",
+        plugins: [
+          new ExpirationPlugin({
+            maxEntries: 100,
+            maxAgeSeconds: 60 * 60 * 24 * 14, // 14 days
+          }),
+        ],
+      }),
+    },
     // Next.js default caching for pages/navigation
     ...defaultCache,
   ],
@@ -55,17 +68,40 @@ const serwist = new Serwist({
 serwist.addEventListeners();
 
 // ── Offline fallback for navigation requests ────────────────────────────────
-// When a page navigation fails (offline + not cached), serve /offline.
-// We listen for fetch events after Serwist's handlers; if no match or
-// network error, we fall back to the cached /offline page.
+// When a page navigation fails (offline + not cached), first check if the
+// destination (e.g. saved offline trip) exists in any cache (including "offline-trips-v1").
+// Only if no cached version is found, fall back to /offline.
 self.addEventListener("fetch", (event: FetchEvent) => {
   if (event.request.mode === "navigate") {
     event.respondWith(
       fetch(event.request).catch(async () => {
-        const cache = await caches.open("pages");
-        const cached = await cache.match("/offline");
-        if (cached) return cached;
-        // Ultimate fallback — basic offline message
+        // 1. Check if the exact request is cached in any active cache
+        const globalCached = await caches.match(event.request);
+        if (globalCached) return globalCached;
+
+        // 2. Check offline-trips-v1 cache by request & pathname
+        try {
+          const offlineTrips = await caches.open("offline-trips-v1");
+          const tripCached = await offlineTrips.match(event.request);
+          if (tripCached) return tripCached;
+
+          const url = new URL(event.request.url);
+          const pathCached = await offlineTrips.match(url.pathname);
+          if (pathCached) return pathCached;
+        } catch {
+          // ignore cache errors
+        }
+
+        // 3. Fall back to cached /offline page
+        try {
+          const cache = await caches.open("pages");
+          const cached = await cache.match("/offline");
+          if (cached) return cached;
+        } catch {
+          // ignore
+        }
+
+        // 4. Ultimate fallback — basic offline message
         return new Response("You are offline. Please reconnect.", {
           status: 503,
           headers: { "Content-Type": "text/plain" },

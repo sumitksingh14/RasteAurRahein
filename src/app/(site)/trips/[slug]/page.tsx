@@ -22,6 +22,7 @@ import { getSession } from "@/lib/session";
 import { isTripSaved } from "@/lib/savedTrips";
 import PrimaryTripCTA from "@/components/ui/PrimaryTripCTA";
 import BookmarkButton from "@/components/ui/BookmarkButton";
+import SaveOfflineButton from "@/components/ui/SaveOfflineButton";
 import StartTripButton from "@/components/ui/StartTripButton";
 import RemixTripButton from "@/components/ui/RemixTripButton";
 import AddToCalendarButton from "@/components/ui/AddToCalendarButton";
@@ -340,6 +341,7 @@ export default async function TripDetailPage({ params }: Props) {
           <div className="trip-hero-actions">
             <PrimaryTripCTA trip={trip} />
             <div className="trip-hero-secondary-icons">
+              <SaveOfflineButton trip={trip} size="lg" />
               <RemixTripButton trip={trip} iconOnly />
               <AddToCalendarButton trip={trip} iconOnly />
               <ShareButton title={trip.title} excerpt={trip.excerpt} iconOnly />
