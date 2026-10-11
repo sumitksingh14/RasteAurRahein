@@ -29,6 +29,14 @@ const LABELS: Record<keyof QuickFacts, string> = {
   mobileNetwork: "Mobile Network",
 };
 
+const ESSENTIAL_KEYS: (keyof QuickFacts)[] = [
+  "durationDays",
+  "budgetRange",
+  "bestTime",
+  "altitude",
+  "permitsRequired",
+];
+
 const DIFFICULTY_COLORS: Record<string, string> = {
   Easy: "#16a34a",
   Moderate: "#d97706",
@@ -39,32 +47,95 @@ const DIFFICULTY_COLORS: Record<string, string> = {
 interface QuickFactsBoxProps {
   quickFacts: QuickFacts;
   /** Optional — used to fill in bestTime/durationDays from top-level trip fields as fallback */
-  trip?: Pick<Trip, "bestSuggestedMonth" | "itinerary" | "difficulty">;
+  trip?: Pick<Trip, "bestSuggestedMonth" | "itinerary" | "difficulty" | "totalBudget">;
 }
 
 /**
  * QuickFactsBox — renders a scannable, grid-based fact sheet at the top of
  * every trip article, below the title and above the prose body.
  *
- * DATA FLOW: reads from trip.quickFacts (single source of truth).
- * Falls back to top-level trip fields if quickFacts isn't populated yet.
- * The same data object is consumed by the FAQPage JSON-LD generator.
+ * Requirements:
+ * - 5 essentials up front: duration, budget, best season, max altitude, permits.
+ * - Remaining facts behind a "More details" disclosure.
+ * - Pulls values strictly from trip data fields; no hard-coded text.
  */
 export default function QuickFactsBox({ quickFacts, trip }: QuickFactsBoxProps) {
-  // Merge fallbacks from top-level trip fields so cards work even before quickFacts is backfilled
+  // Merge fallbacks from top-level trip fields strictly when available in the trip data
   const facts: QuickFacts = {
+    ...quickFacts,
     bestTime: quickFacts.bestTime ?? trip?.bestSuggestedMonth,
     durationDays: quickFacts.durationDays ?? trip?.itinerary?.length,
+    budgetRange:
+      quickFacts.budgetRange ??
+      (trip?.totalBudget ? `₹${trip.totalBudget.toLocaleString()} per person` : undefined),
     difficulty: quickFacts.difficulty ?? trip?.difficulty,
-    ...quickFacts,
   };
 
-  // Build ordered rows — only include keys that have a value
-  const rows = (Object.keys(LABELS) as Array<keyof QuickFacts>).filter(
+  // 1. Five essentials up front
+  const essentialRows = ESSENTIAL_KEYS.filter(
     (k) => facts[k] !== undefined && facts[k] !== null && facts[k] !== ""
   );
 
-  if (rows.length === 0) return null;
+  // 2. Remaining facts for "More details" disclosure
+  const secondaryRows = (Object.keys(LABELS) as Array<keyof QuickFacts>).filter(
+    (k) =>
+      !ESSENTIAL_KEYS.includes(k) &&
+      facts[k] !== undefined &&
+      facts[k] !== null &&
+      facts[k] !== ""
+  );
+
+  if (essentialRows.length === 0 && secondaryRows.length === 0) return null;
+
+  const renderFactItem = (key: keyof QuickFacts) => {
+    const value = facts[key];
+    const isDifficulty = key === "difficulty";
+    const diffColor = isDifficulty ? (DIFFICULTY_COLORS[value as string] ?? "#374151") : undefined;
+
+    return (
+      <div
+        key={key}
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          gap: "0.625rem",
+          padding: "0.875rem 1.25rem",
+          borderBottom: "1px solid var(--border, #e5e7eb)",
+        }}
+      >
+        <span
+          style={{ fontSize: "1.1rem", lineHeight: 1, marginTop: "1px", flexShrink: 0 }}
+          aria-hidden="true"
+        >
+          {ICONS[key] ?? "•"}
+        </span>
+        <div>
+          <dt
+            style={{
+              fontSize: "0.68rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.06em",
+              color: "var(--text-muted, #6b7280)",
+              marginBottom: "0.2rem",
+            }}
+          >
+            {LABELS[key]}
+          </dt>
+          <dd
+            style={{
+              margin: 0,
+              color: isDifficulty ? diffColor : "var(--text-primary, #111827)",
+              fontWeight: isDifficulty ? 700 : 600,
+              lineHeight: 1.4,
+            }}
+          >
+            {key === "durationDays" ? `${value} days` : String(value)}
+          </dd>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <aside
@@ -95,7 +166,17 @@ export default function QuickFactsBox({ quickFacts, trip }: QuickFactsBoxProps) 
           textTransform: "uppercase",
         }}
       >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
           <circle cx="12" cy="12" r="10" />
           <line x1="12" y1="8" x2="12" y2="12" />
           <line x1="12" y1="16" x2="12.01" y2="16" />
@@ -103,69 +184,60 @@ export default function QuickFactsBox({ quickFacts, trip }: QuickFactsBoxProps) 
         Quick Facts
       </div>
 
-      {/* Grid of facts */}
+      {/* Grid of Essential Facts (up front) */}
       <dl
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(min(240px, 100%), 1fr))",
+          gridTemplateColumns: "repeat(auto-fill, minmax(min(220px, 100%), 1fr))",
           gap: 0,
           margin: 0,
           padding: 0,
         }}
       >
-        {rows.map((key, i) => {
-          const value = facts[key];
-          const isDifficulty = key === "difficulty";
-          const diffColor = isDifficulty ? (DIFFICULTY_COLORS[value as string] ?? "#374151") : undefined;
-
-          return (
-            <div
-              key={key}
-              style={{
-                display: "flex",
-                alignItems: "flex-start",
-                gap: "0.625rem",
-                padding: "0.875rem 1.25rem",
-                borderBottom: "1px solid var(--border, #e5e7eb)",
-                borderRight: i % 2 === 0 ? "1px solid var(--border, #e5e7eb)" : "none",
-              }}
-            >
-              <span
-                style={{ fontSize: "1rem", lineHeight: 1, marginTop: "1px", flexShrink: 0 }}
-                aria-hidden="true"
-              >
-                {ICONS[key] ?? "•"}
-              </span>
-              <div>
-                <dt
-                  style={{
-                    fontSize: "0.68rem",
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.06em",
-                    color: "var(--text-muted, #6b7280)",
-                    marginBottom: "0.2rem",
-                  }}
-                >
-                  {LABELS[key]}
-                </dt>
-                <dd
-                  style={{
-                    margin: 0,
-                    color: isDifficulty ? diffColor : "var(--text-primary, #111827)",
-                    fontWeight: isDifficulty ? 700 : 500,
-                    lineHeight: 1.5,
-                  }}
-                >
-                  {key === "durationDays"
-                    ? `${value} days`
-                    : String(value)}
-                </dd>
-              </div>
-            </div>
-          );
-        })}
+        {essentialRows.map(renderFactItem)}
       </dl>
+
+      {/* Remaining facts behind "More details" disclosure */}
+      {secondaryRows.length > 0 && (
+        <details
+          className="quick-facts-disclosure"
+          style={{
+            borderTop: "1px solid var(--border)",
+            background: "var(--bg-card)",
+          }}
+        >
+          <summary
+            style={{
+              padding: "0.75rem 1.25rem",
+              cursor: "pointer",
+              fontSize: "0.82rem",
+              fontWeight: 600,
+              color: "var(--accent-gold, #FEBB02)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              userSelect: "none",
+              outline: "none",
+            }}
+          >
+            <span>More details ({secondaryRows.length} additional facts)</span>
+            <span style={{ fontSize: "0.75rem", opacity: 0.8 }}>▼</span>
+          </summary>
+          <dl
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(min(220px, 100%), 1fr))",
+              gap: 0,
+              margin: 0,
+              padding: 0,
+              borderTop: "1px solid var(--border)",
+              background: "var(--bg-secondary)",
+            }}
+          >
+            {secondaryRows.map(renderFactItem)}
+          </dl>
+        </details>
+      )}
 
       {/* Footer disclaimer */}
       <p
