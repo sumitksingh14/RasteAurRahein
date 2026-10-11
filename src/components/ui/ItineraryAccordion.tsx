@@ -8,7 +8,6 @@ import {
   MapPin,
   DollarSign,
   Camera,
-  Lightbulb,
   Car,
   Utensils,
   Bed,
@@ -17,6 +16,7 @@ import {
 import type { ItineraryDay, Activity } from "@/lib/types";
 import GoogleMapsRouteButton from "@/components/ui/GoogleMapsRouteButton";
 import { extractWaypointsFromItinerary, type ItineraryActivity, type ItineraryDay as RouteDay } from "@/lib/googleMapsRoute";
+import Callout, { inferCalloutVariant } from "@/components/ui/Callout";
 
 function renderFormattedText(text: string) {
   const parts = [];
@@ -221,25 +221,9 @@ function ActivityItem({ activity }: { activity: Activity }) {
         )}
 
         {activity.notes && (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              gap: "6px",
-              background: "var(--accent-gold-dim)",
-              border: "1px solid var(--border-accent)",
-              borderRadius: "var(--radius-sm)",
-              padding: "0.5rem 0.75rem",
-              marginTop: "0.5rem",
-              width: "100%",
-              boxSizing: "border-box",
-            }}
-          >
-            <Lightbulb size={13} style={{ color: "var(--accent-gold)", flexShrink: 0, marginTop: 2 }} />
-            <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", lineHeight: 1.5, wordBreak: "break-word", overflowWrap: "anywhere", margin: 0 }}>
-              {activity.notes}
-            </p>
-          </div>
+          <Callout variant={inferCalloutVariant(activity.notes)}>
+            {activity.notes}
+          </Callout>
         )}
       </div>
     </div>
