@@ -69,6 +69,14 @@ export interface ItineraryDay {
   summary?: string;
   activities: Activity[];
   coverImage?: SanityImage;
+  /** Distance covered on this day in kilometers */
+  distanceKm?: number;
+  /** Approximate driving time in hours or formatted string */
+  driveHours?: number | string;
+  /** Overnight/sleeping altitude in meters */
+  overnightAltitudeM?: number;
+  /** Type of overnight accommodation (e.g., Homestay, Hotel, Camp) */
+  stayType?: string;
 }
 
 export interface Trip {

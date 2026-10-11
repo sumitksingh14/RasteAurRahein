@@ -472,15 +472,62 @@ export default function ItineraryAccordion({ days, origin, destination }: Itiner
                   >
                     {day.title}
                   </h3>
-                  <span
-                    style={{
-                      fontSize: "0.75rem",
-                      color: "var(--text-muted)",
-                      display: "block",
-                    }}
-                  >
-                    Day {day.dayNumber} · Route &amp; Highlights
-                  </span>
+                  {day.distanceKm !== undefined ||
+                  day.driveHours !== undefined ||
+                  day.overnightAltitudeM !== undefined ||
+                  day.stayType ? (
+                    <div
+                      className="day-header-summary-strip"
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: "0.3rem 0.6rem",
+                        alignItems: "center",
+                        fontSize: "0.74rem",
+                        color: "var(--text-muted)",
+                        marginTop: "0.2rem",
+                      }}
+                    >
+                      {day.distanceKm !== undefined && (
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: "3px" }}>
+                          <span aria-hidden="true">🛣️</span>
+                          <span>{day.distanceKm} km</span>
+                        </span>
+                      )}
+                      {day.driveHours !== undefined && (
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: "3px" }}>
+                          <span aria-hidden="true">⏱️</span>
+                          <span>
+                            {typeof day.driveHours === "number"
+                              ? `${day.driveHours}h`
+                              : String(day.driveHours)}
+                          </span>
+                        </span>
+                      )}
+                      {day.overnightAltitudeM !== undefined && (
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: "3px" }}>
+                          <span aria-hidden="true">⛰️</span>
+                          <span>{day.overnightAltitudeM.toLocaleString()} m</span>
+                        </span>
+                      )}
+                      {day.stayType && (
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: "3px" }}>
+                          <span aria-hidden="true">🏨</span>
+                          <span>{day.stayType}</span>
+                        </span>
+                      )}
+                    </div>
+                  ) : (
+                    <span
+                      style={{
+                        fontSize: "0.75rem",
+                        color: "var(--text-muted)",
+                        display: "block",
+                      }}
+                    >
+                      Day {day.dayNumber} · Route &amp; Highlights
+                    </span>
+                  )}
                 </div>
 
                 <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexShrink: 0 }}>
