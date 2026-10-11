@@ -59,6 +59,10 @@ export interface Activity {
   currency?: string;
   notes?: string;
   type?: "transport" | "accommodation" | "food" | "activity" | "sightseeing";
+  /** Optional affiliate booking/reservation URL for this stay/hotel/camp */
+  affiliateUrl?: string;
+  /** Custom label for the affiliate button (defaults to "Check availability") */
+  affiliateLabel?: string;
 }
 
 export interface ItineraryDay {

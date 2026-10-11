@@ -12,6 +12,7 @@ import {
   Utensils,
   Bed,
   Binoculars,
+  ExternalLink,
 } from "lucide-react";
 import type { ItineraryDay, Activity } from "@/lib/types";
 import GoogleMapsRouteButton from "@/components/ui/GoogleMapsRouteButton";
@@ -224,6 +225,53 @@ function ActivityItem({ activity }: { activity: Activity }) {
           <Callout variant={inferCalloutVariant(activity.notes)}>
             {activity.notes}
           </Callout>
+        )}
+
+        {activity.affiliateUrl && (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "8px",
+              marginTop: "0.6rem",
+            }}
+          >
+            <a
+              href={activity.affiliateUrl}
+              target="_blank"
+              rel="sponsored noopener"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                padding: "0.4rem 0.85rem",
+                borderRadius: "var(--radius-sm)",
+                background: "var(--accent-gold-dim)",
+                border: "1px solid var(--border-accent)",
+                color: "var(--accent-gold)",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                textDecoration: "none",
+                transition: "all 0.15s ease",
+              }}
+            >
+              <span>{activity.affiliateLabel || "Check availability"}</span>
+              <ExternalLink size={12} />
+            </a>
+            <span
+              style={{
+                fontSize: "0.68rem",
+                color: "var(--text-muted)",
+                letterSpacing: "0.02em",
+                textTransform: "uppercase",
+                fontWeight: 600,
+                opacity: 0.85,
+              }}
+            >
+              Affiliate link
+            </span>
+          </div>
         )}
       </div>
     </div>
